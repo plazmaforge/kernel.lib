@@ -1,0 +1,261 @@
+
+MinGW W64 release
+=============================================================================
+https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/
+
+1. mingw-w64-install.exe                           - FAIL: doesn't work - Cannot download reporsitory.txt
+2. x86_64-6.4.0-release-win32-sjlj-rt_v5-rev0.7z   - OK: Unzip and use
+
+
+MinGW DISTRO
+=============================================================================
+https://stackoverflow.com/questions/929495/why-is-mingw-very-slow/1868223
+
+https://nuwen.net/mingw.html
+
+
+Visual Studio Code: Config MinGW
+=============================================================================
+https://code.visualstudio.com/docs/cpp/config-mingw
+
+
+Optimize String 
+=============================================================================
+https://www.oreilly.com/library/view/optimized-c/9781491922057/ch04.html
+
+
+C++ Tutorial
+=============================================================================
+https://www.w3schools.com/cpp/default.asp
+
+
+C++ String Toolkit Library
+=============================================================================
+http://www.partow.net/programming/strtk/index.html
+
+
+C++ Project List
+=============================================================================
+https://github.com/fffaraz/awesome-cpp
+
+
+C++ Drogon
+=============================================================================
+https://github.com/an-tao/drogon
+https://github.com/an-tao/drogon/tree/master/drogon_ctl/templates
+https://github.com/an-tao/drogon/blob/master/lib/src/Utilities.cc
+
+https://github.com/sumeetchhetri/ffead-cpp
+https://github.com/sumeetchhetri/ffead-cpp/blob/master/src/modules/common/StringUtil.cpp
+https://github.com/sumeetchhetri/ffead-cpp/blob/master/src/modules/common/Date.cpp
+
+
+Java Collection: Trove
+==============================================================================
+https://habr.com/ru/post/187234/
+https://bitbucket.org/trove4j/trove
+https://sourceforge.net/projects/trove4j/files/
+http://trove4j.sourceforge.net/html/overview.html
+
+
+C++ Vector vs Array
+==============================================================================
+https://www.educba.com/c-plus-plus-vector-vs-array/
+
+
+Java/C++ binarySearch (?), >>> operator
+==============================================================================
+https://ai.googleblog.com/2006/06/extra-extra-read-all-about-it-nearly.html
+
+
+Java/C++ >>> operator
+==============================================================================
+https://stackoverflow.com/questions/5529443/what-is-operation-in-c
+
+
+Calendar: Java, C++, C#
+=============================================================================
+https://rosettacode.org/wiki/Calendar#Java
+
+
+Math JS Functions
+=============================================================================
+https://mathjs.org/docs/reference/functions.html
+
+
+C++ XML Parsers
+=============================================================================
+https://github.com/apache/xerces-c
+https://github.com/apache/xerces-c/tree/master/src/xercesc/parsers
+https://github.com/apache/xalan-c/blob/master/src/xalanc/XercesParserLiaison/XercesParserLiaison.cpp
+https://github.com/apache/xerces-c/blob/master/src/xercesc/util/XMLDateTime.cpp
+
+
+C++ String Utils
+=============================================================================
+https://github.com/apache/xerces-c/blob/master/src/xercesc/util/XMLString.cpp
+
+https://guava.dev/releases/14.0/api/docs/src-html/com/google/common/math/DoubleMath.html
+
+https://habr.com/ru/post/673474/
+https://github.com/aws/aws-sdk-cpp/blob/main/src/aws-cpp-sdk-core/include/aws/core/utils/DateTime.h
+https://github.com/aws/aws-sdk-cpp/blob/main/src/aws-cpp-sdk-core/include/aws/core/utils/memory/stl/AWSString.h
+
+https://stackoverflow.com/questions/45575863/how-to-print-utf-8-strings-to-stdcout-on-windows/45576563#45576563
+
+https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/setlocale-wsetlocale?view=msvc-170#utf-8-support
+https://learn.microsoft.com/en-us/cpp/c-runtime-library/locale-names-languages-and-country-region-strings?redirectedfrom=MSDN&view=msvc-170
+
+
+C++ String on Windows (UTF-8)
+=============================================================================
+https://stackoverflow.com/questions/1660492/utf-8-output-on-windows-console
+https://stackoverflow.com/questions/6693010/how-do-i-use-multibytetowidechar
+
+
+C Utils (system, detect os, string, unicode converter, ...)
+=============================================================================
+
+ffbase, ffos
+
+https://github.com/stsaz/ffbase
+https://github.com/stsaz/ffos
+
+https://github.com/stsaz/ffos/blob/master/FFOS/detect-os.h
+https://github.com/stsaz/ffos/blob/master/FFOS/base.h
+https://github.com/stsaz/ffos/blob/master/FFOS/sysconf.h
+https://github.com/stsaz/ffbase/blob/master/ffbase/unicode.h
+
+
+C++ CVM (Custom Virtual Machine and Compiler)
+=============================================================================
+https://github.com/Basheyev/CVM
+https://github.com/Basheyev/CVM/blob/master/src/compiler/SourceFile.cpp
+
+C++ Database Management System (DBMS)
+=============================================================================
+https://github.com/Basheyev/Boson
+
+
+C vs C++ (Benchmarks)
+=============================================================================
+https://github.com/hanabi1224/Programming-Language-Benchmarks/tree/main/bench/algorithm/http-server
+
+
+OpenJDK
+=============================================================================
+
+Share
+https://github.com/openjdk/jdk/blob/master/src/java.base/share/native/libjava/java_props.h
+
+Unix
+https://github.com/openjdk/jdk/blob/master/src/java.base/unix/native/libjava/java_props_md.c
+
+MacOS
+https://github.com/openjdk/jdk/blob/master/src/java.base/macosx/native/libjava/java_props_macosx.c
+
+Windows
+https://github.com/openjdk/jdk/blob/master/src/java.base/windows/native/libjava/java_props_md.c
+
+
+Java Utils
+=============================================================================
+
+copyFile/Dir, moveFile/Dir, cleanDir, deleteDir, checksum, contentEquals
+=============================================================================
+https://github.com/apache/commons-io/blob/master/src/main/java/org/apache/commons/io/FileUtils.java
+https://github.com/apache/commons-io/blob/master/src/main/java/org/apache/commons/io/IOUtils.java
+
+
+JSON Schema
+=============================================================================
+https://www.rfc-editor.org/rfc/rfc4627
+https://datatracker.ietf.org/doc/id/draft-saintandre-json-namespaces-00.html
+https://datatracker.ietf.org/doc/html/draft-zyp-json-schema-03
+
+
+C++ Sys Lib (fs, sys, os)
+=============================================================================
+https://github.com/poddav/sys--
+https://github.com/poddav/sys--/blob/master/sysfs.h
+
+
+C++ String from 'utf8 string' to 'wstring'
+=============================================================================
+
+Strng WideCharToMultiByte/MultiByteToWideChar Utils
+https://github.com/an-tao/trantor/blob/master/trantor/utils/Utilities.cc
+
+Date Utils
+https://github.com/an-tao/trantor/blob/master/trantor/utils/Date.cc
+
+C++ utf8 string upper/lower case
+=============================================================================
+
+https://github.com/Winderton/libfort/blob/develop/src/utf8.h
+
+
+C++ Format Lib
+=============================================================================
+https://github.com/fmtlib/fmt
+
+
+C Interpreter (Chi)
+=============================================================================
+https://github.com/lotabout/write-a-C-interpreter
+
+
+How create own parser
+=============================================================================
+https://compilers.iecc.com/crenshaw/
+
+C++ ConsoleUnicode
+=============================================================================
+https://github.com/tsnsoft/CppConsoleUnicode
+
+Linux Binary Tools
+=============================================================================
+https://opensource.com/article/20/4/linux-binary-analysis
+
+Convert Unicode to Bytes (Tools)
+=============================================================================
+https://onlinetools.com/unicode/convert-unicode-to-bytes
+
+Utils Python/Java
+=============================================================================
+https://github.com/Adam5Wu/ZWUtils-Python2
+https://github.com/Adam5Wu/ZWUtils-Python2/blob/master/PlatformOps.py
+
+https://github.com/Adam5Wu/ZWUtils-Java
+
+Data Serialization
+=============================================================================
+https://devopedia.org/data-serialization
+
+YAML
+=============================================================================
+https://yaml.org
+https://spacelift.io/blog/yaml
+https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html
+https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started
+
+https://www.yamllint.com
+
+Python Sysntax Highlighter (Lexer/Formatter)
+=============================================================================
+https://pygments.org/demo/?lang=yaml
+https://github.com/pygments/pygments
+https://github.com/pygments/pygments/blob/86778604129334302f1ae7c0ded8d054c7de7fcf/pygments/lexers/data.py
+https://github.com/pygments/pygments/blob/86778604129334302f1ae7c0ded8d054c7de7fcf/pygments/token.py
+
+Swift Style Guide
+=============================================================================
+https://google.github.io/swift/
+
+Functional Programming
+=============================================================================
+https://www.tutorialspoint.com/functional_programming/functional_programming_introduction.htm
+
+
+https://habr.com/en/companies/postgrespro/articles/500440/
+https://habr.com/en/articles/438970/

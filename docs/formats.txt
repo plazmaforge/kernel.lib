@@ -1,0 +1,71 @@
+
+Format  (ISO 8601)   Description                             Unicode              Java                 C++                  C#                  Swift                 Python
+=======================================================================================================================================================================================
+
+YYYY-MM-DD           Year, Month, Day                        yyyy-MM-dd	          yyyy-MM-dd           %Y-%m-%d             yyyy-MM-dd           yyyy-MM-dd           %Y-%m-%d
+hh:mm:ss             Hour, Minute, Second                    HH:mm:ss	          HH:mm:ss             %H:%M:%S             HH:mm:ss             HH:mm:ss             %H:%M:%S
+YYYY-MM-DD hh:mm:ss  Year, Month, Day, Hour, Minute, Second  yyyy-MM-dd HH:mm:ss  yyyy-MM-dd HH:mm:ss  %Y-%m-%d %H:%M:%S    yyyy-MM-dd HH:mm:ss  yyyy-MM-dd HH:mm:ss  %Y-%m-%d %H:%M:%S
+
+
+
+Unicode formats
+===============
+ Java
+ C#
+ Swift
+ 
+
+
+ISO 8601
+========
+https://en.wikipedia.org/wiki/ISO_8601
+https://ru.wikipedia.org/wiki/ISO_8601
+
+http://dotat.at/tmp/ISO_8601-2004_E.pdf
+
+
+XSD
+===
+https://www.w3.org/TR/xmlschema-2/#dateTime
+
+
+Java Date Format
+=================
+https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
+
+
+C++ Date Format
+===============
+http://www.cplusplus.com/reference/ctime/strftime/
+
+
+C# Date Format
+==============
+https://docs.microsoft.com/ru-ru/dotnet/standard/base-types/custom-date-and-time-format-strings
+
+
+Swift
+=====
+https://nsdateformatter.com
+https://stackoverflow.com/questions/35700281/date-format-in-swift
+
+
+Python date Format
+==================
+https://stackabuse.com/how-to-format-dates-in-python/
+
+
+Date Format
+===========
+http://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+http://userguide.icu-project.org/formatparse/datetime#TOC-Formatting-Dates
+
+
+Format
+======
+http://userguide.icu-project.org/formatparse
+
+
+Unicode Strings
+===============
+http://userguide.icu-project.org/strings

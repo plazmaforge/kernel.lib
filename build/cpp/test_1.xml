@@ -1,0 +1,7 @@
+<root>
+ <? xmlname ?>
+ <! test !>
+ <!--<% bbb %>-->
+ <cm><!-- comment --></cm>
+ <![CDATA[text]]>
+</root>

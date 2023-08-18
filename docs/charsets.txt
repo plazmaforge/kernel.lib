@@ -1,0 +1,11 @@
+XML        encoding*
+HTML       charset
+
+MySQL      charset
+PostgreSQL encoding*
+Oracle     charset
+Firebird   charset
+H2         charset
+
+
+

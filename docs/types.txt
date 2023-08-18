@@ -1,0 +1,62 @@
+
+Type           Size  Range                           XSD             Java             C++            C#              Swift
+=============================================================================================================================
+
+byte           8     -128..127                       byte            byte             byte            sbyte          Int8    
+short          16    -32 768..32 767                 short           short            short           short          Int16
+int            32    -2 147 483 648..2 147 483 647   int             int              int             int            Int32
+long           64    -9 223 372 036 854 775 808..    long            long             long            long           Int64
+                      9 223 372 036 854 775 807
+
+unsigned byte  8     0..255                          unsignedByte    -                unsigned byte   byte           UInt8
+unsigned short 16    0..65 535                       unsignedShort   -                unsigned short  ushort         UInt16
+unsigned int   32    0..4 294 967 295                unsignedInt     -                unsigned int    uint           UInt32
+unsigned long  64    0..18 446 744 073 709 551 615   unsignedLong    -                unsigned long   ulong          UInt64
+ 
+float          32    +/-3.4E-038..3.4E+038           float           float            float           float          Float
+double         64    +/-1.7E-308..1.7E+308           double          double           double          double         Double
+
+signed char    8     -128..127                       byte (?)        byte (?)         char            sbyte (?)      Int8 (?)
+char           16    0..65 535                       -               char             unsigned short  char
+
+=============================================================================================================================
+
+XSD data Types
+==============
+https://www.tutorialspoint.com/xsd/xsd_datetime.htm
+
+Java data Types
+===============
+https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
+
+C++ Data Types
+==============
+https://www.tutorialspoint.com/cplusplus/cpp_data_types.htm
+
+C++ Multithreading
+https://www.tutorialspoint.com/cplusplus/cpp_multithreading.htm
+
+C# Data Types
+==============
+https://docs.microsoft.com/ru-ru/dotnet/csharp/tour-of-csharp/types-and-variables
+https://docs.microsoft.com/ru-ru/dotnet/csharp/language-reference/builtin-types/integral-numeric-types
+https://docs.microsoft.com/ru-ru/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types
+
+https://www.w3schools.com/cs/cs_data_types.asp
+https://www.tutorialspoint.com/csharp/csharp_data_types.htm
+
+Swift Data Types
+================
+https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html
+https://docs.swift.org/swift-book/LanguageGuide/Methods.html
+
+
+https://stackoverflow.com/questions/28251058/significant-precision-difference-in-floating-point-calculations-in-java-c-shar
+
+Everyday Data Structure (!)
+===========================
+https://books.google.com.ua/books?id=jrkrDwAAQBAJ&pg=PA17&lpg=PA17&dq=java+float+vs+C%23+float&source=bl&ots=EmyhbFTLvd&sig=ACfU3U0sCwSrIXIUCl2ExwiR1Ih5F1ULCw&hl=uk&sa=X&ved=2ahUKEwj7iti4xeLpAhUll4sKHS3YB7I4ChDoATAEegQIChAB#v=onepage&q=java%20float%20vs%20C%23%20float&f=false
+
+
+https://books.google.com.ua/books?id=81OLVXxb-qcC&pg=PA1232&lpg=PA1232&dq=java+float+vs+C%23+float&source=bl&ots=XK9uEylXYg&sig=ACfU3U3rwT5TJXmafzxUK5_DNNAwdUQ5dw&hl=uk&sa=X&ved=2ahUKEwjixrTfweLpAhW2AxAIHQrUB7MQ6AEwCnoECAoQAQ#v=onepage&q=java%20float%20vs%20C%23%20float&f=false
+https://books.google.com.ua/books?id=XFS6FNNrz-0C&pg=PA33&lpg=PA33&dq=java+float+vs+C%23+float&source=bl&ots=k93D-w91IB&sig=ACfU3U2Ds7G8RwW-MAVpHN-KJcaZQKTX0w&hl=uk&sa=X&ved=2ahUKEwjixrTfweLpAhW2AxAIHQrUB7MQ6AEwC3oECAkQAQ#v=onepage&q=java%20float%20vs%20C%23%20float&f=false

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE specification SYSTEM "laptop.dtd">
+<specification>
+        <type>laptop</type>
+        <model>macbook</model>
+        <screenSizeInch>15</screenSizeInch>
+</specification>

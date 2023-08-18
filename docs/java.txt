@@ -1,0 +1,15 @@
+Java problems: 
+
+ - Math: exp(x) <> pow(E, x)
+ 
+ - Math: round(double x) -> int ?
+ - Math: round(double x, int pos) ?
+ 
+ - Math: Not implemnted: trunc(double x), trunc(double x, int pos) 
+ 
+ - Math: Not implemnted: log(x,y)
+ - Math: Not implemnted: root(x,y) 
+ 
+ - Math: sinh, cosh, tanh, but Not implemnted: asinh, acosh, atanh
+ - Math: Not implemnted: csc, sec, cot, acsc, asec, acot
+ - Math: Not implemnted: csch, sech, coth, acsch, asech, acoth

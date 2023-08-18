@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+
+<project name="plazma-kernel-lib" default="create-jar">
+
+	<property file="build.properties" />
+
+	<path id="plazma-classpath">
+		<fileset dir="../lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+
+	<target name="create-jar" description="Create jar file">
+		<mkdir dir="${dist.dir}" />
+		<jar destfile="${dist.dir}/plazma-kernel-lib-${version}.jar" basedir="${classes.dir}" includes="**">
+
+			<exclude name="cpp/**/**" />
+			<exclude name="org/plazmaforge/kernel/**/*Test.class" />
+			<exclude name="org/plazmaforge/kernel/**/*TestCase.class" />
+
+			<manifest>
+				<attribute name="Manifest-Version" value="1.0" />
+				<attribute name="Plazma-Version" value="${version}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="clean-kernel-lib" description="Clean kernel lib">
+		<delete dir="${kernel.lib.target.dir}"/>
+	</target>
+
+
+	<target name="create-kernel-lib" description="Create kernel lib" depends="clean-kernel-lib">
+
+		<mkdir dir="${plazma.source.dir}" />
+		<mkdir dir="${kernel.lib.target.dir}" />
+		<mkdir dir="${kernel.lib.target.dir}/dist" />
+		<mkdir dir="${kernel.lib.target.dir}/lib" />
+
+		<copy todir="${kernel.lib.target.dir}">
+			<fileset dir="${kernel.lib.dir}">
+				<include name="**" />
+				<exclude name=".settings/**" />
+			</fileset>
+		</copy>
+
+		<copy todir="${kernel.lib.target.dir}/dist">
+			<fileset dir="${dist.dir}">
+				<include name="plazma-lib-${version}.jar" />
+			</fileset>
+		</copy>
+
+		<!--
+		<copy todir="${kernel.lib.target.dir}/lib">
+			<fileset dir="${lib.dir}">
+				<include name="hsqldb.jar" />
+				<include name="jdom_1_0.jar" />
+			</fileset>
+		</copy>
+		-->
+
+		<replace file="${kernel.lib.target.dir}/.classpath" token="/lib/" value = "lib/"/>
+
+	</target>
+
+
+</project>
