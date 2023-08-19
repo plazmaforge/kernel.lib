@@ -28,7 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Node implements Serializable {
+public class Node implements Serializable, Cloneable {
 
     private static final long serialVersionUID = -6504811570231930505L;
 
@@ -259,6 +259,43 @@ public class Node implements Serializable {
             return false;
         }
         return this.parent.getSubType() == subType;
+    }
+    
+    public Node clone() {
+        Node node = new Node();
+
+        node.setType(this.getType());
+        node.setSubType(this.getSubType());
+        node.setName(this.getName());
+        node.setText(this.getText());
+        node.setIndent(this.getIndent());
+
+        if (this.hasAttributes()) {
+            //int count = this.getAttributeCount();
+            
+            //for (int i = 0; i < count; i++) {
+            Map<String, String> attributes = node.getAttributes();
+
+            for (String name : attributes.keySet()) {
+                String value = attributes.get(name);
+                
+                //String name = this.getAttributeName(i);
+                //String value = this.getAttributeValue(i);
+                node.addAttribute(name, value);
+            }
+
+        }
+
+        if (this.hasChildren()) {
+            int count = this.getChildCount();
+            for (int i = 0; i < count; i++) {
+                Node child = this.getChild(i);
+                node.addChild(child == null ? null : child.clone());
+            }
+        }
+
+        return node;
+
     }
     
 }

@@ -1,0 +1,51 @@
+Start task: 'format-json'
+Processing...
+
+ -dir............: <not setting>
+ -file...........: test_tsk.json
+ -input-file.....: <not setting>
+ -output-file....: <not setting>
+ -text...........: <not setting>
+ -inline.........: <not setting>
+ -indent.........: <not setting>
+ -case...........: <not setting>
+ -attr-case......: <not setting>
+ -attr-quote.....: <not setting>
+ -trim-attr......: <not setting>
+ -display........: <not setting>
+ -verbose........: <not setting>
+ -verbose-token..: <not setting>
+ -color..........: 
+
+{
+  "tasks": 
+    [
+      {
+        "type": "shell",
+        "label": "C/C++: clang++ build active file",
+        "command": "/usr/bin/clang++",
+        "args": 
+          [
+            "-g",
+            "${file}",
+            "-o",
+            "${fileDirname}/${fileBasenameNoExtension}"
+          ],
+        "options": 
+          {
+            "cwd": "${workspaceFolder}"
+          },
+        "problemMatcher": 
+          [
+            "$gcc"
+          ],
+        "group": 
+          {
+            "kind": "build",
+            "isDefault": true
+          }
+      }
+    ],
+  "version": "2.0.0"
+}
+Total time: 13 ms
