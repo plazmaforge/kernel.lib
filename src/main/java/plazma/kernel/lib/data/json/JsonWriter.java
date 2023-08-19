@@ -1,7 +1,28 @@
+/*
+ * Copyright (C) 2012-2023 Oleh Hapon ohapon@users.sourceforge.net
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307, USA.
+ * 
+ * Oleh Hapon
+ * Kyiv, UKRAINE
+ * ohapon@users.sourceforge.net
+ */
+
 package plazma.kernel.lib.data.json;
 
 import plazma.kernel.lib.data.node.Node;
-import plazma.kernel.lib.data.xml.XmlWriterConfig;
 import plazma.kernel.lib.io.IOLib;
 import plazma.kernel.lib.str.StrLib;
 import plazma.kernel.lib.sys.SysLib;
@@ -88,134 +109,35 @@ public class JsonWriter {
 
     }
 
-    //
-
-    /*
-     Return true if config use inline flag
-    */
-    boolean isInline(JsonWriterConfig config) {
-        return config != null ? false : config.inlineFlag;
-    }
-
-    /*
-     Return real indent (tab or 2 spaces) by config indent
-    */
-    String getIndentValue(JsonWriterConfig config) {
-        return config == null ? INDENT_DEFAULT_VALUE : config.getIndentValue();
-    }
-
-    String getAttributeQuoteValue(JsonWriterConfig config) {
-        return config == null ? QUOTE_DEFAULT_VALUE : config.getAttributeQuoteValue();
-    }
-
     ////
 
-    boolean hasAttributeCase(JsonWriterConfig config) {
-        return config == null ? false : !StrLib.isEmpty(config.attributeCase);
-    }
-
-    String getAttributeCase(JsonWriterConfig config) {
-        return config == null ? "" : config.attributeCase;
-    }
-
-    boolean isTrimAttribute(JsonWriterConfig config) {
-        return config == null ? false : config.trimAttribute;
-    }
-
-    ////
-
-    String toTypeCase(String str, String type) {
-        return StrLib.toTypeCase(str, type);
-    }
-
-    String transformAttributeName(JsonWriterConfig config, String attributeName) {
-        String result = attributeName;
-        if (result.isEmpty()) {
-            return result;
-        }
-        if (hasAttributeCase(config)) {
-            result = toTypeCase(attributeName, getAttributeCase(config));
-        }
-        boolean isQuoted = StrLib.isQuoted(attributeName);
-        if (!isQuoted) {
-            result = StrLib.quote(attributeName);
-        }
-        return result;
-    }
-
-    String transformAttributeValue(JsonWriterConfig config, String attributeValue) {
-        String result = attributeValue;
-
-        // We transform empty value, because we need to quote it
-        boolean trimAttribute = isTrimAttribute(config);
-        String quote = getAttributeQuoteValue(config);
-
-        boolean isQuoted = StrLib.isQuoted(attributeValue);
-        
-        if (isQuoted) {
-            String oldQuote = attributeValue.substring(0, 1);
-            String newQuote = oldQuote;
-            boolean needAttributeQuote = oldQuote != quote;
-            boolean needTransformValue = false;
-
-            if (needAttributeQuote || trimAttribute) {
-                needTransformValue = true;
-                if (needAttributeQuote) {
-                    newQuote = quote;
-                };
-            }
-
-            if (needTransformValue) {
-
-                // TODO: Use requote(str, quoteStartOld, quoteEndOld,
-                // quoteStartNew, quoteEndNew, trim)
-                result = StrLib.unquote(attributeValue);
-                if (trimAttribute) {
-                    result = StrLib.trim(attributeValue);
-                }
-                result = StrLib.quote(attributeValue, newQuote, newQuote);
-            }
-
-        } else {
-
-            if (trimAttribute) {
-                result = StrLib.trim(attributeValue);
-            }
-            result = StrLib.quote(attributeValue, quote, quote);
-        }
-
-        return result;
-    }
-
-    ////
-
-    void append(JsonAppendable buf, String str) {
+    protected void append(JsonAppendable buf, String str) {
         buf.append(str);
     }
 
-    void appendObject(JsonAppendable buf, String str) {
+    protected void appendObject(JsonAppendable buf, String str) {
         buf.appendObject(str);
     }
 
-    void appendArray(JsonAppendable buf, String str) {
+    protected void appendArray(JsonAppendable buf, String str) {
         buf.appendArray(str);
     }
 
-    void appendAttributeName(JsonAppendable buf, String str) {
+    protected void appendAttributeName(JsonAppendable buf, String str) {
         buf.appendAttributeName(str);
     }
 
-    void appendAttributeValue(JsonAppendable buf, String str) {
+    protected void appendAttributeValue(JsonAppendable buf, String str) {
         buf.appendAttributeValue(str);
     }
 
-    void appendText(JsonAppendable buf, String str) {
+    protected void appendText(JsonAppendable buf, String str) {
         buf.appendText(str);
     }
 
     ////
 
-    void writeLine(JsonWriterConfig config, JsonAppendable buf) {
+    protected void writeLine(JsonWriterConfig config, JsonAppendable buf) {
         if (isInline(config)) {
             // inline flag . no write new line
             return;
@@ -224,7 +146,7 @@ public class JsonWriter {
         buf.append("\n");
     }
 
-    void writeLevelSpace(JsonWriterConfig config, JsonAppendable buf, int level) {
+    protected void writeLevelSpace(JsonWriterConfig config, JsonAppendable buf, int level) {
         if (isInline(config)) {
             // inline flag . no write level space
             return;
@@ -238,14 +160,14 @@ public class JsonWriter {
 
     ////
 
-    boolean isEmptyNode(Node node) {
+    protected boolean isEmptyNode(Node node) {
         if (node == null) {
             return true;
         }
         return !node.hasAttributes() && !node.hasChildren() && !node.hasText();
     }
 
-    void writeJsonNode(JsonWriterConfig config, JsonAppendable buf, Node node, int level) {
+    protected void writeJsonNode(JsonWriterConfig config, JsonAppendable buf, Node node, int level) {
         if (node == null) {
             return;
         }
@@ -288,7 +210,7 @@ public class JsonWriter {
         level--;
     }
 
-    void writeJsonAttributeNode(JsonWriterConfig config, JsonAppendable buf, Node node, int level) {
+    protected void writeJsonAttributeNode(JsonWriterConfig config, JsonAppendable buf, Node node, int level) {
 
         String attributeName = null;
         String attributeValue = null;
@@ -326,7 +248,7 @@ public class JsonWriter {
         }
     }
 
-    void writeJsonObjectNode(JsonWriterConfig config, JsonAppendable buf, Node node, int level) {
+    protected void writeJsonObjectNode(JsonWriterConfig config, JsonAppendable buf, Node node, int level) {
 
         if (isEmptyNode(node)) {
 
@@ -360,7 +282,7 @@ public class JsonWriter {
         appendObject(buf, "}");
     }
 
-    void writeJsonArrayNode(JsonWriterConfig config, JsonAppendable buf, Node node, int level) {
+    protected void writeJsonArrayNode(JsonWriterConfig config, JsonAppendable buf, Node node, int level) {
 
         if (isEmptyNode(node)) {
 
@@ -386,7 +308,7 @@ public class JsonWriter {
         appendArray(buf, "]");
     }
 
-    void writeJsonAttributes(JsonWriterConfig config, JsonAppendable buf, Node node, int level) {
+    protected void writeJsonAttributes(JsonWriterConfig config, JsonAppendable buf, Node node, int level) {
         if (node == null) {
             return;
         }
@@ -444,7 +366,7 @@ public class JsonWriter {
         }
     }
 
-    void writeJsonChildren(JsonWriterConfig config, JsonAppendable buf, Node node, int level) {
+    protected void writeJsonChildren(JsonWriterConfig config, JsonAppendable buf, Node node, int level) {
         if (node == null) {
             return;
         }
@@ -461,6 +383,105 @@ public class JsonWriter {
             writeJsonNode(config, buf, child, level);
             i++;
         }
+    }
+    
+    //// UTILS ////
+
+    /*
+     Return true if config use inline flag
+    */
+    protected boolean isInline(JsonWriterConfig config) {
+        return config != null ? false : config.inlineFlag;
+    }
+
+    /*
+     Return real indent (tab or 2 spaces) by config indent
+    */
+    protected String getIndentValue(JsonWriterConfig config) {
+        return config == null ? INDENT_DEFAULT_VALUE : config.getIndentValue();
+    }
+
+    protected String getAttributeQuoteValue(JsonWriterConfig config) {
+        return config == null ? QUOTE_DEFAULT_VALUE : config.getAttributeQuoteValue();
+    }
+
+    ////
+
+    protected boolean hasAttributeCase(JsonWriterConfig config) {
+        return config == null ? false : !StrLib.isEmpty(config.attributeCase);
+    }
+
+    protected String getAttributeCase(JsonWriterConfig config) {
+        return config == null ? "" : config.attributeCase;
+    }
+
+    protected boolean isTrimAttribute(JsonWriterConfig config) {
+        return config == null ? false : config.trimAttribute;
+    }
+
+    ////
+
+    protected String toTypeCase(String str, String type) {
+        return StrLib.toTypeCase(str, type);
+    }
+
+    protected String transformAttributeName(JsonWriterConfig config, String attributeName) {
+        String result = attributeName;
+        if (result.isEmpty()) {
+            return result;
+        }
+        if (hasAttributeCase(config)) {
+            result = toTypeCase(attributeName, getAttributeCase(config));
+        }
+        boolean isQuoted = StrLib.isQuoted(attributeName);
+        if (!isQuoted) {
+            result = StrLib.quote(attributeName);
+        }
+        return result;
+    }
+
+    protected String transformAttributeValue(JsonWriterConfig config, String attributeValue) {
+        String result = attributeValue;
+
+        // We transform empty value, because we need to quote it
+        boolean trimAttribute = isTrimAttribute(config);
+        String quote = getAttributeQuoteValue(config);
+
+        boolean isQuoted = StrLib.isQuoted(attributeValue);
+        
+        if (isQuoted) {
+            String oldQuote = attributeValue.substring(0, 1);
+            String newQuote = oldQuote;
+            boolean needAttributeQuote = oldQuote != quote;
+            boolean needTransformValue = false;
+
+            if (needAttributeQuote || trimAttribute) {
+                needTransformValue = true;
+                if (needAttributeQuote) {
+                    newQuote = quote;
+                };
+            }
+
+            if (needTransformValue) {
+
+                // TODO: Use requote(str, quoteStartOld, quoteEndOld,
+                // quoteStartNew, quoteEndNew, trim)
+                result = StrLib.unquote(attributeValue);
+                if (trimAttribute) {
+                    result = StrLib.trim(attributeValue);
+                }
+                result = StrLib.quote(attributeValue, newQuote, newQuote);
+            }
+
+        } else {
+
+            if (trimAttribute) {
+                result = StrLib.trim(attributeValue);
+            }
+            result = StrLib.quote(attributeValue, quote, quote);
+        }
+
+        return result;
     }
 
 }

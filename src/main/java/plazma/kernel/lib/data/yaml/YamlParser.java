@@ -156,263 +156,6 @@ public class YamlParser {
 
     ////
 
-    boolean isIgnoreIndent(int subType) {
-        return subType == JSON_OBJECT_SUBTYPE
-        || subType == JSON_ARRAY_SUBTYPE;
-    }
-
-    boolean isIgnoreIndent(Node node) {
-        if (node == null) {
-            return false;
-        }
-
-        // Current Node
-        if (isIgnoreIndent(node.getSubType())) {
-            return true;
-        }
-
-        // Parent Node
-        Node parent = node.getParent();
-        if (parent == null) {
-            return false;
-        }
-
-        return isIgnoreIndent(parent.getSubType());
-    }
-
-    boolean isIgnoreIndent(YamlParserContext context) {
-        return isIgnoreIndent(context.currNode);
-    }
-
-    ////
-
-    boolean isType(Node node, int type, int subType) {
-        return node == null ? false : node.isType(type, subType);
-    }
-
-    boolean isType(Node node, int type) {
-        return node == null ? false : node.isType(type);
-    }
-
-    ////
-
-    boolean isObjectType(Node node) {
-        return isType(node, OBJECT_TYPE);
-    }
-
-    boolean isJsonObjectType(Node node) {
-        return isType(node, OBJECT_TYPE, JSON_OBJECT_SUBTYPE);
-    }
-
-    // TODO: Why need Wrapper Object ? Use Object only
-
-    boolean isWrapperObjectType(Node node) {
-        return isType(node, OBJECT_TYPE, WRAPPER_OBJECT_SUBTYPE);
-    }
-
-    boolean isArrayType(Node node) {
-        return isType(node, ARRAY_TYPE);
-    }
-
-    boolean isJsonArrayType(Node node) {
-        return isType(node, ARRAY_TYPE, JSON_ARRAY_SUBTYPE);
-    }
-
-    boolean isAttributeType(Node node) {
-        return isType(node, ATTRIBUTE_TYPE);
-    }
-
-    boolean isContainerType(Node node) {
-        return isObjectType(node) || isArrayType(node);
-    }
-
-    ////
-
-    boolean isEmptyType(Node node, int type) {
-        return isType(node, type) && !node.hasChildren();
-    }
-
-    boolean isParentAttributeType(Node node) {
-        if (node == null) {
-            return false;
-        }
-
-        // Current Node is not AttributeType
-        if (isType(node, ATTRIBUTE_TYPE)) {
-            return false;
-        }
-
-        // Parent Node is AttributeType
-        return isType(node.getParent(), ATTRIBUTE_TYPE);
-    }
-
-    ////
-
-    Node createNode() {
-        Node node = new Node();
-        return node;
-    }
-
-    Node createNode(int type) {
-        Node node = createNode();
-        node.setType(type);
-        return node;
-    }
-
-    Node createNode(int type, int subType) {
-        Node node = createNode();
-        node.setType(type);
-        node.setSubType(subType);
-        return node;
-    }
-
-    Node createNullNode() {
-        Node node = createNode();
-        node.setText("empty"); // TODO: STUB
-        return node;
-    }
-
-    Node createValueNode(String text) {
-        Node node = createNode();
-        node.setText(text);
-        return node;
-    }
-
-    ////
-
-    int getArrayIndent(YamlParserContext context) {
-        return context.spaceCount + 1; // Array Marker: '- '
-    }
-
-    Node createArrayNode(YamlParserContext context) {
-        Node node = createNode(ARRAY_TYPE);
-        node.setIndent(getArrayIndent(context));
-        return node;
-    }
-
-    Node createArrayValueNode(YamlParserContext context, String text) {
-        Node node = createValueNode(text);
-        node.setIndent(getArrayIndent(context));
-        return node;
-    }
-
-    Node createArrayNullNode(YamlParserContext context) {
-        Node node = createNullNode();
-        node.setIndent(getArrayIndent(context));
-        return node;
-    }
-
-    Node createJsonArrayNode(YamlParserContext context) {
-        Node node = createNode(ARRAY_TYPE, JSON_ARRAY_SUBTYPE);
-        return node;
-    }
-
-    ////
-
-    boolean isStartValue(YamlParserContext context) {
-        return context.currEvent == START_ATTRIBUTE_VALUE || context.currEvent == START_ARRAY_VALUE;
-    }
-
-    boolean isStartArrayMarker_SP(YamlParserContext context) {
-        return context.currEvent == START_ARRAY_MARKER_SP_FIRST || context.currEvent == START_ARRAY_MARKER_SP;
-    }
-
-    boolean isStartArrayMarker_NL(YamlParserContext context) {
-        return context.currEvent == START_ARRAY_MARKER_NL_FIRST || context.currEvent == START_ARRAY_MARKER_NL;
-    }
-
-    ////
-
-    void closeValueNode(YamlParserContext context) {
-
-        //printEventItem(context.verbose, "Start CloseValueNode");
-
-        // Start Value only
-        if (!isStartValue(context)) {
-            return;
-        }
-
-        if (context.currEvent == START_ATTRIBUTE_VALUE) {
-            context.currEvent = START_OBJECT;
-        } else if (context.currEvent == START_ARRAY_VALUE) {
-            context.currEvent = START_ARRAY;
-        }
-
-        context.nodeEvent = START_NODE;
-        //context.currAttribute = null;      // Why? Don't touch attributes
-        context.map.put(context.level, null);
-
-        // Level UP
-        context.levelUp();
-
-        //printEventItem(context.verboseDebug, "End CloseValueNode");
-        // TODO: Maybe Sync Node?
-    }
-
-    boolean flushLines(YamlParserContext context, String attribute) {
-
-        //printEventItem(context.verboseDebug, "Start FlushLines");
-
-        if (!context.multiValue) {
-            return false;
-        }
-
-        context.multiValue = false; // reset
-        int realSize = context.getRealSize();
-
-        // Multi Line start from 2 lines
-        if (realSize < 2) {
-            return false;
-        }
-
-        String text = context.getFirstLines(attribute);        
-        text = StrLib.trim(text); // IMPORTANT! Because we have 'value ' (with last SP)
-
-        context.currNode.setText(text);
-        context.clearLines();
-
-        //printEventItem(context.verboseDebug, "End FlushLines");
-
-        return true;
-    }
-
-
-    // DISABLED
-    void checkValueNode(YamlParserContext context, boolean isNewLineComment) {
-
-        printEventItem(context.verboseDebug, "Start CheckValueNode, isNewLineComment=" + isNewLineComment);
-
-        // Check by MultiValue flag
-        if (!context.multiValue) {
-            return;
-        }
-
-        // Check by Event
-        if (!isStartValue(context)) {
-            return;
-        }
-
-        boolean flush = flushLines(context, null);
-
-        //if (flush) {
-            //closeValueNode(context);
-        //}
-        
-    }
-
-    ////
-
-    String toNodeString(Node node) {
-        if (node == null) {
-            return "[NUL]";
-        }
-        return "Node[name=" + node.getName()
-        + ", type=" + node.getType()
-        + ", subType=" + node.getSubType()
-        + ", indent=" + node.getIndent()
-        + ", text=" + node.getText() + "]";
-    }
-
     public Node parseYamlFromTokens(String[] tokens) {
         Node node = parseYamlFromTokens(null, tokens);
         return node;
@@ -524,7 +267,7 @@ public class YamlParser {
                     onStartArrayMarker_NL(context);
                 }
 
-                // If NewLine alredy - skip
+                // If NewLine already - skip
                 if (context.isNewLine) {
 
                     context.resetBlankLineState();
@@ -792,8 +535,10 @@ public class YamlParser {
 
         return root;
     }
+    
+    //// PROCESSING ////
 
-    void onStartObject(YamlParserContext context) {
+    protected void onStartObject(YamlParserContext context) {
 
         printEvent(context.verbose, MESSAGE_START_OBJECT);
 
@@ -808,7 +553,7 @@ public class YamlParser {
         context.levelDown(node, true);
     }
 
-    void onStartJsonObject(YamlParserContext context) {
+    protected void onStartJsonObject(YamlParserContext context) {
 
         printEvent(context.verbose, MESSAGE_START_JSON_OBJECT);
 
@@ -823,44 +568,7 @@ public class YamlParser {
         context.levelDown(node, true);
     }
 
-    boolean tryEndNode(YamlParserContext context, int type, int event, int thisEvent) {
-        // printEventItem(context.verboseDebug, "Curr: " + currNode.toString());
-
-        boolean isEmptyContainer = isEmptyType(context.currNode, type);
-        boolean changed = false;
-
-        // CONTAINER-LEVEL
-        if (!isEmptyContainer || (isEmptyContainer && thisEvent == event)) {
-
-            // Level UP
-            context.levelUp();
-
-            if (context.currNode == null) {
-                // ERROR
-                return false;
-            }
-            changed = true;
-            // printEventItem(context.verboseDebug, "Prev: " + currNode.toString());
-        }
-
-        // ATTRIBUTE LEVEL
-        if (isParentAttributeType(context.currNode)) {
-
-            // Level UP
-            context.levelUp();
-
-            if (context.currNode == null) {
-                // ERROR
-                return false;
-            }
-            changed = true;
-            // printEventItem(context.verboseDebug, "Prev: " + currNode.toString());
-        }
-
-        return changed;
-    }
-
-    void onEndObject(YamlParserContext context) {
+    protected void onEndObject(YamlParserContext context) {
 
         printEvent(context.verbose, MESSAGE_END_OBJECT);
 
@@ -884,7 +592,7 @@ public class YamlParser {
 
     }
 
-    void onEndJsonObject(YamlParserContext context) {
+    protected void onEndJsonObject(YamlParserContext context) {
 
         printEvent(context.verbose, MESSAGE_END_JSON_OBJECT);
 
@@ -919,7 +627,7 @@ public class YamlParser {
 
     }
 
-    void onStartArray(YamlParserContext context) {
+    protected void onStartArray(YamlParserContext context) {
 
         printEvent(context.verbose, MESSAGE_START_ARRAY);
         printEventItem(context.verboseDebug, "SPACE COUNT: " + context.spaceCount);
@@ -935,7 +643,7 @@ public class YamlParser {
         context.levelDown(node, true);
     }
 
-    void onStartJsonArray(YamlParserContext context) {
+    protected void onStartJsonArray(YamlParserContext context) {
 
         printEvent(context.verbose, MESSAGE_START_JSON_ARRAY);
 
@@ -950,7 +658,7 @@ public class YamlParser {
         context.levelDown(node, true);
     }
 
-    void onEndArray(YamlParserContext context) {
+    protected void onEndArray(YamlParserContext context) {
 
         printEvent(context.verbose, MESSAGE_END_ARRAY);
 
@@ -959,8 +667,7 @@ public class YamlParser {
             // if (context.currEvent != START_ARRAY) {
 
             // TODO: DISABLE: Use context.prevNodeEvent
-            // error("Invalid YAML Structure: Array must be open before
-            // close ']'");
+            // error("Invalid YAML Structure: Array must be open before close ']'");
         }
 
         int thisEvent = context.currEvent;
@@ -979,7 +686,7 @@ public class YamlParser {
 
     }
 
-    void onEndJsonArray(YamlParserContext context) {
+    protected void onEndJsonArray(YamlParserContext context) {
 
         printEvent(context.verbose, MESSAGE_END_JSON_ARRAY);
 
@@ -1014,7 +721,7 @@ public class YamlParser {
 
     }
 
-    void onComma(YamlParserContext context) {
+    protected void onComma(YamlParserContext context) {
 
         // TODO: nodeEvent == START_OBJECT_NODE / START_ARRAY_NODE
 
@@ -1051,7 +758,7 @@ public class YamlParser {
 
     // '-[NL]': Array Marker with New Line
     // See onComma !!!
-    void onStartArrayMarker_NL(YamlParserContext context) {
+    protected void onStartArrayMarker_NL(YamlParserContext context) {
 
         if (context.currEvent == START_ATTRIBUTE_EQ) {
 
@@ -1119,7 +826,7 @@ public class YamlParser {
 
     // '-[SP]': Array Marker with Space
     // See onComma !!!
-    void onStartArrayMarker_SP(YamlParserContext context) {
+    protected void onStartArrayMarker_SP(YamlParserContext context) {
 
         context.prevEvent = context.currEvent;
 
@@ -1168,7 +875,7 @@ public class YamlParser {
     }
 
     // See onComma !!!
-    void onNewLine(YamlParserContext context) {
+    protected void onNewLine(YamlParserContext context) {
 
         if (isStartValue(context)) {
             printEventItem(context.verboseDebug, "[NL] IN VALUE");
@@ -1193,7 +900,7 @@ public class YamlParser {
 
     }
 
-    void onStartAttributeEq(YamlParserContext context) {
+    protected void onStartAttributeEq(YamlParserContext context) {
 
         printEventItem(context.verbose, "Start EQ [ ]");
 
@@ -1322,7 +1029,7 @@ public class YamlParser {
 
     }
 
-    void onStartAttributeValue(YamlParserContext context) {
+    protected void onStartAttributeValue(YamlParserContext context) {
 
         printEventItem(context.verbose, MESSAGE_START_ATTRIBUTE_VALUE, toSafeString(context.currAttribute), "=", context.token);
 
@@ -1348,7 +1055,7 @@ public class YamlParser {
         printEventItem(context.verboseDebug, "CVAL_NODE: " + toNodeString(context.currNode));
     }
 
-    void onStartAttributeName(YamlParserContext context) {
+    protected void onStartAttributeName(YamlParserContext context) {
 
         printEventItem(context.verbose, MESSAGE_START_ATTRIBUTE, context.token);
 
@@ -1391,7 +1098,7 @@ public class YamlParser {
 
     }
 
-    void onStartAttributeName_2(YamlParserContext context) {
+    protected void onStartAttributeName_2(YamlParserContext context) {
 
         printEventItem(context.verbose, MESSAGE_START_ATTRIBUTE, context.token);
 
@@ -1416,7 +1123,7 @@ public class YamlParser {
 
     }
 
-    void onStartArrayValue(YamlParserContext context) {
+    protected void onStartArrayValue(YamlParserContext context) {
 
         printEventItem(context.verbose, MESSAGE_START_ARRAY_VALUE, context.token);
         printEventItem(context.verboseDebug, "SPACE COUNT: " + context.spaceCount);
@@ -1447,7 +1154,7 @@ public class YamlParser {
         context.levelDown(node, true);
     }
 
-    void onStartArrayNullValue(YamlParserContext context) {
+    protected void onStartArrayNullValue(YamlParserContext context) {
 
         printEventItem(context.verboseDebug, "SPACE COUNT: " + context.spaceCount);
 
@@ -1461,7 +1168,7 @@ public class YamlParser {
         context.levelDown(node, true);
     }
 
-    void onStartArrayNullValue_2(YamlParserContext context) {
+    protected void onStartArrayNullValue_2(YamlParserContext context) {
 
         printEventItem(context.verboseDebug, "SPACE COUNT: " + context.spaceCount);
 
@@ -1480,7 +1187,7 @@ public class YamlParser {
         context.levelDown(node, true);
     }
 
-    void onStartLineValue(YamlParserContext context) {
+    protected void onStartLineValue(YamlParserContext context) {
 
         printEventItem(context.verboseText, MESSAGE_ADD_VALUE_LINE, context.token);
 
@@ -1498,7 +1205,7 @@ public class YamlParser {
         
     }
 
-    void onStartComment(YamlParserContext context) {
+    protected void onStartComment(YamlParserContext context) {
 
         printEventItem(context.verbose, MESSAGE_START_COMMENT, context.token);
 
@@ -1511,7 +1218,7 @@ public class YamlParser {
         }
     }
 
-    void onEndComment(YamlParserContext context) {
+    protected void onEndComment(YamlParserContext context) {
 
         //context.isRestored = true;
 
@@ -1529,8 +1236,269 @@ public class YamlParser {
         // Don't change CurrentNode!
         // Don't go down!
     }
+    
+    //// HELPER ////
+        
+    protected boolean isIgnoreIndent(int subType) {
+        return subType == JSON_OBJECT_SUBTYPE
+        || subType == JSON_ARRAY_SUBTYPE;
+    }
 
-    void lookupNode(YamlParserContext context, int indent) {
+    protected boolean isIgnoreIndent(Node node) {
+        if (node == null) {
+            return false;
+        }
+
+        // Current Node
+        if (isIgnoreIndent(node.getSubType())) {
+            return true;
+        }
+
+        // Parent Node
+        Node parent = node.getParent();
+        if (parent == null) {
+            return false;
+        }
+
+        return isIgnoreIndent(parent.getSubType());
+    }
+
+    protected boolean isIgnoreIndent(YamlParserContext context) {
+        return isIgnoreIndent(context.currNode);
+    }
+
+    ////
+
+    protected boolean isType(Node node, int type, int subType) {
+        return node == null ? false : node.isType(type, subType);
+    }
+
+    protected boolean isType(Node node, int type) {
+        return node == null ? false : node.isType(type);
+    }
+
+    ////
+
+    protected boolean isObjectType(Node node) {
+        return isType(node, OBJECT_TYPE);
+    }
+
+    protected boolean isJsonObjectType(Node node) {
+        return isType(node, OBJECT_TYPE, JSON_OBJECT_SUBTYPE);
+    }
+
+    // TODO: Why need Wrapper Object ? Use Object only
+
+    protected boolean isWrapperObjectType(Node node) {
+        return isType(node, OBJECT_TYPE, WRAPPER_OBJECT_SUBTYPE);
+    }
+
+    protected boolean isArrayType(Node node) {
+        return isType(node, ARRAY_TYPE);
+    }
+
+    protected boolean isJsonArrayType(Node node) {
+        return isType(node, ARRAY_TYPE, JSON_ARRAY_SUBTYPE);
+    }
+
+    protected boolean isAttributeType(Node node) {
+        return isType(node, ATTRIBUTE_TYPE);
+    }
+
+    protected boolean isContainerType(Node node) {
+        return isObjectType(node) || isArrayType(node);
+    }
+
+    ////
+
+    protected boolean isEmptyType(Node node, int type) {
+        return isType(node, type) && !node.hasChildren();
+    }
+
+    protected boolean isParentAttributeType(Node node) {
+        if (node == null) {
+            return false;
+        }
+
+        // Current Node is not AttributeType
+        if (isType(node, ATTRIBUTE_TYPE)) {
+            return false;
+        }
+
+        // Parent Node is AttributeType
+        return isType(node.getParent(), ATTRIBUTE_TYPE);
+    }
+
+    ////
+
+    protected Node createNode() {
+        Node node = new Node();
+        return node;
+    }
+
+    protected Node createNode(int type) {
+        Node node = createNode();
+        node.setType(type);
+        return node;
+    }
+
+    protected Node createNode(int type, int subType) {
+        Node node = createNode();
+        node.setType(type);
+        node.setSubType(subType);
+        return node;
+    }
+
+    protected Node createNullNode() {
+        Node node = createNode();
+        node.setText("empty"); // TODO: STUB
+        return node;
+    }
+
+    protected Node createValueNode(String text) {
+        Node node = createNode();
+        node.setText(text);
+        return node;
+    }
+
+    ////
+
+    protected int getArrayIndent(YamlParserContext context) {
+        return context.spaceCount + 1; // Array Marker: '- '
+    }
+
+    protected Node createArrayNode(YamlParserContext context) {
+        Node node = createNode(ARRAY_TYPE);
+        node.setIndent(getArrayIndent(context));
+        return node;
+    }
+
+    protected Node createArrayValueNode(YamlParserContext context, String text) {
+        Node node = createValueNode(text);
+        node.setIndent(getArrayIndent(context));
+        return node;
+    }
+
+    protected Node createArrayNullNode(YamlParserContext context) {
+        Node node = createNullNode();
+        node.setIndent(getArrayIndent(context));
+        return node;
+    }
+
+    protected Node createJsonArrayNode(YamlParserContext context) {
+        Node node = createNode(ARRAY_TYPE, JSON_ARRAY_SUBTYPE);
+        return node;
+    }
+
+    ////
+
+    protected boolean isStartValue(YamlParserContext context) {
+        return context.currEvent == START_ATTRIBUTE_VALUE || context.currEvent == START_ARRAY_VALUE;
+    }
+
+    protected boolean isStartArrayMarker_SP(YamlParserContext context) {
+        return context.currEvent == START_ARRAY_MARKER_SP_FIRST || context.currEvent == START_ARRAY_MARKER_SP;
+    }
+
+    protected boolean isStartArrayMarker_NL(YamlParserContext context) {
+        return context.currEvent == START_ARRAY_MARKER_NL_FIRST || context.currEvent == START_ARRAY_MARKER_NL;
+    }
+
+    ////
+
+    protected void closeValueNode(YamlParserContext context) {
+
+        //printEventItem(context.verbose, "Start CloseValueNode");
+
+        // Start Value only
+        if (!isStartValue(context)) {
+            return;
+        }
+
+        if (context.currEvent == START_ATTRIBUTE_VALUE) {
+            context.currEvent = START_OBJECT;
+        } else if (context.currEvent == START_ARRAY_VALUE) {
+            context.currEvent = START_ARRAY;
+        }
+
+        context.nodeEvent = START_NODE;
+        //context.currAttribute = null;      // Why? Don't touch attributes
+        context.map.put(context.level, null);
+
+        // Level UP
+        context.levelUp();
+
+        //printEventItem(context.verboseDebug, "End CloseValueNode");
+        // TODO: Maybe Sync Node?
+    }
+
+    protected boolean flushLines(YamlParserContext context, String attribute) {
+
+        //printEventItem(context.verboseDebug, "Start FlushLines");
+
+        if (!context.multiValue) {
+            return false;
+        }
+
+        context.multiValue = false; // reset
+        int realSize = context.getRealSize();
+
+        // Multi Line start from 2 lines
+        if (realSize < 2) {
+            return false;
+        }
+
+        String text = context.getFirstLines(attribute);        
+        text = StrLib.trim(text); // IMPORTANT! Because we have 'value ' (with last SP)
+
+        context.currNode.setText(text);
+        context.clearLines();
+
+        //printEventItem(context.verboseDebug, "End FlushLines");
+
+        return true;
+    }
+
+
+    // DISABLED
+    protected void checkValueNode(YamlParserContext context, boolean isNewLineComment) {
+
+        printEventItem(context.verboseDebug, "Start CheckValueNode, isNewLineComment=" + isNewLineComment);
+
+        // Check by MultiValue flag
+        if (!context.multiValue) {
+            return;
+        }
+
+        // Check by Event
+        if (!isStartValue(context)) {
+            return;
+        }
+
+        boolean flush = flushLines(context, null);
+
+        //if (flush) {
+            //closeValueNode(context);
+        //}
+        
+    }
+
+    ////
+
+    protected String toNodeString(Node node) {
+        if (node == null) {
+            return "[NUL]";
+        }
+        return "Node[name=" + node.getName()
+        + ", type=" + node.getType()
+        + ", subType=" + node.getSubType()
+        + ", indent=" + node.getIndent()
+        + ", text=" + node.getText() + "]";
+    }
+    
+    //// HELPER ////
+
+    protected void lookupNode(YamlParserContext context, int indent) {
 
         if (context == null) {
             // ERROR
@@ -1645,7 +1613,7 @@ public class YamlParser {
 
     }
 
-    void tryLookupNode(YamlParserContext context, int indent) {
+    protected void tryLookupNode(YamlParserContext context, int indent) {
 
         //printEventItem(context.verboseDebug, "CURR_NODE: " + toNodeString(context.currNode));
         //printEventItem(context.verboseDebug, "LAST_NODE: " + toNodeString(context.lastNode));
@@ -1679,7 +1647,45 @@ public class YamlParser {
         }
 
     }
-    
+
+    protected boolean tryEndNode(YamlParserContext context, int type, int event, int thisEvent) {
+        // printEventItem(context.verboseDebug, "Curr: " + currNode.toString());
+
+        boolean isEmptyContainer = isEmptyType(context.currNode, type);
+        boolean changed = false;
+
+        // CONTAINER-LEVEL
+        if (!isEmptyContainer || (isEmptyContainer && thisEvent == event)) {
+
+            // Level UP
+            context.levelUp();
+
+            if (context.currNode == null) {
+                // ERROR
+                return false;
+            }
+            changed = true;
+            // printEventItem(context.verboseDebug, "Prev: " + currNode.toString());
+        }
+
+        // ATTRIBUTE LEVEL
+        if (isParentAttributeType(context.currNode)) {
+
+            // Level UP
+            context.levelUp();
+
+            if (context.currNode == null) {
+                // ERROR
+                return false;
+            }
+            changed = true;
+            // printEventItem(context.verboseDebug, "Prev: " + currNode.toString());
+        }
+
+        return changed;
+    }
+
+    //// UTILS ////
 
     protected boolean eq(String str1, String str2) {
         if (str1 == null || str2 == null) {

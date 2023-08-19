@@ -23,7 +23,6 @@
 package plazma.kernel.lib.data.json;
 
 import plazma.kernel.lib.data.node.Node;
-import plazma.kernel.lib.str.StrLib;
 import static plazma.kernel.lib.text.PrinterHelper.*;
 
 import java.util.HashMap;
@@ -214,6 +213,8 @@ public class JsonParser {
 
         return root;
     }
+    
+    //// PROCESING ////
 
     protected void onStartObject(JsonParserContext context) {
 

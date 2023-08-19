@@ -145,11 +145,10 @@ public class XmlWriter {
         
         level--;        
     }
-
     
     ////
     
-    void writeXmlTextNode(XmlWriterConfig config, XmlAppendable buf, Node node, int level) {
+    protected void writeXmlTextNode(XmlWriterConfig config, XmlAppendable buf, Node node, int level) {
 
         // #text
 
@@ -178,7 +177,7 @@ public class XmlWriter {
         }
     }
 
-    void writeXmlCommentNode(XmlWriterConfig config, XmlAppendable buf, Node node, int level) {
+    protected void writeXmlCommentNode(XmlWriterConfig config, XmlAppendable buf, Node node, int level) {
 
         // #comment
 
@@ -217,11 +216,9 @@ public class XmlWriter {
 
         // END-TAG
         append(buf, "-->");
-    }
-    
-   
+    }    
 
-    void writeXmlCDATANode(XmlWriterConfig config, XmlAppendable buf, Node node, int level) {
+    protected void writeXmlCDATANode(XmlWriterConfig config, XmlAppendable buf, Node node, int level) {
 
         // #cdata-section
         
@@ -245,7 +242,7 @@ public class XmlWriter {
     }
     
     
-    void writeXmlElementNode(XmlWriterConfig config, XmlAppendable buf, Node node, int level) {
+    protected void writeXmlElementNode(XmlWriterConfig config, XmlAppendable buf, Node node, int level) {
 
         String text = node.getText();
         boolean hasChildren = node.hasChildren();
@@ -397,8 +394,140 @@ public class XmlWriter {
             writeXmlNode(config, buf, child, level);
         }
     }
+    
+    ////
+    
+    protected void append(XmlAppendable buf, String str) {
+        buf.append(str);
+    }
+
+    protected void appendTag(XmlAppendable buf, String str) {
+        buf.appendTag(str);
+    }
+
+    protected void appendTagName(XmlAppendable buf, String str) {
+        buf.appendTagName(str);
+    }
+
+    protected void appendAttributeName(XmlAppendable buf, String str) {
+        buf.appendAttributeName(str);
+    }
+
+    protected void appendAttributeValue(XmlAppendable buf, String str) {
+        buf.appendAttributeValue(str);
+    }
+
+    protected void appendText(XmlAppendable buf, String str) {
+        buf.appendText(str);
+    }
+
+    protected void appendCDATA(XmlAppendable buf, String str) {
+        buf.appendCDATA(str);
+    }
+    
+    ////
+        
+    protected void writeLine(XmlWriterConfig config, XmlAppendable buf) {
+        if (isInline(config)) {
+            // inline flag -> no write new line
+            return;
+        }
+        buf.append("\n");
+    }
+
+    protected void writeLevelSpace(XmlWriterConfig config, XmlAppendable buf, int level) {
+
+        if (isInline(config)) {
+            // inline flag -> no write level space
+            return;
+        }
+
+        String indent = getIndentValue(config);
+
+        for (int i = 0; i < level; i++) {
+            buf.append(indent);
+        }
+    }
+    
+    ///
+
+    protected boolean isInlineText(XmlWriterConfig config, String text) {
+        if (text == null || !isInlineNode(config)) {
+            return false; 
+        }
+        return text.length() < getInlineNodeLimit(config) && StrLib.isLineText(text);
+    }
+
+    protected boolean isSingleNode(Node node) {
+        if (node == null) {
+            return false;
+        }
+        return !node.hasChildren() && !node.hasText();
+    }
 
     ////
+
+    protected void writeStartTag(XmlWriterConfig config, XmlAppendable buf, Node node, int level, String tagName, int nodeType) {
+
+        boolean specNode = isSpecNode(nodeType);
+
+        // START-TAG
+        if (specNode) {
+            if (nodeType == XmlParser.PROCESSING_INSTRUCTION_NODE) {
+                appendTag(buf, "<?");
+            } else {
+                appendTag(buf, "<!");
+            }
+        } else {
+            appendTag(buf, "<");
+        }
+
+        appendTagName(buf, tagName);
+
+        writeXmlAttributes(config, buf, node);
+
+        if (isSingleNode(node)) {
+            // END-TAG: single tag
+            if (specNode) {
+                if (nodeType == XmlParser.PROCESSING_INSTRUCTION_NODE) {
+                    appendTag(buf, " ?>");
+                } else {
+                    appendTag(buf, ">");
+                }                                
+            } else {
+                appendTag(buf, "/>");
+            }
+            return;
+        }
+
+        // END-TAG
+        if (nodeType != XmlParser.DOCUMENT_TYPE_NODE) {
+            appendTag(buf, ">");
+        }
+
+    }
+    
+
+    protected void writeEndTag(XmlWriterConfig config, XmlAppendable buf, Node node, int level, String tagName, int nodeType) {
+
+        boolean specNode = isSpecNode(nodeType);
+
+        // END-TAG
+        if (specNode) {
+            if (nodeType == XmlParser.PROCESSING_INSTRUCTION_NODE) {
+                // TODO: Set in single node only
+                appendTag(buf, " ?>");
+            } else {
+                appendTag(buf, ">");
+            }
+        } else {
+            appendTag(buf, "</");
+            appendTagName(buf, tagName);
+            appendTag(buf, ">");
+        }
+    }
+
+    //// UTILS ////
 
     /**
      * Return true if config use inline flag
@@ -525,138 +654,5 @@ public class XmlWriter {
 
         return result;
     }
-    
-    ////
-    
-    void append(XmlAppendable buf, String str) {
-        buf.append(str);
-    }
-
-    void appendTag(XmlAppendable buf, String str) {
-        buf.appendTag(str);
-    }
-
-    void appendTagName(XmlAppendable buf, String str) {
-        buf.appendTagName(str);
-    }
-
-    void appendAttributeName(XmlAppendable buf, String str) {
-        buf.appendAttributeName(str);
-    }
-
-    void appendAttributeValue(XmlAppendable buf, String str) {
-        buf.appendAttributeValue(str);
-    }
-
-    void appendText(XmlAppendable buf, String str) {
-        buf.appendText(str);
-    }
-
-    void appendCDATA(XmlAppendable buf, String str) {
-        buf.appendCDATA(str);
-    }
-    
-    ////
-        
-    protected void writeLine(XmlWriterConfig config, XmlAppendable buf) {
-        if (isInline(config)) {
-            // inline flag -> no write new line
-            return;
-        }
-        buf.append("\n");
-    }
-
-    protected void writeLevelSpace(XmlWriterConfig config, XmlAppendable buf, int level) {
-
-        if (isInline(config)) {
-            // inline flag -> no write level space
-            return;
-        }
-
-        String indent = getIndentValue(config);
-
-        for (int i = 0; i < level; i++) {
-            buf.append(indent);
-        }
-    }
-    
-    ///
-
-    protected boolean isInlineText(XmlWriterConfig config, String text) {
-        if (text == null || !isInlineNode(config)) {
-            return false; 
-        }
-        return text.length() < getInlineNodeLimit(config) && StrLib.isLineText(text);
-    }
-
-    protected boolean isSingleNode(Node node) {
-        if (node == null) {
-            return false;
-        }
-        return !node.hasChildren() && !node.hasText();
-    }
-
-    ////
-
-    protected void writeStartTag(XmlWriterConfig config, XmlAppendable buf, Node node, int level, String tagName, int nodeType) {
-
-        boolean specNode = isSpecNode(nodeType);
-
-        // START-TAG
-        if (specNode) {
-            if (nodeType == XmlParser.PROCESSING_INSTRUCTION_NODE) {
-                appendTag(buf, "<?");
-            } else {
-                appendTag(buf, "<!");
-            }
-        } else {
-            appendTag(buf, "<");
-        }
-
-        appendTagName(buf, tagName);
-
-        writeXmlAttributes(config, buf, node);
-
-        if (isSingleNode(node)) {
-            // END-TAG: single tag
-            if (specNode) {
-                if (nodeType == XmlParser.PROCESSING_INSTRUCTION_NODE) {
-                    appendTag(buf, " ?>");
-                } else {
-                    appendTag(buf, ">");
-                }                                
-            } else {
-                appendTag(buf, "/>");
-            }
-            return;
-        }
-
-        // END-TAG
-        if (nodeType != XmlParser.DOCUMENT_TYPE_NODE) {
-            appendTag(buf, ">");
-        }
-
-    }
-    
-
-    protected void writeEndTag(XmlWriterConfig config, XmlAppendable buf, Node node, int level, String tagName, int nodeType) {
-
-        boolean specNode = isSpecNode(nodeType);
-
-        // END-TAG
-        if (specNode) {
-            if (nodeType == XmlParser.PROCESSING_INSTRUCTION_NODE) {
-                // TODO: Set in single node only
-                appendTag(buf, " ?>");
-            } else {
-                appendTag(buf, ">");
-            }
-        } else {
-            appendTag(buf, "</");
-            appendTagName(buf, tagName);
-            appendTag(buf, ">");
-        }
-    }
-
 
 }

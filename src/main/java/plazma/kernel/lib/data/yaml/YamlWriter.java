@@ -50,12 +50,9 @@ public class YamlWriter {
 
         writeChildren(config, buf, root, -1);
 
-        String result = buf.toString();
-
-        return result;
+        return buf.toString();
     }
-    
-    
+        
     // file
 
     public void writeYamlToFile(String fileName, Node root) throws IOException {
@@ -109,116 +106,6 @@ public class YamlWriter {
             SysLib.print(buf.toString());
         }
      
-    }
-
-    //
-
-    protected String getIndentValue(YamlWriterConfig config) {
-        return INDENT_SPACE_VALUE;
-    }
-
-    protected String getAttributeQuoteValue(YamlWriterConfig config) {
-        return config == null ? QUOTE_DEFAULT_VALUE : config.getAttributeQuoteValue();
-    }
-
-    ////
-
-    protected boolean hasAttributeCase(YamlWriterConfig config) {
-        return config == null ? false : !StrLib.isEmpty(config.attributeCase);
-    }
-
-    protected String getAttributeCase(YamlWriterConfig config) {
-        return config == null ? null : config.attributeCase;
-    }
-
-    protected boolean isTrimAttribute(YamlWriterConfig config) {
-        return config == null ? false : config.trimAttribute;
-    }
-
-    ////
-
-    protected String toTypeCase(String str, String type) {
-        return StrLib.toTypeCase(str, type);
-    }
-
-    boolean isArray = false;
-
-    protected String transformYamlAttributeName(YamlWriterConfig config, String attributeName) {
-        String result = attributeName;
-        if (StrLib.isEmpty(result)) {
-            return result;
-        }
-        if (hasAttributeCase(config)) {
-            result = toTypeCase(attributeName, getAttributeCase(config));
-        }
-
-        //YAML: UNQUOTE
-        //TODO: Why it was quoted?
-        boolean isQuoted = StrLib.isQuoted(attributeName);
-        if (isQuoted) {
-            result = StrLib.unquote(attributeName);
-        }
-
-        return result;
-    }
-
-    protected String transformAttributeName(YamlWriterConfig config, String attributeName) {
-        String result = attributeName;
-        if (StrLib.isEmpty(result)) {
-            return result;
-        }
-        if (hasAttributeCase(config)) {
-            result = toTypeCase(attributeName, getAttributeCase(config));
-        }
-        boolean isQuoted = StrLib.isQuoted(attributeName);
-        if (!isQuoted) {
-            result = StrLib.quote(attributeName);
-        }
-        return result;
-    }
-
-    protected String transformAttributeValue(YamlWriterConfig config, String attributeValue) {
-        String result = attributeValue;
-
-        // We transform empty value, because we need to quote it
-        boolean trimAttribute = isTrimAttribute(config);
-        String quote = getAttributeQuoteValue(config);
-
-        boolean isQuoted = StrLib.isQuoted(attributeValue);
-        
-        if (isQuoted) {
-            String oldQuote = attributeValue.substring(0, 1);
-            String newQuote = oldQuote;
-            boolean needAttributeQuote = oldQuote != quote;
-            boolean needTransformValue = false;
-
-            if (needAttributeQuote || trimAttribute) {
-                needTransformValue = true;
-                if (needAttributeQuote) {
-                    newQuote = quote;
-                };
-            }
-
-            if (needTransformValue) {
-
-                // TODO: Use requote(str, quoteStartOld, quoteEndOld,
-                // quoteStartNew, quoteEndNew, trim)
-                result = StrLib.unquote(attributeValue);
-                if (trimAttribute) {
-                    result = StrLib.trim(attributeValue);
-                }
-                result = StrLib.quote(attributeValue, newQuote, newQuote);
-            }
-
-        } else {
-
-            if (trimAttribute) {
-                result = StrLib.trim(attributeValue);
-            }
-            result = StrLib.quote(attributeValue, quote, quote);
-        }
-
-        return result;
     }
 
     ////
@@ -284,26 +171,6 @@ public class YamlWriter {
         }
 
         buf.append("- ");
-    }
-
-    ////
-
-    protected boolean isEmptyNode(Node node) {
-        if (node == null) {
-            return true;
-        }
-        return !node.hasAttributes() && !node.hasChildren() && !node.hasText();
-    }
-
-    protected boolean isJsonNode(Node node) {
-        if (node == null) {
-            return false;
-        }
-
-        return node.isSubType(YamlParser.JSON_OBJECT_SUBTYPE)
-        || node.isSubType(YamlParser.JSON_ARRAY_SUBTYPE)
-        || node.isParentSubType(YamlParser.JSON_OBJECT_SUBTYPE)
-        || node.isParentSubType(YamlParser.JSON_ARRAY_SUBTYPE);
     }
 
     ////
@@ -604,7 +471,6 @@ public class YamlWriter {
         appendArray(buf, "]");
     }
 
-
     ////
 
     protected void writeYamlAttributes(YamlWriterConfig config, YamlAppendable buf, Node node, int level) {
@@ -757,7 +623,6 @@ public class YamlWriter {
         isArray = false;
     }
 
-
     protected void writeJsonChildren(YamlWriterConfig config, YamlAppendable buf, Node node, int level) {
         if (node == null) {
             return;
@@ -776,5 +641,136 @@ public class YamlWriter {
             i++;
         }
     }
+    
+    //// UTILS ////    
+
+    protected String getIndentValue(YamlWriterConfig config) {
+        return INDENT_SPACE_VALUE;
+    }
+
+    protected String getAttributeQuoteValue(YamlWriterConfig config) {
+        return config == null ? QUOTE_DEFAULT_VALUE : config.getAttributeQuoteValue();
+    }
+
+    ////
+
+    protected boolean hasAttributeCase(YamlWriterConfig config) {
+        return config == null ? false : !StrLib.isEmpty(config.attributeCase);
+    }
+
+    protected String getAttributeCase(YamlWriterConfig config) {
+        return config == null ? null : config.attributeCase;
+    }
+
+    protected boolean isTrimAttribute(YamlWriterConfig config) {
+        return config == null ? false : config.trimAttribute;
+    }
+
+    ////
+
+    protected String toTypeCase(String str, String type) {
+        return StrLib.toTypeCase(str, type);
+    }
+    
+    ////
+
+    protected boolean isEmptyNode(Node node) {
+        if (node == null) {
+            return true;
+        }
+        return !node.hasAttributes() && !node.hasChildren() && !node.hasText();
+    }
+
+    protected boolean isJsonNode(Node node) {
+        if (node == null) {
+            return false;
+        }
+
+        return node.isSubType(YamlParser.JSON_OBJECT_SUBTYPE)
+        || node.isSubType(YamlParser.JSON_ARRAY_SUBTYPE)
+        || node.isParentSubType(YamlParser.JSON_OBJECT_SUBTYPE)
+        || node.isParentSubType(YamlParser.JSON_ARRAY_SUBTYPE);
+    }    
+
+    boolean isArray = false;
+
+    protected String transformYamlAttributeName(YamlWriterConfig config, String attributeName) {
+        String result = attributeName;
+        if (StrLib.isEmpty(result)) {
+            return result;
+        }
+        if (hasAttributeCase(config)) {
+            result = toTypeCase(attributeName, getAttributeCase(config));
+        }
+
+        //YAML: UNQUOTE
+        //TODO: Why it was quoted?
+        boolean isQuoted = StrLib.isQuoted(attributeName);
+        if (isQuoted) {
+            result = StrLib.unquote(attributeName);
+        }
+
+        return result;
+    }
+
+    protected String transformAttributeName(YamlWriterConfig config, String attributeName) {
+        String result = attributeName;
+        if (StrLib.isEmpty(result)) {
+            return result;
+        }
+        if (hasAttributeCase(config)) {
+            result = toTypeCase(attributeName, getAttributeCase(config));
+        }
+        boolean isQuoted = StrLib.isQuoted(attributeName);
+        if (!isQuoted) {
+            result = StrLib.quote(attributeName);
+        }
+        return result;
+    }
+
+    protected String transformAttributeValue(YamlWriterConfig config, String attributeValue) {
+        String result = attributeValue;
+
+        // We transform empty value, because we need to quote it
+        boolean trimAttribute = isTrimAttribute(config);
+        String quote = getAttributeQuoteValue(config);
+
+        boolean isQuoted = StrLib.isQuoted(attributeValue);
+        
+        if (isQuoted) {
+            String oldQuote = attributeValue.substring(0, 1);
+            String newQuote = oldQuote;
+            boolean needAttributeQuote = oldQuote != quote;
+            boolean needTransformValue = false;
+
+            if (needAttributeQuote || trimAttribute) {
+                needTransformValue = true;
+                if (needAttributeQuote) {
+                    newQuote = quote;
+                };
+            }
+
+            if (needTransformValue) {
+
+                // TODO: Use requote(str, quoteStartOld, quoteEndOld,
+                // quoteStartNew, quoteEndNew, trim)
+                result = StrLib.unquote(attributeValue);
+                if (trimAttribute) {
+                    result = StrLib.trim(attributeValue);
+                }
+                result = StrLib.quote(attributeValue, newQuote, newQuote);
+            }
+
+        } else {
+
+            if (trimAttribute) {
+                result = StrLib.trim(attributeValue);
+            }
+            result = StrLib.quote(attributeValue, quote, quote);
+        }
+
+        return result;
+    }
+
 
 }
