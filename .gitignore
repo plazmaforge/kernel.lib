@@ -42,3 +42,12 @@ run
 java.code-workspace
 cpp.code-workspace
 python.code-workspace
+
+# temp test data
+1
+2
+3
+1.*
+2.*
+3.*
+
