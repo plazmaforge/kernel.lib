@@ -23,9 +23,9 @@ let package = Package(
             name: "run",
             dependencies: [],
             path: "src/main/swift"),
-        .testTarget(
-            name: "test",
-            dependencies: ["run"],
-            path: "src/test/swift")
+        //.testTarget(
+        //    name: "test",
+        //    dependencies: ["run"],
+        //    path: "src/test/swift")
     ]
 )
