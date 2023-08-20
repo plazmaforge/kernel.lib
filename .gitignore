@@ -37,6 +37,10 @@ run
 .DS_Store
 .vscode
 
+.build
+Packages
+*.xcodeproj
+
 .svn
 
 java.code-workspace
