@@ -259,3 +259,17 @@ https://www.tutorialspoint.com/functional_programming/functional_programming_int
 
 https://habr.com/en/companies/postgrespro/articles/500440/
 https://habr.com/en/articles/438970/
+
+=============================================================================
+https://stackoverflow.com/questions/61501298/xcrun-error-unable-to-find-utility-xctest-not-a-developer-tool-or-in-path
+=============================================================================
+
+~/% sudo xcode-select -s /Library/Developer/CommandLineTools
+~/% sudo xcode-select -p                                    
+/Library/Developer/CommandLineTools
+~/% sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+~/% sudo xcode-select -p                                           
+/Applications/Xcode.app/Contents/Developer
+
+=============================================================================
+https://habr.com/ru/companies/redmadrobot/articles/348004/
