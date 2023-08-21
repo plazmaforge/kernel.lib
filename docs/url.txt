@@ -271,5 +271,16 @@ https://stackoverflow.com/questions/61501298/xcrun-error-unable-to-find-utility-
 ~/% sudo xcode-select -p                                           
 /Applications/Xcode.app/Contents/Developer
 
+Swift xcode
 =============================================================================
 https://habr.com/ru/companies/redmadrobot/articles/348004/
+
+https://www.avanderlee.com/swift/command-line-tool-package-manager/
+
+https://github.com/hishma/CommandLineTool
+
+https://www.kodeco.com/1993018-an-introduction-to-swift-package-manager
+
+https://github.com/kodecocodes/spm-tutorial
+
+https://github.com/kodecocodes/swift-algorithm-club
