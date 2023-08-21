@@ -108,5 +108,24 @@ public class XmlLib {
         new XmlWriter().writeXmlToConsole(config, root);
     }
 
+    // convert
+
+    public static Node convertXmlToJson(Node node) {
+        Xml2JsonConverter converter = new Xml2JsonConverter();
+        Node result = converter.convert(node);
+        //if (converter != null) {
+        //    converter.destroy();
+        //}        
+        return result;
+    }
+
+    public static Node convertXmlToYaml(Node node) {
+        Xml2YamlConverter converter = new Xml2YamlConverter();
+        Node result = converter.convert(node);
+        //if (converter != null) {
+        //    converter.destroy();
+        //}        
+        return result;
+    }
 
 }

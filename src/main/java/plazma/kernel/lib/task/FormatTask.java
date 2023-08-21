@@ -48,15 +48,18 @@ public abstract class FormatTask extends BaseTask {
     protected static final String PARAMETER_ATTR_QUOTE = "attr-quote";               // Attribute quote: 'single', 'double', 'none'
     protected static final String PARAMETER_TRIM_ATTR = "trim-attr";                 // Trim attribute value
     protected static final String PARAMETER_SKIP_COMMENTS = "skip-comments";         // Skip comments (XML)
-    protected static final String PARAMETER_SKIP_META = "skip-meta";                  // Skip <?...?> (XML)
-    protected static final String PARAMETER_SKIP_DTD = "skip-dtd";                    // Skip <!DOCTYPE...> (XML)
-    protected static final String PARAMETER_DISPLAY = "display";                      // Display result
-    protected static final String PARAMETER_VERBOSE = "verbose";                      // Verbose flag
-    protected static final String PARAMETER_VERBOSE_TOKEN = "verbose-token";          // Verbose token flag
-    protected static final String PARAMETER_COLOR = "color";                          // Color flag
-    protected static final String PARAMETER_STDERR = "stderr";                        // StdErr mode
-    protected static final String PARAMETER_TOKENIZE = "tokenize";                    // Tokenize mode only (without parsing)
+    protected static final String PARAMETER_SKIP_META = "skip-meta";                 // Skip <?...?> (XML)
+    protected static final String PARAMETER_SKIP_DTD = "skip-dtd";                   // Skip <!DOCTYPE...> (XML)
+    protected static final String PARAMETER_DISPLAY = "display";                     // Display result
+    protected static final String PARAMETER_VERBOSE = "verbose";                     // Verbose flag
+    protected static final String PARAMETER_VERBOSE_TOKEN = "verbose-token";         // Verbose token flag
+    protected static final String PARAMETER_COLOR = "color";                         // Color flag
+    protected static final String PARAMETER_STDERR = "stderr";                       // StdErr mode
+    protected static final String PARAMETER_TOKENIZE = "tokenize";                   // Tokenize mode only (without parsing)
 
+    ///////////////////////////////////////////////////////////
+    // errors:
+    ///////////////////////////////////////////////////////////
 
     public static final String ERROR_INPUT_NOT_SETTING = "Can't execute task: Input file or text are not setting";
     public static final String ERROR_INPUT_TEXT_EMPTY = "Can't execute task: Input text is empty";

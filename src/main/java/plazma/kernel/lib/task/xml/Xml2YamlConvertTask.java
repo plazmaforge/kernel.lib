@@ -22,23 +22,31 @@
 
 package plazma.kernel.lib.task.xml;
 
-import static plazma.kernel.lib.sys.SysLib.*;
-import static plazma.kernel.lib.task.TaskHelper.*;
+import static plazma.kernel.lib.sys.SysLib.error;
+import static plazma.kernel.lib.task.TaskHelper.getOptionalPath;
+import static plazma.kernel.lib.task.TaskHelper.isEmpty;
 
+import plazma.kernel.lib.data.yaml.YamlLib;
+import plazma.kernel.lib.data.yaml.YamlWriterConfig;
 import plazma.kernel.lib.data.node.Node;
 import plazma.kernel.lib.data.xml.XmlLib;
 import plazma.kernel.lib.data.xml.XmlReaderConfig;
-import plazma.kernel.lib.data.xml.XmlWriterConfig;
 import plazma.kernel.lib.str.StrLib;
-import plazma.kernel.lib.task.FormatTask;
+import plazma.kernel.lib.task.ConvertTask;
 import plazma.kernel.lib.task.TaskContext;
 
-public class XmlFormatTask extends FormatTask {
+public class Xml2YamlConvertTask extends ConvertTask {
     
-    public static final String TASK_FORMAT_XML = "format-xml";
-    
+    public static final String TASK_CONVERT_XML2YAML  = "convert-xml2yaml";
+
+    ///////////////////////////////////////////////////////////
+    // errors:
+    ///////////////////////////////////////////////////////////
+
     public static final String ERROR_XML_NODE_EMPTY = "Can't execute task: XML Node is empty";
-        
+    public static final String ERROR_XML_TOKENS_EMPTY = "Can't execute task: XML Tokens are empty";
+    public static final String ERROR_YAML_NODE_EMPTY = "Can't execute task: YAML Node is empty";
+
     public void execute(TaskContext ctx) throws Exception {
         
         String dirName = ctx.getStringParameter(PARAMETER_DIR);
@@ -63,7 +71,6 @@ public class XmlFormatTask extends FormatTask {
         boolean verboseToken = ctx.getFlagParameter(PARAMETER_VERBOSE_TOKEN);
         boolean color = ctx.getFlagParameter(PARAMETER_COLOR);
         String stderr_ = ctx.getStringParameter(PARAMETER_STDERR);
-        boolean tokenize = ctx.getFlagParameter(PARAMETER_TOKENIZE);
 
         boolean hasDisplay = ctx.hasParameter(PARAMETER_DISPLAY);
 
@@ -105,7 +112,9 @@ public class XmlFormatTask extends FormatTask {
         // dir = SysLib.getUserDir();
         // }
 
+        
         Node node = null;
+        Node outputNode = null;
         //String outputText = null;
         
         // Init XmlReaderConfig
@@ -114,13 +123,10 @@ public class XmlFormatTask extends FormatTask {
         readerConfig.verbose = verbose;
         readerConfig.verboseToken = verboseToken;
 
-        // Init XmlWriterConfig
-        XmlWriterConfig writerConfig = new XmlWriterConfig();
-        writerConfig.inlineFlag = inlineFlag;
-        writerConfig.inlineNodeFlag = inlineNodeFlag;
-        writerConfig.inlineNodeLimit = inlineNodeLimit;
-        writerConfig.indent = indent;
-        writerConfig.tagCase = tagCase;
+        // Init YamlWriterConfig
+        YamlWriterConfig writerConfig = new YamlWriterConfig();
+        //writerConfig.inlineFlag = inlineFlag;
+        //writerConfig.indent = indent;
         writerConfig.attributeCase = attrCase;
         writerConfig.attributeQuote = attrQuote;
         writerConfig.trimAttribute = trimAttr;
@@ -141,28 +147,30 @@ public class XmlFormatTask extends FormatTask {
             node = XmlLib.readXmlFromFile(readerConfig, inputFileName);
         }
 
-        // Display/Write XML Text
+        // Display/Write YAML Text
         if (node == null) {
             error(ERROR_XML_NODE_EMPTY);
         } else {
                         
-            if (isEmpty(outputFileName)) {
-                
+            outputNode = XmlLib.convertXmlToJson(node);
+
+            // Display flag overrides output file name!
+            if (display || (!hasDisplay && isEmpty(outputFileName))) {
+
                 writerConfig.colorized = color;
-                
-                // Display Text
-                XmlLib.writeXmlToConsole(writerConfig, node);
-                                
-            } else {
-                
-                // Write Text
-                XmlLib.writeXmlToFile(outputFileName, writerConfig, node);
+
+                // Display text
+                YamlLib.writeYamlToConsole(writerConfig, outputNode);
+
+            } else if (!isEmpty(outputFileName)) {
+
+                // Write text
+                YamlLib.writeYamlToFile(outputFileName, writerConfig, outputNode);
             }
 
         }
 
     }
-
 
     public void initParameters() {
 
@@ -190,5 +198,5 @@ public class XmlFormatTask extends FormatTask {
         //getParameters().addParameter(PARAMETER_TOKENIZE);
 
     }
-
+    
 }

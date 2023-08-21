@@ -39,6 +39,9 @@ import static plazma.kernel.lib.task.xml.XmlFormatTask.TASK_FORMAT_XML;
 import static plazma.kernel.lib.task.json.JsonFormatTask.TASK_FORMAT_JSON;
 import static plazma.kernel.lib.task.yaml.YamlFormatTask.TASK_FORMAT_YAML;
 
+import static plazma.kernel.lib.task.xml.Xml2JsonConvertTask.TASK_CONVERT_XML2JSON;
+import static plazma.kernel.lib.task.xml.Xml2YamlConvertTask.TASK_CONVERT_XML2YAML;
+
 import static plazma.kernel.lib.task.TestTask.TASK_TEST;
 import static plazma.kernel.lib.task.array.ArrayGenTask.TASK_GENERATE_FLOAT_ARRAY;
 import static plazma.kernel.lib.task.array.ArrayReadTask.TASK_READ_FLOAT_ARRAY;
@@ -52,6 +55,8 @@ import plazma.kernel.lib.task.sys.SysTask;
 import plazma.kernel.lib.task.array.ArrayGenTask;
 import plazma.kernel.lib.task.array.ArrayReadTask;
 import plazma.kernel.lib.task.sys.CalendarTask;
+import plazma.kernel.lib.task.xml.Xml2JsonConvertTask;
+import plazma.kernel.lib.task.xml.Xml2YamlConvertTask;
 import plazma.kernel.lib.task.xml.XmlFormatTask;
 import plazma.kernel.lib.task.json.JsonFormatTask;
 import plazma.kernel.lib.task.yaml.YamlFormatTask;
@@ -72,9 +77,12 @@ public class BaseTaskProvider implements TaskProvider {
             TASK_PRINT_MONTH_CALENDAR,
 
             // TASK_FORMAT_CSV,
+            TASK_FORMAT_XML,            
             TASK_FORMAT_JSON,
-            TASK_FORMAT_XML,
             TASK_FORMAT_YAML,
+            
+            TASK_CONVERT_XML2JSON,
+            TASK_CONVERT_XML2YAML,
             
             TASK_READ_FLOAT_ARRAY,
             TASK_GENERATE_FLOAT_ARRAY,
@@ -122,6 +130,12 @@ public class BaseTaskProvider implements TaskProvider {
             return new JsonFormatTask();
         } else if (TASK_FORMAT_YAML.equals(taskName)) {
             return new YamlFormatTask();
+
+        // convert
+        } else if (TASK_CONVERT_XML2JSON.equals(taskName)) {
+            return new Xml2JsonConvertTask();
+        } else if (TASK_CONVERT_XML2YAML.equals(taskName)) {
+            return new Xml2YamlConvertTask();
         }
 
         // array
