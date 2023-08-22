@@ -85,7 +85,7 @@ public abstract class BaseNodeConverter implements NodeConverter {
         //int count = original.getAttributeCount();
         //for (int i = 0; i < count; i++) {
             
-        Map<String, String> attributes = node.getAttributes();
+        Map<String, String> attributes = original.getAttributes();
 
         for (String name : attributes.keySet()) {
             String value = attributes.get(name);
@@ -109,7 +109,7 @@ public abstract class BaseNodeConverter implements NodeConverter {
         //int count = original.getAttributeCount();
         //for (int i = 0; i < count; i++) {
         
-        Map<String, String> attributes = node.getAttributes();
+        Map<String, String> attributes = original.getAttributes();
 
         for (String name : attributes.keySet()) {
             String value = attributes.get(name);
