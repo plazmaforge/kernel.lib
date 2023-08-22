@@ -25,6 +25,8 @@ package plazma.kernel.lib.data.json;
 import java.io.IOException;
 
 import plazma.kernel.lib.data.node.Node;
+import plazma.kernel.lib.data.xml.Xml2JsonConverter;
+import plazma.kernel.lib.data.xml.Xml2YamlConverter;
 
 public class JsonLib {
     
@@ -98,6 +100,25 @@ public class JsonLib {
         new JsonWriter().writeJsonToConsole(config, root);        
     }
     
+    // convert
+
+    public static Node convertJsonToXml(Node node) {
+        Json2XmlConverter converter = new Json2XmlConverter();
+        Node result = converter.convert(node);
+        //if (converter != null) {
+        //    converter.destroy();
+        //}        
+        return result;
+    }
+
+    public static Node convertJsonToYaml(Node node) {
+        Json2YamlConverter converter = new Json2YamlConverter();
+        Node result = converter.convert(node);
+        //if (converter != null) {
+        //    converter.destroy();
+        //}        
+        return result;
+    }
 
 
 }

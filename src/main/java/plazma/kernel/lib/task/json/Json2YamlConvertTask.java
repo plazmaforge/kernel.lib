@@ -26,21 +26,27 @@ import static plazma.kernel.lib.sys.SysLib.error;
 import static plazma.kernel.lib.task.TaskHelper.getOptionalPath;
 import static plazma.kernel.lib.task.TaskHelper.isEmpty;
 
-import plazma.kernel.lib.data.node.Node;
-
 import plazma.kernel.lib.data.json.JsonLib;
 import plazma.kernel.lib.data.json.JsonReaderConfig;
-import plazma.kernel.lib.data.json.JsonWriterConfig;
+import plazma.kernel.lib.data.node.Node;
+import plazma.kernel.lib.data.yaml.YamlLib;
+import plazma.kernel.lib.data.yaml.YamlWriterConfig;
 import plazma.kernel.lib.str.StrLib;
-import plazma.kernel.lib.task.FormatTask;
+import plazma.kernel.lib.task.ConvertTask;
 import plazma.kernel.lib.task.TaskContext;
 
-public class JsonFormatTask extends FormatTask {
+public class Json2YamlConvertTask extends ConvertTask {
     
-    public static final String TASK_FORMAT_JSON = "format-json";
-    
+    public static final String TASK_CONVERT_JSON2YAML = "convert-json2yaml";
+
+    ///////////////////////////////////////////////////////////
+    // errors:
+    ///////////////////////////////////////////////////////////
+
     public static final String ERROR_JSON_NODE_EMPTY = "Can't execute task: JSON Node is empty";
-    
+    public static final String ERROR_JSON_TOKENS_EMPTY = "Can't execute task: JSON Tokens are empty";
+    //public static final String ERROR_YAML_NODE_EMPTY = "Can't execute task: YAML Node is empty";
+
     public void execute(TaskContext ctx) throws Exception {
         
         String dirName = ctx.getStringParameter(PARAMETER_DIR);
@@ -50,8 +56,11 @@ public class JsonFormatTask extends FormatTask {
         //
         String inputText = ctx.getStringParameter(PARAMETER_TEXT);
         boolean inlineFlag = ctx.getFlagParameter(PARAMETER_INLINE);
+        boolean inlineNodeFlag = ctx.getFlagParameter(PARAMETER_INLINE_NODE);
+        int inlineNodeLimit = ctx.getIntParameter(PARAMETER_INLINE_NODE_LIMIT);
         String indent = ctx.getStringParameter(PARAMETER_INDENT);
         String caseValue = ctx.getStringParameter(PARAMETER_CASE);
+        String tagCase = ctx.getStringParameter(PARAMETER_TAG_CASE);
         String attrCase = ctx.getStringParameter(PARAMETER_ATTR_CASE);
         String attrQuote = ctx.getStringParameter(PARAMETER_ATTR_QUOTE);
         boolean trimAttr = ctx.getFlagParameter(PARAMETER_TRIM_ATTR);
@@ -62,7 +71,6 @@ public class JsonFormatTask extends FormatTask {
         boolean verboseToken = ctx.getFlagParameter(PARAMETER_VERBOSE_TOKEN);
         boolean color = ctx.getFlagParameter(PARAMETER_COLOR);
         String stderr_ = ctx.getStringParameter(PARAMETER_STDERR);
-        boolean tokenize = ctx.getFlagParameter(PARAMETER_TOKENIZE);
 
         boolean hasDisplay = ctx.hasParameter(PARAMETER_DISPLAY);
 
@@ -87,6 +95,10 @@ public class JsonFormatTask extends FormatTask {
 
         // tag/attribute case
 
+        if (isEmpty(tagCase)) {
+            tagCase = caseValue;
+        }
+
         if (isEmpty(attrCase)) {
             attrCase = caseValue;
         }
@@ -100,12 +112,10 @@ public class JsonFormatTask extends FormatTask {
         // dir = SysLib.getUserDir();
         // }
 
-        //////////////////////////////////////////////////////////////////////////////////////////////////
-        // READ MATRIX (float)
-        //////////////////////////////////////////////////////////////////////////////////////////////////
         
         Node node = null;
-        String outputText = null;
+        Node outputNode = null;
+        //String outputText = null;
         
         // Init JsonReaderConfig
         JsonReaderConfig readerConfig = new JsonReaderConfig();
@@ -113,10 +123,13 @@ public class JsonFormatTask extends FormatTask {
         readerConfig.verbose = verbose;
         readerConfig.verboseToken = verboseToken;
 
-        // Init JsonWriterConfig
-        JsonWriterConfig writerConfig = new JsonWriterConfig();
-        writerConfig.inlineFlag = inlineFlag;
-        writerConfig.indent = indent;
+        // Init YamlWriterConfig
+        YamlWriterConfig writerConfig = new YamlWriterConfig();
+        //writerConfig.inlineFlag = inlineFlag;
+        //writerConfig.inlineNodeFlag = inlineNodeFlag;
+        //writerConfig.inlineNodeLimit = inlineNodeLimit;
+        //writerConfig.indent = indent;
+        //writerConfig.tagCase = tagCase;
         writerConfig.attributeCase = attrCase;
         writerConfig.attributeQuote = attrQuote;
         writerConfig.trimAttribute = trimAttr;
@@ -137,22 +150,25 @@ public class JsonFormatTask extends FormatTask {
             node = JsonLib.readJsonFromFile(readerConfig, inputFileName);
         }
 
-        // Display/Write JSON Text
+        // Display/Write YAML Text
         if (node == null) {
             error(ERROR_JSON_NODE_EMPTY);
         } else {
                         
-            if (isEmpty(outputFileName)) {
-                
+            outputNode = JsonLib.convertJsonToYaml(node);
+
+            // Display flag overrides output file name!
+            if (display || (!hasDisplay && isEmpty(outputFileName))) {
+
                 writerConfig.colorized = color;
-                
-                // Display Text
-                JsonLib.writeJsonToConsole(writerConfig, node);
-                                
-            } else {
-                
-                // Write Text
-                JsonLib.writeJsonToFile(outputFileName, writerConfig, node);
+
+                // Display text
+                YamlLib.writeYamlToConsole(writerConfig, outputNode);
+
+            } else if (!isEmpty(outputFileName)) {
+
+                // Write text
+                YamlLib.writeYamlToFile(outputFileName, writerConfig, outputNode);
             }
 
         }
@@ -167,9 +183,12 @@ public class JsonFormatTask extends FormatTask {
         getParameters().addParameter(PARAMETER_OUTPUT_FILE);
         getParameters().addParameter(PARAMETER_TEXT);
         //
-        getParameters().addParameter(PARAMETER_INLINE);
-        getParameters().addParameter(PARAMETER_INDENT);
-        getParameters().addParameter(PARAMETER_CASE);
+        //getParameters().addParameter(PARAMETER_INLINE);
+        //getParameters().addParameter(PARAMETER_INLINE_NODE);
+        //getParameters().addParameter(PARAMETER_INLINE_NODE_LIMIT);
+        //getParameters().addParameter(PARAMETER_INDENT);
+        //getParameters().addParameter(PARAMETER_CASE);
+        //getParameters().addParameter(PARAMETER_TAG_CASE);
         getParameters().addParameter(PARAMETER_ATTR_CASE);
         getParameters().addParameter(PARAMETER_ATTR_QUOTE);
         getParameters().addParameter(PARAMETER_TRIM_ATTR);
@@ -182,6 +201,5 @@ public class JsonFormatTask extends FormatTask {
         //getParameters().addParameter(PARAMETER_TOKENIZE);
 
     }
-    
 
 }
