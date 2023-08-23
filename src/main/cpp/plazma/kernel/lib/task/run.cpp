@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "plazma/kernel/lib/sys/syslib.h"
+#include "plazma/kernel/lib/sys/LibraryLoader.h"
 #include "plazma/kernel/lib/io/iolib.h"
 
 #include "run.h"
@@ -131,6 +132,9 @@ void executeTask(std::map<std::string, std::string> &parameters) {
 ////
 
 int main(int argc, char* argv[]) {
+
+  //sys::LibraryLoader<Task>* loader = new sys::LibraryLoader<Task>("task-base.so");
+  //loader->openLibrary();
 
   iolib::init_utf8_console();
 
