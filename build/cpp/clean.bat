@@ -5,3 +5,5 @@ del /s %KERNEL_LIB%\*.o
 
 del run.exe
 del run_test.exe
+
+del lib-*.dll

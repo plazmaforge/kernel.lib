@@ -7,3 +7,6 @@ rm $KERNEL_LIB/**/**/*.o
 
 rm run
 rm run_test
+
+rm lib-*.so
+rm lib-*.dylib
