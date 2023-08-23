@@ -24,3 +24,12 @@ $(EXECUTABLE): $(OBJECTS)
 
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
+
+lib-nix: $(OBJECTS)
+	$(CC) $(LDFLAGS) -shared -fPIC -o lib-task.so $(OBJECTS)
+		
+lib-mac: $(OBJECTS)
+	$(CC) $(LDFLAGS) -dynamiclib -fPIC -o lib-task.dylib $(OBJECTS)
+
+lib-win: $(OBJECTS)
+	$(CC) $(LDFLAGS) -shared -o lib-task.dll -Wl,--out-implib,lib-task.a -W1,--export-all-symbols-Wl,—enable-auto-image-base $(OBJECTS)

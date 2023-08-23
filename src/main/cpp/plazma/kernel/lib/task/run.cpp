@@ -133,8 +133,17 @@ void executeTask(std::map<std::string, std::string> &parameters) {
 
 int main(int argc, char* argv[]) {
 
-  //sys::LibraryLoader<Task>* loader = new sys::LibraryLoader<Task>("task-base.so");
+  
+  ////
+  //sys::LibraryLoader<TaskProvider>* loader = new sys::LibraryLoader<TaskProvider>("lib-task.dylib");
   //loader->openLibrary();
+
+  //std::shared_ptr<TaskProvider> provider = loader->getInstance();
+  //TaskProvider* p = provider.get();
+  //std::vector<std::string> s = p->getTaskNames();
+
+  //println(s.at(0));
+  ////
 
   iolib::init_utf8_console();
 
