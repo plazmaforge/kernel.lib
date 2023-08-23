@@ -29,6 +29,7 @@ classes
 *.o
 *.dll
 *.so
+*.dylib
 *.exe
 *.pyc
 
