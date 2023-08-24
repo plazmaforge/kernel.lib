@@ -12,8 +12,24 @@ START=../../src/main/cpp/plazma/kernel/lib
 # V-ALL
 SOURCES:=$(wildcard $(START)/**/*.cpp) $(wildcard $(START)/**/**/*.cpp)
 
+# V-LIB-MIN
+#SOURCES:=$(wildcard $(START)/sys/*.cpp) \
+# $(wildcard $(START)/io/*.cpp) \
+# $(wildcard $(START)/fs/*.cpp) \
+# $(wildcard $(START)/str/*.cpp) \
+# $(wildcard $(START)/collection/*.cpp) \
+# $(wildcard $(START)/fmt/*.cpp) \
+# $(wildcard $(START)/task/*.cpp) \
+# $(wildcard $(START)/num/*.cpp)
+  
+#SOURCES:=$(filter-out $(START)/task/BaseTaskProvider.cpp, $(SOURCES))
+#SOURCES:=$(filter-out $(START)/task/TaskProvider1.cpp, $(SOURCES))
+#SOURCES:=$(filter-out $(START)/task/FormatTask.cpp, $(SOURCES))
+#SOURCES:=$(filter-out $(START)/task/ConvertTask.cpp, $(SOURCES))
+
 # V-LIB
-#SOURCES:=$(wildcard $(START)/**/*.cpp) 
+#SOURCES:=$(wildcard $(START)/**/*.cpp)
+ 
 #SOURCES:=$(filter-out $(START)/task/BaseTaskProvider.cpp, $(SOURCES))
 #SOURCES:=$(filter-out $(START)/task/TaskProvider1.cpp, $(SOURCES))
 #SOURCES:=$(filter-out $(START)/task/FormatTask.cpp, $(SOURCES))
