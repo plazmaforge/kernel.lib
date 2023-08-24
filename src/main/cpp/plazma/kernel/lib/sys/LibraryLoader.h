@@ -13,7 +13,13 @@
 
 namespace sys {
 
+// https://tldp.org/HOWTO/C++-dlopen/
+// https://tldp.org/HOWTO/C++-dlopen/thesolution.html#loadingclasses
+
 template <class T> class LibraryLoader {
+
+  using allocClass = T* (*)();
+  using deleteClass = void(*)(T *);
 
   private:
     
@@ -26,6 +32,11 @@ template <class T> class LibraryLoader {
     std::string _pathToLib;
     std::string _allocClassSymbol;
     std::string _deleteClassSymbol;
+
+    allocClass allocFunc;
+    deleteClass deleteFunc;
+
+    T* instance;
 
   public:
 
@@ -56,17 +67,15 @@ template <class T> class LibraryLoader {
       #endif
     }
 
-    std::shared_ptr<T> getInstance() {
 
-      using allocClass = T * (*)();
-  	  using deleteClass = void(*)(T *);
+    //std::shared_ptr<T> getInstance() {
+
+    T* getInstance() {    
 
       #ifdef _WIN32
-      //using allocClass = T * (*)();
-  	  //using deleteClass = void(*)(T *);
 
-	  auto allocFunc = reinterpret_cast<allocClass>(GetProcAddress(_handle, _allocClassSymbol.c_str()));
-	  auto deleteFunc = reinterpret_cast<deleteClass>(GetProcAddress(_handle, _deleteClassSymbol.c_str()));
+	  /*auto*/ allocFunc = reinterpret_cast<allocClass>(GetProcAddress(_handle, _allocClassSymbol.c_str()));
+	  /*auto*/ deleteFunc = reinterpret_cast<deleteClass>(GetProcAddress(_handle, _deleteClassSymbol.c_str()));
 
 	  if (!allocFunc || !deleteFunc) {
         closeLibrary();
@@ -75,21 +84,22 @@ template <class T> class LibraryLoader {
 
 	  //return std::shared_ptr<T>(allocFunc(), [deleteFunc](T *p) { deleteFunc(p); });    
       #else
-      //using allocClass = T *(*)();
-	  //using deleteClass = void (*)(T *);
 
-	  auto allocFunc = reinterpret_cast<allocClass>(dlsym(_handle, _allocClassSymbol.c_str()));
-      auto deleteFunc = reinterpret_cast<deleteClass>(dlsym(_handle, _deleteClassSymbol.c_str()));
+	  /*auto*/ allocFunc = reinterpret_cast<allocClass>(dlsym(_handle, _allocClassSymbol.c_str()));
+      /*auto*/ deleteFunc = reinterpret_cast<deleteClass>(dlsym(_handle, _deleteClassSymbol.c_str()));
 
 	  if (!allocFunc || !deleteFunc) {
         closeLibrary();
+        std::cerr << "Can't find allocator or deleter symbol in " << _pathToLib << std::endl;
         std::cerr << dlerror() << std::endl;
 	  }
 
-	  //return std::shared_ptr<T>(allocFunc(), [deleteFunc](T *p){ deleteFunc(p); });
       #endif
 
-      return std::shared_ptr<T>(allocFunc(), [deleteFunc](T *p){ deleteFunc(p); });
+      instance = allocFunc();
+      return instance;
+
+      //return std::shared_ptr<T>(allocFunc(), [deleteFunc](T *p){ deleteFunc(p); });
 
     }
 
@@ -97,6 +107,12 @@ template <class T> class LibraryLoader {
     ** Correctly delete the instance of the "dynamically loaded" class.
     */
     void closeLibrary() {
+        if (instance != nullptr) {
+            if (deleteFunc == nullptr) {
+                std::cerr << "Can't destroy object" << std::endl;
+            }
+            deleteFunc(instance);
+        }
       #ifdef _WIN32
       if (FreeLibrary(_handle) == 0) {
 	    std::cerr << "Can't close " << _pathToLib << std::endl;

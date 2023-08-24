@@ -16,6 +16,8 @@ namespace task {
 
             void init();
 
+            void setTaskProvider(TaskProvider* provider);
+
             void executeTask(std::string& taskName, std::map<std::string, std::string>& parameters);
 
         protected:

@@ -28,7 +28,11 @@ namespace task {
 
             std::vector<std::string> taskNames;
 
+            TaskProvider* getHandler();
+
         private:
+
+            TaskProvider* handler;
 
 
     };

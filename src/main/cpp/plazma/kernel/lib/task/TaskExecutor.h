@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include "TaskProvider.h"
 
 namespace task {
 
@@ -15,6 +16,8 @@ namespace task {
             virtual ~TaskExecutor();
 
             virtual void init() = 0;
+
+            virtual void setTaskProvider(TaskProvider* provider) = 0;
 
             virtual void executeTask(std::string &taskName, std::map<std::string, std::string> &parameters) = 0;
 

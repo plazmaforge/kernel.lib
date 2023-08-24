@@ -3,11 +3,12 @@
 #include <vector>
 
 #include "TaskProvider1.h"
+#include "BaseTaskProvider.h"
 
 namespace task {
 
     TaskProvider1::TaskProvider1() {
-
+        handler = new BaseTaskProvider();
     }
 
     TaskProvider1::~TaskProvider1() {
@@ -45,18 +46,30 @@ namespace task {
 
    #endif
 
+   TaskProvider* TaskProvider1::getHandler() {
+       //if (handler == nullptr) {
+       //    handler = new BaseTaskProvider();
+       //}
+       return handler;
+       //return nullptr;
+   }
+
    bool TaskProvider1::hasTask(std::string& taskName) {
-     return false;
+     return getHandler()->hasTask(taskName);
+     //return false;
    }
 
    Task* TaskProvider1::getTask(std::string& taskName) {
-     return nullptr;
+     return getHandler()->getTask(taskName);
+     //return nullptr;
    }
 
-   std::vector<std::string> TaskProvider1::getTaskNames() {
-    std::vector<std::string> v;
-    v.push_back("WAY++");
-    return v;
+   std::vector<std::string> TaskProvider1::getTaskNames() {     
+       return getHandler()->getTaskNames();
+
+       //std::vector<std::string> v;
+       //v.push_back("Task1");
+       //return v;
    }
 
 }

@@ -8,7 +8,7 @@
 using namespace syslib;
 
 #include "BaseTaskExecutor.h"
-#include "BaseTaskProvider.h"
+//#include "BaseTaskProvider.h"
 
 const std::string MESSAGE_TASK_LIST = "Task List:";
 const std::string MESSAGE_NO_TASKS = "No tasks";
@@ -36,11 +36,15 @@ namespace task {
         if (initFlag) {
             return;
         }
-        provider = new BaseTaskProvider();
+        //provider = new BaseTaskProvider();
         initFlag = true;
     }
 
-   void BaseTaskExecutor::executeTask(std::string& taskName, std::map<std::string, std::string>& parameters)  {
+    void BaseTaskExecutor::setTaskProvider(TaskProvider* provider) {
+        this->provider = provider;
+    }
+
+    void BaseTaskExecutor::executeTask(std::string& taskName, std::map<std::string, std::string>& parameters)  {
 
        // CHECK EMPTY NAME
        if (taskName.empty()) {
@@ -175,7 +179,7 @@ namespace task {
            error(ERROR_TASK_PROVIDER_NOT_IMPLEMENTED);
            return;
        }       
-
+       
        std::vector<std::string> taskNames = provider->getTaskNames();
        if (taskNames.empty()) {
            std::cout << MESSAGE_NO_TASKS << std::endl;
@@ -186,6 +190,7 @@ namespace task {
        for (int i = 0; i < taskNames.size(); i++) {
            std::cout << " " << taskNames.at(i) << std::endl;
        }
+
    }
 
 

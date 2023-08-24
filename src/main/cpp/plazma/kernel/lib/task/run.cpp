@@ -10,6 +10,9 @@
 
 #include "BaseTaskExecutor.h"
 
+// Remove for Library
+#include "BaseTaskProvider.h"
+
 using namespace syslib;
 using namespace task;
 
@@ -37,10 +40,33 @@ const std::string PARAMETER_STDERR = "stderr";        // StdErr mode
 
 TaskExecutor* executor;
 
+TaskProvider* loadTaskProvider() {
+  sys::LibraryLoader<TaskProvider>* loader = new sys::LibraryLoader<TaskProvider>("lib-task.dylib");
+  loader->openLibrary();
+  return loader->getInstance();  
+}
+
+TaskProvider* createTaskProvider() {
+  //return loadTaskProvider();   // Dynamic Load
+  return new BaseTaskProvider(); // Static Load
+}
+
 TaskExecutor* getExecutor() {
   if (executor == nullptr) {
+
+    //println("Start Executor initialization...");
     executor = new BaseTaskExecutor();
-    executor->init();
+    
+    //println("Start Provider initialization...");
+    TaskProvider* provider = createTaskProvider();
+
+    if (provider == nullptr) {
+      error("Provider is not implemented");
+      return executor;
+    }
+
+    executor->setTaskProvider(provider);
+    //println("Executor is initialized");
   }
   return executor;
 }
@@ -132,18 +158,6 @@ void executeTask(std::map<std::string, std::string> &parameters) {
 ////
 
 int main(int argc, char* argv[]) {
-
-  
-  ////
-  //sys::LibraryLoader<TaskProvider>* loader = new sys::LibraryLoader<TaskProvider>("lib-task.dylib");
-  //loader->openLibrary();
-
-  //std::shared_ptr<TaskProvider> provider = loader->getInstance();
-  //TaskProvider* p = provider.get();
-  //std::vector<std::string> s = p->getTaskNames();
-
-  //println(s.at(0));
-  ////
 
   iolib::init_utf8_console();
 
