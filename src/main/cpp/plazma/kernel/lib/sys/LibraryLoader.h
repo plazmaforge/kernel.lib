@@ -18,8 +18,8 @@ namespace sys {
 
 template <class T> class LibraryLoader {
 
-  using allocClass = T* (*)();
-  using deleteClass = void(*)(T *);
+  using createType = T* (*)();
+  using destroyType = void(*)(T *);
 
   private:
     
@@ -29,25 +29,25 @@ template <class T> class LibraryLoader {
     void *_handle;
     #endif
 
-    std::string _pathToLib;
-    std::string _allocClassSymbol;
-    std::string _deleteClassSymbol;
+    std::string _path;
+    std::string _createName;
+    std::string _destroyName;
 
-    allocClass allocFunc;
-    deleteClass deleteFunc;
+    createType allocFunc;
+    destroyType deleteFunc;
 
     T* instance;
 
   public:
 
-    LibraryLoader(std::string const &pathToLib,
-                  std::string const &allocClassSymbol = "allocator",
-                  std::string const &deleteClassSymbol = "deleter") {
+    LibraryLoader(std::string const &path,
+                  std::string const &createName = "create",
+                  std::string const &destroyName = "destroy") {
 
         _handle = nullptr;
-        _pathToLib = pathToLib;
-        _allocClassSymbol = allocClassSymbol;
-        _deleteClassSymbol = deleteClassSymbol; 
+        _path = path;
+        _createName = createName;
+        _destroyName = destroyName;
 
     }
 
@@ -57,13 +57,14 @@ template <class T> class LibraryLoader {
 
     void openLibrary() {
       #ifdef _WIN32
-      if (!(_handle = LoadLibrary(_pathToLib.c_str()))) {
-        std::cerr << "Can't open and load " << _pathToLib << std::endl;
-	  }
+      if (!(_handle = LoadLibrary(_path.c_str()))) {
+        std::cerr << "Can't load library " << _path << std::endl;
+	    }
       #else
-	  if (!(_handle = dlopen(_pathToLib.c_str(), RTLD_NOW | RTLD_LAZY))) {
-	    std::cerr << dlerror() << std::endl;
-	  } 
+      if (!(_handle = dlopen(_path.c_str(), RTLD_NOW | RTLD_LAZY))) {
+        std::cerr << "Can't load library " << _path << std::endl;
+	      std::cerr << dlerror() << std::endl;
+	    } 
       #endif
     }
 
@@ -74,25 +75,25 @@ template <class T> class LibraryLoader {
 
       #ifdef _WIN32
 
-	  /*auto*/ allocFunc = reinterpret_cast<allocClass>(GetProcAddress(_handle, _allocClassSymbol.c_str()));
-	  /*auto*/ deleteFunc = reinterpret_cast<deleteClass>(GetProcAddress(_handle, _deleteClassSymbol.c_str()));
+      /*auto*/ allocFunc = reinterpret_cast<createType>(GetProcAddress(_handle, _createName.c_str()));
+      /*auto*/ deleteFunc = reinterpret_cast<destroyType>(GetProcAddress(_handle, _destroyName.c_str()));
 
-	  if (!allocFunc || !deleteFunc) {
+      if (!allocFunc || !deleteFunc) {
         closeLibrary();
-		std::cerr << "Can't find allocator or deleter symbol in " << _pathToLib << std::endl;
-	  }
+        std::cerr << "Can't find symbol 'create' or 'destroy' in " << _path << std::endl;
+      }
 
-	  //return std::shared_ptr<T>(allocFunc(), [deleteFunc](T *p) { deleteFunc(p); });    
+      //return std::shared_ptr<T>(allocFunc(), [deleteFunc](T *p) { deleteFunc(p); });    
       #else
 
-	  /*auto*/ allocFunc = reinterpret_cast<allocClass>(dlsym(_handle, _allocClassSymbol.c_str()));
-      /*auto*/ deleteFunc = reinterpret_cast<deleteClass>(dlsym(_handle, _deleteClassSymbol.c_str()));
+      /*auto*/ allocFunc = reinterpret_cast<createType>(dlsym(_handle, _createName.c_str()));
+      /*auto*/ deleteFunc = reinterpret_cast<destroyType>(dlsym(_handle, _destroyName.c_str()));
 
-	  if (!allocFunc || !deleteFunc) {
+      if (!allocFunc || !deleteFunc) {
         closeLibrary();
-        std::cerr << "Can't find allocator or deleter symbol in " << _pathToLib << std::endl;
+        std::cerr << "Can't find symbol 'create' or 'destroy' in " << _path << std::endl;
         std::cerr << dlerror() << std::endl;
-	  }
+      }
 
       #endif
 
@@ -107,20 +108,22 @@ template <class T> class LibraryLoader {
     ** Correctly delete the instance of the "dynamically loaded" class.
     */
     void closeLibrary() {
-        if (instance != nullptr) {
+      if (instance != nullptr) {
             if (deleteFunc == nullptr) {
-                std::cerr << "Can't destroy object" << std::endl;
+                std::cerr << "Can't destroy object: Destroy function is not implemented" << std::endl;
             }
             deleteFunc(instance);
-        }
+      }
       #ifdef _WIN32
       if (FreeLibrary(_handle) == 0) {
-	    std::cerr << "Can't close " << _pathToLib << std::endl;
-	  }
-      #else
+        std::cerr << "Can't close library " << _path << std::endl;
+      }
+	    #else
       if (dlclose(_handle) != 0) {
-	    std::cerr << dlerror() << std::endl;
-	  }
+        std::cerr << "Can't close library " << _path << std::endl;
+        std::cerr << dlerror() << std::endl;
+      }
+
       #endif
     }
 

@@ -43,7 +43,7 @@ TaskExecutor* executor;
 TaskProvider* loadTaskProvider() {
   sys::LibraryLoader<TaskProvider>* loader = new sys::LibraryLoader<TaskProvider>("lib-task.dylib");
   loader->openLibrary();
-  return loader->getInstance();  
+  return loader->getInstance();
 }
 
 TaskProvider* createTaskProvider() {

@@ -12,18 +12,20 @@ namespace task {
     }
 
     TaskProvider1::~TaskProvider1() {
-
+      if (handler != nullptr) {
+        delete handler;
+      }
     }
 
     #if defined(__linux__) || defined(__APPLE__) 
     
     extern "C" {
 
-	  TaskProvider1* allocator() {
+	  TaskProvider1* create() {
 	  	return new TaskProvider1();
 	  }
 
-	  void deleter(TaskProvider1 *ptr) {
+	  void destroy(TaskProvider1* ptr) {
 		delete ptr;
 	  }
 
@@ -34,11 +36,11 @@ namespace task {
    #ifdef WIN32
 
    extern "C" {
-      __declspec (dllexport) TaskProvider1* allocator() 	{
+      __declspec (dllexport) TaskProvider1* create() 	{
         return new TaskProvider1();
 	  }
 
-	  __declspec (dllexport) void deleter(TaskProvider1 *ptr) {
+	  __declspec (dllexport) void destroy(TaskProvider1 *ptr) {
         delete ptr;
 	  }
 
