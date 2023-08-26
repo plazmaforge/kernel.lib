@@ -18,8 +18,8 @@ namespace sys {
 
 template <class T> class LibraryLoader {
 
-  using createType = T* (*)();
-  using destroyType = void(*)(T *);
+  using CreateType = T* (*)();
+  using DestroyType = void(*)(T *);
 
   private:
     
@@ -33,8 +33,8 @@ template <class T> class LibraryLoader {
     std::string _createName;
     std::string _destroyName;
 
-    createType allocFunc;
-    destroyType deleteFunc;
+    CreateType create;
+    DestroyType destroy;
 
     T* instance;
 
@@ -75,21 +75,21 @@ template <class T> class LibraryLoader {
 
       #ifdef _WIN32
 
-      /*auto*/ allocFunc = reinterpret_cast<createType>(GetProcAddress(_handle, _createName.c_str()));
-      /*auto*/ deleteFunc = reinterpret_cast<destroyType>(GetProcAddress(_handle, _destroyName.c_str()));
+      /*auto*/ create = reinterpret_cast<CreateType>(GetProcAddress(_handle, _createName.c_str()));
+      /*auto*/ destroy = reinterpret_cast<DestroyType>(GetProcAddress(_handle, _destroyName.c_str()));
 
-      if (!allocFunc || !deleteFunc) {
+      if (!create || !destroy) {
         closeLibrary();
         std::cerr << "Can't find symbol 'create' or 'destroy' in " << _path << std::endl;
       }
 
-      //return std::shared_ptr<T>(allocFunc(), [deleteFunc](T *p) { deleteFunc(p); });    
+      //return std::shared_ptr<T>(create(), [destroy](T *p) { destroy(p); });    
       #else
 
-      /*auto*/ allocFunc = reinterpret_cast<createType>(dlsym(_handle, _createName.c_str()));
-      /*auto*/ deleteFunc = reinterpret_cast<destroyType>(dlsym(_handle, _destroyName.c_str()));
+      /*auto*/ create = reinterpret_cast<CreateType>(dlsym(_handle, _createName.c_str()));
+      /*auto*/ destroy = reinterpret_cast<DestroyType>(dlsym(_handle, _destroyName.c_str()));
 
-      if (!allocFunc || !deleteFunc) {
+      if (!create || !destroy) {
         closeLibrary();
         std::cerr << "Can't find symbol 'create' or 'destroy' in " << _path << std::endl;
         std::cerr << dlerror() << std::endl;
@@ -97,10 +97,10 @@ template <class T> class LibraryLoader {
 
       #endif
 
-      instance = allocFunc();
+      instance = create();
       return instance;
 
-      //return std::shared_ptr<T>(allocFunc(), [deleteFunc](T *p){ deleteFunc(p); });
+      //return std::shared_ptr<T>(create(), [destroy](T *p){ destroy(p); });
 
     }
 
@@ -109,10 +109,10 @@ template <class T> class LibraryLoader {
     */
     void closeLibrary() {
       if (instance != nullptr) {
-            if (deleteFunc == nullptr) {
+            if (destroy == nullptr) {
                 std::cerr << "Can't destroy object: Destroy function is not implemented" << std::endl;
             }
-            deleteFunc(instance);
+            destroy(instance);
       }
       #ifdef _WIN32
       if (FreeLibrary(_handle) == 0) {
