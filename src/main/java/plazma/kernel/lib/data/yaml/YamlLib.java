@@ -108,4 +108,24 @@ public class YamlLib {
         new YamlWriter().writeYamlToConsole(config, root);
     }
 
+    // convert
+
+    public static Node convertYamlToJson(Node node) {
+        Yaml2JsonConverter converter = new Yaml2JsonConverter();
+        Node result = converter.convert(node);
+        //if (converter != null) {
+        //    converter.destroy();
+        //}        
+        return result;
+    }
+
+    public static Node convertYamlToXml(Node node) {
+        Yaml2XmlConverter converter = new Yaml2XmlConverter();
+        Node result = converter.convert(node);
+        //if (converter != null) {
+        //    converter.destroy();
+        //}        
+        return result;
+    }
+
 }

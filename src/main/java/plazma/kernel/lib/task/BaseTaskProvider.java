@@ -41,6 +41,10 @@ import static plazma.kernel.lib.task.yaml.YamlFormatTask.TASK_FORMAT_YAML;
 
 import static plazma.kernel.lib.task.xml.Xml2JsonConvertTask.TASK_CONVERT_XML2JSON;
 import static plazma.kernel.lib.task.xml.Xml2YamlConvertTask.TASK_CONVERT_XML2YAML;
+import static plazma.kernel.lib.task.json.Json2XmlConvertTask.TASK_CONVERT_JSON2XML;
+import static plazma.kernel.lib.task.json.Json2YamlConvertTask.TASK_CONVERT_JSON2YAML;
+import static plazma.kernel.lib.task.yaml.Yaml2XmlConvertTask.TASK_CONVERT_YAML2XML;
+import static plazma.kernel.lib.task.yaml.Yaml2JsonConvertTask.TASK_CONVERT_YAML2JSON;
 
 import static plazma.kernel.lib.task.TestTask.TASK_TEST;
 import static plazma.kernel.lib.task.array.ArrayGenTask.TASK_GENERATE_FLOAT_ARRAY;
@@ -55,12 +59,17 @@ import plazma.kernel.lib.task.sys.SysTask;
 import plazma.kernel.lib.task.array.ArrayGenTask;
 import plazma.kernel.lib.task.array.ArrayReadTask;
 import plazma.kernel.lib.task.sys.CalendarTask;
-import plazma.kernel.lib.task.xml.Xml2JsonConvertTask;
-import plazma.kernel.lib.task.xml.Xml2YamlConvertTask;
+
 import plazma.kernel.lib.task.xml.XmlFormatTask;
 import plazma.kernel.lib.task.json.JsonFormatTask;
 import plazma.kernel.lib.task.yaml.YamlFormatTask;
 
+import plazma.kernel.lib.task.xml.Xml2JsonConvertTask;
+import plazma.kernel.lib.task.xml.Xml2YamlConvertTask;
+import plazma.kernel.lib.task.json.Json2XmlConvertTask;
+import plazma.kernel.lib.task.json.Json2YamlConvertTask;
+import plazma.kernel.lib.task.yaml.Yaml2XmlConvertTask;
+import plazma.kernel.lib.task.yaml.Yaml2JsonConvertTask;
 
 public class BaseTaskProvider implements TaskProvider {
 
@@ -83,7 +92,13 @@ public class BaseTaskProvider implements TaskProvider {
             
             TASK_CONVERT_XML2JSON,
             TASK_CONVERT_XML2YAML,
-            
+
+            TASK_CONVERT_JSON2XML,
+            TASK_CONVERT_JSON2YAML,
+
+            TASK_CONVERT_YAML2JSON,
+            TASK_CONVERT_YAML2XML,
+
             TASK_READ_FLOAT_ARRAY,
             TASK_GENERATE_FLOAT_ARRAY,
 
@@ -136,17 +151,25 @@ public class BaseTaskProvider implements TaskProvider {
             return new Xml2JsonConvertTask();
         } else if (TASK_CONVERT_XML2YAML.equals(taskName)) {
             return new Xml2YamlConvertTask();
-        }
 
+        } else if (TASK_CONVERT_JSON2XML.equals(taskName)) {
+            return new Json2XmlConvertTask();
+        } else if (TASK_CONVERT_JSON2YAML.equals(taskName)) {
+            return new Json2YamlConvertTask();
+
+        } else if (TASK_CONVERT_YAML2XML.equals(taskName)) {
+            return new Yaml2XmlConvertTask();
+        } else if (TASK_CONVERT_YAML2JSON.equals(taskName)) {
+            return new Yaml2JsonConvertTask();
+            
         // array
-        if (TASK_READ_FLOAT_ARRAY.equals(taskName)) {
+        } else if (TASK_READ_FLOAT_ARRAY.equals(taskName)) {
             return new ArrayReadTask();
         } else if (TASK_GENERATE_FLOAT_ARRAY.equals(taskName)) {
             return new ArrayGenTask();
-        }
 
         // test
-        if (TASK_TEST.equals(taskName)) {
+        } else if (TASK_TEST.equals(taskName)) {
             return new TestTask();
         }
 
