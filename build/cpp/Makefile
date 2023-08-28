@@ -22,19 +22,9 @@ SOURCES:=$(wildcard $(START)/**/*.cpp) $(wildcard $(START)/**/**/*.cpp)
 # $(wildcard $(START)/task/*.cpp) \
 # $(wildcard $(START)/num/*.cpp)
   
-#SOURCES:=$(filter-out $(START)/task/BaseTaskProvider.cpp, $(SOURCES))
-#SOURCES:=$(filter-out $(START)/task/TaskProvider1.cpp, $(SOURCES))
-#SOURCES:=$(filter-out $(START)/task/FormatTask.cpp, $(SOURCES))
-#SOURCES:=$(filter-out $(START)/task/ConvertTask.cpp, $(SOURCES))
-
-# V-LIB
+# V-LIB-AVG
 #SOURCES:=$(wildcard $(START)/**/*.cpp)
  
-#SOURCES:=$(filter-out $(START)/task/BaseTaskProvider.cpp, $(SOURCES))
-#SOURCES:=$(filter-out $(START)/task/TaskProvider1.cpp, $(SOURCES))
-#SOURCES:=$(filter-out $(START)/task/FormatTask.cpp, $(SOURCES))
-#SOURCES:=$(filter-out $(START)/task/ConvertTask.cpp, $(SOURCES))
-
 #SOURCES:=$(filter-out $(START)/node/*.cpp, $(SOURCES))
 #SOURCES:=$(filter-out $(START)/node/**/*.cpp, $(SOURCES))
 
