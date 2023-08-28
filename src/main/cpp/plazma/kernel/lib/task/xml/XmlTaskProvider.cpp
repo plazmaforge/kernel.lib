@@ -52,7 +52,6 @@ namespace task {
           task = new XmlFormatTask();
        }
        return task;
-
     }
 
 }
