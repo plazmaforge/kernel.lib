@@ -18,6 +18,8 @@ namespace task {
 
             virtual ~TaskProvider();
 
+            virtual void init() = 0;
+
             virtual bool hasTask(std::string& taskName) = 0;
 
             virtual Task* getTask(std::string& taskName) = 0;

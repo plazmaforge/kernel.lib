@@ -19,6 +19,8 @@ namespace task {
 
             ~TaskProvider1();
 
+            void init();
+
             bool hasTask(std::string& taskName);
 
             Task* getTask(std::string& taskName);

@@ -8,7 +8,6 @@
 namespace task {
 
     TaskProvider1::TaskProvider1() {
-        handler = new BaseTaskProvider();
     }
 
     TaskProvider1::~TaskProvider1() {
@@ -48,10 +47,12 @@ namespace task {
 
    #endif
 
+   void TaskProvider1::init() {
+     handler = new BaseTaskProvider();
+     handler->init();
+   }
+
    TaskProvider* TaskProvider1::getHandler() {
-       //if (handler == nullptr) {
-       //    handler = new BaseTaskProvider();
-       //}
        return handler;
        //return nullptr;
    }

@@ -62,15 +62,17 @@ const int TASK_COUNT = 21;
 
 namespace task {
 
-    BaseTaskProvider::BaseTaskProvider() {
-        for (int i  = 0; i < TASK_COUNT; i++) {
-            taskNames.push_back(TASK_LIST[i]);
-        }
-    }
+    BaseTaskProvider::BaseTaskProvider() {}
 
     BaseTaskProvider::~BaseTaskProvider() {
         //std::cout << "Destroy BaseTaskProvider" << std::endl;
         //taskNames.clear();
+    }
+
+    void BaseTaskProvider::init() {
+        for (int i  = 0; i < TASK_COUNT; i++) {
+            taskNames.push_back(TASK_LIST[i]);
+        }
     }
 
     bool equals(const std::string &str1, const std::string &str2) {

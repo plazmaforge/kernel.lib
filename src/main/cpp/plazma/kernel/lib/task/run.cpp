@@ -53,6 +53,8 @@ TaskExecutor* getExecutor() {
       return executor;
     }
 
+    provider->init();
+
     executor->setTaskProvider(provider);
   }
   return executor;

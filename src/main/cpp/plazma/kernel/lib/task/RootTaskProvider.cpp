@@ -21,13 +21,7 @@ namespace task {
     }
     #endif
 
-    RootTaskProvider::RootTaskProvider() {
-        #ifdef PLAZMA_RUN_TASK_LIBRARY
-        handler = loadTaskProvider();
-        #else
-        handler = new BaseTaskProvider();
-        #endif
-    }
+    RootTaskProvider::RootTaskProvider() {}
 
     RootTaskProvider::~RootTaskProvider() {
         #ifdef PLAZMA_RUN_TASK_LIBRARY
@@ -39,27 +33,36 @@ namespace task {
         #endif
     }
 
-   TaskProvider* RootTaskProvider::getHandler() {
+    void RootTaskProvider::init() {
+        #ifdef PLAZMA_RUN_TASK_LIBRARY
+        handler = loadTaskProvider();
+        #else
+        handler = new BaseTaskProvider();
+        #endif
+        handler->init();
+    }
+
+    TaskProvider* RootTaskProvider::getHandler() {
        return handler;
        //return nullptr;
-   }
+    }
 
-   bool RootTaskProvider::hasTask(std::string& taskName) {
-     return getHandler()->hasTask(taskName);
-     //return false;
-   }
+    bool RootTaskProvider::hasTask(std::string& taskName) {
+      return getHandler()->hasTask(taskName);
+      //return false;
+    }
 
-   Task* RootTaskProvider::getTask(std::string& taskName) {
-     return getHandler()->getTask(taskName);
+    Task* RootTaskProvider::getTask(std::string& taskName) {
+      return getHandler()->getTask(taskName);
      //return nullptr;
    }
 
    std::vector<std::string> RootTaskProvider::getTaskNames() {     
-       return getHandler()->getTaskNames();
+     return getHandler()->getTaskNames();
 
-       //std::vector<std::string> v;
-       //v.push_back("Task1");
-       //return v;
+     //std::vector<std::string> v;
+     //v.push_back("Task1");
+     //return v;
    }
 
 }
