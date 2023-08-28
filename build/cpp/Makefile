@@ -9,18 +9,22 @@ LDFLAGS=
 
 START=../../src/main/cpp/plazma/kernel/lib
 
+SOURCES_ALL:=$(wildcard $(START)/**/*.cpp) $(wildcard $(START)/**/**/*.cpp)
+
+SOURCES_MIN:=$(wildcard $(START)/sys/*.cpp) \
+ $(wildcard $(START)/io/*.cpp) \
+ $(wildcard $(START)/fs/*.cpp) \
+ $(wildcard $(START)/str/*.cpp) \
+ $(wildcard $(START)/collection/*.cpp) \
+ $(wildcard $(START)/fmt/*.cpp) \
+ $(wildcard $(START)/task/*.cpp) \
+ $(wildcard $(START)/num/*.cpp)
+
 # V-ALL
-SOURCES:=$(wildcard $(START)/**/*.cpp) $(wildcard $(START)/**/**/*.cpp)
+SOURCES:=$(SOURCES_ALL)
 
 # V-LIB-MIN
-#SOURCES:=$(wildcard $(START)/sys/*.cpp) \
-# $(wildcard $(START)/io/*.cpp) \
-# $(wildcard $(START)/fs/*.cpp) \
-# $(wildcard $(START)/str/*.cpp) \
-# $(wildcard $(START)/collection/*.cpp) \
-# $(wildcard $(START)/fmt/*.cpp) \
-# $(wildcard $(START)/task/*.cpp) \
-# $(wildcard $(START)/num/*.cpp)
+#SOURCES:=$(SOURCES_MIN)
   
 # V-LIB-AVG
 #SOURCES:=$(wildcard $(START)/**/*.cpp)
