@@ -2,16 +2,13 @@
 #include <iostream>
 
 #include "plazma/kernel/lib/sys/syslib.h"
-#include "plazma/kernel/lib/sys/LibraryLoader.h"
 #include "plazma/kernel/lib/io/iolib.h"
 
 #include "run.h"
 #include "task_helper.h"
 
 #include "BaseTaskExecutor.h"
-
-// Remove for Library
-#include "plazma/kernel/lib/task/base/BaseTaskProvider.h"
+#include "RootTaskProvider.h"
 
 using namespace syslib;
 using namespace task;
@@ -40,24 +37,15 @@ const std::string PARAMETER_STDERR = "stderr";        // StdErr mode
 
 TaskExecutor* executor;
 
-TaskProvider* loadTaskProvider() {
-  sys::LibraryLoader<TaskProvider>* loader = new sys::LibraryLoader<TaskProvider>("lib-task.dylib");
-  loader->openLibrary();
-  return loader->getInstance();
-}
-
 TaskProvider* createTaskProvider() {
-  //return loadTaskProvider();   // Dynamic Load
-  return new BaseTaskProvider(); // Static Load
+  return new RootTaskProvider();
 }
 
 TaskExecutor* getExecutor() {
   if (executor == nullptr) {
 
-    //println("Start Executor initialization...");
     executor = new BaseTaskExecutor();
     
-    //println("Start Provider initialization...");
     TaskProvider* provider = createTaskProvider();
 
     if (provider == nullptr) {
@@ -66,7 +54,6 @@ TaskExecutor* getExecutor() {
     }
 
     executor->setTaskProvider(provider);
-    //println("Executor is initialized");
   }
   return executor;
 }
