@@ -52,27 +52,30 @@ namespace task {
      handler->init();
    }
 
-   TaskProvider* TaskProvider1::getHandler() {
-       return handler;
-       //return nullptr;
+    bool TaskProvider1::hasTask(std::string& taskName) {
+      if (handler == nullptr) {
+        return false;
+      }
+      return handler->hasTask(taskName);
+    }
+
+    Task* TaskProvider1::getTask(std::string& taskName) {
+      if (handler == nullptr) {
+        return nullptr;
+      }
+      return handler->getTask(taskName);
    }
 
-   bool TaskProvider1::hasTask(std::string& taskName) {
-     return getHandler()->hasTask(taskName);
-     //return false;
-   }
+   std::vector<std::string> TaskProvider1::getTaskNames() {
+      if (handler == nullptr) {
+        std::vector<std::string> names;
+        return names;
+      }
+      return handler->getTaskNames();
 
-   Task* TaskProvider1::getTask(std::string& taskName) {
-     return getHandler()->getTask(taskName);
-     //return nullptr;
-   }
-
-   std::vector<std::string> TaskProvider1::getTaskNames() {     
-       return getHandler()->getTaskNames();
-
-       //std::vector<std::string> v;
-       //v.push_back("Task1");
-       //return v;
+      //std::vector<std::string> v;
+      //v.push_back("Task1");
+      //return v;
    }
 
 }

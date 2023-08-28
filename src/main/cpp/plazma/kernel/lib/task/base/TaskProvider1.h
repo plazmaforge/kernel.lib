@@ -27,11 +27,11 @@ namespace task {
 
             std::vector<std::string> getTaskNames();
 
-        protected:
+        // protected:
 
-            std::vector<std::string> taskNames;
+        //     std::vector<std::string> taskNames;
 
-            TaskProvider* getHandler();
+        //     TaskProvider* getHandler();
 
         private:
 
