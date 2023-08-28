@@ -1,3 +1,6 @@
+#ifndef PLAZMA_KERNEL_LIB_NUM_NUMLIB_H
+#define PLAZMA_KERNEL_LIB_NUM_NUMLIB_H
+
 #include <string>
 #include <vector>
 
@@ -46,3 +49,5 @@ namespace numlib {
     std::vector<std::vector<float>> generateFloatArray(int cols, int rows, float min, float max);
 
 }
+
+#endif // PLAZMA_KERNEL_LIB_NUM_NUMLIB_H
