@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "TaskProvider.h"
+#include "plazma/kernel/lib/task/TaskProvider.h"
 
 namespace task {
 

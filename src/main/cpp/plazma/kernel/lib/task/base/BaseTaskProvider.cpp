@@ -20,7 +20,7 @@
 #include "plazma/kernel/lib/task/array/ArrayReadTask.h"
 #include "plazma/kernel/lib/task/array/ArrayGenTask.h"
 
-#include "TestTask.h"
+#include "plazma/kernel/lib/task/test/TestTask.h"
 
 #include "plazma/kernel/lib/str/strlib.h" 
 

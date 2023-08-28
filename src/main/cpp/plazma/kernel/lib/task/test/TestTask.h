@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "TaskContext.h"
-#include "BaseTask.h"
+#include "plazma/kernel/lib/task/TaskContext.h"
+#include "plazma/kernel/lib/task/BaseTask.h"
 
 const std::string TASK_TEST = "test";
 

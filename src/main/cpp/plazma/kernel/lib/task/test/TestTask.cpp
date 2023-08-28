@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "task_helper.h"
+#include "plazma/kernel/lib/task/task_helper.h"
 
 #include "TestTask.h"
 

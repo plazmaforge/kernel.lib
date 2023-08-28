@@ -11,7 +11,7 @@
 #include "BaseTaskExecutor.h"
 
 // Remove for Library
-#include "BaseTaskProvider.h"
+#include "plazma/kernel/lib/task/base/BaseTaskProvider.h"
 
 using namespace syslib;
 using namespace task;
