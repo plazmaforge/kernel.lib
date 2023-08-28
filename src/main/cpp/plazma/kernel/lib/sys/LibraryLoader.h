@@ -73,6 +73,10 @@ template <class T> class LibraryLoader {
 
     T* getInstance() {    
 
+      if (_handle == nullptr) {
+        return nullptr;
+      }
+
       #ifdef _WIN32
 
       /*auto*/ create = reinterpret_cast<CreateType>(GetProcAddress(_handle, _createName.c_str()));

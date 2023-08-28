@@ -5,64 +5,58 @@
 
 #include "RootTaskProvider.h"
 
-#ifdef PLAZMA_RUN_TASK_LIBRARY
-#include "plazma/kernel/lib/sys/LibraryLoader.h"
-#else
+#ifndef PLAZMA_RUN_TASK_LIBRARY
 #include "plazma/kernel/lib/task/base/BaseTaskProvider.h"
 #endif
 
 namespace task {
 
-    #ifdef PLAZMA_RUN_TASK_LIBRARY
-    TaskProvider* loadTaskProvider() {
-        sys::LibraryLoader<TaskProvider>* loader = new sys::LibraryLoader<TaskProvider>("lib-task.dylib");
-        loader->openLibrary();
-        return loader->getInstance();
-    }
-    #endif
-
     RootTaskProvider::RootTaskProvider() {}
 
     RootTaskProvider::~RootTaskProvider() {
-        #ifdef PLAZMA_RUN_TASK_LIBRARY
-        // TODO
-        #else
-        if (handler != nullptr) {
-            delete handler;
-        }
-        #endif
+      if (registry == nullptr) {
+        return;
+      }
+      registry->destroy();
+
+      delete registry;
+
     }
 
     void RootTaskProvider::init() {
-        #ifdef PLAZMA_RUN_TASK_LIBRARY
-        handler = loadTaskProvider();
-        #else
-        handler = new BaseTaskProvider();
-        #endif
-        handler->init();
-    }
+        registry = new TaskProviderRegistry();
 
-    TaskProvider* RootTaskProvider::getHandler() {
-       return handler;
-       //return nullptr;
+        #ifdef PLAZMA_RUN_TASK_LIBRARY
+        registry->addLibraryProvider("LibTaskProvider", "lib-task", "lib-task.dylib");
+        #else
+        registry->addStaticProvider("BaseTaskProvider", new BaseTaskProvider());        
+        #endif
+
+        registry->init();
+        handler = registry->getTaskProvider(0);
+        
     }
 
     bool RootTaskProvider::hasTask(std::string& taskName) {
-      return getHandler()->hasTask(taskName);
-      //return false;
+      if (handler == nullptr) {
+        return false;
+      }
+      return handler->hasTask(taskName);
     }
 
     Task* RootTaskProvider::getTask(std::string& taskName) {
-      return getHandler()->getTask(taskName);
-     //return nullptr;
+      if (handler == nullptr) {
+        return nullptr;
+      }
+      return handler->getTask(taskName);
    }
 
-   std::vector<std::string> RootTaskProvider::getTaskNames() {     
-     return getHandler()->getTaskNames();
-
-     //std::vector<std::string> v;
-     //v.push_back("Task1");
-     //return v;
+   std::vector<std::string> RootTaskProvider::getTaskNames() {
+      if (handler == nullptr) {
+        std::vector<std::string> names;
+        return names;
+      }
+      return handler->getTaskNames();
    }
 
 }

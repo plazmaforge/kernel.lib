@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "TaskProvider.h"
+#include "TaskProviderRegistry.h"
 
 namespace task {
 
@@ -26,13 +27,9 @@ namespace task {
 
             std::vector<std::string> getTaskNames();
 
-        protected:
-
-            std::vector<std::string> taskNames;
-
-            TaskProvider* getHandler();
-
         private:
+
+            TaskProviderRegistry* registry;
 
             TaskProvider* handler;
 

@@ -4,9 +4,10 @@
 #include <string>
 #include <vector>
 
+#include "plazma/kernel/lib/sys/LibraryLoader.h"
 #include "TaskProvider.h"
 
-using namespace sys;
+//using namespace sys;
 
 namespace task {
 
@@ -19,7 +20,7 @@ namespace task {
           std::string packageName;
           std::string libraryName;
           std::string libraryPath; // depends on OS
-          //TODO: loader
+          sys::LibraryLoader<TaskProvider>* loader;
           bool initialized;
           bool hasError;
           bool hasLibrary;
