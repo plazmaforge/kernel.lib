@@ -1,21 +1,21 @@
-#ifndef PLAZMA_KERNEL_LIB_TASK_BASE_TASK_PROVIDER_H
-#define PLAZMA_KERNEL_LIB_TASK_BASE_TASK_PROVIDER_H
+#ifndef PLAZMA_KERNEL_LIB_TASK_XML_XML_TASK_PROVIDER_H
+#define PLAZMA_KERNEL_LIB_TASK_XML_XML_TASK_PROVIDER_H
 
-#include <string>
-#include <vector>
+//#include <string>
+//#include <vector>
 
 #include "plazma/kernel/lib/task/TaskProvider.h"
 
 namespace task {
 
-    class BaseTaskProvider: public TaskProvider {
+    class XmlTaskProvider: public TaskProvider {
 
         
         public:
 
-            BaseTaskProvider();
+            XmlTaskProvider();
 
-            ~BaseTaskProvider();
+            ~XmlTaskProvider();
 
             void init();
 
@@ -37,4 +37,4 @@ namespace task {
     };
 
 }
-#endif // PLAZMA_KERNEL_LIB_TASK_BASE_TASK_PROVIDER_H
+#endif // PLAZMA_KERNEL_LIB_TASK_XML_XML_TASK_PROVIDER_H

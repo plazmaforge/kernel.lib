@@ -75,7 +75,7 @@ namespace task {
         }
     }
 
-    bool equals(const std::string &str1, const std::string &str2) {
+    bool BaseTaskProvider::equals(const std::string &str1, const std::string &str2) {
         return strlib::equals(str1, str2);
     }
 

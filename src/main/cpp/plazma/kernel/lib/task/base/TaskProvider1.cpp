@@ -3,7 +3,9 @@
 #include <vector>
 
 #include "TaskProvider1.h"
+
 #include "BaseTaskProvider.h"
+//#include "plazma/kernel/lib/task/xml/XmlTaskProvider.h"
 
 namespace task {
 
@@ -49,6 +51,7 @@ namespace task {
 
    void TaskProvider1::init() {
      handler = new BaseTaskProvider();
+     //handler = new XmlTaskProvider();
      handler->init();
    }
 

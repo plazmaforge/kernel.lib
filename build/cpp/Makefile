@@ -20,13 +20,20 @@ SOURCES_MIN:=$(wildcard $(START)/sys/*.cpp) \
  $(wildcard $(START)/task/*.cpp) \
  $(wildcard $(START)/num/*.cpp)
 
+SOURCES_EXT:=$(SOURCES_MIN) \
+ $(wildcard $(START)/ext/*.cpp) \
+ $(wildcard $(START)/text/*.cpp) \
+ $(wildcard $(START)/math/*.cpp) \
+ $(wildcard $(START)/time/*.cpp) \
+ $(wildcard $(START)/data/node/*.cpp)
+
 # V-ALL
 SOURCES:=$(SOURCES_ALL)
 
-# V-LIB-MIN
+# V-MIN
 #SOURCES:=$(SOURCES_MIN)
   
-# V-LIB-AVG
+# V-AVG
 #SOURCES:=$(wildcard $(START)/**/*.cpp)
  
 #SOURCES:=$(filter-out $(START)/node/*.cpp, $(SOURCES))
@@ -40,8 +47,22 @@ SOURCES_LIB:=$(wildcard $(START)/**/*.cpp) $(wildcard $(START)/task/**/*.cpp) $(
 SOURCES_LIB:=$(filter-out $(START)/task/run.cpp, $(SOURCES_LIB))
 SOURCES_LIB:=$(filter-out $(START)/task/run_test.cpp, $(SOURCES_LIB))
 
+# S-LIB-XML
+#SOURCES_LIB_XML:=$(SOURCES_EXT) \
+# $(wildcard $(START)/data/xml/*.cpp) \
+# $(wildcard $(START)/task/base/*.cpp) \
+# $(wildcard $(START)/task/format/*.cpp) \
+ 
+#SOURCES_LIB_XML:=$(filter-out $(START)/task/run.cpp, $(SOURCES_LIB_XML))
+#SOURCES_LIB_XML:=$(filter-out $(START)/task/run_test.cpp, $(SOURCES_LIB_XML))
+#SOURCES_LIB_XML:=$(filter-out $(START)/task/base/BaseTaskProvider.cpp, $(SOURCES_LIB_XML))
+#SOURCES_LIB_XML:=$(filter-out $(START)/task/xml/Xml2JsonConvertTask.cpp, $(SOURCES_LIB_XML))
+#SOURCES_LIB_XML:=$(filter-out $(START)/task/xml/Xml2YamlConvertTask.cpp, $(SOURCES_LIB_XML))
+
 OBJECTS=$(SOURCES:.cpp=.o)
+OBJECTS_MIN=$(SOURCES_MIN:.cpp=.o)
 OBJECTS_LIB=$(SOURCES_LIB:.cpp=.o)
+#OBJECTS_LIB_XML=$(SOURCES_LIB_XML:.cpp=.o)
 
 EXECUTABLE=run
 
@@ -58,6 +79,9 @@ lib-nix: $(OBJECTS)
 		
 lib-mac: $(OBJECTS_LIB)
 	$(CC) $(LDFLAGS) -dynamiclib -fPIC -o lib-task.dylib $(OBJECTS_LIB)
+	
+#lib-mac-xml: $(OBJECTS_LIB_XML)
+#	$(CC) $(LDFLAGS) -dynamiclib -fPIC -o lib-task.dylib $(OBJECTS_LIB_XML)
 
 lib-win: $(OBJECTS)
 	$(CC) $(LDFLAGS) -shared -o lib-task.dll -Wl,--out-implib,lib-task.a -W1,--export-all-symbols-Wl,—enable-auto-image-base $(OBJECTS_LIB)
