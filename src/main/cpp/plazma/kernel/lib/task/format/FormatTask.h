@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "BaseTask.h"
+#include "plazma/kernel/lib/task/BaseTask.h"
 
 namespace task {
 

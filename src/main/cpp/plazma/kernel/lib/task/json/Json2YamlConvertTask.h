@@ -1,7 +1,7 @@
 #ifndef PLAZMA_KERNEL_LIB_TASK_JSON_JSON2YAML_CONVERT_TASK_H
 #define PLAZMA_KERNEL_LIB_TASK_JSON_JSON2YAML_CONVERT_TASK_H
 
-#include "plazma/kernel/lib/task/ConvertTask.h"
+#include "plazma/kernel/lib/task/convert/ConvertTask.h"
 
 const std::string TASK_CONVERT_JSON2YAML = "convert-json2yaml";
 

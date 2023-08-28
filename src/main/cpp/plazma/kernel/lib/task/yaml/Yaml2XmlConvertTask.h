@@ -1,7 +1,7 @@
 #ifndef PLAZMA_KERNEL_LIB_TASK_YAML_YAML2XML_CONVERT_TASK_H
 #define PLAZMA_KERNEL_LIB_TASK_YAML_YAML2XML_CONVERT_TASK_H
 
-#include "plazma/kernel/lib/task/ConvertTask.h"
+#include "plazma/kernel/lib/task/convert/ConvertTask.h"
 
 const std::string TASK_CONVERT_YAML2XML  = "convert-yaml2xml";
 

@@ -1,7 +1,7 @@
 #ifndef PLAZMA_KERNEL_LIB_TASK_XML_XML_FORMAT_TASK_H
 #define PLAZMA_KERNEL_LIB_TASK_XML_XML_FORMAT_TASK_H
 
-#include "plazma/kernel/lib/task/FormatTask.h"
+#include "plazma/kernel/lib/task/format/FormatTask.h"
 
 const std::string TASK_FORMAT_XML = "format-xml";
 
