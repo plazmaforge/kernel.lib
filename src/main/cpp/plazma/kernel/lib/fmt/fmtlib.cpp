@@ -163,27 +163,32 @@ std::string format(const std::string& message, const std::string& value1, const 
 
 ////
 
-std::string _normalizeFormat(std::map<std::string, std::string> formats, std::string format, std::string defaultFormat) {
+std::string _normalizeFormat(std::map<std::string, std::string>& formats, const std::string& format, const std::string& defaultFormat) {
 	
 	// Normalize string
 	//format = normalize(format);
+
+	std::string result;
 	if (format.empty()) {
-	    return defaultFormat;
+		result = defaultFormat;
+	    return result;
 	}
 	
 	if (!USE_NORMALIZE_FORMAT) {
-	    return format;
+		result = format;
+	    return result;
 	}
 	
 	// Normalize format
-	std::string normalizeFormat = formats[format];
-	if (!normalizeFormat.empty()) {
-	    return normalizeFormat;
+	result = formats[format];
+	if (!result.empty()) {
+	    return result;
 	}
-	return format;
+	result = format;
+	return result;
 }
 
-std::string _formatDate(std::chrono::system_clock::time_point date, std::string format, std::string defaultFormat) {
+std::string _formatDate(const std::chrono::system_clock::time_point& date, const std::string& format, const std::string& defaultFormat) {
 
     // Initialization
     if (!initFlag) {
@@ -191,17 +196,17 @@ std::string _formatDate(std::chrono::system_clock::time_point date, std::string 
     }
 
     // Normalize format
-    format = _normalizeFormat(dateFormats, format, defaultFormat);
+    std::string resultFormat = _normalizeFormat(dateFormats, format, defaultFormat);
 
     std::time_t now = std::chrono::system_clock::to_time_t(date);
 
     std::string result(30, '\0'); // TODO: what about dynamic size?
-    std::strftime(&result[0], result.size(), format.c_str(), std::localtime(&now));
+    std::strftime(&result[0], result.size(), resultFormat.c_str(), std::localtime(&now));
 
     return result;
 }
 
-std::string _formatDate(std::chrono::system_clock::time_point date, std::string format) {
+std::string _formatDate(const std::chrono::system_clock::time_point& date, const std::string& format) {
     return _formatDate(date, format, "");
 }
 
@@ -215,17 +220,17 @@ std::string formatDate() {
     return _formatDate(_getCurrentDate(), DEFAULT_DATE_FORMAT);
 }
 
-std::string formatDate(std::string format) {
+std::string formatDate(const std::string& format) {
     return _formatDate(_getCurrentDate(), format, DEFAULT_DATE_FORMAT);
 }
 
 //
 
-std::string formatDate(std::chrono::system_clock::time_point date) {
+std::string formatDate(const std::chrono::system_clock::time_point& date) {
     return _formatDate(date, DEFAULT_DATE_FORMAT);
 }
 
-std::string formatDate(std::chrono::system_clock::time_point date, std::string format) {
+std::string formatDate(const std::chrono::system_clock::time_point& date, const std::string& format) {
     return _formatDate(date, format, DEFAULT_DATE_FORMAT);
 }
 
@@ -235,17 +240,17 @@ std::string formatTime() {
     return _formatDate(_getCurrentDate(), DEFAULT_TIME_FORMAT);
 }
 
-std::string formatTime(std::string format) {
+std::string formatTime(const std::string& format) {
     return _formatDate(_getCurrentDate(), format, DEFAULT_TIME_FORMAT);
 }
 
 //
 
-std::string formatTime(std::chrono::system_clock::time_point date) {
+std::string formatTime(const std::chrono::system_clock::time_point& date) {
     return _formatDate(date, DEFAULT_TIME_FORMAT);
 }
 
-std::string formatTime(std::chrono::system_clock::time_point date, std::string format) {
+std::string formatTime(const std::chrono::system_clock::time_point& date, const std::string& format) {
     return _formatDate(date, format, DEFAULT_TIME_FORMAT);
 }
 
@@ -255,17 +260,17 @@ std::string formatDateTime() {
     return _formatDate(_getCurrentDate(), DEFAULT_DATE_TIME_FORMAT);
 }
 
-std::string formatDateTime(std::string format) {
+std::string formatDateTime(const std::string& format) {
     return _formatDate(_getCurrentDate(), format, DEFAULT_DATE_TIME_FORMAT);
 }
 
 //
 
-std::string formatDateTime(std::chrono::system_clock::time_point date) {
+std::string formatDateTime(const std::chrono::system_clock::time_point& date) {
     return _formatDate(date, DEFAULT_DATE_TIME_FORMAT);
 }
 
-std::string formatDateTime(std::chrono::system_clock::time_point date, std::string format) {
+std::string formatDateTime(const std::chrono::system_clock::time_point& date, const std::string& format) {
     return _formatDate(date, format, DEFAULT_DATE_TIME_FORMAT);
 }
 

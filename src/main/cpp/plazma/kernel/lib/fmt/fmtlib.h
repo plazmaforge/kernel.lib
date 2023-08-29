@@ -55,37 +55,37 @@ std::string format(const std::string& message, const std::string& value1, const 
 
 std::string formatDate();
 
-std::string formatDate(std::string format);
+std::string formatDate(const std::string& format);
 
 //
 
-std::string formatDate(std::chrono::system_clock::time_point date);
+std::string formatDate(const std::chrono::system_clock::time_point& date);
 
-std::string formatDate(std::chrono::system_clock::time_point date, std::string format);
+std::string formatDate(const std::chrono::system_clock::time_point& date, const std::string& format);
 
 // 2.2 Time
 
 std::string formatTime();
 
-std::string formatTime(std::string format);
+std::string formatTime(const std::string& format);
 
 //
 
-std::string formatTime(std::chrono::system_clock::time_point date);
+std::string formatTime(const std::chrono::system_clock::time_point& date);
 
-std::string formatTime(std::chrono::system_clock::time_point date, std::string format);
+std::string formatTime(const std::chrono::system_clock::time_point& date, const std::string& format);
 
 // 2.3 DateTime
 
 std::string formatDateTime();
 
-std::string formatDateTime(std::string format);
+std::string formatDateTime(const std::string& format);
 
 //
 
-std::string formatDateTime(std::chrono::system_clock::time_point date);
+std::string formatDateTime(const std::chrono::system_clock::time_point& date);
 
-std::string formatDateTime(std::chrono::system_clock::time_point date, std::string format);
+std::string formatDateTime(const std::chrono::system_clock::time_point& date, const std::string& format);
 
 }
 

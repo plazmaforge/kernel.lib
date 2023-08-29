@@ -42,9 +42,9 @@ namespace numlib {
 
     std::vector<std::vector<float>> readFloatArray(const std::string &fileName);
 
-    void writeFloatArray(std::ofstream &file, std::vector<std::vector<float>> records);
+    void writeFloatArray(std::ofstream &file, std::vector<std::vector<float>> &records);
 
-    void writeFloatArray(const std::string &fileName, std::vector<std::vector<float>> records);
+    void writeFloatArray(const std::string &fileName, std::vector<std::vector<float>> &records);
 
     std::vector<std::vector<float>> generateFloatArray(int cols, int rows, float min, float max);
 

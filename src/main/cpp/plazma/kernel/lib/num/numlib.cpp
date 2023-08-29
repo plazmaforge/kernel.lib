@@ -290,7 +290,7 @@ void ftoa(float n, char* res, int afterpoint) {
 
 
 
-void writeFloatArray(std::ofstream& file, std::vector<std::vector<float>> records) {
+void writeFloatArray(std::ofstream& file, std::vector<std::vector<float>> &records) {
 
   int cols = 0;
   int rows = records.size();
@@ -352,7 +352,7 @@ void writeFloatArray(std::ofstream& file, std::vector<std::vector<float>> record
 
 }
 
-void writeFloatArray(const std::string &fileName, std::vector<std::vector<float>> records) {
+void writeFloatArray(const std::string &fileName, std::vector<std::vector<float>> &records) {
   std::ofstream file;
 
   file.open(fileName);
