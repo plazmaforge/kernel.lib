@@ -14,13 +14,16 @@
 #include "plazma/kernel/lib/num/numlib.h"
 #include "plazma/kernel/lib/collection/collectionlib.h"
 
-#ifndef _WIN32
-#include <unistd.h>
-#endif
+//#ifndef _WIN32
+//#include <unistd.h>
+//#endif
 
 #ifdef _WIN32
 #include <io.h>
 #include <windows.h>
+#else
+#include <unistd.h>
+#include <dlfcn.h>
 #endif
 
 #include "syslib.h"
@@ -43,6 +46,60 @@ int stderrMode = -1;
 // https://superuser.com/questions/75166/how-to-find-out-mac-os-x-version-from-terminal
 
 namespace syslib {
+
+void* loadLibrary(const std::string& path) {
+    if (path.empty()) {
+        return nullptr;
+    }
+    #ifdef _WIN32
+    return LoadLibrary(path.c_str());
+    #else
+    return dlopen(path.c_str(), RTLD_NOW | RTLD_LAZY);
+    #endif
+}
+
+void* getSymbol(void* handle, const std::string& name) {
+    if (handle == nullptr || name.empty()) {
+        return nullptr;
+    }
+    #ifdef _WIN32
+    return GetProcAddress(_handle, name.c_str());
+    #else
+    return dlsym(handle, name.c_str());
+    #endif
+}
+
+bool closeLibrary(void* handle) {
+    #ifdef _WIN32
+    return FreeLibrary(_handle) != 0; // success
+	  #else
+    return dlclose(handle) == 0;      // success
+    #endif
+}
+
+bool isSupportLibraryError() {
+    #ifdef _WIN32
+    return false;
+	  #else
+    return true;
+    #endif
+}
+
+const std::string getLibraryError() {
+    #ifdef _WIN32
+    return "";
+	  #else
+    return dlerror();
+    #endif
+}
+
+void resetLibraryError() {
+    #ifndef _WIN32
+    dlerror();
+    #endif
+}
+
+////
 
 std::string exec(const char *cmd, bool safe) {
     std::string result = "";

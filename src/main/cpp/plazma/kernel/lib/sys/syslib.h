@@ -40,6 +40,18 @@ namespace syslib {
     //const std::string MESSAGE_WARN  = "[WARNING]";
     //const std::string MESSAGE_ERROR = "[ERROR  ]";
 
+    void* loadLibrary(const std::string& path);
+
+    void* getSymbol(void* handle, const std::string& name);
+
+    bool closeLibrary(void* handle);
+
+    bool isSupportLibraryError();
+
+    const std::string getLibraryError();
+
+    void resetLibraryError();
+
     /**
      * Parse application argument array and return parameter map
      */

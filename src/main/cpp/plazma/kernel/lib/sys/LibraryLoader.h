@@ -11,6 +11,8 @@
 #include <dlfcn.h>
 #endif
 
+#include "plazma/kernel/lib/sys/syslib.h"
+
 namespace sys {
 
 // https://tldp.org/HOWTO/C++-dlopen/
@@ -55,17 +57,38 @@ template <class T> class LibraryLoader {
 
     }
 
+    void error(const std::string& message, bool details) {
+      std::cerr << message;
+      if (details && syslib::isSupportLibraryError()) {
+        std::string err = syslib::getLibraryError();
+        if (!err.empty()) {
+          std::cerr << ": " << err;
+        }
+      }
+      std::cerr << std::endl;
+    }
+
+    void error(const std::string& message) {
+      error(message, false);
+    }
+
     void openLibrary() {
-      #ifdef _WIN32
-      if (!(_handle = LoadLibrary(_path.c_str()))) {
-        std::cerr << "Can't load library " << _path << std::endl;
-	    }
-      #else
-      if (!(_handle = dlopen(_path.c_str(), RTLD_NOW | RTLD_LAZY))) {
-        std::cerr << "Can't load library " << _path << std::endl;
-	      std::cerr << dlerror() << std::endl;
-	    } 
-      #endif
+      _handle = syslib::loadLibrary(_path);
+      if (!_handle) {
+        error("Can't load library " + _path, true);
+      }
+
+      // #ifdef _WIN32
+      // if (!(_handle = LoadLibrary(_path.c_str()))) {
+      //   std::cerr << "Can't load library " << _path << std::endl;
+	    // }
+      // #else
+      // if (!(_handle = dlopen(_path.c_str(), RTLD_NOW | RTLD_LAZY))) {
+      //   std::cerr << "Can't load library " << _path << std::endl;
+	    //   std::cerr << dlerror() << std::endl;
+	    // } 
+      // #endif
+
     }
 
 
@@ -77,32 +100,45 @@ template <class T> class LibraryLoader {
         return nullptr;
       }
 
-      #ifdef _WIN32
-
-      /*auto*/ create = reinterpret_cast<CreateType>(GetProcAddress(_handle, _createName.c_str()));
-      /*auto*/ destroy = reinterpret_cast<DestroyType>(GetProcAddress(_handle, _destroyName.c_str()));
+      /*auto*/ create = reinterpret_cast<CreateType>(syslib::getSymbol(_handle, _createName));
+      /*auto*/ destroy = reinterpret_cast<DestroyType>(syslib::getSymbol(_handle, _destroyName));
 
       if (!create || !destroy) {
         closeLibrary();
-        std::cerr << "Can't find symbol 'create' or 'destroy' in " << _path << std::endl;
+        error("Can't find symbol 'create' or 'destroy' in " + _path);
+        return nullptr;
       }
-
-      //return std::shared_ptr<T>(create(), [destroy](T *p) { destroy(p); });    
-      #else
-
-      /*auto*/ create = reinterpret_cast<CreateType>(dlsym(_handle, _createName.c_str()));
-      /*auto*/ destroy = reinterpret_cast<DestroyType>(dlsym(_handle, _destroyName.c_str()));
-
-      if (!create || !destroy) {
-        closeLibrary();
-        std::cerr << "Can't find symbol 'create' or 'destroy' in " << _path << std::endl;
-        std::cerr << dlerror() << std::endl;
-      }
-
-      #endif
 
       instance = create();
       return instance;
+      //return std::shared_ptr<T>(create(), [destroy](T *p){ destroy(p); });
+
+      // #ifdef _WIN32
+
+      // /*auto*/ create = reinterpret_cast<CreateType>(GetProcAddress(_handle, _createName.c_str()));
+      // /*auto*/ destroy = reinterpret_cast<DestroyType>(GetProcAddress(_handle, _destroyName.c_str()));
+
+      // if (!create || !destroy) {
+      //   closeLibrary();
+      //   std::cerr << "Can't find symbol 'create' or 'destroy' in " << _path << std::endl;
+      // }
+
+      // //return std::shared_ptr<T>(create(), [destroy](T *p) { destroy(p); });    
+      // #else
+
+      // /*auto*/ create = reinterpret_cast<CreateType>(dlsym(_handle, _createName.c_str()));
+      // /*auto*/ destroy = reinterpret_cast<DestroyType>(dlsym(_handle, _destroyName.c_str()));
+
+      // if (!create || !destroy) {
+      //   closeLibrary();
+      //   std::cerr << "Can't find symbol 'create' or 'destroy' in " << _path << std::endl;
+      //   std::cerr << dlerror() << std::endl;
+      // }
+
+      // #endif
+
+      // instance = create();
+      // return instance;
 
       //return std::shared_ptr<T>(create(), [destroy](T *p){ destroy(p); });
 
@@ -114,21 +150,27 @@ template <class T> class LibraryLoader {
     void closeLibrary() {
       if (instance != nullptr) {
             if (destroy == nullptr) {
-                std::cerr << "Can't destroy object: Destroy function is not implemented" << std::endl;
+                error("Can't destroy object: Destroy function is not implemented");
             }
             destroy(instance);
       }
-      #ifdef _WIN32
-      if (FreeLibrary(_handle) == 0) {
-        std::cerr << "Can't close library " << _path << std::endl;
-      }
-	    #else
-      if (dlclose(_handle) != 0) {
-        std::cerr << "Can't close library " << _path << std::endl;
-        std::cerr << dlerror() << std::endl;
+
+      if (!syslib::closeLibrary(_handle)) {
+        error("Can't close library " + _path, true);
       }
 
-      #endif
+      // #ifdef _WIN32
+      // if (FreeLibrary(_handle) == 0) {
+      //   std::cerr << "Can't close library " << _path << std::endl;
+      // }
+	    // #else
+      // if (dlclose(_handle) != 0) {
+      //   std::cerr << "Can't close library " << _path << std::endl;
+      //   std::cerr << dlerror() << std::endl;
+      // }
+
+      // #endif
+
     }
 
 };
