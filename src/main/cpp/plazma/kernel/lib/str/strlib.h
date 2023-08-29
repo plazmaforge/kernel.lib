@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "plazma/kernel/lib/sys/define.h"
+
 // Functions
     
 /////////////////////////////////////////////////////////////////////////////////
@@ -250,34 +252,34 @@
 
 namespace strlib {
 
-    const std::string EMPTY_STRING = "";
+    CONST_STRING EMPTY_STRING = "";
 
-    const std::string  BLANK_STRING = " ";
+    CONST_STRING  BLANK_STRING = " ";
 
     const char BLANK_CHAR = ' ';
 
-    const std::string  ELLIPSIS = "...";
+    CONST_STRING  ELLIPSIS = "...";
 
     const int ELLIPSIS_LEN = 3;
 
-    const std::string DEFAULT_PAD = " ";
+    CONST_STRING DEFAULT_PAD = " ";
 
-    const std::string DEFAULT_SEPARATORS = " \t\n\r\f";
+    CONST_STRING DEFAULT_SEPARATORS = " \t\n\r\f";
 
-    const std::string DEFAULT_WORD_SEPARATORS = DEFAULT_SEPARATORS + ".,;'(){}[]!?+/=<>*&^%$#@`~|\\";
+    CONST_STRING DEFAULT_WORD_SEPARATORS = DEFAULT_SEPARATORS + ".,;'(){}[]!?+/=<>*&^%$#@`~|\\";
 
 
-    const std::string DEFAULT_CASE_SEPARATOR = "_";
+    CONST_STRING DEFAULT_CASE_SEPARATOR = "_";
 
-    const std::string DEFAULT_CASE_SEPARATORS_ = "-_";
+    CONST_STRING DEFAULT_CASE_SEPARATORS_ = "-_";
 
-    const std::string DEFAULT_CASE_SEPARATORS_A = "-_A";
+    CONST_STRING DEFAULT_CASE_SEPARATORS_A = "-_A";
 
-    const std::string DEFAULT_ALTER_CASE_SEPARATOR = "-"; // XML    
+    CONST_STRING DEFAULT_ALTER_CASE_SEPARATOR = "-"; // XML    
 
-    const std::string DEFAULT_SNAKE_CASE_SEPARATOR = "_"; // SNAKE
+    CONST_STRING DEFAULT_SNAKE_CASE_SEPARATOR = "_"; // SNAKE
 
-    const std::string DEFAULT_KEBAB_CASE_SEPARATOR = "-"; // KEBAB
+    CONST_STRING DEFAULT_KEBAB_CASE_SEPARATOR = "-"; // KEBAB
 
 
     const bool DEFAULT_FORCE_CAPITALIZE = false;
@@ -326,8 +328,8 @@ namespace strlib {
     const int CT_KEBAB_CASE =  9;
     const int CT_Kebab_Case = 10;
 
-    const std::string SNAKE_CONNECTOR = "_"; // shake_case
-    const std::string KEBAB_CONNECTOR = "-"; // kebab-case
+    CONST_STRING SNAKE_CONNECTOR = "_"; // shake_case
+    CONST_STRING KEBAB_CONNECTOR = "-"; // kebab-case
 
     //// 1.1
 

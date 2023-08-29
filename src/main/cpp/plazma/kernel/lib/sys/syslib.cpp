@@ -14,10 +14,6 @@
 #include "plazma/kernel/lib/num/numlib.h"
 #include "plazma/kernel/lib/collection/collectionlib.h"
 
-//#ifndef _WIN32
-//#include <unistd.h>
-//#endif
-
 #ifdef _WIN32
 #include <io.h>
 #include <windows.h>
@@ -28,7 +24,7 @@
 
 #include "syslib.h"
 
-const std::string DEFAULT_ARG_PREFIX = "-";
+CONST_STRING DEFAULT_ARG_PREFIX = "-";
 
 int initState = 0; // 0 - Not Init, 1 - Fail Init, 2 - Success Init
 
@@ -459,15 +455,15 @@ bool isColorizedStdErr() {
 //https://github.com/sharkdp/dbg-macro/
 //https://github.com/sharkdp/dbg-macro/blob/57e71b8a2f29bd4832647518e21a613e3854d877/dbg.h#L79-L81
 
-
-static constexpr const char* const ANSI_EMPTY = "";
-static constexpr const char* const ANSI_DEBUG = "\x1b[02m";
-static constexpr const char* const ANSI_ERROR = "\x1B[31m";
-static constexpr const char* const ANSI_WARN = "\x1b[33m";
-static constexpr const char* const ANSI_EXPRESSION = "\x1b[36m";
-static constexpr const char* const ANSI_VALUE = "\x1b[01m";
-static constexpr const char* const ANSI_TYPE = "\x1b[32m"; // info
-static constexpr const char* const ANSI_RESET = "\x1b[0m";
+//static constexpr const char* const
+//CONST_STRING ANSI_EMPTY = "";
+//CONST_STRING ANSI_DEBUG = "\x1b[02m";
+//CONST_STRING ANSI_ERROR = "\x1B[31m";
+//CONST_STRING ANSI_WARN = "\x1b[33m";
+//CONST_STRING ANSI_EXPRESSION = "\x1b[36m";
+//CONST_STRING ANSI_VALUE = "\x1b[01m";
+//CONST_STRING ANSI_TYPE = "\x1b[32m"; // info
+//CONST_STRING ANSI_RESET = "\x1b[0m";
 
 //////////////////////////////////////////////////////////////////////////////////////
 

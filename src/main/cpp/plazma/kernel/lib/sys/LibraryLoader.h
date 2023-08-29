@@ -5,12 +5,6 @@
 #include <iostream>
 //#include <memory>
 
-//#ifdef _WIN32
-//#include <windows.h>
-//#else
-//#include <dlfcn.h>
-//#endif
-
 #include "plazma/kernel/lib/sys/syslib.h"
 
 namespace sys {

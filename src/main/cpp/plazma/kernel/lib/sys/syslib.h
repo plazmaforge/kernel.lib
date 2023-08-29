@@ -7,6 +7,7 @@
 //#include <cstdarg>
 //#include <iostream>
 
+#include "define.h"
 #include "plazma/kernel/lib/ext/ustring.h"
 
 namespace syslib {
@@ -32,13 +33,13 @@ namespace syslib {
     const int COLOR_WARN = COLOR_YELLOW;
     const int COLOR_ERROR = COLOR_RED;
 
-    const std::string MESSAGE_INFO  = "[INFO]";
-    const std::string MESSAGE_WARN  = "[WARNING]";
-    const std::string MESSAGE_ERROR = "[ERROR]";
+    CONST_STRING MESSAGE_INFO  = "[INFO]";
+    CONST_STRING MESSAGE_WARN  = "[WARNING]";
+    CONST_STRING MESSAGE_ERROR = "[ERROR]";
 
-    //const std::string MESSAGE_INFO  = "[INFO   ]";
-    //const std::string MESSAGE_WARN  = "[WARNING]";
-    //const std::string MESSAGE_ERROR = "[ERROR  ]";
+    //CONST_STRING MESSAGE_INFO  = "[INFO   ]";
+    //CONST_STRING MESSAGE_WARN  = "[WARNING]";
+    //CONST_STRING MESSAGE_ERROR = "[ERROR  ]";
 
     void* loadLibrary(const std::string& path);
 
