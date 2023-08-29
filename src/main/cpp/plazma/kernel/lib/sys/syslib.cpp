@@ -54,7 +54,7 @@ void* loadLibrary(const std::string& path) {
     #ifdef _WIN32
     return LoadLibrary(path.c_str());
     #else
-    return dlopen(path.c_str(), RTLD_NOW | RTLD_LAZY);
+    return dlopen(path.c_str(), /*RTLD_NOW |*/ RTLD_LAZY);
     #endif
 }
 
@@ -63,7 +63,7 @@ void* getSymbol(void* handle, const std::string& name) {
         return nullptr;
     }
     #ifdef _WIN32
-    return GetProcAddress(_handle, name.c_str());
+    return GetProcAddress((HMODULE) _handle, name.c_str());
     #else
     return dlsym(handle, name.c_str());
     #endif
@@ -71,7 +71,7 @@ void* getSymbol(void* handle, const std::string& name) {
 
 bool closeLibrary(void* handle) {
     #ifdef _WIN32
-    return FreeLibrary(_handle) != 0; // success
+    return FreeLibrary((HMODULE) _handle) != 0; // success
 	  #else
     return dlclose(handle) == 0;      // success
     #endif

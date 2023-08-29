@@ -1,15 +1,15 @@
 #ifndef PLAZMA_KERNEL_LIB_SYS_LIBRARY_LOADER_H
 #define PLAZMA_KERNEL_LIB_SYS_LIBRARY_LOADER_H
 
-#include <memory>
 #include <string>
 #include <iostream>
+//#include <memory>
 
-#ifdef _WIN32
-#include <windows.h>
-#else
-#include <dlfcn.h>
-#endif
+//#ifdef _WIN32
+//#include <windows.h>
+//#else
+//#include <dlfcn.h>
+//#endif
 
 #include "plazma/kernel/lib/sys/syslib.h"
 
