@@ -27,7 +27,7 @@ namespace task {
         registry = new TaskProviderRegistry();
 
         #ifdef PLAZMA_RUN_TASK_LIBRARY
-        registry->addLibraryProvider("LibTaskProvider", "lib-task", "lib-task.dylib");
+        registry->addLibraryProvider("LibTaskProvider", "lib-task" /*, "lib-task.dylib"*/);
         #else
         registry->addStaticProvider("BaseTaskProvider", new BaseTaskProvider());        
         #endif

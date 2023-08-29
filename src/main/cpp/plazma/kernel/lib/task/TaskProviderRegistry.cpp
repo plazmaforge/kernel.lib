@@ -1,3 +1,5 @@
+#include "plazma/kernel/lib/sys/syslib.h"
+
 #include "TaskProviderDescriptor.h"
 #include "TaskProviderRegistry.h"
 
@@ -39,16 +41,20 @@ namespace task {
         TaskProviderDescriptor* descriptor = new TaskProviderDescriptor();
         descriptor->providerName = name;
         descriptor->libraryName = libraryName;
+        descriptor->libraryPath = syslib::getLibraryPath(libraryName);
         descriptor->hasLibrary = true;
         list.push_back(descriptor);
-
     }
 
     void TaskProviderRegistry::addLibraryProvider(const std::string& name, const std::string& libraryName, const std::string& libraryPath) {
         TaskProviderDescriptor* descriptor = new TaskProviderDescriptor();
         descriptor->providerName = name;
-        descriptor->libraryName = libraryName;
-        descriptor->libraryPath = libraryPath;
+        descriptor->libraryName = libraryName;        
+        if (libraryPath.empty())  {
+            descriptor->libraryPath = syslib::getLibraryPath(libraryName);
+        } else {
+            descriptor->libraryPath = libraryPath;
+        }
         descriptor->hasLibrary = true;
         list.push_back(descriptor);
     }

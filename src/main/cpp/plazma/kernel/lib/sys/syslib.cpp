@@ -95,6 +95,27 @@ void resetLibraryError() {
     #endif
 }
 
+std::string getLibraryExtension() {
+    std::string ext;
+    #if defined (_WIN32)
+      ext = ".dll";   // Windows 
+    //#elif defined(__unix__) && !defined(__apple__)
+    //  ext = ".so";  // Linux, BDS, Solaris and so on. 
+    #elif __APPLE__ || __MACH__
+      ext = ".dylib"; // MacOSX 
+    #elif __unix__
+      ext = ".so";    // Linux, BDS, Solaris and so on. 
+    #endif 
+    return ext;
+}
+
+std::string getLibraryPath(const std::string& name) {
+  if (name.empty()) {
+    return "";
+  }
+  return name + getLibraryExtension();
+}
+
 ////
 
 std::string exec(const char *cmd, bool safe) {

@@ -53,6 +53,10 @@ namespace syslib {
 
     void resetLibraryError();
 
+    std::string getLibraryExtension();
+
+    std::string getLibraryPath(const std::string& name);
+
     /**
      * Parse application argument array and return parameter map
      */
