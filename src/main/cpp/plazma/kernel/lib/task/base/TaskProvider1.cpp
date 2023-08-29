@@ -2,21 +2,30 @@
 #include <string>
 #include <vector>
 
-#include "TaskProvider1.h"
-
-#include "BaseTaskProvider.h"
+#include "plazma/kernel/lib/sys//export.h"
 //#include "plazma/kernel/lib/task/xml/XmlTaskProvider.h"
+#include "TaskProvider1.h"
+#include "BaseTaskProvider.h"
 
 namespace task {
 
-    TaskProvider1::TaskProvider1() {
-    }
+    TaskProvider1::TaskProvider1() {}
 
     TaskProvider1::~TaskProvider1() {
       if (handler != nullptr) {
         delete handler;
       }
     }
+    
+    LIBRARY_EXPORT_C TaskProvider1* create() {
+	  	return new TaskProvider1();
+	  }
+
+	  LIBRARY_EXPORT_C void destroy(TaskProvider1* ptr) {
+      delete ptr;
+	  }
+
+    /*
 
     #if defined(__linux__) || defined(__APPLE__) 
     
@@ -48,6 +57,7 @@ namespace task {
    }
 
    #endif
+   */
 
    void TaskProvider1::init() {
      handler = new BaseTaskProvider();
