@@ -1017,13 +1017,16 @@ void initSysInfoUnix(SysInfo& sysInfo) {
       sysInfo.cpu_endian = "little";
    }
 
+   struct utsname name;
+   uname(&name);
+
    /* OS */
    #ifdef OS_MAC
      initOsInfoMac(sysInfo);
    #else
 
-    struct utsname name;
-    uname(&name);
+    //struct utsname name;
+    //uname(&name);
     sysInfo.os_name = strdup(name.sysname);
 
     #ifdef _AIX
@@ -1037,6 +1040,8 @@ void initSysInfoUnix(SysInfo& sysInfo) {
     #endif
 
    #endif
+
+   sysInfo.os_arch = strdup(name.machine); 
 
   /* User */
   struct passwd *pwent = getpwuid(getuid());

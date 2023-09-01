@@ -27,28 +27,28 @@ typedef struct {
     char *os_release; // *
     char *os_arch;
 
-    nchar *tmp_dir;
+    nchar *user_name;
+    nchar *user_home;
     nchar *user_dir;
+    nchar *tmp_dir;
 
     char *file_separator;
     char *path_separator; // ?
     char *line_separator;
 
-    nchar *user_name;
-    nchar *user_home;
-
     char *locale;
 
     char *format_language;
-    char *display_language;
     char *format_script;
-    char *display_script;
     char *format_country;
-    char *display_country;
     char *format_variant;
+
+    char *display_language;    
+    char *display_script;    
+    char *display_country;    
     char *display_variant;
     char *encoding;
-    char *sun_jnu_encoding;
+
     char *stdout_encoding;
     char *stderr_encoding;
 

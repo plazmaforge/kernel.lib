@@ -69,6 +69,7 @@ namespace task {
         }
         printSysInfoLine(" os.name       : ", sysInfo->os_name);
         printSysInfoLine(" os.version    : ", sysInfo->os_version);
+        printSysInfoLine(" os.arch       : ", sysInfo->os_arch);
 
         printSysInfoLine(" user.name     : ", sysInfo->user_name);
         printSysInfoLine(" user.home     : ", sysInfo->user_home);
