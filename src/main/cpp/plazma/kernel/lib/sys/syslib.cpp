@@ -8,13 +8,14 @@
 #include <chrono>
 
 //#include <cstdio>
+#include "syslib.h"
 
 #include "plazma/kernel/lib/io/iolib.h"
 #include "plazma/kernel/lib/str/strlib.h"
 #include "plazma/kernel/lib/num/numlib.h"
 #include "plazma/kernel/lib/collection/collectionlib.h"
 
-#ifdef _WIN32
+#ifdef OS_WIN
 #include <io.h>
 #include <windows.h>
 #else
@@ -23,32 +24,14 @@
 
 #include <sys/utsname.h>        /* For os_name and os_version */
 //#include <langinfo.h>         /* For nl_langinfo */
-#include <pwd.h>
 //#include <locale.h>
-
+#include <pwd.h>
 #endif
 
-////
-#ifdef __APPLE__ || __MACH__
-//#include <sys/socket.h>
-//#include <netinet/in.h>
-//#include <arpa/inet.h>
-////
-//#include <objc/objc-runtime.h>
-//#include <UIKit/UIKit.h>
+#ifdef OS_MAC
 #include <CoreFoundation/CoreFoundation.h>
-//#include <SystemConfiguration/SystemConfiguration.h>
-//#include <Foundation/Foundation.h>
-
-
-//#include <CoreFoundation/CFStringEncodingConverterExt.h>
-//#include <CoreFoundation/CFUniChar.h>
-//#include <CoreFoundation/CFStringEncodingExt.h>
-////
 #endif
 
-
-#include "syslib.h"
 
 CONST_STRING DEFAULT_ARG_PREFIX = "-";
 
@@ -71,14 +54,13 @@ int stderrMode = -1;
 */
 
 
-
 namespace syslib {
 
 void* loadLibrary(const std::string& path) {
     if (path.empty()) {
         return nullptr;
     }
-    #ifdef _WIN32
+    #ifdef OS_WIN
     return LoadLibrary(path.c_str());
     #else
     return dlopen(path.c_str(), /*RTLD_NOW |*/ RTLD_LAZY);
@@ -89,7 +71,7 @@ void* getSymbol(void* handle, const std::string& name) {
     if (handle == nullptr || name.empty()) {
         return nullptr;
     }
-    #ifdef _WIN32
+    #ifdef OS_WIN
     return GetProcAddress((HMODULE) _handle, name.c_str());
     #else
     return dlsym(handle, name.c_str());
@@ -97,7 +79,7 @@ void* getSymbol(void* handle, const std::string& name) {
 }
 
 bool closeLibrary(void* handle) {
-    #ifdef _WIN32
+    #ifdef OS_WIN
     return FreeLibrary((HMODULE) _handle) != 0; // success
 	  #else
     return dlclose(handle) == 0;      // success
@@ -105,36 +87,36 @@ bool closeLibrary(void* handle) {
 }
 
 bool isSupportLibraryError() {
-    #ifdef _WIN32
-    return false;
+    #ifdef OS_WIN
+    return false; // TODO: Use GetLastError
 	  #else
     return true;
     #endif
 }
 
 const std::string getLibraryError() {
-    #ifdef _WIN32
-    return "";
+    #ifdef OS_WIN
+    return ""; // TODO: Use GetLastError
 	  #else
     return dlerror();
     #endif
 }
 
 void resetLibraryError() {
-    #ifndef _WIN32
+    #ifndef OS_WIN
     dlerror();
     #endif
 }
 
 std::string getLibraryExtension() {
     std::string ext;
-    #ifdef _WIN32
+    #ifdef OS_WIN
       ext = ".dll";   // Windows 
     //#elif defined(__unix__) && !defined(__apple__)
     //  ext = ".so";  // Linux, BDS, Solaris and so on. 
-    #elif __APPLE__ || __MACH__
+    #elif defined(OS_MAC)
       ext = ".dylib"; // MacOSX 
-    #elif __unix__
+    #elif defined(OS_UNIX)
       ext = ".so";    // Linux, BDS, Solaris and so on. 
     #endif 
     return ext;
@@ -278,31 +260,29 @@ float getDoubleParameter(std::map<std::string, std::string> &parameters, const s
 // https://medium.com/@sshambir/%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82-std-filesystem-4c7ed50d5634
 
 
-// os
-std::string getOsInternalName() {
-    #ifdef _WIN64
-    return "win64";
-    #elif _WIN32
-    return "win32";
-    #elif __unix || __unix__
-    return "unix";
-    #elif __APPLE__ || __MACH__
-    return "macOS";
-    #elif __linux__
-    return "linux";
-    #elif __FreeBSD__
-    return "freeBSD";
-    #else
-    return "other";
-    #endif
-}
+// // os
+// std::string getOsInternalName() {
+//     #ifdef _WIN64
+//     return "win64";
+//     #elif _WIN32
+//     return "win32";
+//     #elif __unix || __unix__
+//     return "unix";
+//     #elif __APPLE__ || __MACH__
+//     return "macOS";
+//     #elif __linux__
+//     return "linux";
+//     #elif __FreeBSD__
+//     return "freeBSD";
+//     #else
+//     return "other";
+//     #endif
+// }
 
 
 // os
 bool isWindows() {
-    #ifdef _WIN32
-    return true;
-    #elif _WIN64
+    #ifdef OS_WIN
     return true;
     #else
     return false;
@@ -311,7 +291,7 @@ bool isWindows() {
 
 // os
 bool isLinux() {
-    #ifdef __linux__
+    #ifdef OS_LINUX
     return true;
     #else
     return false;
@@ -320,9 +300,7 @@ bool isLinux() {
 
 // os
 bool isMacOS() {
-    #ifdef __APPLE__
-    return true;
-    #elif __MACH__
+    #ifdef OS_MAC
     return true;
     #else
     return false;
@@ -347,16 +325,18 @@ bool isValidCmd(const std::string& cmd) {
 
 //void init() {}
 
+std::string getSafeString(const char* value) {
+  return value ? std::string(value) : "";
+}
+
 std::string getOsName() {
   SysInfo* sysInfo = getSysInfo();
-  char* value = sysInfo ? sysInfo->os_name : nullptr;
-  return value ? std::string(value) : "";
+  return getSafeString(sysInfo ? sysInfo->os_name : nullptr);
 }
 
 std::string getOsVersion() {
   SysInfo* sysInfo = getSysInfo();
-  char* value = sysInfo ? sysInfo->os_version : nullptr;
-  return value ? std::string(value) : "";
+  return getSafeString(sysInfo ? sysInfo->os_version : nullptr);
 }
 
 // console
@@ -1020,7 +1000,14 @@ void initOsInfoMac(SysInfo& sysInfo) {
 
 }
 
-void initSysInfoNix(SysInfo& sysInfo) {
+#ifdef OS_WIN
+void initSysInfoWin(SysInfo& sysInfo) {
+  // TODO
+}
+#endif
+
+#ifdef OS_UNIX
+void initSysInfoUnix(SysInfo& sysInfo) {
 
    /* Endianness of platform */
    unsigned int endianTest = 0xff000000;
@@ -1031,7 +1018,7 @@ void initSysInfoNix(SysInfo& sysInfo) {
    }
 
    /* OS */
-   #ifdef __APPLE__ || __MACH__
+   #ifdef OS_MAC
      initOsInfoMac(sysInfo);
    #else
 
@@ -1058,9 +1045,6 @@ void initSysInfoNix(SysInfo& sysInfo) {
     sysInfo.user_home = strdup(pwent->pw_dir);
   }
 
-  sysInfo.file_separator = "/";
-  sysInfo.line_separator = "\n";
-
    /* Current directory */
    int MAXPATHLEN = 512; // TODO
    char buf[MAXPATHLEN];
@@ -1070,8 +1054,9 @@ void initSysInfoNix(SysInfo& sysInfo) {
    } else {
        sysInfo.user_dir = strdup(buf);
    }
+   #endif
 
-   #ifdef __APPLE__ || __MACH__
+   #ifdef OS_MAC
     /* darwin has a per-user temp dir */
     static char tmp_path[PATH_MAX];
     int pathSize = confstr(_CS_DARWIN_USER_TEMP_DIR, tmp_path, PATH_MAX);
@@ -1079,15 +1064,16 @@ void initSysInfoNix(SysInfo& sysInfo) {
         sysInfo.tmp_dir = tmp_path;
     }
    #else 
-     // TODO
+     // TODO: /var/tmp or /tmp
    #endif
 
+
+   sysInfo.file_separator = "/";
+   sysInfo.line_separator = "\n";
+
 }
 
-void initSysInfoWin(SysInfo& sysInfo) {
-  // TODO
-}
-
+/*
 static int ParseLocale(int cat, char ** std_language, char ** std_script,
                        char ** std_country, char ** std_variant, char ** std_encoding) {
     char *temp = NULL;
@@ -1097,8 +1083,9 @@ static int ParseLocale(int cat, char ** std_language, char ** std_script,
 
     lc = setlocale(cat, NULL);
 }
+*/
 
-#ifdef __APPLE__ || __MACH__
+#ifdef OS_MAC
 const char* getLocaleValue(CFLocaleRef locale, CFLocaleKey key) {
   CFStringRef value = (CFStringRef) CFLocaleGetValue(locale, key); 
   const char* ch = CFStringGetCStringPtr(value, kCFStringEncodingUTF8);
@@ -1125,7 +1112,7 @@ void initLocale(SysInfo& sysInfo) {
   */
 
 
-#ifdef __APPLE__ || __MACH__
+#ifdef OS_MAC
 
 CFLocaleRef cflocale = CFLocaleCopyCurrent();
 
@@ -1166,6 +1153,14 @@ if (encoding) {
 
 }
 
+void initSysInfo(SysInfo& sysInfo) {
+   #ifdef OS_WIN
+   initSysInfoWin(sysInfo);
+   #else
+   initSysInfoUnix(sysInfo);
+   #endif
+}
+
 SysInfo* getSysInfo() {
    static SysInfo sysInfo;
    if (sysInfo.init) {
@@ -1174,11 +1169,7 @@ SysInfo* getSysInfo() {
 
    sysInfo.init = true;
 
-   #ifdef _WIN32
-   initSysInfoWin(sysInfo);
-   #else
-   initSysInfoNix(sysInfo);
-   #endif
+   initSysInfo(sysInfo);
 
    initLocale(sysInfo);
 

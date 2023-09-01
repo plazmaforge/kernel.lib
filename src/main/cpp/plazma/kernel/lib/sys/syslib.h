@@ -7,6 +7,7 @@
 //#include <cstdarg>
 //#include <iostream>
 
+#include "os.h"
 #include "define.h"
 #include "plazma/kernel/lib/ext/ustring.h"
 
