@@ -1,9 +1,9 @@
 CC=g++
 CFLAGS=-c  -std=c++17 -Wall -I../../src/main/cpp -O2 -Os
-
 #CFLAGS=-c -finput-charset=UTF-8
 
 LDFLAGS=
+#LDFLAGS=-framework CoreFoundation
 
 #######################################################################
 
