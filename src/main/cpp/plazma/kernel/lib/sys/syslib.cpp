@@ -20,17 +20,23 @@
 #else
 #include <unistd.h>
 #include <dlfcn.h>
+
+#include <sys/utsname.h>        /* For os_name and os_version */
+//#include <langinfo.h>         /* For nl_langinfo */
+#include <pwd.h>
+//#include <locale.h>
+
 #endif
 
 #include "syslib.h"
 
 CONST_STRING DEFAULT_ARG_PREFIX = "-";
 
-int initState = 0; // 0 - Not Init, 1 - Fail Init, 2 - Success Init
+//int initState = 0; // 0 - Not Init, 1 - Fail Init, 2 - Success Init
 
-std::string osName = "";
-std::string osVersion = "";
-std::string osBuild = "";
+//std::string osName = "";
+//std::string osVersion = "";
+//std::string osBuild = "";
 
 bool colorizedConsole = true;
 bool redirectStdErr = false;
@@ -40,6 +46,11 @@ int stderrMode = -1;
 // https://stackoverflow.com/questions/3709031/mapstring-string-how-to-insert-data-in-this-map
 // https://stackoverflow.com/questions/478898/how-do-i-execute-a-command-and-get-the-output-of-the-command-within-c-using-po
 // https://superuser.com/questions/75166/how-to-find-out-mac-os-x-version-from-terminal
+
+/*
+*/
+
+
 
 namespace syslib {
 
@@ -97,7 +108,7 @@ void resetLibraryError() {
 
 std::string getLibraryExtension() {
     std::string ext;
-    #if defined (_WIN32)
+    #ifdef _WIN32
       ext = ".dll";   // Windows 
     //#elif defined(__unix__) && !defined(__apple__)
     //  ext = ".so";  // Linux, BDS, Solaris and so on. 
@@ -312,96 +323,20 @@ bool isValidCmd(const std::string& cmd) {
   return false;
 }
 
-void initMacOS() {
-    
-       std::string cmd = "sw_vers";
-       if (!isValidCmd(cmd)) {
-         return;
-       }
-       std::string systemInfo = exec(cmd.c_str(), true);
-       if (systemInfo.empty()) {
-         return;
-       }
+//void initOS() {}
 
-       std::vector<std::string> lines = strlib::split(systemInfo, '\n');
-       int size = lines.size();
-
-       const std::string PRODUCT_NAME = "ProductName:";
-       const std::string PRODUCT_VERSION = "ProductVersion:";
-       const std::string BUILD_VERSION = "BuildVersion:";
-
-       osName = "";
-       osVersion = "";
-       osBuild = "";
-
-       std::string line = "";
-
-       for (int i = 0; i < size; i++) {
-         line = lines[i];
-         if (strlib::startsWith(line, PRODUCT_NAME)) {
-           osName = line.substr(PRODUCT_NAME.length());
-           osName = strlib::trim(osName);
-         } else if (strlib::startsWith(line, PRODUCT_VERSION)) {
-           osVersion = line.substr(PRODUCT_VERSION.length());
-           osVersion = strlib::trim(osVersion);
-         } else if (strlib::startsWith(line, BUILD_VERSION)) {
-           osBuild = line.substr(BUILD_VERSION.length());
-           osBuild = strlib::trim(osBuild);
-         }
-       }
-
-       initState = 3;
-
-       //ProductName:	Mac OS X
-       //ProductVersion:	10.14.6
-       //BuildVersion:	18G95
-
-       //cout << "-APPLE-" << endl;
-       //cout << systemInfo << endl;
-
-
-}
-
-void initOS() {
-
-   // TODO
-  if (isMacOS()) {
-    initMacOS();
-  }
-}
-
-void init() {
-
-  // Check initialization
-  if (initState > 0) {
-    return;
-  }
-  initState = 2;
-
-  // Initialize Operation System
-  initOS();
-
-}
+//void init() {}
 
 std::string getOsName() {
-  if (initState == 0) {
-    init();
-  }
-  return initState == 3 ? osName: getOsInternalName();
+  SysInfo* sysInfo = getSysInfo();
+  char* value = sysInfo ? sysInfo->os_name : nullptr;
+  return value ? std::string(value) : "";
 }
 
 std::string getOsVersion() {
-  if (initState == 0) {
-    init();
-  }
-  return osVersion;
-}
-
-std::string getOsBuild() {
-  if (initState == 0) {
-    init();
-  }
-  return osBuild;
+  SysInfo* sysInfo = getSysInfo();
+  char* value = sysInfo ? sysInfo->os_version : nullptr;
+  return value ? std::string(value) : "";
 }
 
 // console
@@ -1017,5 +952,137 @@ void error(const std::string &title, const std::string &message) {
  #endif
 }
 
+void initOsInfoMac(SysInfo& sysInfo) {
+    
+       std::string cmd = "sw_vers";
+       //if (!isValidCmd(cmd)) {
+       //  return;
+       //}
+       std::string info = exec(cmd.c_str(), true);
+       if (info.empty()) {
+         return;
+       }
+
+       std::vector<std::string> lines = strlib::split(info, '\n');
+       int size = lines.size();
+
+       const std::string PRODUCT_NAME = "ProductName:";
+       const std::string PRODUCT_VERSION = "ProductVersion:";
+       //const std::string BUILD_VERSION = "BuildVersion:";
+
+       std::string osName = "";
+       std::string osVersion = "";
+       //std::string osBuild = "";
+
+       std::string line = "";
+
+       for (int i = 0; i < size; i++) {
+         line = lines[i];
+         if (strlib::startsWith(line, PRODUCT_NAME)) {
+           osName = line.substr(PRODUCT_NAME.length());
+           osName = strlib::trimAll(osName);
+           sysInfo.os_name = strdup(osName.c_str());
+         } else if (strlib::startsWith(line, PRODUCT_VERSION)) {
+           osVersion = line.substr(PRODUCT_VERSION.length());
+           osVersion = strlib::trimAll(osVersion);
+           sysInfo.os_version = strdup(osVersion.c_str());
+         }
+
+         // else if (strlib::startsWith(line, BUILD_VERSION)) {
+         //  osBuild = line.substr(BUILD_VERSION.length());
+         //  osBuild = strlib::trimAll(osBuild);
+         //}
+       }
+
+       //ProductName:	Mac OS X
+       //ProductVersion:	10.14.6
+       //BuildVersion:	18G95
+
+}
+
+void initSysInfoNix(SysInfo& sysInfo) {
+
+   /* Endianness of platform */
+   unsigned int endianTest = 0xff000000;
+   if (((char*) (&endianTest))[0] != 0) {
+      sysInfo.cpu_endian = "big";
+   } else {
+      sysInfo.cpu_endian = "little";
+   }
+
+   /* OS */
+   #ifdef __APPLE__ || __MACH__
+     initOsInfoMac(sysInfo);
+   #else
+
+    struct utsname name;
+    uname(&name);
+    sysInfo.os_name = strdup(name.sysname);
+
+    #ifdef _AIX
+        char os_version[strlen(name.version) + strlen(name.release) + 2];
+        strcpy(os_version, name.version);
+        strcat(os_version, ".");
+        strcat(os_version, name.release);
+        sysInfo.os_version = os_version;
+    #else
+        sysInfo.os_version = strdup(name.release);
+    #endif
+
+   #endif
+
+  /* User */
+  struct passwd *pwent = getpwuid(getuid());
+  if (pwent) {
+    sysInfo.user_name = strdup(pwent->pw_name);
+    sysInfo.user_home = strdup(pwent->pw_dir);
+  }
+
+  sysInfo.file_separator = "/";
+  sysInfo.line_separator = "\n";
+
+   /* Current directory */
+   int MAXPATHLEN = 512; // TODO
+   char buf[MAXPATHLEN];
+   errno = 0;
+   if (getcwd(buf, sizeof(buf)) == NULL) {
+       error("System Properties init: Can't get current working directory.");
+   } else {
+       sysInfo.user_dir = strdup(buf);
+   }
+
+   #ifdef __APPLE__ || __MACH__
+    /* darwin has a per-user temp dir */
+    static char tmp_path[PATH_MAX];
+    int pathSize = confstr(_CS_DARWIN_USER_TEMP_DIR, tmp_path, PATH_MAX);
+    if (pathSize > 0 && pathSize <= PATH_MAX) {
+        sysInfo.tmp_dir = tmp_path;
+    }
+   #else 
+     // TODO
+   #endif
+
+}
+
+void initSysInfoWin(SysInfo& sysInfo) {
+  // TODO
+}
+
+SysInfo* getSysInfo() {
+   static SysInfo sysInfo;
+   if (sysInfo.init) {
+     return &sysInfo;
+   }
+
+   sysInfo.init = true;
+
+   #ifdef _WIN32
+   initSysInfoWin(sysInfo);
+   #else
+   initSysInfoNix(sysInfo);
+   #endif
+
+   return &sysInfo;
+}
 
 }

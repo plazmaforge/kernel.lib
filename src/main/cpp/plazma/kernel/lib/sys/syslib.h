@@ -12,6 +12,51 @@
 
 namespace syslib {
 
+#ifdef _WIN32
+#include <tchar.h>
+typedef WCHAR nchar;
+#else
+typedef char nchar;
+#endif
+
+typedef struct {
+    char *os_name;
+    char *os_version;
+    char *os_release;
+    char *os_arch;
+
+    nchar *tmp_dir;
+    nchar *user_dir;
+
+    char *file_separator;
+    char *path_separator;
+    char *line_separator;
+
+    nchar *user_name;
+    nchar *user_home;
+
+    char *format_language;
+    char *display_language;
+    char *format_script;
+    char *display_script;
+    char *format_country;
+    char *display_country;
+    char *format_variant;
+    char *display_variant;
+    char *encoding;
+    char *sun_jnu_encoding;
+    char *stdout_encoding;
+    char *stderr_encoding;
+
+    char *unicode_encoding;     // The default endianness of unicode i.e. UnicodeBig or UnicodeLittle
+    const char *cpu_isalist;    // list of supported instruction sets
+    char *cpu_endian;           // endianness of platform
+
+    bool init = false;
+
+} SysInfo;
+
+
     #define COLOR_BLACK      0
     #define COLOR_DARK_BLUE  1
     #define COLOR_DARK_GREEN 2
@@ -250,6 +295,8 @@ namespace syslib {
     void warn(const std::string &title, const std::string &message);
 
     void error(const std::string &title, const std::string &message);
+
+    SysInfo* getSysInfo();
 
 }
 #endif // PLAZMA_KERNEL_LIB_SYS_SYSLIB_H

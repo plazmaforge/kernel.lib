@@ -50,10 +50,33 @@ namespace task {
 
     ////
 
+    void printSysInfoLine(std::string name, char* value) {
+        std::cout << name;
+        if (value != nullptr) {
+            std::cout << value;
+        }
+        std::cout << std::endl;
+    }
+
     void SysTask::executePrintSystemInfo(TaskContext* ctx) {
         std::cout << "System Info" << std::endl;
-        std::cout << " os.name    : " << syslib::getOsName() << std::endl;
-        std::cout << " os.version : " << syslib::getOsVersion() << std::endl;
+        //std::cout << " os.name    : " << syslib::getOsName() << std::endl;
+        //std::cout << " os.version : " << syslib::getOsVersion() << std::endl;
+
+        syslib::SysInfo* sysInfo = syslib::getSysInfo();
+        if (sysInfo == nullptr) {
+            return;
+        }
+        printSysInfoLine(" os.name    : ", sysInfo->os_name);
+        printSysInfoLine(" os.version : ", sysInfo->os_version);
+
+        printSysInfoLine(" user.name  : ", sysInfo->user_name);
+        printSysInfoLine(" user.home  : ", sysInfo->user_home);
+        printSysInfoLine(" user.dir   : ", sysInfo->user_dir);
+        printSysInfoLine(" tmp.dir    : ", sysInfo->tmp_dir);
+
+        //printSysInfoLine(" cpu.endian : ", sysInfo->cpu_endian);
+
     }
 
     //
