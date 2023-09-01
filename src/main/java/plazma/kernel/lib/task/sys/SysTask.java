@@ -100,6 +100,8 @@ public class SysTask extends BaseTask {
         println(" user.name     : " + getUserName());
         println(" user.home     : " + getUserHome());
         println(" user.dir      : " + getUserDir());
+        
+        println(" tmp.dir       : " + getTmpDir());
 
         println(" user.country  : " + getUserCountry());
         println(" user.language : " + getUserLanguage());

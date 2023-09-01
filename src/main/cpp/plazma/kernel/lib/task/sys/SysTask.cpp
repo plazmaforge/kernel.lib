@@ -67,13 +67,21 @@ namespace task {
         if (sysInfo == nullptr) {
             return;
         }
-        printSysInfoLine(" os.name    : ", sysInfo->os_name);
-        printSysInfoLine(" os.version : ", sysInfo->os_version);
+        printSysInfoLine(" os.name       : ", sysInfo->os_name);
+        printSysInfoLine(" os.version    : ", sysInfo->os_version);
 
-        printSysInfoLine(" user.name  : ", sysInfo->user_name);
-        printSysInfoLine(" user.home  : ", sysInfo->user_home);
-        printSysInfoLine(" user.dir   : ", sysInfo->user_dir);
-        printSysInfoLine(" tmp.dir    : ", sysInfo->tmp_dir);
+        printSysInfoLine(" user.name     : ", sysInfo->user_name);
+        printSysInfoLine(" user.home     : ", sysInfo->user_home);
+        printSysInfoLine(" user.dir      : ", sysInfo->user_dir);
+        printSysInfoLine(" tmp.dir       : ", sysInfo->tmp_dir);
+
+        printSysInfoLine(" user.locale   : ", sysInfo->locale);
+        printSysInfoLine(" user.country  : ", sysInfo->format_country);
+        printSysInfoLine(" user.language : ", sysInfo->format_language);
+        printSysInfoLine(" user.script   : ", sysInfo->format_script);
+        printSysInfoLine(" user.variant  : ", sysInfo->format_variant);
+
+        printSysInfoLine(" encoding      : ", sysInfo->encoding);
 
         //printSysInfoLine(" cpu.endian : ", sysInfo->cpu_endian);
 

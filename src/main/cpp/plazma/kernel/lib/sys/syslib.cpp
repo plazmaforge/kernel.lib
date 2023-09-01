@@ -28,6 +28,26 @@
 
 #endif
 
+////
+#ifdef __APPLE__ || __MACH__
+//#include <sys/socket.h>
+//#include <netinet/in.h>
+//#include <arpa/inet.h>
+////
+//#include <objc/objc-runtime.h>
+//#include <UIKit/UIKit.h>
+#include <CoreFoundation/CoreFoundation.h>
+//#include <SystemConfiguration/SystemConfiguration.h>
+//#include <Foundation/Foundation.h>
+
+
+//#include <CoreFoundation/CFStringEncodingConverterExt.h>
+//#include <CoreFoundation/CFUniChar.h>
+//#include <CoreFoundation/CFStringEncodingExt.h>
+////
+#endif
+
+
 #include "syslib.h"
 
 CONST_STRING DEFAULT_ARG_PREFIX = "-";
@@ -1068,6 +1088,84 @@ void initSysInfoWin(SysInfo& sysInfo) {
   // TODO
 }
 
+static int ParseLocale(int cat, char ** std_language, char ** std_script,
+                       char ** std_country, char ** std_variant, char ** std_encoding) {
+    char *temp = NULL;
+    char *language = NULL, *country = NULL, *variant = NULL,  *encoding = NULL;
+    char *p, *encoding_variant, *old_temp, *old_ev;
+    char *lc;
+
+    lc = setlocale(cat, NULL);
+}
+
+#ifdef __APPLE__ || __MACH__
+const char* getLocaleValue(CFLocaleRef locale, CFLocaleKey key) {
+  CFStringRef value = (CFStringRef) CFLocaleGetValue(locale, key); 
+  const char* ch = CFStringGetCStringPtr(value, kCFStringEncodingUTF8);
+  if (ch == nullptr) {
+    return "";
+  }
+  //std::string str(ch);
+  return ch;
+}
+#endif
+
+void initLocale(SysInfo& sysInfo) {
+
+  /*
+  setlocale(LC_ALL, "");
+  int cat = LC_CTYPE;
+  //int cat = LC_MESSAGES;
+  //int cat = LC_ALL;
+  char *lc = setlocale(cat, "");
+  if (lc == NULL) {
+    return;
+  }
+  //sysInfo.format_country = strdup(lc);
+  */
+
+
+#ifdef __APPLE__ || __MACH__
+
+CFLocaleRef cflocale = CFLocaleCopyCurrent();
+
+const char* locale = getLocaleValue(cflocale, kCFLocaleIdentifier);
+
+const char* language = getLocaleValue(cflocale, kCFLocaleLanguageCode);
+const char* country = getLocaleValue(cflocale, kCFLocaleCountryCode);
+const char* script = getLocaleValue(cflocale, kCFLocaleScriptCode);
+const char* variant = getLocaleValue(cflocale, kCFLocaleVariantCode);
+const char* encoding = nullptr; //getLocaleValue(cflocale, kCFLocaleExemplarCharacterSet);
+
+//CFStringRef identifier = CFLocaleGetIdentifier(cflocale);
+//const char* ch = CFStringGetCStringPtr(identifier, kCFStringEncodingUTF8);
+
+CFRelease(cflocale);
+
+if (locale) {
+  sysInfo.locale = strdup(locale);
+}
+
+if (language) {
+  sysInfo.format_language = strdup(language);
+}
+if (country) {
+  sysInfo.format_country = strdup(country);
+}
+if (script) {
+  sysInfo.format_script = strdup(script);
+}
+if (variant) {
+  sysInfo.format_variant = strdup(variant);
+}
+if (encoding) {
+  sysInfo.encoding = strdup(encoding);
+}
+
+#endif
+
+}
+
 SysInfo* getSysInfo() {
    static SysInfo sysInfo;
    if (sysInfo.init) {
@@ -1081,6 +1179,8 @@ SysInfo* getSysInfo() {
    #else
    initSysInfoNix(sysInfo);
    #endif
+
+   initLocale(sysInfo);
 
    return &sysInfo;
 }

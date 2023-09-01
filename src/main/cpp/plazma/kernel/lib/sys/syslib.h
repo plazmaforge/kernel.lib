@@ -20,20 +20,23 @@ typedef char nchar;
 #endif
 
 typedef struct {
+
     char *os_name;
     char *os_version;
-    char *os_release;
+    char *os_release; // *
     char *os_arch;
 
     nchar *tmp_dir;
     nchar *user_dir;
 
     char *file_separator;
-    char *path_separator;
+    char *path_separator; // ?
     char *line_separator;
 
     nchar *user_name;
     nchar *user_home;
+
+    char *locale;
 
     char *format_language;
     char *display_language;

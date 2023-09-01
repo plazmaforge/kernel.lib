@@ -336,6 +336,10 @@ public class SysLib {
         return System.getProperty("user.dir");
     }
 
+    public static String getTmpDir() {
+        return System.getProperty("java.io.tmpdir");
+    }
+
     // user.country
     public static String getUserCountry() {
         return System.getProperty("user.country");
