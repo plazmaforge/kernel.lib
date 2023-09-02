@@ -9,6 +9,7 @@
 
 #include "os.h"
 #include "define.h"
+#include "sysarg.h"
 #include "syslocale.h"
 #include "sysexec.h"
 #include "syscolor.h"
