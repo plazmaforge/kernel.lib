@@ -1,3 +1,7 @@
+#ifndef PLAZMA_KERNEL_LIB_SYS_OS_H
+#define PLAZMA_KERNEL_LIB_SYS_OS_H
+
+
 #if defined __linux__
         #define OS_UNIX
         #define OS_LINUX
@@ -29,4 +33,6 @@
 
 #else
         #error "This OS is not supported"
+#endif
+
 #endif

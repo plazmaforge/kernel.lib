@@ -22,6 +22,18 @@ typedef char nchar;
 
 typedef struct {
 
+    char *locale;
+
+    char *language;
+    char *script;
+    char *country;
+    char *variant;
+    char *encoding;
+
+} Locale;
+
+typedef struct {
+
     char *os_name;
     char *os_version;
     char *os_release; // *

@@ -4,6 +4,8 @@ CFLAGS=-c  -std=c++17 -Wall -I../../src/main/cpp -O2 -Os
 
 LDFLAGS=
 #LDFLAGS=-framework CoreFoundation
+#LDFLAGS=-framework CoreFoundation -framework CoreServices -framework Foundation -framework SystemConfiguration
+#LDFLAGS=-framework CoreFoundation -framework CoreServices 
 
 #######################################################################
 

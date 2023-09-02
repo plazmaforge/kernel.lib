@@ -30,6 +30,7 @@
 
 #ifdef OS_MAC
 #include <CoreFoundation/CoreFoundation.h>
+#include <CoreServices/CoreServices.h>
 #endif
 
 
@@ -952,12 +953,138 @@ void error(const std::string &title, const std::string &message) {
  #endif
 }
 
-void initOsInfoMac(SysInfo& sysInfo) {
+////////////////////////////////////////////////////////////////
+
+void setDefaultLocale() {
+  setlocale(LC_ALL, "");
+}
+
+char* getLocale(int cat) {
+  return setlocale(cat, NULL);
+}
+
+char* getLocale() {
+  return getLocale(LC_CTYPE);
+}
+
+bool isEmptyLocale(char* lc) {
+  return lc == nullptr || (strcmp(lc, "C") == 0);
+}
+
+bool isLocale(char* lc1, char* lc2) {
+  if (lc1 == nullptr || lc2 == nullptr) {
+    return false;
+  }
+  return strcmp(lc1, lc2) == 0;
+}
+
+Locale* parseLocale(char* lc) {
+  if (lc == nullptr) {
+    return nullptr;
+  }
+
+  char* p = nullptr;
+  char* temp = strdup(lc);
+  
+  char* language = nullptr;
+  char* country = nullptr;
+  //char* encoding_variant = nullptr;
+  char* encoding = nullptr;
+
+  if ((encoding = strchr(temp, '.')) != NULL) {
+    *encoding++ = '\0';
+  } else if ((encoding = strchr(temp, '@')) != NULL) {
+    *encoding++ = '\0';
+  }
+
+  if ((country = strchr(temp, '_')) != NULL) {
+    *country++ = '\0';
+    language = temp;
+  }
+
+  if (language == NULL && country == NULL && encoding == NULL) {
+    int len = strlen(temp);
+    if (len == 2) {
+      if (islower(temp[0]) && islower(temp[1])) {
+        language = temp;
+      } else {
+        country = temp;
+      }      
+    } else {
+      encoding = temp;
+    }
+    
+  }
+  
+  //std::cout << "Language : " << (language ? language : "?") << std::endl;
+  //std::cout << "Country  : " << (country ? country : "?") << std::endl;
+  //std::cout << "Encoding : " << (encoding ? encoding : "?") << std::endl;
+
+  Locale* result = new Locale();
+  result->language = language;
+  result->country = country;
+  result->encoding = encoding;
+
+  return result;
+
+}
+
+void setLocale(SysInfo& sysInfo, char* lc) {
+  if (lc == nullptr) {
+    return;
+  }
+  sysInfo.locale = strdup(lc);
+
+  Locale* locale = parseLocale(sysInfo.locale);
+  if (locale != nullptr) {
+    
+    sysInfo.format_language = locale->language;
+    sysInfo.format_country = locale->country;
+    sysInfo.encoding = locale->encoding;
+
+    delete locale;
+  }
+
+}
+
+// "en_US.UTF-8"
+
+void initDefaultLocale(SysInfo& sysInfo) {
+  sysInfo.locale = "en_US.UTF-8";
+  sysInfo.format_language = "en";
+  sysInfo.format_country = "US";
+  sysInfo.encoding = "UTF-8";
+
+  //sysInfo.locale = "UTF-8";
+  //sysInfo.locale = "en_US";
+  //sysInfo.locale = "en_US.";
+
+  //setLocale(sysInfo, sysInfo.locale);
+}
+
+#ifdef OS_MAC
+
+// FRAMEWORK
+void initOsMac_F(SysInfo& sysInfo) {
+
+    SInt32 majorVersion = 0;
+    SInt32 minorVersion = 0;
+    SInt32 bugFixVersion = 0;
+
+    Gestalt(gestaltSystemVersionMajor, &majorVersion);
+    Gestalt(gestaltSystemVersionMinor, &minorVersion);
+    Gestalt(gestaltSystemVersionBugFix, &bugFixVersion);
+
+    std::string version = "" + std::to_string(majorVersion) + "." + std::to_string(minorVersion) + "." + std::to_string(bugFixVersion);
+
+    sysInfo.os_name = "Mac OS X";
+    sysInfo.os_version = strdup(version.c_str());   
+}
+
+// ALTERNATIVE
+void initOsMac_A(SysInfo& sysInfo) {
     
        std::string cmd = "sw_vers";
-       //if (!isValidCmd(cmd)) {
-       //  return;
-       //}
        std::string info = exec(cmd.c_str(), true);
        if (info.empty()) {
          return;
@@ -994,11 +1121,16 @@ void initOsInfoMac(SysInfo& sysInfo) {
          //}
        }
 
-       //ProductName:	Mac OS X
-       //ProductVersion:	10.14.6
-       //BuildVersion:	18G95
-
+       //ProductName    :	Mac OS X
+       //ProductVersion :	10.14.6
+       //BuildVersion   :	18G95
 }
+
+void initOsMac(SysInfo& sysInfo) {
+  initOsMac_F(sysInfo);
+}
+
+#endif
 
 #ifdef OS_WIN
 void initSysInfoWin(SysInfo& sysInfo) {
@@ -1022,7 +1154,8 @@ void initSysInfoUnix(SysInfo& sysInfo) {
 
    /* OS */
    #ifdef OS_MAC
-     initOsInfoMac(sysInfo);
+     initOsMac(sysInfo);
+     sysInfo.os_arch = strdup(name.machine); 
    #else
 
     //struct utsname name;
@@ -1040,7 +1173,6 @@ void initSysInfoUnix(SysInfo& sysInfo) {
     #endif
 
    #endif
-
    sysInfo.os_arch = strdup(name.machine); 
 
   /* User */
@@ -1051,19 +1183,19 @@ void initSysInfoUnix(SysInfo& sysInfo) {
   }
 
    /* Current directory */
-   int MAXPATHLEN = 512; // TODO
-   char buf[MAXPATHLEN];
+   //int PATH_MAX_ = 1024;
+   char buf[PATH_MAX];
    errno = 0;
    if (getcwd(buf, sizeof(buf)) == NULL) {
        error("System Properties init: Can't get current working directory.");
    } else {
        sysInfo.user_dir = strdup(buf);
    }
-   #endif
+   //#endif
 
    #ifdef OS_MAC
-    /* darwin has a per-user temp dir */
-    static char tmp_path[PATH_MAX];
+    /* Darwin has a per-user temp dir */
+    static char tmp_path[PATH_MAX]; // static - important
     int pathSize = confstr(_CS_DARWIN_USER_TEMP_DIR, tmp_path, PATH_MAX);
     if (pathSize > 0 && pathSize <= PATH_MAX) {
         sysInfo.tmp_dir = tmp_path;
@@ -1077,6 +1209,7 @@ void initSysInfoUnix(SysInfo& sysInfo) {
    sysInfo.line_separator = "\n";
 
 }
+#endif
 
 /*
 static int ParseLocale(int cat, char ** std_language, char ** std_script,
@@ -1091,16 +1224,124 @@ static int ParseLocale(int cat, char ** std_language, char ** std_script,
 */
 
 #ifdef OS_MAC
+
 const char* getLocaleValue(CFLocaleRef locale, CFLocaleKey key) {
   CFStringRef value = (CFStringRef) CFLocaleGetValue(locale, key); 
   const char* ch = CFStringGetCStringPtr(value, kCFStringEncodingUTF8);
   if (ch == nullptr) {
-    return "";
+    return nullptr;
   }
-  //std::string str(ch);
   return ch;
 }
+
+// FRAMEWORK
+void initLocaleMac_F(SysInfo& sysInfo) {
+
+  CFLocaleRef cflocale = CFLocaleCopyCurrent();
+
+  const char* locale = getLocaleValue(cflocale, kCFLocaleIdentifier);
+
+  const char* language = getLocaleValue(cflocale, kCFLocaleLanguageCode);
+  const char* country = getLocaleValue(cflocale, kCFLocaleCountryCode);
+  const char* script = getLocaleValue(cflocale, kCFLocaleScriptCode);
+  const char* variant = getLocaleValue(cflocale, kCFLocaleVariantCode);
+  const char* encoding = nullptr; //getLocaleValue(cflocale, kCFLocaleExemplarCharacterSet);
+
+  //CFStringRef identifier = CFLocaleGetIdentifier(cflocale);
+  //const char* ch = CFStringGetCStringPtr(identifier, kCFStringEncodingUTF8);
+
+  CFRelease(cflocale);
+
+  if (locale) {
+    sysInfo.locale = strdup(locale);
+  } else {
+
+    char* lc = getLocale(); 
+    setLocale(sysInfo, lc);
+    return;
+
+  }
+
+  if (language) {
+    sysInfo.format_language = strdup(language);
+  }
+  if (country) {
+    sysInfo.format_country = strdup(country);
+  }
+  if (script) {
+    sysInfo.format_script = strdup(script);
+  }
+  if (variant) {
+    sysInfo.format_variant = strdup(variant);
+  }
+
+  if (encoding) {
+    sysInfo.encoding = strdup(encoding);
+  } else {
+
+    char* lc = getLocale(); 
+
+    // Empty
+    if (isEmptyLocale(lc)) {
+      lc = "en_US.UTF-8"; // TODO
+      //initDefaultLocale(sysInfo);
+      //return;
+    }
+
+    Locale* ulocale = parseLocale(lc);
+    if (!ulocale || !ulocale->encoding) {
+      return;
+    }
+    sysInfo.encoding = strdup(ulocale->encoding);
+    
+  }
+  
+
+}
+
+////===
+
+
+// ALTERNATIVE
+void initLocaleMac_A(SysInfo& sysInfo) {
+
+  char* lc = nullptr;
+
+  // Test locale
+  lc = getLocale(LC_CTYPE);
+
+  if (isEmptyLocale(lc)) {
+    setDefaultLocale();
+  }
+
+  int cat = LC_CTYPE;
+  //int cat = LC_MESSAGES;
+  //int cat = LC_ALL;
+  lc = getLocale(cat);
+
+  // Empty
+  if (isEmptyLocale(lc)) {
+    initDefaultLocale(sysInfo);
+    return;
+  }
+
+  // UTF-8
+  //if (isLocale(lc, "UTF-8")) {
+  //  initDefaultLocale(sysInfo);
+  //  return;
+  //}
+
+  setLocale(sysInfo, lc);
+
+}
+
+void initLocaleMac(SysInfo& sysInfo) {
+  initLocaleMac_F(sysInfo);
+  //initLocaleMac_A(sysInfo);
+}
+
 #endif
+
 
 void initLocale(SysInfo& sysInfo) {
 
@@ -1116,54 +1357,18 @@ void initLocale(SysInfo& sysInfo) {
   //sysInfo.format_country = strdup(lc);
   */
 
-
-#ifdef OS_MAC
-
-CFLocaleRef cflocale = CFLocaleCopyCurrent();
-
-const char* locale = getLocaleValue(cflocale, kCFLocaleIdentifier);
-
-const char* language = getLocaleValue(cflocale, kCFLocaleLanguageCode);
-const char* country = getLocaleValue(cflocale, kCFLocaleCountryCode);
-const char* script = getLocaleValue(cflocale, kCFLocaleScriptCode);
-const char* variant = getLocaleValue(cflocale, kCFLocaleVariantCode);
-const char* encoding = nullptr; //getLocaleValue(cflocale, kCFLocaleExemplarCharacterSet);
-
-//CFStringRef identifier = CFLocaleGetIdentifier(cflocale);
-//const char* ch = CFStringGetCStringPtr(identifier, kCFStringEncodingUTF8);
-
-CFRelease(cflocale);
-
-if (locale) {
-  sysInfo.locale = strdup(locale);
-}
-
-if (language) {
-  sysInfo.format_language = strdup(language);
-}
-if (country) {
-  sysInfo.format_country = strdup(country);
-}
-if (script) {
-  sysInfo.format_script = strdup(script);
-}
-if (variant) {
-  sysInfo.format_variant = strdup(variant);
-}
-if (encoding) {
-  sysInfo.encoding = strdup(encoding);
-}
-
-#endif
+  #ifdef OS_MAC
+  initLocaleMac(sysInfo);
+  #endif
 
 }
 
 void initSysInfo(SysInfo& sysInfo) {
-   #ifdef OS_WIN
-   initSysInfoWin(sysInfo);
-   #else
-   initSysInfoUnix(sysInfo);
-   #endif
+  #ifdef OS_WIN
+  initSysInfoWin(sysInfo);
+  #else
+  initSysInfoUnix(sysInfo);
+  #endif
 }
 
 SysInfo* getSysInfo() {
@@ -1174,9 +1379,11 @@ SysInfo* getSysInfo() {
 
    sysInfo.init = true;
 
+   initLocale(sysInfo);
+
    initSysInfo(sysInfo);
 
-   initLocale(sysInfo);
+   //initLocale(sysInfo); // In this position we have problems with MacOSX when use Gestalt
 
    return &sysInfo;
 }

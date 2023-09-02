@@ -148,7 +148,7 @@ void executeTask(std::map<std::string, std::string> &parameters) {
 
 int main(int argc, char* argv[]) {
 
-  //iolib::init_utf8_console();
+  iolib::init_utf8_console();
 
   // Parse command line arguments
   std::map<std::string, std::string> parameters = parseArguments(argc, argv);
