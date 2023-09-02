@@ -9,9 +9,12 @@
 
 #include "os.h"
 #include "define.h"
+#include "syslocale.h"
+#include "sysexec.h"
+#include "syscolor.h"
+
 #include "plazma/kernel/lib/ext/ustring.h"
 
-namespace syslib {
 
 #ifdef _WIN32
 #include <tchar.h>
@@ -20,17 +23,7 @@ typedef WCHAR nchar;
 typedef char nchar;
 #endif
 
-typedef struct {
-
-    char *locale;
-
-    char *language;
-    char *script;
-    char *country;
-    char *variant;
-    char *encoding;
-
-} Locale;
+namespace syslib {
 
 typedef struct {
 
@@ -73,26 +66,6 @@ typedef struct {
 } SysInfo;
 
 
-    #define COLOR_BLACK      0
-    #define COLOR_DARK_BLUE  1
-    #define COLOR_DARK_GREEN 2
-    #define COLOR_LIGHT_BLUE 3
-    #define COLOR_DARK_RED   4
-    #define COLOR_MAGENTA    5
-    #define COLOR_ORANGE     6
-    #define COLOR_LIGHT_GRAY 7
-    #define COLOR_GRAY       8
-    #define COLOR_BLUE       9
-    #define COLOR_GREEN     10
-    #define COLOR_CYAN      11
-    #define COLOR_RED       12
-    #define COLOR_PINK      13
-    #define COLOR_YELLOW    14
-    #define COLOR_WHITE     15
-
-    const int COLOR_INFO = COLOR_GREEN;
-    const int COLOR_WARN = COLOR_YELLOW;
-    const int COLOR_ERROR = COLOR_RED;
 
     CONST_STRING MESSAGE_INFO  = "[INFO]";
     CONST_STRING MESSAGE_WARN  = "[WARNING]";
@@ -184,11 +157,11 @@ typedef struct {
 
     ////
 
-    std::string getPrintColor(const int foreground); // Linux only
+    //std::string getPrintColor(const int foreground); // Unix only
 
-    std::string getPrintColor(const int foreground, const int background); // Linux only
+    //std::string getPrintColor(const int foreground, const int background); // Unix only
 
-    std::string getPrintResetColor(); // Linux only
+    //std::string getPrintResetColor(); // Unix only
 
     //// stream
 
