@@ -13,7 +13,6 @@
 #include "plazma/kernel/lib/io/iolib.h"
 #include "plazma/kernel/lib/str/strlib.h"
 #include "plazma/kernel/lib/num/numlib.h"
-#include "plazma/kernel/lib/collection/collectionlib.h"
 
 #ifdef OS_WIN
 #include <io.h>
@@ -170,7 +169,7 @@ void printParameters(std::map<std::string, std::string> &parameters) {
 }
 
 bool hasParameter(std::map<std::string, std::string> &parameters, const std::string& parameter) {
-    return collectionlib::containsKey(parameters, parameter);
+    return parameters.find(parameter) != parameters.end();
 }
 
 std::string getParameter(std::map<std::string, std::string> &parameters, const std::string& parameter) {
