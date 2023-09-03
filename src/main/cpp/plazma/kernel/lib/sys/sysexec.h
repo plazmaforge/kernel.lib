@@ -2,7 +2,7 @@
 #define PLAZMA_KERNEL_LIB_SYSEXEC_H
 
 #include <string>
-#include <array>
+//#include <array>
 
 namespace syslib {
 

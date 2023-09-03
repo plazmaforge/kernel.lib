@@ -2,71 +2,22 @@
 #define PLAZMA_KERNEL_LIB_SYS_SYSLIB_H
 
 #include <string>
-#include <map>
 
+//#include <map>
 //#include <cstdarg>
 //#include <iostream>
 
 #include "os.h"
 #include "define.h"
 #include "sysarg.h"
-#include "syslocale.h"
+#include "sysinit.h"
 #include "sysexec.h"
 #include "syscolor.h"
+//#include "syslocale.h"
 
 #include "plazma/kernel/lib/ext/ustring.h"
 
-
-#ifdef _WIN32
-#include <tchar.h>
-typedef WCHAR nchar;
-#else
-typedef char nchar;
-#endif
-
 namespace syslib {
-
-typedef struct {
-
-    char *os_name;
-    char *os_version;
-    char *os_release; // *
-    char *os_arch;
-
-    nchar *user_name;
-    nchar *user_home;
-    nchar *user_dir;
-    nchar *tmp_dir;
-
-    char *file_separator;
-    char *path_separator; // ?
-    char *line_separator;
-
-    char *locale;
-
-    char *format_language;
-    char *format_script;
-    char *format_country;
-    char *format_variant;
-
-    char *display_language;    
-    char *display_script;    
-    char *display_country;    
-    char *display_variant;
-    char *encoding;
-
-    char *stdout_encoding;
-    char *stderr_encoding;
-
-    char *unicode_encoding;     // The default endianness of unicode i.e. UnicodeBig or UnicodeLittle
-    const char *cpu_isalist;    // list of supported instruction sets
-    char *cpu_endian;           // endianness of platform
-
-    bool init = false;
-
-} SysInfo;
-
-
 
     CONST_STRING MESSAGE_INFO  = "[INFO]";
     CONST_STRING MESSAGE_WARN  = "[WARNING]";
@@ -95,34 +46,34 @@ typedef struct {
     /**
      * Parse application argument array and return parameter map
      */
-    std::map<std::string, std::string> parseArguments(int argc, char *argv[]);
+    // std::map<std::string, std::string> parseArguments(int argc, char *argv[]);
 
-    void printParameters(std::map<std::string, std::string> &parameters);
+    // void printParameters(std::map<std::string, std::string> &parameters);
 
-    bool hasParameter(std::map<std::string, std::string> &parameters, const std::string &parameter);
+    // bool hasParameter(std::map<std::string, std::string> &parameters, const std::string &parameter);
 
-    std::string getParameter(std::map<std::string, std::string> &parameters, const std::string &parameter);
+    // std::string getParameter(std::map<std::string, std::string> &parameters, const std::string &parameter);
 
-    // int
+    // // int
 
-    int getIntParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
+    // int getIntParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
 
-    int getIntParameter(std::map<std::string, std::string> &parameters, const std::string& parameter, int def);
+    // int getIntParameter(std::map<std::string, std::string> &parameters, const std::string& parameter, int def);
 
-    // float
+    // // float
 
-    float getFloatParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
+    // float getFloatParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
 
-    float getFloatParameter(std::map<std::string, std::string> &parameters, const std::string& parameter, float def);
+    // float getFloatParameter(std::map<std::string, std::string> &parameters, const std::string& parameter, float def);
 
-    // double
+    // // double
 
-    float getDoubleParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
+    // float getDoubleParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
 
-    float getDoubleParameter(std::map<std::string, std::string> &parameters, const std::string& parameter, double def);
+    // float getDoubleParameter(std::map<std::string, std::string> &parameters, const std::string& parameter, double def);
 
-    // os
-    std::string getOsInternalName();
+    // // os
+    // std::string getOsInternalName();
 
     // os
     std::string getOsName();

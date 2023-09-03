@@ -12,32 +12,32 @@ namespace syslib {
 
   std::map<std::string, std::string> parseArguments(int argc, char* argv[]);
 
+  ////
 
-////
+  void printParameters(std::map<std::string, std::string> &parameters);
 
-void printParameters(std::map<std::string, std::string> &parameters);
+  bool hasParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
 
-bool hasParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
+  std::string getParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
 
-std::string getParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
+  // int
 
-// int
+  int getIntParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
 
-int getIntParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
+  int getIntParameter(std::map<std::string, std::string> &parameters, const std::string& parameter, int def);
 
-int getIntParameter(std::map<std::string, std::string> &parameters, const std::string& parameter, int def);
+  // float
 
-// float
+  float getFloatParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
 
-float getFloatParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
+  float getFloatParameter(std::map<std::string, std::string> &parameters, const std::string& parameter, float def);
 
-float getFloatParameter(std::map<std::string, std::string> &parameters, const std::string& parameter, float def);
+  // double
 
-// double
+  float getDoubleParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
 
-float getDoubleParameter(std::map<std::string, std::string> &parameters, const std::string& parameter);
-
-float getDoubleParameter(std::map<std::string, std::string> &parameters, const std::string& parameter, double def);
+  float getDoubleParameter(std::map<std::string, std::string> &parameters, const std::string& parameter, double def);
 
 }
+
 #endif // PLAZMA_KERNEL_LIB_SYSARG_H

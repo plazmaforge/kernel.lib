@@ -1,3 +1,4 @@
+#include <array>
 
 #include "os.h"
 #include "sysexec.h"
