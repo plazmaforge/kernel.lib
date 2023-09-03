@@ -456,12 +456,12 @@ char* getWIN32_NT_Name(VersionInfo ver) {
 char* getOsName(VersionInfo ver) {
 
     // WINDOWS
-    if (platformId == VER_PLATFORM_WIN32_WINDOWS) {
+    if (ver.platformId == VER_PLATFORM_WIN32_WINDOWS) {
         return getWIN32_WINDOWS_Name(ver);
     }
 
     // NT
-    if (platformId == VER_PLATFORM_WIN32_NT) {
+    if (ver.platformId == VER_PLATFORM_WIN32_NT) {
         return getWIN32_NT_Name(ver);
     }
 
@@ -512,15 +512,16 @@ void initSysInfoWin(SysInfo& sysInfo) {
 
    is_64bit = (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64);
 
-   VersionInfo ver;
-   ver.platformId = platformId;
-   ver.majorVersion = majorVersion;
-   ver.minorVersion = minorVersion;
+   VersionInfo versionInfo;
+   
+   versionInfo.platformId = platformId;
+   versionInfo.majorVersion = majorVersion;
+   versionInfo.minorVersion = minorVersion;
 
-   ver.is_workstation = is_workstation;
-   ver.is_64bit = is_64bit;
+   versionInfo.is_workstation = is_workstation;
+   versionInfo.is_64bit = is_64bit;
 
-   sysInfo.os_name = getOsName(ver);
+   sysInfo.os_name = getOsName(versionInfo);
 
 }
 #endif

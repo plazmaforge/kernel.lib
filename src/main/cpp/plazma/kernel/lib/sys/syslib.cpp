@@ -6,7 +6,7 @@
 //#include <stdexcept>
 //#include <vector>
 //#include <array>
-//#include <cstdio>
+///#include <cstdio>
 
 #include "syslib.h"
 
@@ -15,7 +15,7 @@
 #include "plazma/kernel/lib/num/numlib.h"
 
 #ifdef OS_WIN
-#include <io.h>
+//#include <io.h>
 #include <windows.h>
 #else
 #include <unistd.h> // isatty
@@ -38,7 +38,30 @@ void* loadLibrary(const std::string& path) {
         return nullptr;
     }
     #ifdef OS_WIN
-    return nullptr; //TODO: //LoadLibrary(path.c_str());
+    
+    /*
+    LPWSTR input = L"whatever";
+    int cSize = WideCharToMultiByte (CP_ACP, 0, input, wcslen(input), NULL, 0, NULL, NULL);
+    std::string output(static_cast<size_t>(cSize), '\0');
+    WideCharToMultiByte (CP_ACP, 0, input, wcslen(input),
+    reinterpret_cast<char*>(&output[0]), cSize, NULL, NULL);
+     
+    std::string input = "whatever"
+
+    //computing wchar size:
+    int wSize = MultiByteToWideChar (CP_ACP, 0, (LPCSTR) input.c_str (), -1, 0, 0);
+
+    //allocating memory for wchar:
+    LPWSTR output = new WCHAR[wSize];
+
+    //conversion from string to LPWSTR:
+    MultiByteToWideChar (CP_ACP, MB_PRECOMPOSED , (LPCSTR) input.c_str (), -1, output, wSize);
+    */
+
+    //return LoadLibrary(path.c_str());
+    return (void*) LoadLibrary((LPCSTR) path.c_str());
+    //return LoadLibrary(output);
+
     #else
     return dlopen(path.c_str(), /*RTLD_NOW |*/ RTLD_LAZY);
     #endif
@@ -49,7 +72,7 @@ void* getSymbol(void* handle, const std::string& name) {
         return nullptr;
     }
     #ifdef OS_WIN
-    return nullptr; //GetProcAddress((HMODULE) handle, name.c_str());
+    return (void*) GetProcAddress((HMODULE) handle, (LPCSTR) name.c_str());
     #else
     return dlsym(handle, name.c_str());
     #endif
@@ -57,7 +80,7 @@ void* getSymbol(void* handle, const std::string& name) {
 
 bool closeLibrary(void* handle) {
     #ifdef OS_WIN
-    return false; //FreeLibrary((HMODULE) handle) != 0; // success
+    return (void*) FreeLibrary((HMODULE) handle) != 0; // success
 	  #else
     return dlclose(handle) == 0;      // success
     #endif
@@ -184,14 +207,14 @@ void setColorizedConsole(bool flag) {
 #ifdef _WIN32
 bool isStdOutEnabled() {   
   if (stdoutMode == -1) {
-    stdoutMode = (isatty(STDOUT_FILENO));
+    //stdoutMode = (isatty(STDOUT_FILENO));
   }
   return stdoutMode;
 }
 
 bool isStdErrEnabled() {
   if (stderrMode == -1) {
-    stderrMode = (isatty(STDERR_FILENO));
+    //stderrMode = (isatty(STDERR_FILENO));
   }
   return stderrMode;
 }
