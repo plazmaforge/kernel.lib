@@ -293,6 +293,18 @@ void initOsMac(SysInfo& sysInfo) {
 
 #ifdef OS_WIN
 
+typedef struct {
+
+  int majorVersion = 0;
+  int minorVersion = 0;
+  int buildNumber = 0;
+
+  boolean is_workstation;
+  boolean is_64bit;
+  DWORD platformId;
+
+} VersionInfo;
+
 /*
  * From msdn page on OSVERSIONINFOEX, current as of this
  * writing, decoding of dwMajorVersion and dwMinorVersion.
@@ -331,9 +343,9 @@ void initOsMac(SysInfo& sysInfo) {
  * versions are released.
  */
 
-char* getWIN32_WINDOWS_Name(int majorVersion, int minorVersion) {
-  if (majorVersion == 4) {
-    switch (minorVersion) {
+char* getWIN32_WINDOWS_Name(VersionInfo ver) {
+  if (ver.majorVersion == 4) {
+    switch (ver.minorVersion) {
       case  0: return "Windows 95";
       case 10: return "Windows 98";
       case 90: return "Windows Me";
@@ -343,8 +355,8 @@ char* getWIN32_WINDOWS_Name(int majorVersion, int minorVersion) {
    return "Windows 9X (unknown)"; 
 }
 
-char* getWIN32_NT_5_Name(int minorVersion, boolean is_64bit) {
-  switch (minorVersion) {
+char* getWIN32_NT_5_Name(VersionInfo ver) {
+  switch (ver.minorVersion) {
     case  0: return "Windows 2000";
     case  1: return "Windows XP";
     case  2:
@@ -359,10 +371,7 @@ char* getWIN32_NT_5_Name(int minorVersion, boolean is_64bit) {
          * If it is, the operating system is Windows XP 64 bit;
          * otherwise, it is Windows Server 2003."
          */
-         
-         // TODO: Rellace minorVersion to 21 or 22
-
-         if (/*is_workstation &&*/ is_64bit) {
+         if (ver.is_workstation && ver.is_64bit) {
             return "Windows XP"; /* 64 bit */
          } else {
              return "Windows 2003";
@@ -372,38 +381,88 @@ char* getWIN32_NT_5_Name(int minorVersion, boolean is_64bit) {
   return "Windows NT (unknown)"; 
 }
 
-char* getWIN32_NT_6_Name(int minorVersion) {
-}
-
-char* getWIN32_NT_10_Name(int minorVersion) {
-}
-
-char* getWIN32_NT_Name(int majorVersion, int minorVersion, boolean is_64bit) {
-    if (majorVersion <= 4) {
-        return "Windows NT";
-    }
-    if (majorVersion == 5) {
-        return getWIN32_NT_5_Name(minorVersion, is_64bit);
-    }
-    if (majorVersion == 6) {
-        return getWIN32_NT_6_Name(minorVersion);
-    }
-    if (majorVersion == 10) {
-        return getWIN32_NT_10_Name(minorVersion);
-    }
+char* getWIN32_NT_6_Name(VersionInfo ver) {
+  /*
+   * See table in MSDN OSVERSIONINFOEX documentation.
+   */
+   if (ver.is_workstation) {
+        switch (ver.minorVersion) {
+            case  0: return "Windows Vista";
+            case  1: return "Windows 7";
+            case  2: return "Windows 8";
+            case  3: return "Windows 8.1";
+          }
+    } else {
+        switch (ver.minorVersion) {
+            case  0: return "Windows Server 2008";
+            case  1: return "Windows Server 2008 R2";
+            case  2: return "Windows Server 2012";
+            case  3: return "Windows Server 2012 R2";
+        }
+    }  
     return "Windows NT (unknown)";
 }
 
-char* getOsName(DWORD platformId, int majorVersion, int minorVersion, boolean is_64bit) {
+char* getWIN32_NT_10_Name(VersionInfo ver) {
+   if (ver.is_workstation) {
+        switch (ver.minorVersion) {
+            case  0:
+              /* Windows 11 21H2 (original release) build number is 22000 */
+              if (ver.buildNumber >= 22000) {
+                  return "Windows 11";
+               } else {
+                  return "Windows 10";
+               }
+        }
+    } else {
+         switch (ver.minorVersion) {
+            case  0:
+              /* Windows server 2019 GA 10/2018 build number is 17763 */
+              /* Windows server 2022 build number is 20348 */
+              if (ver.buildNumber > 20347) {
+                  return "Windows Server 2022";
+               } else if (ver.buildNumber > 17762) {
+                  return "Windows Server 2019";
+               } else {
+                  return "Windows Server 2016";
+               }
+           }
+    }
+    return "Windows NT (unknown)";
+  
+}
+
+char* getWIN32_NT_Name(VersionInfo ver) {
+  
+    if (ver.majorVersion <= 4) {
+        return "Windows NT";
+    }
+    if (ver.majorVersion == 5) {
+        return getWIN32_NT_5_Name(ver);
+    }
+    if (ver.majorVersion == 6) {
+        return getWIN32_NT_6_Name(ver);
+    }
+    if (ver.majorVersion == 10) {
+        return getWIN32_NT_10_Name(ver);
+    }
+    
+    return "Windows NT (unknown)";
+}
+
+// !!!!
+//#ifdef OS_WIN
+
+char* getOsName(VersionInfo ver) {
 
     // WINDOWS
     if (platformId == VER_PLATFORM_WIN32_WINDOWS) {
-        return getWIN32_WINDOWS_Name(majorVersion, minorVersion);
+        return getWIN32_WINDOWS_Name(ver);
     }
 
     // NT
     if (platformId == VER_PLATFORM_WIN32_NT) {
-        return getWIN32_NT_Name(majorVersion, minorVersion, is_64bit);
+        return getWIN32_NT_Name(ver);
     }
 
     // UNKNOWN
@@ -453,7 +512,15 @@ void initSysInfoWin(SysInfo& sysInfo) {
 
    is_64bit = (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64);
 
-   sysInfo.os_name = getOsName(platformId, majorVersion, minorVersion, is_workstation && is_64bit);
+   VersionInfo ver;
+   ver.platformId = platformId;
+   ver.majorVersion = majorVersion;
+   ver.minorVersion = minorVersion;
+
+   ver.is_workstation = is_workstation;
+   ver.is_64bit = is_64bit;
+
+   sysInfo.os_name = getOsName(ver);
 
 }
 #endif
