@@ -343,7 +343,7 @@ char* getWIN32_WINDOWS_Name(int majorVersion, int minorVersion) {
    return "Windows 9X (unknown)"; 
 }
 
-char* getWIN32_NT_5_Name(int minorVersion) {
+char* getWIN32_NT_5_Name(int minorVersion, boolean is_64bit) {
   switch (minorVersion) {
     case  0: return "Windows 2000";
     case  1: return "Windows XP";
@@ -362,14 +362,14 @@ char* getWIN32_NT_5_Name(int minorVersion) {
          
          // TODO: Rellace minorVersion to 21 or 22
 
-         //if (is_workstation && is_64bit) {
+         if (/*is_workstation &&*/ is_64bit) {
             return "Windows XP"; /* 64 bit */
-         // } else {
-         //    return "Windows 2003";
-         // }
+         } else {
+             return "Windows 2003";
+         }
 
   }
-  return "Windows NT (unknown)";
+  return "Windows NT (unknown)"; 
 }
 
 char* getWIN32_NT_6_Name(int minorVersion) {
@@ -378,12 +378,12 @@ char* getWIN32_NT_6_Name(int minorVersion) {
 char* getWIN32_NT_10_Name(int minorVersion) {
 }
 
-char* getWIN32_NT_Name(int majorVersion, int minorVersion) {
+char* getWIN32_NT_Name(int majorVersion, int minorVersion, boolean is_64bit) {
     if (majorVersion <= 4) {
         return "Windows NT";
     }
     if (majorVersion == 5) {
-        return getWIN32_NT_5_Name(minorVersion);
+        return getWIN32_NT_5_Name(minorVersion, is_64bit);
     }
     if (majorVersion == 6) {
         return getWIN32_NT_6_Name(minorVersion);
@@ -394,7 +394,7 @@ char* getWIN32_NT_Name(int majorVersion, int minorVersion) {
     return "Windows NT (unknown)";
 }
 
-char* getOsName(DWORD platformId, int majorVersion, int minorVersion) {
+char* getOsName(DWORD platformId, int majorVersion, int minorVersion, boolean is_64bit) {
 
     // WINDOWS
     if (platformId == VER_PLATFORM_WIN32_WINDOWS) {
@@ -403,7 +403,7 @@ char* getOsName(DWORD platformId, int majorVersion, int minorVersion) {
 
     // NT
     if (platformId == VER_PLATFORM_WIN32_NT) {
-        return getWIN32_NT_Name(majorVersion, minorVersion);
+        return getWIN32_NT_Name(majorVersion, minorVersion, is_64bit);
     }
 
     // UNKNOWN
@@ -421,7 +421,7 @@ void initSysInfoWin(SysInfo& sysInfo) {
   WCHAR tmpdir[MAX_PATH + 1];
 
   GetTempPathW(MAX_PATH + 1, tmpdir);
-  sysInfo.tmp_dir = _wcsdup(tmpdir);
+  //sysInfo.tmp_dir = _wcsdup(tmpdir); // TODO
 
   /* OS properties */
   char buf[100];
@@ -451,9 +451,9 @@ void initSysInfoWin(SysInfo& sysInfo) {
    ZeroMemory(&si, sizeof(SYSTEM_INFO));
    GetNativeSystemInfo(&si);
 
-   //is_64bit = (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64);
+   is_64bit = (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64);
 
-   sysInfo.os_name = getOsName(platformId, majorVersion, minorVersion);
+   sysInfo.os_name = getOsName(platformId, majorVersion, minorVersion, is_workstation && is_64bit);
 
 }
 #endif
@@ -545,7 +545,8 @@ void initSysInfoUnix(SysInfo& sysInfo) {
 
 void initLocale(SysInfo& sysInfo) {
   #ifdef OS_WIN
-  initLocaleWin(sysInfo);
+  //TODO
+  //initLocaleWin(sysInfo);
   #else
   initLocaleUnix(sysInfo);
   #endif

@@ -3,6 +3,8 @@
 #include "os.h"
 #include "sysexec.h"
 
+#include <memory> // WIN:  unique_ptr, decltype, pipe
+
 namespace syslib {
 
 std::string exec(const char* cmd, bool safe) {

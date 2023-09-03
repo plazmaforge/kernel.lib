@@ -19,11 +19,11 @@ template <class T> class LibraryLoader {
 
   private:
     
-    #ifdef _WIN32
-    HMODULE	_handle;
-    #else
-    void *_handle;
-    #endif
+    //#ifdef _WIN32
+    //HMODULE	_handle;
+    //#else
+    void* _handle;
+    //#endif
 
     std::string _path;
     std::string _createName;

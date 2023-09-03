@@ -1,6 +1,8 @@
 
 #include "syslocale.h"
 
+#include <cstring> // WIN32: strcmp, strchr, strdup, strlen
+
 namespace syslib {
 
 void setDefaultLocale() {

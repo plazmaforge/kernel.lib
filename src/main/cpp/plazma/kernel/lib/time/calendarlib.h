@@ -1,6 +1,9 @@
 #ifndef PLAZMA_KERNEL_TIME_CALENDARLIB_H
 #define PLAZMA_KERNEL_TIME_CALENDARLIB_H
 
+#include <string>
+#include <vector>
+
 //#include "datelib.h"
 
 namespace calendarlib {

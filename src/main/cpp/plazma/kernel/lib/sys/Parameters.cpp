@@ -1,6 +1,7 @@
 
 #include "plazma/kernel/lib/num/numlib.h"
 #include "Parameters.h"
+#include <algorithm> // WIN32: std::transform
 
 //#include <iostream>
 

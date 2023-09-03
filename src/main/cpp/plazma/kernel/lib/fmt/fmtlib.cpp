@@ -5,6 +5,8 @@
 #include <iterator>
 #include <map>
 
+#include <stdarg.h> // WIN32: va_copy, va_begin, va_end
+
 #include "fmtlib.h"
 
 /////////////////////////////////////////////////////////////////////////////////

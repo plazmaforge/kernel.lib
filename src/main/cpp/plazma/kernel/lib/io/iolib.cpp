@@ -194,7 +194,7 @@ namespace iolib {
 
     bool isNativeConsole() {
         #ifdef _WIN32
-        return systemlib::isColorizedConsole() && systemlib::isStdOutEnabled();
+        return syslib::isColorizedConsole() && syslib::isStdOutEnabled();
         #else
         return false;
         #endif

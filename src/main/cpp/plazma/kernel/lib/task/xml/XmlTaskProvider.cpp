@@ -1,4 +1,4 @@
-
+#include <algorithm> // WIN32: std::find
 
 #include "plazma/kernel/lib/task/xml/XmlFormatTask.h"
 //#include "plazma/kernel/lib/task/xml/Xml2JsonConvertTask.h"
