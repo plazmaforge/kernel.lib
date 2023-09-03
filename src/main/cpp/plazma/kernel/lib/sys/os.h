@@ -17,6 +17,8 @@
         #define OS_APPLE
         #define OS_MAC
         #define OS_MAC_FRAMEWORK // CoreFoundation ...
+        #define OS_MAC_FRAMEWORK_SYSTEM
+        #define OS_MAC_FRAMEWORK_LOCALE
 
 #elif defined __unix__
         #define OS_UNIX

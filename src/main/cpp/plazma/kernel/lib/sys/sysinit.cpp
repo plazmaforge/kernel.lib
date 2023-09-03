@@ -14,9 +14,24 @@
 #include <pwd.h>
 #endif
 
+#ifdef _ALLBSD_SOURCE
+#ifndef P_tmpdir
+#include <paths.h>
+#define P_tmpdir _PATH_VARTMP
+#endif
+#endif
+
+#ifndef P_tmpdir
+#define P_tmpdir "/var/tmp"
+#endif
+
 #ifdef OS_MAC
+
+#ifdef OS_MAC_FRAMEWORK
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreServices/CoreServices.h>
+#endif
+
 #endif
 
 #include "plazma/kernel/lib/str/strlib.h"
@@ -58,7 +73,7 @@ void initDefaultLocale(SysInfo& sysInfo) {
 
 #ifdef OS_MAC
 
-// FRAMEWORK
+#ifdef OS_MAC_FRAMEWORK
 void initOsMac_F(SysInfo& sysInfo) {
 
     SInt32 majorVersion = 0;
@@ -74,6 +89,7 @@ void initOsMac_F(SysInfo& sysInfo) {
     sysInfo.os_name = "Mac OS X";
     sysInfo.os_version = strdup(version.c_str());   
 }
+#endif // OS_MAC_FRAMEWORK
 
 // ALTERNATIVE
 void initOsMac_A(SysInfo& sysInfo) {
@@ -121,7 +137,17 @@ void initOsMac_A(SysInfo& sysInfo) {
 }
 
 void initOsMac(SysInfo& sysInfo) {
-  initOsMac_F(sysInfo);
+    #ifdef OS_MAC_FRAMEWORK
+
+    #ifdef OS_MAC_FRAMEWORK_SYSTEM
+    initOsMac_F(sysInfo);
+    #else
+    initOsMac_A(sysInfo);
+    #endif
+
+    #else
+    initOsMac_A(sysInfo);
+    #endif  
 }
 
 #endif
@@ -196,9 +222,8 @@ void initSysInfoUnix(SysInfo& sysInfo) {
         sysInfo.tmp_dir = tmp_path;
     }
    #else 
-     // TODO: /var/tmp or /tmp
+     sysInfo.tmp_dir = P_tmpdir;
    #endif
-
 
    sysInfo.file_separator = "/";
    sysInfo.line_separator = "\n";
@@ -220,6 +245,7 @@ static int ParseLocale(int cat, char ** std_language, char ** std_script,
 
 #ifdef OS_MAC
 
+#ifdef OS_MAC_FRAMEWORK
 const char* getLocaleValue(CFLocaleRef locale, CFLocaleKey key) {
   CFStringRef value = (CFStringRef) CFLocaleGetValue(locale, key); 
   const char* ch = CFStringGetCStringPtr(value, kCFStringEncodingUTF8);
@@ -229,7 +255,6 @@ const char* getLocaleValue(CFLocaleRef locale, CFLocaleKey key) {
   return ch;
 }
 
-// FRAMEWORK
 void initLocaleMac_F(SysInfo& sysInfo) {
 
   CFLocaleRef cflocale = CFLocaleCopyCurrent();
@@ -293,9 +318,7 @@ void initLocaleMac_F(SysInfo& sysInfo) {
   
 
 }
-
-////===
-
+#endif // OS_MAC_FRAMEWORK
 
 // ALTERNATIVE
 void initLocaleMac_A(SysInfo& sysInfo) {
@@ -331,26 +354,25 @@ void initLocaleMac_A(SysInfo& sysInfo) {
 }
 
 void initLocaleMac(SysInfo& sysInfo) {
+  #ifdef OS_MAC_FRAMEWORK
+
+  #ifdef OS_MAC_FRAMEWORK_LOCALE
   initLocaleMac_F(sysInfo);
-  //initLocaleMac_A(sysInfo);
+  #else
+  initLocaleMac_A(sysInfo);
+  #endif
+
+  #else
+  initLocaleMac_A(sysInfo);
+  #endif
 }
 
-#endif
+#endif // OS_MAC
 
 
 void initLocale(SysInfo& sysInfo) {
 
-  /*
-  setlocale(LC_ALL, "");
-  int cat = LC_CTYPE;
-  //int cat = LC_MESSAGES;
-  //int cat = LC_ALL;
-  char *lc = setlocale(cat, "");
-  if (lc == NULL) {
-    return;
-  }
-  //sysInfo.format_country = strdup(lc);
-  */
+  // TODO
 
   #ifdef OS_MAC
   initLocaleMac(sysInfo);
