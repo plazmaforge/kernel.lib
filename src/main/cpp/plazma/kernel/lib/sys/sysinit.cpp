@@ -292,8 +292,169 @@ void initOsMac(SysInfo& sysInfo) {
 //// WIN ////
 
 #ifdef OS_WIN
+
+/*
+ * From msdn page on OSVERSIONINFOEX, current as of this
+ * writing, decoding of dwMajorVersion and dwMinorVersion.
+ *
+ *  Operating system            dwMajorVersion  dwMinorVersion
+ * ==================           ==============  ==============
+ *
+ * Windows 95                   4               0
+ * Windows 98                   4               10
+ * Windows ME                   4               90
+ * Windows 3.51                 3               51
+ * Windows NT 4.0               4               0
+ * Windows 2000                 5               0
+ * Windows XP 32 bit            5               1
+ * Windows Server 2003 family   5               2
+ * Windows XP 64 bit            5               2
+ *       where ((&ver.wServicePackMinor) + 2) = 1
+ *       and  si.wProcessorArchitecture = 9
+ * Windows Vista family         6               0  (VER_NT_WORKSTATION)
+ * Windows Server 2008          6               0  (!VER_NT_WORKSTATION)
+ * Windows 7                    6               1  (VER_NT_WORKSTATION)
+ * Windows Server 2008 R2       6               1  (!VER_NT_WORKSTATION)
+ * Windows 8                    6               2  (VER_NT_WORKSTATION)
+ * Windows Server 2012          6               2  (!VER_NT_WORKSTATION)
+ * Windows Server 2012 R2       6               3  (!VER_NT_WORKSTATION)
+ * Windows 10                   10              0  (VER_NT_WORKSTATION)
+ * Windows 11                   10              0  (VER_NT_WORKSTATION)
+ *       where (buildNumber >= 22000)
+ * Windows Server 2016          10              0  (!VER_NT_WORKSTATION)
+ * Windows Server 2019          10              0  (!VER_NT_WORKSTATION)
+ *       where (buildNumber > 17762)
+ * Windows Server 2022          10              0  (!VER_NT_WORKSTATION)
+ *       where (buildNumber > 20347)
+ *
+ * This mapping will presumably be augmented as new Windows
+ * versions are released.
+ */
+
+char* getWIN32_WINDOWS_Name(int majorVersion, int minorVersion) {
+  if (majorVersion == 4) {
+    switch (minorVersion) {
+      case  0: return "Windows 95";
+      case 10: return "Windows 98";
+      case 90: return "Windows Me";
+    }
+    return "Windows 9X (unknown)";
+   }
+   return "Windows 9X (unknown)"; 
+}
+
+char* getWIN32_NT_5_Name(int minorVersion) {
+  switch (minorVersion) {
+    case  0: return "Windows 2000";
+    case  1: return "Windows XP";
+    case  2:
+        /*
+         * From MSDN OSVERSIONINFOEX and SYSTEM_INFO documentation:
+         *
+         * "Because the version numbers for Windows Server 2003
+         * and Windows XP 6u4 bit are identical, you must also test
+         * whether the wProductType member is VER_NT_WORKSTATION.
+         * and si.wProcessorArchitecture is
+         * PROCESSOR_ARCHITECTURE_AMD64 (which is 9)
+         * If it is, the operating system is Windows XP 64 bit;
+         * otherwise, it is Windows Server 2003."
+         */
+         
+         // TODO: Rellace minorVersion to 21 or 22
+
+         //if (is_workstation && is_64bit) {
+            return "Windows XP"; /* 64 bit */
+         // } else {
+         //    return "Windows 2003";
+         // }
+
+  }
+  return "Windows NT (unknown)";
+}
+
+char* getWIN32_NT_6_Name(int minorVersion) {
+}
+
+char* getWIN32_NT_10_Name(int minorVersion) {
+}
+
+char* getWIN32_NT_Name(int majorVersion, int minorVersion) {
+    if (majorVersion <= 4) {
+        return "Windows NT";
+    }
+    if (majorVersion == 5) {
+        return getWIN32_NT_5_Name(minorVersion);
+    }
+    if (majorVersion == 6) {
+        return getWIN32_NT_6_Name(minorVersion);
+    }
+    if (majorVersion == 10) {
+        return getWIN32_NT_10_Name(minorVersion);
+    }
+    return "Windows NT (unknown)";
+}
+
+char* getOsName(DWORD platformId, int majorVersion, int minorVersion) {
+
+    // WINDOWS
+    if (platformId == VER_PLATFORM_WIN32_WINDOWS) {
+        return getWIN32_WINDOWS_Name(majorVersion, minorVersion);
+    }
+
+    // NT
+    if (platformId == VER_PLATFORM_WIN32_NT) {
+        return getWIN32_NT_Name(majorVersion, minorVersion);
+    }
+
+    // UNKNOWN
+    return  "Windows (unknown)";
+}
+
+//#ifdef OS_WIN
 void initSysInfoWin(SysInfo& sysInfo) {
-  // TODO
+
+  int majorVersion = 0;
+  int minorVersion = 0;
+  int buildNumber = 0;
+
+  /* tmp dir */
+  WCHAR tmpdir[MAX_PATH + 1];
+
+  GetTempPathW(MAX_PATH + 1, tmpdir);
+  sysInfo.tmp_dir = _wcsdup(tmpdir);
+
+  /* OS properties */
+  char buf[100];
+  boolean is_workstation;
+  boolean is_64bit;
+  DWORD platformId;
+
+  ////
+
+  OSVERSIONINFOEX ver;
+  ver.dwOSVersionInfoSize = sizeof(ver);
+
+  GetVersionEx((OSVERSIONINFO *) &ver);
+  majorVersion = ver.dwMajorVersion;
+  minorVersion = ver.dwMinorVersion;
+
+   /* distinguish Windows Server 2016+ by build number */
+   buildNumber = ver.dwBuildNumber;
+   is_workstation = (ver.wProductType == VER_NT_WORKSTATION);
+   platformId = ver.dwPlatformId;
+
+   //sysInfo.patch_level = _strdup(ver.szCSDVersion);    
+
+   ////
+
+   SYSTEM_INFO si;
+   ZeroMemory(&si, sizeof(SYSTEM_INFO));
+   GetNativeSystemInfo(&si);
+
+   //is_64bit = (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64);
+
+   sysInfo.os_name = getOsName(platformId, majorVersion, minorVersion);
+
 }
 #endif
 
