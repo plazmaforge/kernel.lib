@@ -287,7 +287,7 @@ C++ Library
 =============================================================================
 https://theo-penavaire.medium.com/loading-of-a-c-class-from-a-shared-library-modern-c-722d6a830a2b
 https://github.com/theo-pnv/Dynamic-Loading
-https://github.com/theo-pnv/cpp-utils
+https://github.com/theo-pnv/cpp-utils (json, keycode)
 
 https://tldp.org/HOWTO/C++-dlopen/
 https://tldp.org/HOWTO/C++-dlopen/thesolution.html#loadingclasses
