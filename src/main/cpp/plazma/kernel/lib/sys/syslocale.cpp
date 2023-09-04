@@ -71,6 +71,7 @@ Locale* parseLocale(char* lc) {
   //std::cout << "Encoding : " << (encoding ? encoding : "?") << std::endl;
 
   Locale* result = new Locale();
+  result->locale = strdup(lc);
   result->language = language;
   result->country = country;
   result->encoding = encoding;
@@ -79,6 +80,12 @@ Locale* parseLocale(char* lc) {
 
 }
 
-
+Locale* loadLocale(int cat) {
+  char* name = getLocale(LC_CTYPE); 
+  if (name == nullptr) {
+    return nullptr;
+  }
+  return parseLocale(name);;
+}
 
 }

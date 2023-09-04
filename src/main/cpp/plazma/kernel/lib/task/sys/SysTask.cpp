@@ -87,11 +87,11 @@ namespace task {
         printSysInfoLine(" user.dir      : ", sysInfo->user_dir);
         printSysInfoLine(" tmp.dir       : ", sysInfo->tmp_dir);
 
-        printSysInfoLine(" user.locale   : ", sysInfo->locale);
-        printSysInfoLine(" user.country  : ", sysInfo->format_country);
-        printSysInfoLine(" user.language : ", sysInfo->format_language);
-        printSysInfoLine(" user.script   : ", sysInfo->format_script);
-        printSysInfoLine(" user.variant  : ", sysInfo->format_variant);
+        printSysInfoLine(" user.locale   : ", sysInfo->display_locale);
+        printSysInfoLine(" user.country  : ", sysInfo->display_country);
+        printSysInfoLine(" user.language : ", sysInfo->display_language);
+        printSysInfoLine(" user.script   : ", sysInfo->display_script);
+        printSysInfoLine(" user.variant  : ", sysInfo->display_variant);
 
         printSysInfoLine(" encoding      : ", sysInfo->encoding);
 

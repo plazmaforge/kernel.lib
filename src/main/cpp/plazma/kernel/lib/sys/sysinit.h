@@ -8,18 +8,12 @@
 #include "syslocale.h"
 #include "sysexec.h"
 
-
 #ifdef OS_WIN
-//#include <tchar.h>
 #include <windows.h>
-//typedef WCHAR nchar;
 typedef wchar_t nchar;
 #else
 typedef char nchar;
 #endif
-
-
-//typedef char nchar;
 
 namespace syslib {
 
@@ -39,13 +33,15 @@ namespace syslib {
     char *path_separator; // ?
     char *line_separator;
 
-    char *locale;
+    //char *locale; // ?
 
+    char *format_locale;
     char *format_language;
     char *format_script;
     char *format_country;
     char *format_variant;
 
+    char *display_locale;
     char *display_language;    
     char *display_script;    
     char *display_country;    

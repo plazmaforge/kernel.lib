@@ -53,37 +53,71 @@
 
 namespace syslib {
 
-void setLocale(SysInfo& sysInfo, char* lc) {
-  if (lc == nullptr) {
+
+void initLocale(SysInfo& sysInfo, int cat, Locale* locale) {
+  if (locale == nullptr) {
     return;
   }
-  sysInfo.locale = strdup(lc);
-
-  Locale* locale = parseLocale(sysInfo.locale);
-  if (locale != nullptr) {
-    
-    sysInfo.format_language = locale->language;
-    sysInfo.format_country = locale->country;
-    sysInfo.encoding = locale->encoding;
-
-    delete locale;
+  if (cat != LC_CTYPE && cat != LC_MESSAGES) {
+    return;
   }
 
+  if (cat == LC_CTYPE) {
+    sysInfo.format_locale = locale->locale;
+    sysInfo.format_language = locale->language;
+    sysInfo.format_script = locale->script;
+    sysInfo.format_country = locale->country;
+    sysInfo.format_variant= locale->variant;
+    sysInfo.encoding = locale->encoding; // For format only
+    
+  } else if (cat == LC_MESSAGES) {
+
+    sysInfo.display_locale = locale->locale;
+    sysInfo.display_language = locale->language;
+    sysInfo.display_script = locale->script;
+    sysInfo.display_country = locale->country;
+    sysInfo.display_variant= locale->variant;
+
+  }
+
+  return;
+}
+
+void initLocale(SysInfo& sysInfo, int cat, char* name) {
+  if (name == nullptr) {
+    return;
+  }
+  if (cat != LC_CTYPE && cat != LC_MESSAGES) {
+    return;
+  }
+
+  Locale* locale = parseLocale(name);
+  if (locale == nullptr) {
+    return;
+  }
+
+  initLocale(sysInfo, cat, locale);
+
+  delete locale;
+  return;
+}
+
+void initLocale(SysInfo& sysInfo, char* name) {
+  initLocale(sysInfo, LC_CTYPE, name);
 }
 
 // "en_US.UTF-8"
 
 void initDefaultLocale(SysInfo& sysInfo) {
-  sysInfo.locale = "en_US.UTF-8";
+  sysInfo.format_locale = "en_US.UTF-8";
   sysInfo.format_language = "en";
   sysInfo.format_country = "US";
   sysInfo.encoding = "UTF-8";
 
-  //sysInfo.locale = "UTF-8";
-  //sysInfo.locale = "en_US";
-  //sysInfo.locale = "en_US.";
+  sysInfo.display_locale = "en_US.UTF-8";
+  sysInfo.display_language = "en";
+  sysInfo.display_country = "US";
 
-  //setLocale(sysInfo, sysInfo.locale);
 }
 
 ////
@@ -116,7 +150,7 @@ void initLocalePosix(SysInfo& sysInfo) {
   //  return;
   //}
 
-  setLocale(sysInfo, lc);
+  initLocale(sysInfo, lc);
 
 }
 
@@ -134,69 +168,88 @@ const char* getLocaleValue(CFLocaleRef locale, CFLocaleKey key) {
   return ch;
 }
 
-void initLocaleMac_F(SysInfo& sysInfo) {
+Locale* loadLocaleMac() {
 
   CFLocaleRef cflocale = CFLocaleCopyCurrent();
 
-  const char* locale = getLocaleValue(cflocale, kCFLocaleIdentifier);
+  const char* name = getLocaleValue(cflocale, kCFLocaleIdentifier);
 
   const char* language = getLocaleValue(cflocale, kCFLocaleLanguageCode);
-  const char* country = getLocaleValue(cflocale, kCFLocaleCountryCode);
   const char* script = getLocaleValue(cflocale, kCFLocaleScriptCode);
+  const char* country = getLocaleValue(cflocale, kCFLocaleCountryCode);  
   const char* variant = getLocaleValue(cflocale, kCFLocaleVariantCode);
-  const char* encoding = nullptr; //getLocaleValue(cflocale, kCFLocaleExemplarCharacterSet);
 
   //CFStringRef identifier = CFLocaleGetIdentifier(cflocale);
   //const char* ch = CFStringGetCStringPtr(identifier, kCFStringEncodingUTF8);
 
   CFRelease(cflocale);
 
-  if (locale) {
-    sysInfo.locale = strdup(locale);
-  } else {
-
-    char* lc = getLocale(); 
-    setLocale(sysInfo, lc);
-    return;
-
+  if (name == nullptr) {
+    return nullptr;
   }
 
-  if (language) {
-    sysInfo.format_language = strdup(language);
-  }
-  if (country) {
-    sysInfo.format_country = strdup(country);
-  }
-  if (script) {
-    sysInfo.format_script = strdup(script);
-  }
-  if (variant) {
-    sysInfo.format_variant = strdup(variant);
-  }
-
-  if (encoding) {
-    sysInfo.encoding = strdup(encoding);
-  } else {
-
-    char* lc = getLocale(); 
-
-    // Empty
-    if (isEmptyLocale(lc)) {
-      lc = "en_US.UTF-8"; // TODO
-      //initDefaultLocale(sysInfo);
-      //return;
-    }
-
-    Locale* ulocale = parseLocale(lc);
-    if (!ulocale || !ulocale->encoding) {
-      return;
-    }
-    sysInfo.encoding = strdup(ulocale->encoding);
-    
-  }
+  Locale* result = new Locale();
+  result->locale = strdup(name);
   
+  if (language != nullptr) {
+    result->language = strdup(language);
+  }
+  if (script != nullptr) {
+    result->script = strdup(script);
+  }
+  if (country != nullptr) {
+    result->country = strdup(country);
+  }
+  if (variant != nullptr) {
+    result->variant = strdup(variant);
+  }
+
+  return result;
+
 
 }
+
+void initLocaleMac_F(SysInfo& sysInfo) {
+
+  Locale* posixLocale = nullptr; // For loading encoding
+  Locale* formatLocale = loadLocaleMac(); // TODO: LC_CTYPE
+  if (formatLocale == nullptr) {
+    formatLocale = loadLocale(LC_CTYPE);
+    posixLocale = formatLocale;
+  } 
+  initLocale(sysInfo, LC_CTYPE, formatLocale);
+
+  Locale* displayLocale = loadLocaleMac(); // TODO: LC_MESSAGES
+  if (displayLocale == nullptr) {
+    displayLocale = loadLocale(LC_MESSAGES);
+  } 
+  initLocale(sysInfo, LC_MESSAGES, displayLocale);
+
+  if (posixLocale == nullptr) {
+    posixLocale = loadLocale(LC_CTYPE);
+    
+  }
+
+  char* encoding = nullptr;
+  if (posixLocale != nullptr) {
+    encoding = posixLocale->encoding;    
+  }
+
+  if (encoding != nullptr) {
+    sysInfo.encoding = strdup(encoding);
+  }
+
+  if (formatLocale != nullptr) {
+    delete formatLocale;
+
+  }
+
+  if (displayLocale != nullptr) {
+    delete displayLocale;
+  }
+
+}
+
 #endif // OS_MAC_FRAMEWORK
 
 // ALTERNATIVE
@@ -778,8 +831,10 @@ void initLocaleWin(SysInfo& sysInfo) {
       userDefaultUILCID = userDefaultLCID;
     }
 
-    Locale* formatLocale = loadLocale(userDefaultLCID);
-    Locale* displayLocale = loadLocale(userDefaultUILCID);
+    Locale* formatLocale = loadLocale(userDefaultLCID);    // LC_CTYPE
+    Locale* displayLocale = loadLocale(userDefaultUILCID); // LC_MESSAGES
+
+    // TODO: Use initLocale(sysInfo, cat, locale) for LC_CTYPE, LC_MESSAGES
 
     if (formatLocale != nullptr) {
        if (formatLocale->language != nullptr) {
@@ -979,7 +1034,6 @@ void initSysInfoUnix(SysInfo& sysInfo) {
 
 void initLocale(SysInfo& sysInfo) {
   #ifdef OS_WIN
-  //TODO
   initLocaleWin(sysInfo);
   #else
   initLocaleUnix(sysInfo);

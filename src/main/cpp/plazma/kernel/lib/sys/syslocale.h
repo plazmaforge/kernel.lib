@@ -30,6 +30,7 @@ typedef struct {
 
   Locale* parseLocale(char* lc);
 
+  Locale* loadLocale(int cat);
 
 }
 
