@@ -512,6 +512,8 @@ void initSysInfoWin(SysInfo& sysInfo) {
 
    is_64bit = (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64);
 
+   // TODO: Load from kernel32.DLL
+
    VersionInfo versionInfo;
    
    versionInfo.platformId = platformId;
@@ -521,8 +523,21 @@ void initSysInfoWin(SysInfo& sysInfo) {
    versionInfo.is_workstation = is_workstation;
    versionInfo.is_64bit = is_64bit;
 
+   /* OS */
    sysInfo.os_name = getOsName(versionInfo);
 
+   sprintf(buf, "%d.%d", majorVersion, minorVersion);
+   sysInfo.os_version = _strdup(buf);
+   #if defined(_M_AMD64)
+   sysInfo.os_arch = "amd64";
+   #elif defined(_X86_)
+   sysInfo.os_arch = "x86";
+   #elif defined(_M_ARM64)
+   sysInfo.os_arch = "aarch64";
+   #else
+   sysInfo.os_arch = "unknown";
+   #endif
+  
 }
 #endif
 
