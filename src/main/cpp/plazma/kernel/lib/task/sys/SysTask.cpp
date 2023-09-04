@@ -5,6 +5,8 @@
 #include "plazma/kernel/lib/num/numlib.h"
 #include "plazma/kernel/lib/fmt/fmtlib.h"
 
+#include "plazma/kernel/lib/io/iolib.h"
+
 #include "SysTask.h"
 
 //https://stackoverflow.com/questions/17223096/outputting-date-and-time-in-c-using-stdchrono
@@ -51,25 +53,20 @@ namespace task {
     ////
 
     void printSysInfoLine(std::string name, char* value) {
-        //std::cout << name;
-        syslib::print(name);
+        std::cout << name;
         if (value != nullptr) {
-            //std::cout << value;
-            syslib::print(value);
+            std::cout << value;
         }
-        //std::cout << std::endl;
-        syslib::println();
+        std::cout << std::endl;
     }
 
     void printSysInfoLine(std::string name, wchar_t* value) {
-        //std::cout << name;
-        syslib::print(name);
+        std::wstring wname = iolib::utf8_to_wstring(name);
+        std::wcout << wname;
         if (value != nullptr) {
-            //std::cout << value;
-            syslib::print(value);
+            std::wcout << value;
         }
-        //std::cout << std::endl;
-        syslib::println();
+        std::wcout << std::endl;
     }
 
     void SysTask::executePrintSystemInfo(TaskContext* ctx) {

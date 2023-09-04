@@ -33,7 +33,7 @@ public class StrLibSymbolTest extends AbstractTestCase {
         System.out.println(Integer.toBinaryString(65));
         System.out.println(Integer.toBinaryString(-65));               
         
-        c = 'Ї';
+        //c = 'Ї';
         i = c;
         String s = "Ї";
         

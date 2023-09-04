@@ -8,17 +8,18 @@
 #include "syslocale.h"
 #include "sysexec.h"
 
-/*
+
 #ifdef OS_WIN
 //#include <tchar.h>
 #include <windows.h>
-typedef WCHAR nchar;
+//typedef WCHAR nchar;
+typedef wchar_t nchar;
 #else
 typedef char nchar;
 #endif
-*/
 
-typedef char nchar;
+
+//typedef char nchar;
 
 namespace syslib {
 
