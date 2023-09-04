@@ -283,6 +283,11 @@ https://www.kodeco.com/1993018-an-introduction-to-swift-package-manager
 https://github.com/kodecocodes/spm-tutorial
 https://github.com/kodecocodes/swift-algorithm-club
 
+Object-C and C++ (-lobjc -framework Foundation, NSString)
+=============================================================================
+https://habr.com/ru/articles/704436/
+
+
 C++ Library
 =============================================================================
 https://theo-penavaire.medium.com/loading-of-a-c-class-from-a-shared-library-modern-c-722d6a830a2b
@@ -293,3 +298,17 @@ https://tldp.org/HOWTO/C++-dlopen/
 https://tldp.org/HOWTO/C++-dlopen/thesolution.html#loadingclasses
 
 https://caiorss.github.io/C-Cpp-Notes/DLL-Binary-Components-SharedLibraries.html
+
+OpenBSD
+=============================================================================
+https://github.com/openbsd
+
+
+C++ wxWidgets
+=============================================================================
+
+XML
+https://github.com/wxWidgets/wxWidgets/blob/master/include/wx/xml/xml.h
+
+JSON: Decode json string
+https://github.com/wxWidgets/wxWidgets/blob/master/include/wx/private/json.h
