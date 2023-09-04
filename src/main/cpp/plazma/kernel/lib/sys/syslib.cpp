@@ -452,6 +452,14 @@ void println(const char* str) {
   iolib::_println(str);
 }
 
+void print(const wchar_t* str) {
+  iolib::_print(str);
+}
+
+void println(const wchar_t* str) {
+  iolib::_println(str);
+}
+
 void println() {
   iolib::_println();
 }

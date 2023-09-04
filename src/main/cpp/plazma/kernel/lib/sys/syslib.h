@@ -197,6 +197,10 @@ namespace syslib {
 
     void println(const char* str);
 
+    void print(const wchar_t* str);
+
+    void println(const wchar_t* str);
+
     ////
 
     void println(const char* message1, char* message2);

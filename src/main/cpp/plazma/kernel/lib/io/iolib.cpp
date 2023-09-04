@@ -224,18 +224,6 @@ namespace iolib {
 
     #endif
 
-
-    /*
-    void _out(const ext::ustring &str) {
-        #ifdef _WIN32
-        iolib_win32::_WriteConsoleOutput(str);
-        #else
-        cout << ustring_to_utf8(str);
-        #endif
-    }
-    */
-
-
     void _out(const std::string &str) {
         #ifdef _WIN32
         if (isNativeConsole()) {
@@ -343,8 +331,6 @@ namespace iolib {
         _println();
     }
 
-    #ifdef _WIN32
-
     void _print(const std::wstring &str) {
         _out(str);
     }
@@ -354,16 +340,27 @@ namespace iolib {
         _println();
     }
 
-    #else
+    #ifndef _WIN32
 
-    void _print(const std::wstring &str) {
-        _out(str);
-    }
+    // void _print(const std::wstring &str) {
+    //     _out(str);
+    // }
 
-    void _println(const std::wstring &str) {
-        _print(str);
-        _println();
-    }
+    // void _println(const std::wstring &str) {
+    //     _print(str);
+    //     _println();
+    // }
+
+    // #else
+
+    // void _print(const std::wstring &str) {
+    //     _out(str);
+    // }
+
+    // void _println(const std::wstring &str) {
+    //     _print(str);
+    //     _println();
+    // }
 
     void _print(const ext::ustring &str) {
         _out(str);
@@ -378,11 +375,33 @@ namespace iolib {
 
 
     void _print(const char* str) {
+        if (str == nullptr) {
+            return;
+        }
         _out(str);
         //cout << str;
     }
 
     void _println(const char* str) {
+        if (str == nullptr) {
+            return;
+        }
+        _print(str);
+        _println();
+    }
+
+    void _print(const wchar_t* str) {
+        if (str == nullptr) {
+            return;
+        }
+        _out(str);
+        //cout << str;
+    }
+
+    void _println(const wchar_t* str) {
+        if (str == nullptr) {
+            return;
+        }
         _print(str);
         _println();
     }

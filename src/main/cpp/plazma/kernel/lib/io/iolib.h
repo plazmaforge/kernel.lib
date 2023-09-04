@@ -87,17 +87,21 @@ namespace iolib {
 
     void _println(const std::string &str);
 
-    #ifdef _WIN32
-
     void _print(const std::wstring &str);
 
     void _println(const std::wstring &str);
 
-    #else
+    #ifndef _WIN32
 
-    void _print(const std::wstring &str);
+    // void _print(const std::wstring &str);
 
-    void _println(const std::wstring &str);
+    // void _println(const std::wstring &str);
+
+    // #else
+
+    // void _print(const std::wstring &str);
+
+    // void _println(const std::wstring &str);
 
     void _print(const ext::ustring &str);
 
@@ -108,6 +112,10 @@ namespace iolib {
     void _print(const char* str);
 
     void _println(const char* str);
+
+    void _print(const wchar_t* str);
+
+    void _println(const wchar_t* str);
 
     void _println();
 

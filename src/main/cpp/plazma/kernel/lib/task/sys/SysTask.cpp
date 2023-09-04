@@ -51,11 +51,25 @@ namespace task {
     ////
 
     void printSysInfoLine(std::string name, char* value) {
-        std::cout << name;
+        //std::cout << name;
+        syslib::print(name);
         if (value != nullptr) {
-            std::cout << value;
+            //std::cout << value;
+            syslib::print(value);
         }
-        std::cout << std::endl;
+        //std::cout << std::endl;
+        syslib::println();
+    }
+
+    void printSysInfoLine(std::string name, wchar_t* value) {
+        //std::cout << name;
+        syslib::print(name);
+        if (value != nullptr) {
+            //std::cout << value;
+            syslib::print(value);
+        }
+        //std::cout << std::endl;
+        syslib::println();
     }
 
     void SysTask::executePrintSystemInfo(TaskContext* ctx) {
