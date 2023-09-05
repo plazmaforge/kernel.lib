@@ -312,3 +312,8 @@ https://github.com/wxWidgets/wxWidgets/blob/master/include/wx/xml/xml.h
 
 JSON: Decode json string
 https://github.com/wxWidgets/wxWidgets/blob/master/include/wx/private/json.h
+
+C++ TCP linet/Server
+=============================================================================
+https://habr.com/ru/articles/503432/
+https://github.com/gbytegear/TcpServer
