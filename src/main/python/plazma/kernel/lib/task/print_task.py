@@ -19,7 +19,16 @@ def executePrintSystemInfo(parameters):
 
     print(" os.name       : " + syslib.getOsName())
     print(" os.version    : " + syslib.getOsVersion())
+    print(" os.arch       : " + syslib.getOsArch())
+    print(" os.arch.data  : " + syslib.getOsArchData())
+
     print(" user.name     : " + syslib.getUserName())
+    print(" user.home     : " + syslib.getUserHome())
+    print(" user.dir      : " + syslib.getUserDir())
+    print(" tmp.dir       : " + syslib.getTmpDir())
+
+    #print(" file.encoding : " + syslib.getEncoding())
+    
 
 def executePrintDate(parameters):
     format = getFormat(parameters)

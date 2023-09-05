@@ -1,6 +1,8 @@
 import os
 import platform
 import time
+import locale
+import tempfile
 
 # https://github.com/Adam5Wu/ZWUtils-Python2/blob/master/PlatformOps.py
 
@@ -15,6 +17,7 @@ OS_MINORVER = None
 def __module_init():
      global PLATFORM, PLATFORMS
      PLATFORM = platform.system()
+     #platform.
      if PLATFORM in PLATFORMS:
           initOS()
      else:
@@ -24,10 +27,14 @@ def initOS():
      global PLATFORM
      if (PLATFORM ==  'Linux'):
           # TODO: Linux
-          pass
+          #pass
+          OS_NAME = os.name
+          OS_VERSION = os.version
      elif (PLATFORM == 'Windows'):
           # TODO: Windows
-          pass
+          #pass
+          OS_NAME = os.name
+          OS_VERSION = os.version
      elif (PLATFORM == 'Darwin'):
           initMacOS() 
 
@@ -44,11 +51,37 @@ def initMacOS():
 def getOsName():
      return OS_NAME #os.name
 
+def getOsArch():
+     return platform.machine()
+
+def getOsArchData():
+     os_arch = platform.machine()
+     is_64bit = (os_arch == "x86_64" or os_arch == "amd64")
+     if is_64bit:
+          return "64"
+     else:
+          return None
+
 def getOsVersion():
      return OS_VERSION #os.version
 
+# user
 def getUserName():
      return os.getlogin()
+
+def getUserHome():
+     return os.path.expanduser('~')
+
+def getUserDir():
+     return os.getcwd()
+
+def getTmpDir():
+     return tempfile.gettempdir()
+
+def getEncoding():
+     #language, encoding = locale.getdefaultlocale()
+     #return encoding
+     return None
 
 # os
 def isOsName(name):
