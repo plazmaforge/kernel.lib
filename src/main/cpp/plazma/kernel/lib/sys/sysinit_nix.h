@@ -12,7 +12,6 @@
 
 #include <sys/utsname.h>        /* For os_name and os_version */
 //#include <langinfo.h>         /* For nl_langinfo */
-//#include <locale.h>
 #include <pwd.h>
 
 #ifdef _ALLBSD_SOURCE
@@ -74,7 +73,12 @@ void initSysInfoNix(SysInfo& sysInfo) {
     #endif
 
    #endif
-   sysInfo.os_arch = strdup(name.machine); 
+   sysInfo.os_arch = strdup(name.machine);
+   if (sysInfo.os_arch != nullptr) {
+       if (strcmp(sysInfo.os_arch, "x86_64") == 0 || strcmp(sysInfo.os_arch, "amd64") == 0) {
+           sysInfo.os_arch_data = "64";
+       }       
+   } 
 
   /* User */
   struct passwd *pwent = getpwuid(getuid());

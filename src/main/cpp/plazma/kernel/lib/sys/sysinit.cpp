@@ -18,7 +18,7 @@ void initLocale(SysInfo& sysInfo) {
   #else
   initLocaleNix(sysInfo);
   #endif
-}
+} 
 
 void initSysInfo(SysInfo& sysInfo) {
   #ifdef OS_WIN
