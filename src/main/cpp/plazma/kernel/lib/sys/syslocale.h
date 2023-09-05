@@ -5,6 +5,10 @@
 
 namespace syslib {
 
+//#ifndef LC_MESSAGES
+//#define LC_MESSAGES 7
+//#endif
+
 typedef struct {
 
     char* name;

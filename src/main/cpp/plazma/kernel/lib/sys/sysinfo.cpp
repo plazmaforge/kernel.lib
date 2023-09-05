@@ -9,9 +9,9 @@ void initLocale(SysInfo& sysInfo, int cat, Locale* locale) {
   if (locale == nullptr) {
     return;
   }
-  if (cat != LC_CTYPE && cat != LC_MESSAGES) {
-    return;
-  }
+  //if (cat != LC_CTYPE && cat != LC_MESSAGES) {
+  //  return;
+  //}
 
   if (cat == LC_CTYPE) {
     sysInfo.format_locale = locale->name;
@@ -21,7 +21,7 @@ void initLocale(SysInfo& sysInfo, int cat, Locale* locale) {
     sysInfo.format_variant= locale->variant;
     sysInfo.encoding = locale->encoding; // For format only
     
-  } else if (cat == LC_MESSAGES) {
+  } else /*if (cat == LC_MESSAGES)*/ {
 
     sysInfo.display_locale = locale->name;
     sysInfo.display_language = locale->language;
@@ -38,9 +38,9 @@ void initLocale(SysInfo& sysInfo, int cat, char* name) {
   if (name == nullptr) {
     return;
   }
-  if (cat != LC_CTYPE && cat != LC_MESSAGES) {
-    return;
-  }
+  //if (cat != LC_CTYPE && cat != LC_MESSAGES) {
+  //  return;
+  //}
 
   Locale* locale = parseLocale(name);
   if (locale == nullptr) {

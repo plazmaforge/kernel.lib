@@ -12,14 +12,13 @@
 #include <shlobj.h>
 #include <objidl.h>
 //#include <stdlib.h>
-#include <Wincon.h>
+//#include <Wincon.h>
 
 #define PROPSIZE 9      // eight-letter + null terminator
 #define SNAMESIZE 86    // max number of chars for LOCALE_SNAME is 85
 
-#include <locale.h>
-#include <sys/types.h>
-#include <sys/timeb.h>
+//#include <sys/types.h>
+//#include <sys/timeb.h>
 
 namespace syslib {
 
@@ -205,16 +204,75 @@ char* getOsVersion(VersionInfo ver) {
    return _strdup(buf);
 }
 
+// by definition
 char* getOsArch() {
    #if defined(_M_AMD64)
-   return "amd64";
+   return "x86_64"; //"amd64";
    #elif defined(_X86_)
    return "x86";
    #elif defined(_M_ARM64)
-   return = "aarch64";
+   return "aarch64";
    #else
-   return = "unknown";
+   return NULL;
    #endif
+}
+
+// by SYSTEM_INFO
+
+char* getOsArch(SYSTEM_INFO& si) {
+   switch (si.wProcessorArchitecture) {
+    #ifdef PROCESSOR_ARCHITECTURE_IA64
+    case PROCESSOR_ARCHITECTURE_IA64: return "x86_64";
+    #endif
+    #ifdef PROCESSOR_ARCHITECTURE_AMD64
+    case PROCESSOR_ARCHITECTURE_AMD64: return "x86_64";
+    #endif
+    case PROCESSOR_ARCHITECTURE_INTEL:
+        switch (si.wProcessorLevel) {
+         case 6: 
+         case 5: 
+         case 4:
+         case 3: return "x86";
+         default: return "x86_64";
+        }
+    }     
+
+  return NULL;
+}
+
+// by definition
+char* getOsArchData() {
+   #if defined(_M_AMD64)
+   return "64";
+   #elif defined(_X86_)
+   return "32";
+   #elif defined(_M_ARM64)
+   return "64";
+   #else
+   return NULL;
+   #endif
+}
+
+// by SYSTEM_INFO
+char* getOsArchData(SYSTEM_INFO& si) {
+   switch (si.wProcessorArchitecture) {
+    #ifdef PROCESSOR_ARCHITECTURE_IA64
+    case PROCESSOR_ARCHITECTURE_IA64: return "64";
+    #endif
+    #ifdef PROCESSOR_ARCHITECTURE_AMD64
+    case PROCESSOR_ARCHITECTURE_AMD64: return "64";
+    #endif
+    case PROCESSOR_ARCHITECTURE_INTEL:
+        switch (si.wProcessorLevel) {
+         case 6: 
+         case 5: 
+         case 4:
+         case 3: return "32";
+         default: return "64";
+        }
+    }     
+ 
+   return NULL;
 }
 
 /*
@@ -495,45 +553,10 @@ void initLocaleWin(SysInfo& sysInfo) {
     }
 
     Locale* formatLocale = loadLocale(userDefaultLCID);    // LC_CTYPE
-    Locale* displayLocale = loadLocale(userDefaultUILCID); // LC_MESSAGES
+    Locale* displayLocale = loadLocale(userDefaultUILCID); // LC_MESSAGES = LC_TIME + 1
 
-    // TODO: Use initLocale(sysInfo, cat, locale) for LC_CTYPE, LC_MESSAGES
-
-    if (formatLocale != nullptr) {
-       if (formatLocale->language != nullptr) {
-        sysInfo.format_language = formatLocale->language;
-      }
-      if (formatLocale->script != nullptr) {
-        sysInfo.format_script = formatLocale->script;
-      }
-      if (formatLocale->country != nullptr) {
-        sysInfo.format_country = formatLocale->country;
-      }
-      if (formatLocale->variant != nullptr) {
-        sysInfo.format_variant = formatLocale->variant;
-      }
-      if (formatLocale->encoding != nullptr) {
-        sysInfo.encoding = formatLocale->encoding;
-      }
-    }
-
-    if (displayLocale != nullptr) {
-       if (displayLocale->language != nullptr) {
-        sysInfo.display_language = displayLocale->language;
-      }
-      if (displayLocale->script != nullptr) {
-        sysInfo.display_script = displayLocale->script;
-      }
-      if (displayLocale->country != nullptr) {
-        sysInfo.display_country = displayLocale->country;
-      }
-      if (displayLocale->variant != nullptr) {
-        sysInfo.display_variant = displayLocale->variant;
-      }
-      //if (displayLocale->encoding != nullptr) {
-      //  sysInfo.encoding = displayLocale->encoding;
-      //}
-    }
+    initLocale(sysInfo, LC_CTYPE, formatLocale);
+    initLocale(sysInfo, LC_TIME + 1, displayLocale);
 
 }
 
@@ -592,10 +615,10 @@ void initSysInfoWin(SysInfo& sysInfo) {
    /* OS */
    sysInfo.os_name = getOsName(versionInfo);
    sysInfo.os_version = getOsVersion(versionInfo);
-   sysInfo.os_arch = getOsArch();
+   sysInfo.os_arch = getOsArch(si);
+   sysInfo.os_arch_data = getOsArchData(si);
 
    /* CPU */
-   //sysInfo.os_arch = cpu_isalist;
    sysInfo.cpu_isalist = getCpuIsalist(si);
 
    /* User */
@@ -605,6 +628,10 @@ void initSysInfoWin(SysInfo& sysInfo) {
    if (sysInfo.user_home == NULL) {
     sysInfo.user_home = L"C:\\";
    }
+
+   sysInfo.file_separator = "\\";
+   sysInfo.line_separator = "\r\n";
+
 
  
 }

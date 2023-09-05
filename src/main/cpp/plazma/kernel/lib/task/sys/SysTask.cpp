@@ -78,22 +78,25 @@ namespace task {
         if (sysInfo == nullptr) {
             return;
         }
-        printSysInfoLine(" os.name       : ", sysInfo->os_name);
-        printSysInfoLine(" os.version    : ", sysInfo->os_version);
-        printSysInfoLine(" os.arch       : ", sysInfo->os_arch);
+        printSysInfoLine(" os.name        : ", sysInfo->os_name);
+        printSysInfoLine(" os.version     : ", sysInfo->os_version);
+        printSysInfoLine(" os.arch        : ", sysInfo->os_arch);
+        printSysInfoLine(" os.arch.data   : ", sysInfo->os_arch_data);
 
-        printSysInfoLine(" user.name     : ", sysInfo->user_name);
-        printSysInfoLine(" user.home     : ", sysInfo->user_home);
-        printSysInfoLine(" user.dir      : ", sysInfo->user_dir);
-        printSysInfoLine(" tmp.dir       : ", sysInfo->tmp_dir);
+        printSysInfoLine(" user.name      : ", sysInfo->user_name);
+        printSysInfoLine(" user.home      : ", sysInfo->user_home);
+        printSysInfoLine(" user.dir       : ", sysInfo->user_dir);
+        printSysInfoLine(" tmp.dir        : ", sysInfo->tmp_dir);
 
-        printSysInfoLine(" user.locale   : ", sysInfo->display_locale);
-        printSysInfoLine(" user.country  : ", sysInfo->display_country);
-        printSysInfoLine(" user.language : ", sysInfo->display_language);
-        printSysInfoLine(" user.script   : ", sysInfo->display_script);
-        printSysInfoLine(" user.variant  : ", sysInfo->display_variant);
+        printSysInfoLine(" user.locale    : ", sysInfo->display_locale);
+        printSysInfoLine(" user.country   : ", sysInfo->display_country);
+        printSysInfoLine(" user.language  : ", sysInfo->display_language);
+        printSysInfoLine(" user.script    : ", sysInfo->display_script);
+        printSysInfoLine(" user.variant   : ", sysInfo->display_variant);
 
-        printSysInfoLine(" encoding      : ", sysInfo->encoding);
+        printSysInfoLine(" file.encoding  : ", sysInfo->encoding);
+        printSysInfoLine(" file.separator : ", sysInfo->file_separator);
+        //printSysInfoLine(" line.separator : ", sysInfo->line_separator);
 
         //printSysInfoLine(" cpu.endian : ", sysInfo->cpu_endian);
 

@@ -18,6 +18,7 @@ namespace syslib {
     char* os_version;
     char* os_release; // *
     char* os_arch;
+    char* os_arch_data;
 
     nchar* user_name;
     nchar* user_home;
