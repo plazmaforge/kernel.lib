@@ -1,7 +1,9 @@
 
 #include "syslocale.h"
 
-#include <cstring> // WIN32: strcmp, strchr, strdup, strlen
+//#include <locale>
+#include <string>
+//#include <cstring> // WIN32: strcmp, strchr, strdup, strlen
 
 namespace syslib {
 
@@ -17,24 +19,24 @@ char* getLocale() {
   return getLocale(LC_CTYPE);
 }
 
-bool isEmptyLocale(char* lc) {
-  return lc == nullptr || (strcmp(lc, "C") == 0);
+bool isEmptyLocale(char* locale) {
+  return locale == nullptr || (strcmp(locale, "C") == 0);
 }
 
-bool isLocale(char* lc1, char* lc2) {
-  if (lc1 == nullptr || lc2 == nullptr) {
+bool equalsLocale(char* locale1, char* locale2) {
+  if (locale1 == nullptr || locale2 == nullptr) {
     return false;
   }
-  return strcmp(lc1, lc2) == 0;
+  return strcmp(locale1, locale2) == 0;
 }
 
-Locale* parseLocale(char* lc) {
-  if (lc == nullptr) {
+Locale* parseLocale(char* name) {
+  if (name == nullptr) {
     return nullptr;
   }
 
   char* p = nullptr;
-  char* temp = strdup(lc);
+  char* temp = strdup(name);
   
   char* language = nullptr;
   char* country = nullptr;
@@ -71,7 +73,7 @@ Locale* parseLocale(char* lc) {
   //std::cout << "Encoding : " << (encoding ? encoding : "?") << std::endl;
 
   Locale* result = new Locale();
-  result->locale = strdup(lc);
+  result->name = strdup(name);
   result->language = language;
   result->country = country;
   result->encoding = encoding;

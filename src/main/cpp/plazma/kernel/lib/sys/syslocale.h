@@ -1,14 +1,14 @@
 #ifndef PLAZMA_KERNEL_LIB_SYSLOCALE_H
 #define PLAZMA_KERNEL_LIB_SYSLOCALE_H
 
-#include <string>
+//#include <string>
 #include <locale>
 
 namespace syslib {
 
 typedef struct {
 
-    char* locale;
+    char* name;
 
     char* language;
     char* script;
@@ -24,11 +24,11 @@ typedef struct {
 
   char* getLocale();
 
-  bool isEmptyLocale(char* lc);
+  bool isEmptyLocale(char* locale);
 
-  bool isLocale(char* lc1, char* lc2);
+  bool equalsLocale(char* locale1, char* locale2);
 
-  Locale* parseLocale(char* lc);
+  Locale* parseLocale(char* locale);
 
   Locale* loadLocale(int cat);
 
