@@ -1,7 +1,6 @@
 #ifndef PLAZMA_KERNEL_LIB_SYSLOCALE_H
 #define PLAZMA_KERNEL_LIB_SYSLOCALE_H
 
-//#include <string>
 #include <locale>
 
 namespace syslib {

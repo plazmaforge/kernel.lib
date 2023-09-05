@@ -1,9 +1,8 @@
 
 #include "syslocale.h"
 
-//#include <locale>
 #include <string>
-//#include <cstring> // WIN32: strcmp, strchr, strdup, strlen
+#include <cstring> // WIN32: strcmp, strchr, strdup, strlen
 
 namespace syslib {
 

@@ -1,7 +1,6 @@
 
 #include "sysinfo.h"
 
-//#include <string>
 #include <locale>
 
 namespace syslib {
