@@ -24,6 +24,7 @@ package plazma.kernel.lib.sys;
 
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -340,6 +341,12 @@ public class SysLib {
         return System.getProperty("java.io.tmpdir");
     }
 
+    // user.locale
+    public static String getUserLocale() {
+        Locale locale = Locale.getDefault();
+        return locale.toString();
+    }
+
     // user.country
     public static String getUserCountry() {
         return System.getProperty("user.country");
@@ -348,6 +355,16 @@ public class SysLib {
     // user.language
     public static String getUserLanguage() {
         return System.getProperty("user.language");
+    }
+
+    public static String getUserScript() {
+        Locale locale = Locale.getDefault();
+        return locale.getScript();
+    }
+
+    public static String getUserVariant() {
+        Locale locale = Locale.getDefault();
+        return locale.getVariant();
     }
 
     // time

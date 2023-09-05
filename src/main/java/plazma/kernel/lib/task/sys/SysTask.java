@@ -85,26 +85,32 @@ public class SysTask extends BaseTask {
 
 
     ////
+    
+    private String out(String str) {
+       return str == null ? "" : str;        
+    }
 
     protected void executePrintSystemInfo(TaskContext ctx) {
         println("System Info");
 
-        println(" os.name       : " + getOsName());
-        println(" os.version    : " + getOsVersion());
-        println(" os.arch       : " + getOsArch());
-        println(" os.arch.data  : " + getOsArchData());
+        println(" os.name        : " + out(getOsName()));
+        println(" os.version     : " + out(getOsVersion()));
+        println(" os.arch        : " + out(getOsArch()));
+        println(" os.arch.data   : " + out(getOsArchData()));
 
-        println(" file.separator: " + getFileSeparator());
-        println(" file.encoding : " + getFileEncoding());
+        println(" user.name      : " + out(getUserName()));
+        println(" user.home      : " + out(getUserHome()));
+        println(" user.dir       : " + out(getUserDir()));        
+        println(" tmp.dir        : " + out(getTmpDir()));
 
-        println(" user.name     : " + getUserName());
-        println(" user.home     : " + getUserHome());
-        println(" user.dir      : " + getUserDir());
+        println(" user.locale    : " + out(getUserLocale()));
+        println(" user.country   : " + out(getUserCountry()));
+        println(" user.language  : " + out(getUserLanguage()));
+        println(" user.script    : " + out(getUserScript()));
+        println(" user.variant   : " + out(getUserVariant()));
         
-        println(" tmp.dir       : " + getTmpDir());
-
-        println(" user.country  : " + getUserCountry());
-        println(" user.language : " + getUserLanguage());
+        println(" file.encoding  : " + out(getFileEncoding()));
+        println(" file.separator : " + out(getFileSeparator()));        
 
     }
 
