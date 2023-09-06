@@ -1,13 +1,13 @@
 CC=g++
-#CC=clang
+#CC=clang++
 
 CFLAGS=-c -std=c++17 -Wall -I../../src/main/cpp -O2 -Os
 #CFLAGS=-c -std=c++17 -Wall -I../../src/main/cpp $(addprefix -W, all extra pedantic) -g -O2 -Os 
 #CFLAGS=-c -finput-charset=UTF-8 -O2 -Os -I"/Library/Frameworks/R.framework/Resources/include"
 
-#LDFLAGS=
+LDFLAGS=
 
-#clang+MacOS (libc++): Resolved "Undefined symbols for architecture x86_64"
+#clang and MacOS (libc++): Resolved "Undefined symbols for architecture x86_64"
 #LDFLAGS=-lc++
 
 #LDFLAGS=-framework CoreFoundation
