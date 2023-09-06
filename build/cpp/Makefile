@@ -1,8 +1,15 @@
 CC=g++
-CFLAGS=-c  -std=c++17 -Wall -I../../src/main/cpp -O2 -Os
-#CFLAGS=-c -finput-charset=UTF-8
+#CC=clang
 
-LDFLAGS=
+CFLAGS=-c -std=c++17 -Wall -I../../src/main/cpp -O2 -Os
+#CFLAGS=-c -std=c++17 -Wall -I../../src/main/cpp $(addprefix -W, all extra pedantic) -g -O2 -Os 
+#CFLAGS=-c -finput-charset=UTF-8 -O2 -Os -I"/Library/Frameworks/R.framework/Resources/include"
+
+#LDFLAGS=
+
+#clang+MacOS (libc++): Resolved "Undefined symbols for architecture x86_64"
+#LDFLAGS=-lc++
+
 #LDFLAGS=-framework CoreFoundation
 #LDFLAGS=-framework CoreFoundation -framework CoreServices -framework Foundation -framework SystemConfiguration
 #LDFLAGS=-framework CoreFoundation -framework CoreServices 
@@ -69,6 +76,8 @@ OBJECTS_LIB_XML=$(SOURCES_LIB_XML:.cpp=.o)
 
 EXECUTABLE=run
 
+#all: $(SOURCES)
+#	
 all: $(SOURCES) $(EXECUTABLE)
 	
 $(EXECUTABLE): $(OBJECTS) 
