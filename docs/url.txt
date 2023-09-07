@@ -323,3 +323,10 @@ C++ TCP linet/Server
 =============================================================================
 https://habr.com/ru/articles/503432/
 https://github.com/gbytegear/TcpServer
+
+clang + MacOS (clang -lc++)
+=============================================================================
+
+https://stackoverflow.com/questions/30174180/link-osx-homebrew-gfortran-against-libc
+https://stackoverflow.com/questions/50084214/link-errors-on-macos-high-sierra-undefined-symbols-for-architecture-x86-64-st
+
