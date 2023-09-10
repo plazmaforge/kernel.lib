@@ -51,6 +51,7 @@ LDFLAGS=
 #######################################################################
 
 START=../../src/main/cpp/plazma/kernel/lib
+START_W=..\..\src\main\cpp\plazma\kernel\lib
 
 SOURCES_ALL:=$(wildcard $(START)/**/*.cpp) $(wildcard $(START)/**/**/*.cpp)
 
@@ -115,9 +116,10 @@ EXECUTABLE=run
 #######################################################################
 
 ifeq ($(OS),Windows_NT)
-    LIB_CMD=$(CC) $(LDFLAGS) -shared -o task-base.dll -Wl,--out-implib,task-base.a -W1,--export-all-symbols-Wl,—enable-auto-image-base $(OBJECTS_LIB)
-    DEL_CMD_1=del /s %$(START)%\*.o
-    DEL_CMD_2=del run.exe run_test.exe lib-*.dll task-*.dll  
+    #LIB_CMD=$(CC) $(LDFLAGS) -shared -o task-base.dll -Wl,--out-implib,task-base.a -W1,--export-all-symbols-Wl,--enable-auto-image-base $(OBJECTS_LIB)
+    LIB_CMD=$(CC) $(LDFLAGS) -shared -o task-base.dll -Wl,--out-implib,task-base.a $(OBJECTS_LIB)
+    DEL_CMD_1=del /s $(START_W)\*.o
+    DEL_CMD_2=del run.exe run_test.exe lib-*.dll task-*.dll task-*.a  
 else
     UNAME_S := $(shell uname -s)
     
