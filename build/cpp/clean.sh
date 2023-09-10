@@ -2,11 +2,11 @@
 
 KERNEL_LIB="../../src/main/cpp/plazma/kernel/lib"
 
-rm $KERNEL_LIB/**/*.o
-rm $KERNEL_LIB/**/**/*.o
+rm -f $KERNEL_LIB/**/*.o
+rm -f $KERNEL_LIB/**/**/*.o
 
-rm run
-rm run_test
+rm -f run
+rm -f run_test
 
-rm lib-*.so
-rm lib-*.dylib
+rm -f lib-*.so
+rm -f lib-*.dylib

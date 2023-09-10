@@ -1,3 +1,4 @@
+
 CC=g++
 #CC=clang++
 
@@ -10,9 +11,42 @@ LDFLAGS=
 #clang and MacOS (libc++): Resolved "Undefined symbols for architecture x86_64"
 #LDFLAGS=-lc++
 
-#LDFLAGS=-framework CoreFoundation
-#LDFLAGS=-framework CoreFoundation -framework CoreServices -framework Foundation -framework SystemConfiguration
-#LDFLAGS=-framework CoreFoundation -framework CoreServices 
+#######################################################################
+
+#https://stackoverflow.com/questions/714100/os-detecting-makefile
+
+#ifeq ($(OS),Windows_NT)
+#    CCFLAGS += -D WIN32
+#    ifeq ($(PROCESSOR_ARCHITEW6432),AMD64)
+#        CCFLAGS += -D AMD64
+#    else
+#        ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
+#            CCFLAGS += -D AMD64
+#        endif
+#        ifeq ($(PROCESSOR_ARCHITECTURE),x86)
+#            CCFLAGS += -D IA32
+#        endif
+#    endif
+#else
+#    UNAME_S := $(shell uname -s)
+#    ifeq ($(UNAME_S),Linux)
+#        CCFLAGS += -D LINUX
+#    endif
+#    ifeq ($(UNAME_S),Darwin)
+#        CCFLAGS += -D OSX
+#    endif
+#    UNAME_P := $(shell uname -p)
+#    ifeq ($(UNAME_P),x86_64)
+#        CCFLAGS += -D AMD64
+#    endif
+#    ifneq ($(filter %86,$(UNAME_P)),)
+#        CCFLAGS += -D IA32
+#    endif
+#    ifneq ($(filter arm%,$(UNAME_P)),)
+#        CCFLAGS += -D ARM
+#    endif
+#endif
+
 
 #######################################################################
 
@@ -50,6 +84,7 @@ SOURCES:=$(SOURCES_ALL)
 
 # S-TEST
 SOURCES:=$(filter-out $(START)/task/run_test.cpp, $(SOURCES))
+SOURCES_MIN:=$(filter-out $(START)/task/run_test.cpp, $(SOURCES_MIN))
 
 # S-LIB
 SOURCES_LIB:=$(wildcard $(START)/**/*.cpp) $(wildcard $(START)/task/**/*.cpp) $(wildcard $(START)/data/**/*.cpp)
@@ -75,25 +110,69 @@ OBJECTS_LIB=$(SOURCES_LIB:.cpp=.o)
 OBJECTS_LIB_XML=$(SOURCES_LIB_XML:.cpp=.o)
 
 EXECUTABLE=run
+#EXECUTABLE_MIN=runm
 
-#all: $(SOURCES)
-#	
+#######################################################################
+
+ifeq ($(OS),Windows_NT)
+    LIB_CMD=$(CC) $(LDFLAGS) -shared -o task-base.dll -Wl,--out-implib,task-base.a -W1,--export-all-symbols-Wl,—enable-auto-image-base $(OBJECTS_LIB)
+    DEL_CMD_1=del /s %$(START)%\*.o
+    DEL_CMD_2=del run.exe run_test.exe lib-*.dll task-*.dll  
+else
+    UNAME_S := $(shell uname -s)
+    
+    #ifeq ($(UNAME_S),Linux)
+    #
+    #endif
+    
+    #DEL_CMD=rm -f $(START)/**/*.o $(START)/**/**/*.o run run_test
+    
+    DEL_CMD_1=rm -f $(START)/**/*.o $(START)/**/**/*.o
+    DEL_CMD_2=rm -f run run_test
+    
+    ifeq ($(UNAME_S),Darwin)
+        LDFLAGS += -framework CoreFoundation -framework CoreServices
+        LIB_CMD=$(CC) $(LDFLAGS) -dynamiclib -fPIC -o task-base.dylib $(OBJECTS_LIB)
+        DEL_CMD_2 += lib-*.dylib task-*.dylib
+    else
+        LIB_CMD=$(CC) $(LDFLAGS) -shared -fPIC -o task-base.so $(OBJECTS_LIB)
+        DEL_CMD_2 += lib-*.so task-*.so
+    endif
+    
+endif
+
+######################################################################
+
 all: $(SOURCES) $(EXECUTABLE)
+	
+#min: $(SOURCES_MIN) $(EXECUTABLE_MIN)
 	
 $(EXECUTABLE): $(OBJECTS) 
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
+#$(EXECUTABLE_MIN): $(OBJECTS_MIN) 
+#	$(CC) $(LDFLAGS) $(OBJECTS_MIN) -o $@
+
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
 
-lib-nix: $(OBJECTS)
-	$(CC) $(LDFLAGS) -shared -fPIC -o lib-task.so $(OBJECTS_LIB)
-		
-lib-mac: $(OBJECTS_LIB)
-	$(CC) $(LDFLAGS) -dynamiclib -fPIC -o lib-task.dylib $(OBJECTS_LIB)
-	
-lib-mac-xml: $(OBJECTS_LIB_XML)
-	$(CC) $(LDFLAGS) -dynamiclib -fPIC -o lib-task.dylib $(OBJECTS_LIB_XML)
+lib: $(OBJECTS_LIB)
+	$(LIB_CMD)
 
-lib-win: $(OBJECTS)
-	$(CC) $(LDFLAGS) -shared -o lib-task.dll -Wl,--out-implib,lib-task.a -W1,--export-all-symbols-Wl,—enable-auto-image-base $(OBJECTS_LIB)
+clean:
+	$(DEL_CMD_1)
+	$(DEL_CMD_2)
+
+######################################################################
+
+#lib-nix: $(OBJECTS)
+#	$(CC) $(LDFLAGS) -shared -fPIC -o lib-task.so $(OBJECTS_LIB)
+		
+#lib-mac: $(OBJECTS_LIB)
+#	$(CC) $(LDFLAGS) -dynamiclib -fPIC -o lib-task.dylib $(OBJECTS_LIB)
+	
+#lib-mac-xml: $(OBJECTS_LIB_XML)
+#	$(CC) $(LDFLAGS) -dynamiclib -fPIC -o lib-task.dylib $(OBJECTS_LIB_XML)
+
+#lib-win: $(OBJECTS)
+#	$(CC) $(LDFLAGS) -shared -o lib-task.dll -Wl,--out-implib,lib-task.a -W1,--export-all-symbols-Wl,—enable-auto-image-base $(OBJECTS_LIB)
