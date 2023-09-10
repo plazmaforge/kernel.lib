@@ -16,7 +16,9 @@
 #include "plazma/kernel/lib/sys/syslib.h"
 
 #ifdef _WIN32
-#include "iolib_win32.h"
+#include "iolib_win.h"
+#else
+#include "iolib_nix.h"
 #endif
 
 namespace iolib {
@@ -30,18 +32,9 @@ namespace iolib {
         std::wcout.imbue(utf8locale);
     }
 
-
-    #ifdef _WIN32
-    void init_utf8_console_win32() {
-        iolib_win32::FixStdStream(STD_INPUT_HANDLE, true, std::cin);
-        iolib_win32::FixStdStream(STD_OUTPUT_HANDLE, false, std::cout);
-        iolib_win32::FixStdStream(STD_ERROR_HANDLE, false, std::cerr);
-    }
-    #endif
-
     void init_utf8_console() {
         #ifdef _WIN32
-        init_utf8_console_win32();
+        iolib_win::init_utf8_console_win();
         #else
         init_utf8_console_base();
         #endif
@@ -67,7 +60,7 @@ namespace iolib {
     // convert UTF-8 string to wstring
     std::wstring utf8_to_wstring(const std::string &str) {
         #ifdef _WIN32
-        return iolib_win32::utf8_to_wstring(str);
+        return iolib_win::utf8_to_wstring(str);
         #else
         return utf8_to_wstring_base(str);
         #endif
@@ -76,7 +69,7 @@ namespace iolib {
     // convert wstring to UTF-8 string
     std::string wstring_to_utf8(const std::wstring &str) {
         #ifdef _WIN32
-        return iolib_win32::wstring_to_utf8(str);
+        return iolib_win::wstring_to_utf8(str);
         #else
         return wstring_to_utf8_base(str);
         #endif
@@ -84,7 +77,7 @@ namespace iolib {
 
     std::wstring arg_to_wstring(const std::string &str) {
         #ifdef _WIN32
-        return iolib_win32::ansi_to_wstring(str);
+        return iolib_win::ansi_to_wstring(str);
         #else
         return utf8_to_wstring_base(str);
         #endif
@@ -95,7 +88,7 @@ namespace iolib {
     // convert UTF-8 string to ustring
     ext::ustring utf8_to_ustring(const std::string &str) {
         #ifdef _WIN32
-        return iolib_win32::utf8_to_wstring(str);
+        return iolib_win::utf8_to_wstring(str);
         #else
 
         // 16
@@ -110,7 +103,7 @@ namespace iolib {
     // convert ustring to UTF-8 string
     std::string ustring_to_utf8(const ext::ustring &str) {
         #ifdef _WIN32
-        return iolib_win32::wstring_to_utf8(str);
+        return iolib_win::wstring_to_utf8(str);
         #else
 
         // 16
@@ -125,7 +118,7 @@ namespace iolib {
 
     ext::ustring arg_to_ustring(const std::string &str) {
         #ifdef _WIN32
-        return iolib_win32::ansi_to_wstring(str);
+        return iolib_win::ansi_to_wstring(str);
         #else
 
         // 16
@@ -178,7 +171,7 @@ namespace iolib {
         return utf8_to_wstring(s);
 
         //#ifdef _WIN32
-        //return iolib_win32::wstring_to_utf8(str);
+        //return iolib_win::wstring_to_utf8(str);
         //#else
 
         // 16
@@ -191,6 +184,36 @@ namespace iolib {
         //#endif
     }
 
+
+    //// console ////
+
+    void _out_base(const std::string &str) {
+        std::cout << str;
+    }
+
+    void _out_base(const std::wstring &str) {
+        std::wcout << str;
+    }
+
+    void _wout_base(const std::wstring &str) {
+        //std::wcout << str;
+        _out_base(str);
+    }
+
+    void _err_base(const std::string &str) {
+        std::cerr << str;
+    }
+
+    void _err_base(const std::wstring &str) {
+        std::wcerr << str;
+    }
+
+    void _werr_base(const std::wstring &str) {
+        //std::wcerr << str;
+        _err_base(str);
+    }
+
+    ////
 
     bool isNativeConsole() {
         #ifdef _WIN32
@@ -209,7 +232,7 @@ namespace iolib {
     #ifdef _WIN32
 
     void _out(const std::wstring &str) {
-        iolib_win32::_WriteConsoleOutput(str);
+        iolib_win::_out(str);
     }
 
     #else
@@ -227,12 +250,14 @@ namespace iolib {
     void _out(const std::string &str) {
         #ifdef _WIN32
         if (isNativeConsole()) {
-            iolib_win32::_WriteConsoleOutput(str);
+            iolib_win::_out(str);
         } else {
-            std::cout << str;
+            //std::cout << str;
+            _out_base(str);
         }
         #else
-        std::cout << str;
+        //std::cout << str;
+        _out_base(str);
         #endif
     }
 
@@ -242,7 +267,7 @@ namespace iolib {
 
     void _err(const std::wstring &str) {
         #ifdef _WIN32
-        iolib_win32::_WriteConsoleError(str);
+        iolib_win::_err(str);
         #else
         std::wcout << str; // TODO: werr
         #endif
@@ -250,7 +275,7 @@ namespace iolib {
 
     void _err(const std::string &str) {
         #ifdef _WIN32
-        iolib_win32::_WriteConsoleError(str);
+        iolib_win::_err(str);
         #else
         std::cout << str; // TODO: cerr
         #endif
@@ -262,7 +287,7 @@ namespace iolib {
         std::string input;
         std::cin >> input;
         return input;
-        //return olib_win32::_ReadConsoleInput();
+        //return olib_win::_ReadConsoleInput();
     }
 
     //// print ////
