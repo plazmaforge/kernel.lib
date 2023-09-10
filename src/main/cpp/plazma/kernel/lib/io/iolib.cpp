@@ -419,18 +419,31 @@ namespace iolib {
         std::ifstream file;
         std::vector<std::string> lines;
         file.open(fileName);
-        if (file.is_open()) {
-            lines = readLines(file);
-        } else {
+
+        if (!file.is_open()) {
             syslib::error("Cannot open file: " + fileName);
+            return lines;
         }
+
+        //if (file.is_open()) {
+        //    lines = readLines(file);
+        //} else {
+        //    syslib::error("Cannot open file: " + fileName);
+        //}
+
+        lines = readLines(file);
         file.close();
         return lines;
     }
 
     std::vector<std::string> readLines(std::ifstream &file) {
-        std::string line;
         std::vector<std::string> lines;
+        if (!file.is_open()) {
+            syslib::error("Cannot open input stream");
+            return lines;
+        }
+
+        std::string line;        
         while (getline(file, line)) {
             lines.push_back(line);
         }
@@ -443,7 +456,7 @@ namespace iolib {
     // readText
 
     std::string readText(const std::string &fileName) {
-        char *data = readChars(fileName);
+        char* data = readChars(fileName);
         if (data == nullptr) {
             return "";
         }
@@ -471,7 +484,7 @@ namespace iolib {
     }
 
     std::string readText(std::ifstream &file) {
-        char *data = readChars(file);
+        char* data = readChars(file);
         if (data == nullptr) {
             return "";
         }
@@ -500,32 +513,46 @@ namespace iolib {
 
     // readChars
 
-    char* readChars(const std::string &fileName) {
-        char *data = nullptr;
+    char* readChars(const std::string &fileName) {        
         std::ios_base::openmode openmode = std::ios::ate | std::ios::in | std::ios::binary;
         std::ifstream file(fileName, openmode); // open file
 
-        if (file.is_open()) {
-            data = readChars(file);
-        } else {
+        if (!file.is_open()) {
             syslib::error("Cannot open file: " + fileName);
+            return nullptr;
         }
+
+        //char *data = nullptr;
+        //if (file.is_open()) {
+        //    data = readChars(file);
+        //} else {
+        //    return NULL;//syslib::error("Cannot open file: " + fileName);
+        //}
+        //file.close();
+
+        char* data = readChars(file);
         file.close();
         return data;
     }
 
     char* readChars(std::ifstream &file) {
-        char *data = nullptr;
-        if (file.is_open()) {
+
+        if (!file.is_open()) {
+            syslib::error("Cannot open input stream");
+            return nullptr;
+        }
+
+        char* data = nullptr;
+        //if (file.is_open()) {
             std::streampos pos = file.tellg();
             size_t size = pos;
             data = new char[size + 1];
             file.seekg(0, std::ios::beg);
             file.read(data, pos);
-            file.close();
+            //file.close(); Close in Up Level
             // Terminate C string at the end
             data[size] = 0;
-        }
+        //}
         return data;
      }
 
@@ -537,15 +564,29 @@ namespace iolib {
         std::ofstream file;
 
         file.open(fileName);
-        if (file.is_open()) {
-            writeLines(file, lines);
-        } else {
+
+        if (!file.is_open()) {
             syslib::error("Cannot open file: " + fileName);
+            return;
         }
+
+        //if (file.is_open()) {
+        //    writeLines(file, lines);
+        //} else {
+        //    syslib::error("Cannot open file: " + fileName);
+        //}
+
+        writeLines(file, lines);
         file.close();
     }
 
     void writeLines(std::ofstream &file, std::vector<std::string> lines) {
+
+        if (!file.is_open()) {
+            syslib::error("Cannot open output stream");
+            return;
+        }
+
         int size = lines.size();
         std::string line;
 
@@ -564,6 +605,12 @@ namespace iolib {
     // writeText
 
     void writeText(std::ofstream &file, std::string &text) {
+
+        if (!file.is_open()) {
+            syslib::error("Cannot open output stream");
+            return;
+        }
+
         // add text to file
         file << text;
     }
@@ -572,11 +619,19 @@ namespace iolib {
         std::ofstream file;
 
         file.open(fileName);
-        if (file.is_open()) {
-            writeText(file, text);
-        } else {
+
+        if (!file.is_open()) {
             syslib::error("Cannot open file: " + fileName);
+            return;
         }
+
+        //if (file.is_open()) {
+        //    writeText(file, text);
+        //} else {
+        //    syslib::error("Cannot open file: " + fileName);
+        //}
+
+        writeText(file, text);
         file.close();
     }
 
