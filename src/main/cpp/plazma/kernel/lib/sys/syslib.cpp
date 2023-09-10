@@ -37,8 +37,7 @@ void* loadLibrary(const std::string& path) {
     if (path.empty()) {
         return nullptr;
     }
-    #ifdef OS_WIN
-    
+    #ifdef OS_WIN  
     /*
     LPWSTR input = L"whatever";
     int cSize = WideCharToMultiByte (CP_ACP, 0, input, wcslen(input), NULL, 0, NULL, NULL);
@@ -57,11 +56,7 @@ void* loadLibrary(const std::string& path) {
     //conversion from string to LPWSTR:
     MultiByteToWideChar (CP_ACP, MB_PRECOMPOSED , (LPCSTR) input.c_str (), -1, output, wSize);
     */
-
-    //return LoadLibrary(path.c_str());
     return (void*) LoadLibrary((LPCSTR) path.c_str());
-    //return LoadLibrary(output);
-
     #else
     return dlopen(path.c_str(), /*RTLD_NOW |*/ RTLD_LAZY);
     #endif
@@ -87,16 +82,24 @@ bool closeLibrary(void* handle) {
 }
 
 bool isSupportLibraryError() {
-    #ifdef OS_WIN
-    return false; // TODO: Use GetLastError
-	  #else
     return true;
-    #endif
+    //#ifdef OS_WIN
+    //return true;
+	  //#else
+    //return true;
+    //#endif
 }
 
 const std::string getLibraryError() {
     #ifdef OS_WIN
-    return ""; // TODO: Use GetLastError
+    wchar_t buf[256];
+    FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+               NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), 
+               buf, (sizeof(buf) / sizeof(wchar_t)), NULL);
+
+    std::wstring ws = std::wstring(buf);
+    std::string error(ws.begin(), ws.end() - 1); // -1: L'\0'
+    return error;
 	  #else
     return dlerror();
     #endif

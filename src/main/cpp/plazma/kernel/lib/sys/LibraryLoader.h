@@ -22,8 +22,10 @@ template <class T> class LibraryLoader {
     //#ifdef _WIN32
     //HMODULE	_handle;
     //#else
-    void* _handle;
+    //void* _handle;
     //#endif
+
+    void* _handle;
 
     std::string _path;
     std::string _createName;
@@ -47,19 +49,22 @@ template <class T> class LibraryLoader {
 
     }
 
-    ~LibraryLoader() {
-
-    }
+    ~LibraryLoader() {}
 
     void error(const std::string& message, bool details) {
-      std::cerr << message;
+      //std::cerr << message;
+      std::string result = message;
       if (details && syslib::isSupportLibraryError()) {
         std::string err = syslib::getLibraryError();
         if (!err.empty()) {
-          std::cerr << ": " << err;
+          //std::cerr << ": " << err;
+          result.append(": ");
+          result.append(err);
         }
       }
-      std::cerr << std::endl;
+      //std::cerr << std::endl;
+      result.append("\n");
+      syslib::error(result);
     }
 
     void error(const std::string& message) {
@@ -69,22 +74,9 @@ template <class T> class LibraryLoader {
     void openLibrary() {
       _handle = syslib::loadLibrary(_path);
       if (!_handle) {
-        error("Can't load library " + _path, true);
+        error("Cannot load library '" + _path + "'", true);
       }
-
-      // #ifdef _WIN32
-      // if (!(_handle = LoadLibrary(_path.c_str()))) {
-      //   std::cerr << "Can't load library " << _path << std::endl;
-	    // }
-      // #else
-      // if (!(_handle = dlopen(_path.c_str(), RTLD_NOW | RTLD_LAZY))) {
-      //   std::cerr << "Can't load library " << _path << std::endl;
-	    //   std::cerr << dlerror() << std::endl;
-	    // } 
-      // #endif
-
     }
-
 
     //std::shared_ptr<T> getInstance() {
 
@@ -99,41 +91,16 @@ template <class T> class LibraryLoader {
 
       if (!create || !destroy) {
         closeLibrary();
-        error("Can't find symbol 'create' or 'destroy' in " + _path);
+        error("Cannot find symbol 'create' or 'destroy' in library '" + _path + "'");
         return nullptr;
       }
 
       instance = create();
       return instance;
+
       //return std::shared_ptr<T>(create(), [destroy](T *p){ destroy(p); });
-
-      // #ifdef _WIN32
-
-      // /*auto*/ create = reinterpret_cast<CreateType>(GetProcAddress(_handle, _createName.c_str()));
-      // /*auto*/ destroy = reinterpret_cast<DestroyType>(GetProcAddress(_handle, _destroyName.c_str()));
-
-      // if (!create || !destroy) {
-      //   closeLibrary();
-      //   std::cerr << "Can't find symbol 'create' or 'destroy' in " << _path << std::endl;
-      // }
-
-      // //return std::shared_ptr<T>(create(), [destroy](T *p) { destroy(p); });    
-      // #else
-
-      // /*auto*/ create = reinterpret_cast<CreateType>(dlsym(_handle, _createName.c_str()));
-      // /*auto*/ destroy = reinterpret_cast<DestroyType>(dlsym(_handle, _destroyName.c_str()));
-
-      // if (!create || !destroy) {
-      //   closeLibrary();
-      //   std::cerr << "Can't find symbol 'create' or 'destroy' in " << _path << std::endl;
-      //   std::cerr << dlerror() << std::endl;
-      // }
-
-      // #endif
-
-      // instance = create();
-      // return instance;
-
+      //instance = create();
+      //return instance;
       //return std::shared_ptr<T>(create(), [destroy](T *p){ destroy(p); });
 
     }
@@ -144,26 +111,14 @@ template <class T> class LibraryLoader {
     void closeLibrary() {
       if (instance != nullptr) {
             if (destroy == nullptr) {
-                error("Can't destroy object: Destroy function is not implemented");
+                error("Cannot destroy object: Destroy function is not implemented");
             }
             destroy(instance);
       }
 
       if (!syslib::closeLibrary(_handle)) {
-        error("Can't close library " + _path, true);
+        error("Cannot close library '" + _path + "'", true);
       }
-
-      // #ifdef _WIN32
-      // if (FreeLibrary(_handle) == 0) {
-      //   std::cerr << "Can't close library " << _path << std::endl;
-      // }
-	    // #else
-      // if (dlclose(_handle) != 0) {
-      //   std::cerr << "Can't close library " << _path << std::endl;
-      //   std::cerr << dlerror() << std::endl;
-      // }
-
-      // #endif
 
     }
 
