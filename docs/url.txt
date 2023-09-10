@@ -305,6 +305,9 @@ https://tldp.org/HOWTO/C++-dlopen/thesolution.html#loadingclasses
 
 https://caiorss.github.io/C-Cpp-Notes/DLL-Binary-Components-SharedLibraries.html
 
+Commands for creating the dynamic library libgeorgeringo.so, libgeorgeringo.dll, or libgeorgeringo.dylib
+https://www.oreilly.com/library/view/c-cookbook/0596007612/ch01s05.html
+
 OpenBSD
 =============================================================================
 https://github.com/openbsd
