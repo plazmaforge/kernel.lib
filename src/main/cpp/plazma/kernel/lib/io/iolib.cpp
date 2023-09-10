@@ -301,17 +301,6 @@ namespace iolib {
         int n = _vprintf(fmt, va);
         va_end(va);
         return n;
-
-        // va_list args;
-        // va_start(args, fmt);
-    
-        // #ifdef _WIN32
-        // iolib_win32::printf(fmt, args);
-        // #else
-        // std::printf(fmt, args);
-        // #endif
-
-        // va_end(args);
     }
 
     //int _printf(const std::string &str) {
@@ -337,30 +326,10 @@ namespace iolib {
 
     void _println(const std::wstring &str) {
         _print(str);
-        _println();
+        _print(L"\n"); // WCHAR \n
     }
 
     #ifndef _WIN32
-
-    // void _print(const std::wstring &str) {
-    //     _out(str);
-    // }
-
-    // void _println(const std::wstring &str) {
-    //     _print(str);
-    //     _println();
-    // }
-
-    // #else
-
-    // void _print(const std::wstring &str) {
-    //     _out(str);
-    // }
-
-    // void _println(const std::wstring &str) {
-    //     _print(str);
-    //     _println();
-    // }
 
     void _print(const ext::ustring &str) {
         _out(str);
@@ -373,13 +342,11 @@ namespace iolib {
 
     #endif
 
-
     void _print(const char* str) {
         if (str == nullptr) {
             return;
         }
         _out(str);
-        //cout << str;
     }
 
     void _println(const char* str) {
@@ -395,7 +362,6 @@ namespace iolib {
             return;
         }
         _out(str);
-        //cout << str;
     }
 
     void _println(const wchar_t* str) {
@@ -408,7 +374,10 @@ namespace iolib {
 
     void _println() {
         _out("\n");
-        //std::cout << endl;
+    }
+
+    void _wprintln() {
+        _out(L"\n");
     }
 
     //// read ////
@@ -424,12 +393,6 @@ namespace iolib {
             syslib::error("Cannot open file: " + fileName);
             return lines;
         }
-
-        //if (file.is_open()) {
-        //    lines = readLines(file);
-        //} else {
-        //    syslib::error("Cannot open file: " + fileName);
-        //}
 
         lines = readLines(file);
         file.close();
@@ -473,11 +436,11 @@ namespace iolib {
         //file.imbue(utf8locale);
 
         file.open(fileName);
-        if (file.is_open()) {
-            text = readText(file);
-        } else {
+        if (!file.is_open()) {
             std::cout << "Cannot open file: " + fileName << std::endl;
+            return text;
         }
+        text = readText(file);
         file.close();
         return text;
         */
@@ -522,14 +485,6 @@ namespace iolib {
             return nullptr;
         }
 
-        //char *data = nullptr;
-        //if (file.is_open()) {
-        //    data = readChars(file);
-        //} else {
-        //    return NULL;//syslib::error("Cannot open file: " + fileName);
-        //}
-        //file.close();
-
         char* data = readChars(file);
         file.close();
         return data;
@@ -543,16 +498,16 @@ namespace iolib {
         }
 
         char* data = nullptr;
-        //if (file.is_open()) {
-            std::streampos pos = file.tellg();
-            size_t size = pos;
-            data = new char[size + 1];
-            file.seekg(0, std::ios::beg);
-            file.read(data, pos);
-            //file.close(); Close in Up Level
-            // Terminate C string at the end
-            data[size] = 0;
-        //}
+
+        std::streampos pos = file.tellg();
+        size_t size = pos;
+        data = new char[size + 1];
+        file.seekg(0, std::ios::beg);
+        file.read(data, pos);
+        //file.close(); Close in Up Level
+        // Terminate C string at the end
+        data[size] = 0;
+
         return data;
      }
 
@@ -569,12 +524,6 @@ namespace iolib {
             syslib::error("Cannot open file: " + fileName);
             return;
         }
-
-        //if (file.is_open()) {
-        //    writeLines(file, lines);
-        //} else {
-        //    syslib::error("Cannot open file: " + fileName);
-        //}
 
         writeLines(file, lines);
         file.close();
@@ -624,12 +573,6 @@ namespace iolib {
             syslib::error("Cannot open file: " + fileName);
             return;
         }
-
-        //if (file.is_open()) {
-        //    writeText(file, text);
-        //} else {
-        //    syslib::error("Cannot open file: " + fileName);
-        //}
 
         writeText(file, text);
         file.close();

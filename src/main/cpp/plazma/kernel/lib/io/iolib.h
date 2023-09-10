@@ -119,6 +119,8 @@ namespace iolib {
 
     void _println();
 
+    void _wprintln();
+
     //// read ////
 
     // readLines
