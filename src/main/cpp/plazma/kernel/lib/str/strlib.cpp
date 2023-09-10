@@ -20,7 +20,7 @@
 // - isBlank(const string  &str)                                                - check blank
 // - size(const string  &str)                                                   - length
 //
-// - equals(const char *str1, const char *str2)
+// - equals(const char* str1, const char* str2)
 // - equals(const string  &str1, const string  &str2)
 //
 // - equalsContent(const string  &str, ???)                                     - N/A
@@ -309,7 +309,7 @@ namespace strlib {
     }
 
     bool isEmpty(char ch) {
-        return ch = '\0';
+        return ch == '\0';
     }
 
     bool isBlank(const std::string &str) {
@@ -338,7 +338,7 @@ namespace strlib {
     //
 
     int size(const char* str) {
-        return strlen(str); // str.length()
+        return str == nullptr ? 0 : strlen(str); // str.length()
     }
 
     int size(const std::string &str) {
@@ -347,7 +347,10 @@ namespace strlib {
 
     ////
 
-    bool equals(const char *str1, const char *str2) {
+    bool equals(const char* str1, const char* str2) {
+        if (str1 == nullptr || str2 == nullptr) {
+            return false;
+        }
         return strcmp(str1, str2) == 0;
     }
 
@@ -456,6 +459,9 @@ namespace strlib {
 
     std::string trim(const std::string &str, const char* ch) {
         std::string strn = str;
+        if (ch == nullptr) {
+            return strn;
+        }
         _trim(strn, ch);
         return strn;
     }
@@ -470,6 +476,9 @@ namespace strlib {
     }
 
     void _trim(std::string &str, const char* ch) {
+        if (ch == nullptr) {
+            return;
+        }
         _ltrim(str, ch);
         _rtrim(str, ch);
     }
@@ -500,6 +509,9 @@ namespace strlib {
 
     std::string ltrim(const std::string &str, const char* ch) {
         std::string strn = str;
+        if (ch == nullptr) {
+            return strn;
+        }
         _ltrim(strn, ch);
         return strn;
     }
@@ -513,6 +525,9 @@ namespace strlib {
     }
 
     void _ltrim(std::string &str, const char* ch) {
+        if (ch == nullptr) {
+            return;
+        }
         str.erase(0, str.find_first_not_of(ch)); // prefixing spaces
     }
 
@@ -533,6 +548,9 @@ namespace strlib {
 
     std::string rtrim(const std::string &str, const char* ch) {
         std::string strn = str;
+        if (ch == nullptr) {
+            return strn;
+        }
         _rtrim(strn, ch);
         return strn;
     }
@@ -546,6 +564,9 @@ namespace strlib {
     }
 
     void _rtrim(std::string &str, const char* ch) {
+        if (ch == nullptr) {
+            return;
+        }
         str.erase(str.find_last_not_of(ch) + 1); // surfixing spaces
     }
 
@@ -1623,7 +1644,7 @@ namespace strlib {
     // isColumnText
 
     bool isColumnText(const char* array, int len) {
-        if (len == 0) {
+        if (array == nullptr || len == 0) {
             return false; // by default inline (isColumnText = false)
         }
         char ch;
@@ -1646,7 +1667,7 @@ namespace strlib {
     // isLineText
 
     bool isLineText(const char* array, int len) {
-        if (len == 0) {
+        if (array == nullptr || len == 0) {
             return true; // by default inline
         }
         return !isColumnText(array, len);
@@ -1840,7 +1861,7 @@ namespace strlib {
 
     //// 8.1
 
-    //string toString(const char *array) {
+    //string toString(const char* array) {
     //    std::string  result(array);
     //    return result;
     //}
