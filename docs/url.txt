@@ -333,6 +333,17 @@ clang + MacOS (clang -lc++)
 https://stackoverflow.com/questions/30174180/link-osx-homebrew-gfortran-against-libc
 https://stackoverflow.com/questions/50084214/link-errors-on-macos-high-sierra-undefined-symbols-for-architecture-x86-64-st
 
-...
-+++
----
+
+https://habr.com/ru/articles/663352/#coreaudio-playing-audio
+https://miniaud.io/docs/manual/index.html
+https://solhsa.com/soloud/quickstart.html
+
+https://medium.com/@othnielcundangan/how-to-use-unitys-native-audio-plugin-sdk-on-macos-f7e1bdbc8141
+
+https://developer.apple.com/library/archive/documentation/MusicAudio/Conceptual/CoreAudioOverview/CoreAudioEssentials/CoreAudioEssentials.html
+https://developer.apple.com/library/archive/documentation/MusicAudio/Conceptual/CoreAudioOverview/WhatisCoreAudio/WhatisCoreAudio.html
+https://developer.apple.com/library/archive/documentation/MusicAudio/Conceptual/CoreAudioOverview/SystemAudioUnits/SystemAudioUnits.html#//apple_ref/doc/uid/TP40003577-CH8-SW2
+
+https://chromium.googlesource.com/chromium/src/media/+/7479f0acde23267d810b8e58c07b342719d9a923/audio/mac/audio_manager_mac.cc
+https://chromium.googlesource.com/chromium/src/media/+/7479f0acde23267d810b8e58c07b342719d9a923/audio/mac/audio_low_latency_output_mac.cc
+https://chromium.googlesource.com/chromium/src/media/+/7479f0acde23267d810b8e58c07b342719d9a923/audio/mac/audio_synchronized_mac.cc
