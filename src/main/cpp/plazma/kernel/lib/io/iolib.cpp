@@ -6,10 +6,9 @@
 #include <vector>
 
 #include <iostream>
-
-#include <locale>
 #include <codecvt>
 
+//#include <locale>
 //#include <stdlib.h>
 
 #include "iolib.h"
@@ -25,18 +24,11 @@ namespace iolib {
 
     //// init ////
 
-    void init_utf8_console_base() {
-        setlocale(LC_ALL, "en_US.UTF-8");
-
-        std::locale utf8locale(std::locale(), new std::codecvt_byname<wchar_t, char, mbstate_t> ("en_US.UTF-8"));
-        std::wcout.imbue(utf8locale);
-    }
-
     void init_utf8_console() {
         #ifdef _WIN32
         iolib_win::init_utf8_console_win();
         #else
-        init_utf8_console_base();
+        iolib_nix::init_utf8_console_nix();
         #endif
     }
 
@@ -209,7 +201,6 @@ namespace iolib {
     }
 
     void _werr_base(const std::wstring &str) {
-        //std::wcerr << str;
         _err_base(str);
     }
 
@@ -252,11 +243,9 @@ namespace iolib {
         if (isNativeConsole()) {
             iolib_win::_out(str);
         } else {
-            //std::cout << str;
             _out_base(str);
         }
         #else
-        //std::cout << str;
         _out_base(str);
         #endif
     }

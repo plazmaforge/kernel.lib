@@ -1,5 +1,5 @@
 #include <map>
-#include <iostream>
+//#include <iostream>
 
 #include "plazma/kernel/lib/sys/syslib.h"
 #include "plazma/kernel/lib/io/iolib.h"
@@ -61,17 +61,18 @@ TaskExecutor* getExecutor() {
 }
 
 void printVersion() {
-  std::cout << "Run [C++] v1.0.8" << std::endl << std::endl;
+  syslib::println("Run [C++] v1.0.8");
+  syslib::println();
 }
 
 void printUsage() {
-  std::cout << "Usage: run [options]" << std::endl;
-  std::cout << "Options:" << std::endl;
+  syslib::println("Usage: run [options]");
+  syslib::println("Options:");
 
-  std::cout << " -version" << std::endl;
-  std::cout << " -help" << std::endl;
-  std::cout << " -task <name> [-<param> <value>]" << std::endl;
-  std::cout << " -task-list" << std::endl;
+  syslib::println(" -version");
+  syslib::println(" -help");
+  syslib::println(" -task <name> [-<param> <value>]");
+  syslib::println(" -task-list");
 }
 
 void printTaskList() {
@@ -129,7 +130,9 @@ void execute(std::map<std::string, std::string> &parameters) {
    }
 
    // TASK NO
-   std::cout << MESSAGE_TASK_NOT_SETTING << std::endl << std::endl;
+   syslib::println(MESSAGE_TASK_NOT_SETTING);
+   syslib::println();
+   
    printUsage();
 
 }
