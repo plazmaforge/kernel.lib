@@ -763,11 +763,11 @@ namespace xmlparser {
         return strlib::normalizeQuote(str);
     }
 
-    std::string normalizeText(char* str, bool trimText, bool skipBlank) {
+    std::string normalizeText(char* str, bool trimAll, bool trimBlank) {
         if (str == nullptr) {
             return "";
         }        
-        return strlib::normalizeBlank(str, trimText, skipBlank);
+        return strlib::normalizeBlank(str, trimAll, trimBlank);
     }
 
     std::string normalizeText(char* str) {

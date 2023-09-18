@@ -67,11 +67,11 @@
 //
 // 2.3
 //
-// - formatString(const string  &str, int len)                                  - 
-// - formatString(const string  &str, int len, const string  &pad)              -  
-// - formatString(const string  &str, int len, const char &pad)                 -  
+// - fill(const string  &str, int len)                                          - 
+// - fill(const string  &str, int len, const string  &pad)                      -  
+// - fill(const string  &str, int len, const char &pad)                         -  
 //
-// - shortString(const string  &str, int len)                                   - 
+// - ellipsis(const string  &str, int len)                                      - 
 //
 // - trunc(const string  &str, int len)                                         - 
 // - trunc(const string  &str, int len, bool trim, bool ellipsis)               - 
@@ -297,10 +297,21 @@ namespace strlib {
 
     //// 1.1
 
+    /*
+     isEmpty("abc") = false
+     isEmpty("   ") = false
+     isEmpty("")    = true
+    */
     bool isEmpty(const std::string &str) {
         return str.empty();
     }
 
+    /*
+     isEmpty("abc", false) = false
+     isEmpty("abc", true)  = false
+     isEmpty("   ", false) = false
+     isEmpty("   ", true)  = true
+    */
     bool isEmpty(const std::string &str, bool trim) {
         if (!trim) {
             return str.empty();
@@ -308,10 +319,24 @@ namespace strlib {
         return isBlank(str);
     }
 
+    /*
+     isEmpty('a')  = false
+     isEmpty(' ')  = false
+     isEmpty('')   = true
+     isEmpty('\0') = true
+    */
     bool isEmpty(char ch) {
         return ch == '\0';
     }
 
+    /*
+     isBlank("abc")    = false
+     isBlank(" abc ")  = false
+     isBlank("     ")  = true
+     isBlank("\t")     = true
+     isBlank("\t ")    = true
+     isBlank(" \r\n")  = true
+    */
     bool isBlank(const std::string &str) {
         if (str.empty()) {
             return true;
@@ -361,7 +386,13 @@ namespace strlib {
     //// 1.2
 
     /*
-     Return normalized std::string 
+     Return normalized string
+
+     normalize("abc")       = "abc" 
+     normalize(" abc ")     = "abc"
+     normalize(" abc \r\n") = "abc"
+     normalize("     ")     = ""
+     normalize("")          = ""
     */
     std::string normalize(const std::string &str) {
         return trimAll(str);
@@ -371,36 +402,77 @@ namespace strlib {
         _trimAll(str);
     }
 
-    std::string normalizeBlank(const std::string &str, bool trimText, bool skipBlank) {
+    /*
+     Return normalized string with additional options: trimAll and trimBlank
+
+     normalizeBlank("abc", false, false)   = "abc" 
+     normalizeBlank(" abc ", false, false) = " abc "
+     normalizeBlank(" abc ", true, false)  = "abc"
+     normalizeBlank(" abc ", true, true)   = "abc"
+     normalizeBlank(" abc ", false, true)  = " abc "
+
+     normalizeBlank("     ", false, false) = "     "
+     normalizeBlank("     ", true, false)  = ""
+     normalizeBlank("     ", true, true)   = ""
+     normalizeBlank("     ", false, true)  = ""
+
+
+     Different cases (trimAll=false, trimBlank=true):
+     normalizeBlank(" abc ", false, true)  = " abc "
+     normalizeBlank("     ", false, true)  = ""
+
+     In this cases:
+     " abc " - as is
+     ""      - "" - trim blank
+
+    */
+    std::string normalizeBlank(const std::string &str, bool trimAll, bool trimBlank) {
         std::string strn = str;
-        _normalizeBlank(strn, trimText, skipBlank);
+        _normalizeBlank(strn, trimAll, trimBlank);
         return strn;
     }
 
-    void _normalizeBlank(std::string &str, bool trimText, bool skipBlank) {
+    void _normalizeBlank(std::string &str, bool trimAll, bool trimBlank) {
         if (str.empty()) {
             return;
         }
         
-        // 'trimText' flag overrides 'skipBlank' flag for each type
-        // If 'trimText' is true we will skip empty text after normalization
-        // 'skipBlank' for non normalize text only
+        // 'trimAll' flag overrides 'trimBlank' flag for each type
+        // If 'trimAll' is true we will trim all text
+        // 'trimBlank' for non normalize text only
 
-        if (!trimText && !skipBlank) {
+        if (!trimAll && !trimBlank) {
             return;
         }
 
-        if (!trimText) {
-            if (!isBlank(str)) {
-                return;
+        if (!trimAll) {
+
+            // trimBlank=true, because we have condition (!trimAll && !trimBlank) before
+            // Analyze blank
+            if (isBlank(str)) {
+                str.clear();
             }
-            str.clear();
             return;
         }
 
         _normalize(str);
     }
 
+    // TODO: normalizeQuote -> normalizeQuotedValue
+
+    /*
+     Return normalized string value in quted string
+
+     normalizeQuote("abc")      = "abc" 
+     normalizeQuote(" abc ")    = "abc" 
+
+     normalizeQuote("\"abc\"")  = "\"abc\"" 
+     normalizeQuote("\" abc \"") = "\"abc\"" 
+
+     normalizeQuote("\'abc\'")  = "\'abc\'" 
+     normalizeQuote("\' abc \'") = "\'abc\'" 
+
+    */
     std::string normalizeQuote(const std::string &str) {
         std::string strn = str;
         _normalizeQuote(strn);
@@ -690,11 +762,11 @@ namespace strlib {
 
     //// 2.3
 
-    std::string formatString(const std::string &str, int len) {
-        return formatString(str, len, DEFAULT_PAD);
+    std::string fill(const std::string &str, int len) {
+        return fill(str, len, DEFAULT_PAD);
     }
 
-    std::string formatString(const std::string &str, int len, const std::string &pad) {
+    std::string fill(const std::string &str, int len, const std::string &pad) {
         std::string strn;
         if (str.empty() || len < 1) {
             //strn = EMPTY_STRING;
@@ -716,12 +788,16 @@ namespace strlib {
         return strn;
     }
 
-    std::string formatString(const std::string &str, int len, const char &pad) {
+    std::string fill(const std::string &str, int len, const char &pad) {
         std::string strpad(1, pad);
-        return formatString(str, len, strpad);
+        return fill(str, len, strpad);
     }
 
-    std::string shortString(const std::string &str, int len) {
+    /*
+    Ellipsis string
+    */
+
+    std::string ellipsis(const std::string &str, int len) {
         std::string strn = str;
         // trunc with ellipsis ('...') by default
         _trunc(strn, len, true, true); 
@@ -1088,10 +1164,10 @@ namespace strlib {
 
     // https://www.techiedelight.com/append-char-end-string-cpp/
     //
-    // caseOp = -1: 'myname': lowercase 
-    // caseOp =  1: 'MYNAME': UPPERCASE 
-    // caseOp =  2: 'myName': camelCase
-    // caseOp =  3: 'MyName': PascalCase
+    // caseOp =  1: 'myname': lowercase 
+    // caseOp =  2: 'MYNAME': UPPERCASE 
+    // caseOp =  3: 'myName': camelCase
+    // caseOp =  4: 'MyName': PascalCase
     void _flushOp(std::vector<std::string> *result, std::vector<char> *buf, const int caseOp) {
         int _caseOp = caseOp;
         char ch = 0;
@@ -1128,10 +1204,10 @@ namespace strlib {
 
 
     // splitOp: separators and A (Upper Char)
-    // caseOp = -1: 'myname': lowercase 
-    // caseOp =  1: 'MYNAME': UPPERCASE 
-    // caseOp =  2: 'myName': camelCase
-    // caseOp =  3: 'MyName': PascalCase
+    // caseOp =  1: 'myname': lowercase 
+    // caseOp =  2: 'MYNAME': UPPERCASE 
+    // caseOp =  3: 'myName': camelCase
+    // caseOp =  4: 'MyName': PascalCase
     std::vector<std::string> _splitOp(const std::string &str, const std::string &separators, const int caseOp) {
 
         std::vector<std::string> result;
@@ -1205,10 +1281,10 @@ namespace strlib {
 
     }
 
-    // caseOp = -1: 'myname': lowercase 
-    // caseOp =  1: 'MYNAME': UPPERCASE 
-    // caseOp =  2: 'myName': camelCase
-    // caseOp =  3: 'MyName': PascalCase
+    // caseOp =  1: 'myname': lowercase 
+    // caseOp =  2: 'MYNAME': UPPERCASE 
+    // caseOp =  3: 'myName': camelCase
+    // caseOp =  4: 'MyName': PascalCase
     void _toCaseOp(std::string &str, const std::string &separators, const std::string &connector, const int caseOp) {
         if (str.empty()) {
             return;
@@ -1242,10 +1318,10 @@ namespace strlib {
     // -  9. KEBAB-CASE, DASH-CASE, TRAIN-CASE, COBOL-CASE, [KEBAB], [cobol]~
     // - 10. Kebab-Case, Dash-Case, Train-Case, HTTP-Header-Case, [Kebab], [http]~
 
-    // caseOp = -1: 'myname': lowercase 
-    // caseOp =  1: 'MYNAME': UPPERCASE 
-    // caseOp =  2: 'myName': camelCase
-    // caseOp =  3: 'MyName': PascalCase
+    // caseOp =  1: 'myname': lowercase 
+    // caseOp =  2: 'MYNAME': UPPERCASE 
+    // caseOp =  3: 'myName': camelCase
+    // caseOp =  4: 'MyName': PascalCase
     void _toTypeCase(std::string &str, const std::string &type, const std::string &separators, const std::string &connector) {
 
         if (str.empty()) {
@@ -1450,7 +1526,7 @@ namespace strlib {
 
     //// 4.2
 
-    std::string  removePrefix(const std::string &str, const std::string &prefix) {
+    std::string removePrefix(const std::string &str, const std::string &prefix) {
         std::string strn = str;
         _removePrefix(strn, prefix);
         return strn;
@@ -1469,7 +1545,7 @@ namespace strlib {
 
     //
 
-    std::string  removePrefixes(const std::string &str, const std::vector<std::string> &prefixes) {
+    std::string removePrefixes(const std::string &str, const std::vector<std::string> &prefixes) {
         std::string strn = str;
         _removePrefixes(strn, prefixes);
         return strn;
@@ -1495,7 +1571,7 @@ namespace strlib {
 
     //
 
-    std::string  removeSuffix(const std::string &str, const std::string &suffix) {
+    std::string removeSuffix(const std::string &str, const std::string &suffix) {
         std::string strn = str;
         _removeSuffix(strn, suffix);
         return strn;
@@ -1514,7 +1590,7 @@ namespace strlib {
 
      //
 
-    std::string  removeSuffixes(const std::string &str, const std::vector<std::string> &suffixes) {
+    std::string removeSuffixes(const std::string &str, const std::vector<std::string> &suffixes) {
         std::string strn = str;
         _removeSuffixes(strn, suffixes);
         return strn;
@@ -1571,7 +1647,6 @@ namespace strlib {
         std::string strn = str;
         _quote(strn);
         return strn;
-        //return quote(str, "\"", "\"");
     }
 
     void _quote(std::string &str) {
@@ -1583,7 +1658,6 @@ namespace strlib {
         std::string strn = str;
         _quote(strn, startQuote, endQuote);
         return strn;
-        //return startQuote + str + endQuote;
     }
 
     void _quote(std::string &str, const std::string &startQuote, const std::string &endQuote) {
@@ -1595,11 +1669,6 @@ namespace strlib {
         std::string strn = str;
         _unquote(strn);
         return strn;
-        //std::string strc = str;        
-        //if (!isQuoted(str, "'", "'") && !isQuoted(str, "\"", "\"")) {
-        //    return strc;
-        //}
-        //return strc.substr(1, strc.length() - 2);
     }
 
     // unquote by default: ', "
@@ -1615,11 +1684,6 @@ namespace strlib {
         std::string strn = str;
         _unquote(strn, startQuote, endQuote);
         return strn;
-        //std::string strc = str;
-        //if (!isQuoted(str, startQuote, endQuote)) {
-        //    return strc;
-        //}
-        //return strc.substr(startQuote.length(), strc.length() - startQuote.length() - endQuote.length());
     }
 
     // unquote

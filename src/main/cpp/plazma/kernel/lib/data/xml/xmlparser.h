@@ -223,7 +223,7 @@ namespace xmlparser {
 
     std::string normalizeAttribute(char* str);
 
-    std::string normalizeText(char* str, bool trimText, bool skipBlank);
+    std::string normalizeText(char* str, bool trimAll, bool trimBlank);
 
     std::string normalizeText(char* str);
 

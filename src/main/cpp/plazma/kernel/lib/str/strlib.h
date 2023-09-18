@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_STRING_STRINGLIB_H
-#define PLAZMA_KERNEL_LIB_STRING_STRINGLIB_H
+#ifndef PLAZMA_KERNEL_LIB_STR_STRLIB_H
+#define PLAZMA_KERNEL_LIB_STR_STRLIB_H
 
 #include <string>
 #include <vector>
@@ -63,11 +63,11 @@
 //
 // 2.3
 //
-// - formatString(const string &str, int len)                                  - 
-// - formatString(const string &str, int len, const string &pad)               -  
-// - formatString(const string &str, int len, const char &pad)                 - 
+// - fill(const string &str, int len)                                          - 
+// - fill(const string &str, int len, const string &pad)                       -  
+// - fill(const string &str, int len, const char &pad)                         - 
 // 
-// - shortString(const string &str, int len)                                   - 
+// - ellipsis(const string &str, int len)                                      - 
 //
 // - trunc(const string &str, int len)                                         - 
 // - trunc(const string &str, int len, bool trim, bool ellipsis)               - 
@@ -291,16 +291,16 @@ namespace strlib {
     ///////////////////////////////////
     // Case Operations
     ///////////////////////////////////
-    // caseOp = -1: 'myname': lowercase 
-    // caseOp =  1: 'MYNAME': UPPERCASE 
-    // caseOp =  2: 'myName': camelCase
-    // caseOp =  3: 'MyName': CamelCase
+    // caseOp =  1: 'myname': lowercase 
+    // caseOp =  2: 'MYNAME': UPPERCASE 
+    // caseOp =  3: 'myName': camelCase
+    // caseOp =  4: 'MyName': CamelCase
     
     const int CO_NONE       =  0;
-    const int CO_lowercase  = -1;
-    const int CO_UPPERCASE  =  1;
-    const int CO_camelCase  =  2;
-    const int CO_PascalCase =  3;
+    const int CO_lowercase  =  1;
+    const int CO_UPPERCASE  =  2;
+    const int CO_camelCase  =  3;
+    const int CO_PascalCase =  4;
 
 
     ////////////////////////////////////
@@ -447,15 +447,15 @@ namespace strlib {
 
     //// 2.3
 
-    std::string formatString(const std::string &str, int len);
+    std::string fill(const std::string &str, int len);
 
-    std::string formatString(const std::string &str, int len, const std::string &pad);
+    std::string fill(const std::string &str, int len, const std::string &pad);
 
-    std::string formatString(const std::string &str, int len, const char &pad);
+    std::string fill(const std::string &str, int len, const char &pad);
 
     //
 
-    std::string shortString(const std::string &str, int len);
+    std::string ellipsis(const std::string &str, int len);
 
     std::string trunc(const std::string &str, int len);
 
@@ -789,4 +789,4 @@ namespace strlib {
 
 }
 
-#endif // PLAZMA_KERNEL_LIB_STRING_STRINGLIB_H
+#endif // PLAZMA_KERNEL_LIB_STR_STRLIB_H
