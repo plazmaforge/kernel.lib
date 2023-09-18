@@ -98,11 +98,11 @@ public class StrLib {
     //
     // 2.3
     //
-    // - formatString(String str, int len)
-    // - formatString(String str, int len, String pad)
-    // - formatString(String str, int len, char pad)
+    // - fill(String str, int len)
+    // - fill(String str, int len, String pad)
+    // - fill(String str, int len, char pad)
     //
-    // - shortString(String str, int len)
+    // - ellipsis(String str, int len)
     //
     // - trunc(String str, int len)
     // - trunc(String str, int len, boolean trim, boolean ellipsis)
@@ -341,16 +341,16 @@ public class StrLib {
     ///////////////////////////////////
     // Case Operations
     ///////////////////////////////////
-    // caseOp = -1: 'myname': lowercase
-    // caseOp =  1: 'MYNAME': UPPERCASE
-    // caseOp =  2: 'myName': camelCase
-    // caseOp =  3: 'MyName': PascalCase
+    // caseOp =  1: 'myname': lowercase
+    // caseOp =  2: 'MYNAME': UPPERCASE
+    // caseOp =  3: 'myName': camelCase
+    // caseOp =  4: 'MyName': PascalCase
 
     public static final int CO_NONE       = 0;
-    public static final int CO_lowercase  = -1;
-    public static final int CO_UPPERCASE  = 1;
-    public static final int CO_camelCase  = 2;
-    public static final int CO_PascalCase = 3;
+    public static final int CO_lowercase  = 1;
+    public static final int CO_UPPERCASE  = 2;
+    public static final int CO_camelCase  = 3;
+    public static final int CO_PascalCase = 4;
 
     ////////////////////////////////////
     // Case Types
@@ -1032,13 +1032,13 @@ public class StrLib {
 
     //// 2.3
 
-    // formatString
+    // fill
 
-    public static String formatString(String str, int len) {
-        return formatString(str, len, DEFAULT_PAD);
+    public static String fill(String str, int len) {
+        return fill(str, len, DEFAULT_PAD);
     }
 
-    public static String formatString(String str, int len, String pad) {
+    public static String fill(String str, int len, String pad) {
 
         // format returns not null string always
         if (str == null || len < 1) {
@@ -1057,8 +1057,13 @@ public class StrLib {
         }
     }
 
-    public static String formatString(String str, int len, char pad) {
-        return formatString(str, len, String.valueOf(pad));
+    public static String fill(String str, int len, char pad) {
+        return fill(str, len, String.valueOf(pad));
+    }
+    
+    // ellipsis
+    public static String ellipsis(String str, int len) {
+        return trunc(str, len, true, true);
     }
 
     // trunc
@@ -1498,10 +1503,10 @@ public class StrLib {
 
     // https://www.techiedelight.com/append-char-end-string-cpp/
     //
-    // caseOp = -1: 'myname': lowercase    
-    // caseOp =  1: 'MYNAME': UPPERCASE
-    // caseOp =  2: 'myName': camelCase
-    // caseOp =  3: 'MyName': PascalCase
+    // caseOp =  1: 'myname': lowercase    
+    // caseOp =  2: 'MYNAME': UPPERCASE
+    // caseOp =  3: 'myName': camelCase
+    // caseOp =  4: 'MyName': PascalCase
 
     private static void _flushOp(List<String> result, StringBuilder buf, int caseOp) {
         int _caseOp = caseOp;
@@ -1542,10 +1547,10 @@ public class StrLib {
     }
 
     // splitOp: separators and A (Upper Char)
-    // caseOp = -1: 'myname': lowercase
-    // caseOp =  1: 'MYNAME': UPPERCASE
-    // caseOp =  2: 'myName': camelCase
-    // caseOp =  3: 'MyName': PascalCase
+    // caseOp =  1: 'myname': lowercase
+    // caseOp =  2: 'MYNAME': UPPERCASE
+    // caseOp =  3: 'myName': camelCase
+    // caseOp =  4: 'MyName': PascalCase
     private static List<String> _splitOp(String str, String separators, int caseOp) {
         if (str == null) {
             return null;
@@ -1622,10 +1627,10 @@ public class StrLib {
 
     }
 
-    // caseOp = -1: 'myname': lowercase
-    // caseOp =  1: 'MYNAME': UPPERCASE
-    // caseOp =  2: 'myName': camelCase
-    // caseOp =  3: 'MyName': PascalCase
+    // caseOp =  1: 'myname': lowercase
+    // caseOp =  2: 'MYNAME': UPPERCASE
+    // caseOp =  3: 'myName': camelCase
+    // caseOp =  4: 'MyName': PascalCase
     private static String _toCaseOp(String str, String separators, String connector, int caseOp) {
 
         if (isEmpty(str)) {
@@ -1658,10 +1663,10 @@ public class StrLib {
     // -  9. KEBAB-CASE, DASH-CASE, TRAIN-CASE, COBOL-CASE, [KEBAB], [cobol]~
     // - 10. Kebab-Case, Dash-Case, Train-Case, HTTP-Header-Case, [Kebab], [http]~
 
-    // caseOp = -1: 'myname': lowercase
-    // caseOp =  1: 'MYNAME': UPPERCASE
-    // caseOp =  2: 'myName': camelCase
-    // caseOp =  3: 'MyName': PascalCase
+    // caseOp =  1: 'myname': lowercase
+    // caseOp =  2: 'MYNAME': UPPERCASE
+    // caseOp =  3: 'myName': camelCase
+    // caseOp =  4: 'MyName': PascalCase
     private static String _toTypeCase(String str, String type, String separators, String connector) {
 
         if (str == null || str.isEmpty()) {

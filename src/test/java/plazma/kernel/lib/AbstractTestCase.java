@@ -149,9 +149,9 @@ public abstract class AbstractTestCase extends TestCase {
         printArray(collection == null ? null : collection.toArray());
     }
 
-    protected String format(Object obj, int len) {
+    protected String fill(Object obj, int len) {
         String str = obj == null ? "" : obj.toString();
-        return StrLib.formatString(str, len);
+        return StrLib.fill(str, len);
     }
 
 }

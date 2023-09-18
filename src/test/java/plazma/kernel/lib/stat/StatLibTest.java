@@ -180,7 +180,7 @@ public class StatLibTest extends AbstractTestCase {
 
         MeanType[] meanTypes = MeanType.values();
         for (MeanType meanType : meanTypes) {
-            println(format(meanType, 20) + " = " + StatLib.mean(meanType, array));
+            println(fill(meanType, 20) + " = " + StatLib.mean(meanType, array));
         }
     }
 
