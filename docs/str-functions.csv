@@ -1,0 +1,8 @@
+# 1.1 empty, size
+
+pseudo_code, java_code, cpp_code
+"isEmpty(str: string): boolean", "boolean isEmpty(String str)", "booln isEmpty(const string& str)"
+"isEmpty(str: string, trim: boolean): string", "boolean isEmpty(String str, boolean trim)", "bool isEmpty(const string& str, bool trim)"
+"isBlank(str: string): boolean", "boolean isBlank(String str)", "bool isBlank(const string& str)"
+"size(str: string): int", "int size(String str)", "int size(const string& str)"
+"equals(str1: string, str2: string)", "boolean equals(String str1, String str2)", "bool equals(const string& str1, const string& str2)"
