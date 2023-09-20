@@ -23,6 +23,19 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("abc", StrLib.trim("abc"));
         assertEquals("a b c", StrLib.trim(" a b c "));
 
+        assertEquals("abc", StrLib.trim("**abc***", '*'));
+        assertEquals("abc", StrLib.trim("++abc+++", '+'));
+
+        assertEquals("abc", StrLib.trim("abc***", '*'));
+        assertEquals("abc", StrLib.trim("***abc", '*'));
+
+        assertEquals("abc", StrLib.trim("**abc**", "*+-"));
+        assertEquals("abc", StrLib.trim("**abc**", "*+-"));
+        assertEquals("abc", StrLib.trim("*+*abc**-", "*+-"));
+        
+        assertEquals("abc", StrLib.trim("abc\r\n", "\r\n"));
+        assertEquals(" abc", StrLib.trim(" abc\r\n", "\r\n"));
+        
         // left trim: null
         assertNull(StrLib.ltrim(null));
 
@@ -39,6 +52,20 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("abc", StrLib.ltrim("abc"));
         assertEquals("a b c ", StrLib.ltrim(" a b c "));
 
+        assertEquals("abc", StrLib.ltrim("...abc", '.'));
+        assertEquals("abc..", StrLib.ltrim("...abc..", '.'));
+        assertEquals("abc", StrLib.ltrim("\rabc", '\r'));
+        assertEquals(" abc", StrLib.ltrim("\r abc", '\r'));
+        assertEquals("abc\r", StrLib.ltrim("\rabc\r", '\r'));
+        assertEquals("abc\r", StrLib.ltrim("\rabc\r", '\r'));
+
+        assertEquals("abc", StrLib.ltrim("...abc", "."));
+        assertEquals("abc..", StrLib.ltrim("...abc..", "."));
+        assertEquals("abc", StrLib.ltrim("\r\nabc", "\r\n"));
+        assertEquals(" abc", StrLib.ltrim("\r\n abc", "\r\n"));
+        assertEquals("abc\r\n", StrLib.ltrim("\r\nabc\r\n", "\r\n"));
+        assertEquals("abc\r\n", StrLib.ltrim("\r\nabc\r\n", "\r\n"));
+
         // right trim: null
         assertNull(StrLib.rtrim(null));
 
@@ -54,6 +81,20 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("abc", StrLib.rtrim("abc "));
         assertEquals("abc", StrLib.rtrim("abc"));
         assertEquals(" a b c", StrLib.rtrim(" a b c "));
+
+        assertEquals("abc", StrLib.rtrim("abc...", '.'));
+        assertEquals("..abc", StrLib.rtrim("..abc...", '.'));
+        assertEquals("abc", StrLib.rtrim("abc\r", '\r'));
+        assertEquals(" abc", StrLib.rtrim(" abc\r", '\r'));
+        assertEquals("\rabc", StrLib.rtrim("\rabc\r", '\r'));
+        assertEquals("\rabc", StrLib.rtrim("\rabc\r", '\r'));
+
+        assertEquals("abc", StrLib.rtrim("abc...", "."));
+        assertEquals("..abc", StrLib.rtrim("..abc...", "."));
+        assertEquals("abc", StrLib.rtrim("abc\r\n", "\r\n"));
+        assertEquals(" abc", StrLib.rtrim(" abc\r\n", "\r\n"));
+        assertEquals("\r\nabc", StrLib.rtrim("\r\nabc\r\n", "\r\n"));
+        assertEquals("\r\nabc", StrLib.rtrim("\r\nabc\r\n", "\r\n"));
 
         // trim all: null
         assertNull(StrLib.trimAll(null));

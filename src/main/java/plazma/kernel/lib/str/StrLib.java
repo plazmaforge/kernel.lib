@@ -53,6 +53,8 @@ public class StrLib {
     // 1.2 normalization
     //
     // - normalize(String str)                                             - trim, '' - > null
+    // - normalizeQuoted(String str)                                       - trim in quoted value: "\' text    \'" - > "\'text\'" 
+    //
     // - emptyIfNull(String str)                                           - null -> ''
     //
     // - nullIfEmpty(String str)                                           - '' -> null
@@ -526,40 +528,54 @@ public class StrLib {
         return isEmpty(str) ? null : str;
     }
     
-    public static String normalizeBlank(String str, boolean trimText, boolean skipBlank) {
+    public static String normalizeBlank(String str, boolean trimAll, boolean trimBlank) {
         if (str == null) {
             return null;
         }
         
-        // 'trimText' flag overrides 'skipBlank' flag for each type
-        // If 'trimText' is true we will skip empty text after normalization
-        // 'skipBlank' for non normalize text only
+        // 'trimAll' flag overrides 'trimBlank' flag for each type
+        // If 'trimAll' is true we will skip empty text after normalization
+        // 'trimBlank' for non normalize text only
 
-        if (!trimText && !skipBlank) {
+        if (!trimAll && !trimBlank) {
             return str;
         }
 
-        if (!trimText) {
+        if (!trimAll) {
+            
+            // trimBlank=true, because we have condition (!trimAll && !trimBlank) before
+            // Analyze blank
             return isBlank(str) ? null : str;            
         }
         
         return normalize(str);
     }
     
-    public static String normalizeQuote(String str) {
+    public static String normalizeQuoted(String str) {
+        return normalizeQuoted(str, true);
+    }
+
+    public static String normalizeQuoted(String str, boolean forceQuote) {
         if (str == null) {
             return null;
         }
-        String text = str;
 
-        // "text" -> " text  ": Normalize in quote
-
-        if (isQuoted(text)) {
-            text = unquote(text);
+        // " text  " -> "text": Normalize in quoted value
+        
+        if (isQuoted(str)) {
+            str = unquote(str);
         }
-        text = normalize(text);
-        text = quote(text == null ? "" : text);
-        return text;
+        str = normalize(str);
+        
+        if (str == null) {
+            if (!forceQuote) {
+                return null;                
+            }
+            str = "";
+        }
+        
+        str = quote(str);
+        return str;
     }
 
     public static String emptyIfNull(String str) {
@@ -611,23 +627,32 @@ public class StrLib {
         int posFirst = findFirstNotOf(str, ch); // TODO: ch <= ' ' (?): See String.trim()
 
         // check last char
-        if (posFirst == length(str) - 1) {
+        // if (posFirst == length(str) - 1) {
+        //    return EMPTY_STRING;
+        //}
+
+        if (posFirst == INDEX_NOT_FOUND) {
             return EMPTY_STRING;
         }
 
         int posLast = findLastNotOf(str, ch); // TODO: ch <= ' ' (?): See String.trim()
 
         // not found: left, right
-        if (posFirst == INDEX_NOT_FOUND && posLast == INDEX_NOT_FOUND) {
-            return str;
-        }
-
-        // not found: right
+        //if (posFirst == INDEX_NOT_FOUND && posLast == INDEX_NOT_FOUND) {
+        //    return str;
+        //}
+        
         if (posLast == INDEX_NOT_FOUND) {
-            return str.substring(posFirst + 1);
+            return EMPTY_STRING; // ???
         }
+        
+        // not found: right
+        //if (posLast == INDEX_NOT_FOUND) {
+        //    return str.substring(posFirst + 1);
+        //}
 
-        return str.substring(posFirst + 1, posLast);
+        //return str.substring(posFirst + 1, posLast);
+        return str.substring(posFirst, posLast + 1);
     }
 
     public static String trim(String str, String terms) {
@@ -637,23 +662,32 @@ public class StrLib {
         int posFirst = findFirstNotOf(str, terms); // TODO: ch <= ' ' (?): See String.trim()
 
         // check last char
-        if (posFirst == length(str) - 1) {
+        //if (posFirst == length(str) - 1) {
+        //    return EMPTY_STRING;
+        //}
+
+        if (posFirst == INDEX_NOT_FOUND) {
             return EMPTY_STRING;
         }
 
         int posLast = findLastNotOf(str, terms); // TODO: ch <= ' ' (?): See String.trim()
 
         // not found: left, right
-        if (posFirst == INDEX_NOT_FOUND && posLast == INDEX_NOT_FOUND) {
-            return str;
+        //if (posFirst == INDEX_NOT_FOUND && posLast == INDEX_NOT_FOUND) {
+        //    return str;
+        //}
+
+        if (posLast == INDEX_NOT_FOUND) {
+            return EMPTY_STRING; // ???
         }
 
         // not found: right
-        if (posLast == INDEX_NOT_FOUND) {
-            return str.substring(posFirst + 1);
-        }
+        //if (posLast == INDEX_NOT_FOUND) {
+        //    return str.substring(posFirst + 1);
+        //}
 
-        return str.substring(posFirst + 1, posLast);
+        //return str.substring(posFirst + 1, posLast);
+        return str.substring(posFirst, posLast + 1);
     }
 
     // left trim
@@ -669,17 +703,19 @@ public class StrLib {
 
         int pos = findFirstNotOf(str, ch); // TODO: ch <= ' ' (?): See String.trim()
 
-        // not found
+        // not found: all chars are 'ch', for example "   " -> -1
         if (pos == INDEX_NOT_FOUND) {
-            return str;
-        }
-
-        // check last char
-        if (pos == length(str) - 1) {
+            //return str;
             return EMPTY_STRING;
         }
 
-        return str.substring(pos + 1);
+        // check last char
+        //if (pos == length(str) - 1) {
+        //    return EMPTY_STRING;
+        //}
+
+        //return str.substring(pos + 1);
+        return str.substring(pos);
     }
 
     // left trim
@@ -690,17 +726,19 @@ public class StrLib {
 
         int pos = findFirstNotOf(str, terms); // TODO: ch <= ' ' (?): See String.trim()
 
-        // not found
+        // not found: all chars are 'ch', for example "   " -> -1
         if (pos == INDEX_NOT_FOUND) {
-            return str;
-        }
-
-        // check last char
-        if (pos == length(str) - 1) {
+            //return str;
             return EMPTY_STRING;
         }
 
-        return str.substring(pos + 1);
+        // check last char
+        //if (pos == length(str) - 1) {
+        //    return EMPTY_STRING;
+        //}
+
+        //return str.substring(pos + 1);
+        return str.substring(pos);
     }
 
     // right trim
@@ -718,15 +756,17 @@ public class StrLib {
 
         // not found
         if (pos == INDEX_NOT_FOUND) {
-            return str;
-        }
-
-        // check first char
-        if (pos == 0) {
+            //return str;
             return EMPTY_STRING;
         }
 
-        return str.substring(0, pos);
+        // check first char
+        //if (pos == 0) {
+        //    return EMPTY_STRING;
+        //}
+
+        //return str.substring(0, pos);
+        return str.substring(0, pos + 1);
     }
 
     // right trim
@@ -739,15 +779,17 @@ public class StrLib {
 
         // not found
         if (pos == INDEX_NOT_FOUND) {
-            return str;
-        }
-
-        // check first char
-        if (pos == 0) {
+            //return str;
             return EMPTY_STRING;
         }
 
-        return str.substring(0, pos);
+        // check first char
+        //if (pos == 0) {
+        //    return EMPTY_STRING;
+        //}
+
+        //return str.substring(0, pos);
+        return str.substring(0, pos + 1);
     }
 
     //// 1.4
@@ -764,15 +806,17 @@ public class StrLib {
         if (start < 0 || start > len - 1) {
             return INDEX_NOT_FOUND;
         }
-        int pos = INDEX_NOT_FOUND;
+        //int pos = INDEX_NOT_FOUND;
 
         for (int index = start; index < len; index++) {
             if (str.charAt(index) != ch) {
-                break;
+                //break;
+                return index;
             }
-            pos = index;
+            //pos = index;
         }
-        return pos;
+        //return pos;
+        return INDEX_NOT_FOUND;
     }
 
     public static int findFirstNotOf(String str, String terms) {
@@ -787,21 +831,17 @@ public class StrLib {
         if (start < 0 || start > len - 1) {
             return INDEX_NOT_FOUND;
         }
-        int pos = INDEX_NOT_FOUND;
+        //int pos = INDEX_NOT_FOUND;
 
         for (int index = start; index < len; index++) {
             if (!in(str.charAt(index), terms)) {
-                break;
+                //break;
+                return index;
             }
-            // for (int index2 = 0; index2 < terms.length(); index2++) {
-            // if (str.charAt(index) != terms.charAt(index2)) {
-            // return pos;
-            // }
-            // pos = index;
-            // }
-            pos = index;
+            //pos = index;
         }
-        return pos;
+        //return pos;
+        return INDEX_NOT_FOUND;
     }
 
     private static boolean in(char ch, String elements) {
@@ -825,15 +865,17 @@ public class StrLib {
         if (end < 0 || end > len - 1) {
             return INDEX_NOT_FOUND;
         }
-        int pos = INDEX_NOT_FOUND;
+        //int pos = INDEX_NOT_FOUND;
 
         for (int index = end; index >= 0; index--) {
             if (str.charAt(index) != ch) {
-                break;
+                //break;
+                return index;
             }
-            pos = index;
+            //pos = index;
         }
-        return pos;
+        //return pos;
+        return INDEX_NOT_FOUND;
     }
 
     public static int findLastNotOf(String str, String terms) {
@@ -848,20 +890,17 @@ public class StrLib {
         if (end < 0 || end > len - 1) {
             return INDEX_NOT_FOUND;
         }
-        int pos = INDEX_NOT_FOUND;
+        //int pos = INDEX_NOT_FOUND;
 
         for (int index = end; index >= 0; index--) {
             if (!in(str.charAt(index), terms)) {
-                break;
+                //break;
+                return index;
             }
-            // for (int index2 = 0; index2 < terms.length(); index2++) {
-            // if (str.charAt(index) != terms.charAt(index2)) {
-            // return pos;
-            // }
-            // }
-            pos = index;
+            //pos = index;
         }
-        return pos;
+        //return pos;
+        return INDEX_NOT_FOUND;
     }
 
     //// 2.1

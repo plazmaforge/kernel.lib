@@ -892,7 +892,7 @@ public class XmlParser {
     //// UTILS ////
     
     protected String normalizeAttribute(String str) {
-        return StrLib.normalizeQuote(str);
+        return StrLib.normalizeQuoted(str);
     }
 
     protected String normalizeText(String str, boolean trimText, boolean skipBlank) {
