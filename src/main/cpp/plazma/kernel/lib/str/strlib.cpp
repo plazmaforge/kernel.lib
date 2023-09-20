@@ -28,7 +28,7 @@
 // 1.2 
 //
 // - normalize(const string  &str)                                              - trim
-// - defIfEmpty(const string  &str, const string  &defStr)                      - str.empty() ? defStr: str
+// - defaultIfEmpty(const string  &str, const string  &defaultStr)              - str.empty() ? defaultStr: str
 //
 // 1.3 trim (left, right)
 // 
@@ -492,13 +492,13 @@ namespace strlib {
     }
 
     /*
-     Return 'defStr' if 'str' is empty
-     defIfEmpty("", "")     = ""
-     defIfEmpty("", "-")    = "-"
-     defIfEmpty("abc", "-") = "abc"
+     Return 'defaultStr' if 'str' is empty
+     defaultIfEmpty("", "")     = ""
+     defaultIfEmpty("", "-")    = "-"
+     defaultIfEmpty("abc", "-") = "abc"
     */
-    std::string defIfEmpty(const std::string &str, const std::string &defStr) {
-        return isEmpty(str) ? defStr : str;
+    std::string defaultIfEmpty(const std::string &str, const std::string &defaultStr) {
+        return isEmpty(str) ? defaultStr : str;
     }
 
     //// 1.3

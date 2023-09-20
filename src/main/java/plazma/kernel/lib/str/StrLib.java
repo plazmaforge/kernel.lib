@@ -58,8 +58,8 @@ public class StrLib {
     // - nullIfEmpty(String str)                                           - '' -> null
     // - nullIfEmpty(String str, boolean trim)                             - trim, '' -> null
     //
-    // - defIfNull(String str, String defStr)                              - str == null ? defStr: str
-    // - defIfEmpty(String str, String defStr)                             - isEmpty(str) ? defStr: str
+    // - defaultIfNull(String str, String defaultStr)                      - str == null ? defaultStr: str
+    // - defaultIfEmpty(String str, String defaultStr)                     - isEmpty(str) ? defaultStr: str
     //
     // 1.3 trim (left, right)
     // 
@@ -577,12 +577,12 @@ public class StrLib {
         return isEmpty(str) ? null : str;
     }
 
-    public static String defIfNull(String str, String defStr) {
-        return str == null ? defStr : str;
+    public static String defaultIfNull(String str, String defaultStr) {
+        return str == null ? defaultStr : str;
     }
 
-    public static String defIfEmpty(String str, String defStr) {
-        return isEmpty(str) ? defStr : str;
+    public static String defaultIfEmpty(String str, String defaultStr) {
+        return isEmpty(str) ? defaultStr : str;
     }
 
     //// 1.3

@@ -24,7 +24,7 @@
 // 1.2 
 //
 // - normalize(const string &str)                                              - trim
-// - defIfEmpty(const string &str, const string &defStr)                       - str.empty() ? defStr: str
+// - defautIfEmpty(const string &str, const string &defautStr)                 - str.empty() ? defautStr: str
 //
 // 1.3 trim (left, right)
 // 
@@ -365,7 +365,7 @@ namespace strlib {
 
     void _normalizeQuote(std::string &str);
 
-    std::string defIfEmpty(const std::string &str, const std::string &defStr);
+    std::string defaultIfEmpty(const std::string &str, const std::string &defaultStr);
 
     //// 1.3 trim (left, right)
 
