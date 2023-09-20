@@ -28,6 +28,8 @@
 // 1.2 
 //
 // - normalize(const string  &str)                                              - trim
+// - normalizeQuoted(const string  &str)                                        - trim in quoted value
+//
 // - defaultIfEmpty(const string  &str, const string  &defaultStr)              - str.empty() ? defaultStr: str
 //
 // 1.3 trim (left, right)
@@ -458,28 +460,26 @@ namespace strlib {
         _normalize(str);
     }
 
-    // TODO: normalizeQuote -> normalizeQuotedValue
-
     /*
-     Return normalized string value in quted string
+     Return normalized string in quoted value
 
-     normalizeQuote("abc")      = "abc" 
-     normalizeQuote(" abc ")    = "abc" 
+     normalizeQuoted("abc")      = "abc" 
+     normalizeQuoted(" abc ")    = "abc" 
 
-     normalizeQuote("\"abc\"")  = "\"abc\"" 
-     normalizeQuote("\" abc \"") = "\"abc\"" 
+     normalizeQuoted("\"abc\"")  = "\"abc\"" 
+     normalizeQuoted("\" abc \"") = "\"abc\"" 
 
-     normalizeQuote("\'abc\'")  = "\'abc\'" 
-     normalizeQuote("\' abc \'") = "\'abc\'" 
+     normalizeQuoted("\'abc\'")  = "\'abc\'" 
+     normalizeQuoted("\' abc \'") = "\'abc\'" 
 
     */
-    std::string normalizeQuote(const std::string &str) {
+    std::string normalizeQuoted(const std::string &str) {
         std::string strn = str;
-        _normalizeQuote(strn);
+        _normalizeQuoted(strn);
         return strn;
     }
 
-    void _normalizeQuote(std::string &str) {
+    void _normalizeQuoted(std::string &str) {
         if (str.empty()) {
             return;
         }

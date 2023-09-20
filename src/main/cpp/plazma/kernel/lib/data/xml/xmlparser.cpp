@@ -760,7 +760,7 @@ namespace xmlparser {
         if (str == nullptr) {
             return "";
         }
-        return strlib::normalizeQuote(str);
+        return strlib::normalizeQuoted(str);
     }
 
     std::string normalizeText(char* str, bool trimAll, bool trimBlank) {

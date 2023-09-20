@@ -24,6 +24,8 @@
 // 1.2 
 //
 // - normalize(const string &str)                                              - trim
+// - normalizeQuoted(const string  &str)                                        - trim in quoted value
+//
 // - defautIfEmpty(const string &str, const string &defautStr)                 - str.empty() ? defautStr: str
 //
 // 1.3 trim (left, right)
@@ -357,13 +359,13 @@ namespace strlib {
 
     void _normalize(std::string  &str);
 
-    std::string normalizeBlank(const std::string &str, bool trimText, bool skipEmpty);
+    std::string normalizeBlank(const std::string &str, bool trimAll, bool trimBlank);
 
-    void _normalizeBlank(std::string &str, bool trimText, bool skipBlank);
+    void _normalizeBlank(std::string &str, bool trimAll, bool trimBlank);
 
-    std::string normalizeQuote(const std::string &str);
+    std::string normalizeQuoted(const std::string &str);
 
-    void _normalizeQuote(std::string &str);
+    void _normalizeQuoted(std::string &str);
 
     std::string defaultIfEmpty(const std::string &str, const std::string &defaultStr);
 
