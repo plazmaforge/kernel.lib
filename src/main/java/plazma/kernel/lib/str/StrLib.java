@@ -624,34 +624,17 @@ public class StrLib {
         if (isEmpty(str)) {
             return str;
         }
+        
         int posFirst = findFirstNotOf(str, ch); // TODO: ch <= ' ' (?): See String.trim()
-
-        // check last char
-        // if (posFirst == length(str) - 1) {
-        //    return EMPTY_STRING;
-        //}
-
         if (posFirst == INDEX_NOT_FOUND) {
             return EMPTY_STRING;
         }
 
-        int posLast = findLastNotOf(str, ch); // TODO: ch <= ' ' (?): See String.trim()
-
-        // not found: left, right
-        //if (posFirst == INDEX_NOT_FOUND && posLast == INDEX_NOT_FOUND) {
-        //    return str;
-        //}
-        
+        int posLast = findLastNotOf(str, ch); // TODO: ch <= ' ' (?): See String.trim()        
         if (posLast == INDEX_NOT_FOUND) {
             return EMPTY_STRING; // ???
         }
         
-        // not found: right
-        //if (posLast == INDEX_NOT_FOUND) {
-        //    return str.substring(posFirst + 1);
-        //}
-
-        //return str.substring(posFirst + 1, posLast);
         return str.substring(posFirst, posLast + 1);
     }
 
@@ -659,34 +642,17 @@ public class StrLib {
         if (isEmpty(str)) {
             return str;
         }
+        
         int posFirst = findFirstNotOf(str, terms); // TODO: ch <= ' ' (?): See String.trim()
-
-        // check last char
-        //if (posFirst == length(str) - 1) {
-        //    return EMPTY_STRING;
-        //}
-
         if (posFirst == INDEX_NOT_FOUND) {
             return EMPTY_STRING;
         }
 
         int posLast = findLastNotOf(str, terms); // TODO: ch <= ' ' (?): See String.trim()
-
-        // not found: left, right
-        //if (posFirst == INDEX_NOT_FOUND && posLast == INDEX_NOT_FOUND) {
-        //    return str;
-        //}
-
         if (posLast == INDEX_NOT_FOUND) {
             return EMPTY_STRING; // ???
         }
 
-        // not found: right
-        //if (posLast == INDEX_NOT_FOUND) {
-        //    return str.substring(posFirst + 1);
-        //}
-
-        //return str.substring(posFirst + 1, posLast);
         return str.substring(posFirst, posLast + 1);
     }
 
@@ -702,19 +668,10 @@ public class StrLib {
         }
 
         int pos = findFirstNotOf(str, ch); // TODO: ch <= ' ' (?): See String.trim()
-
-        // not found: all chars are 'ch', for example "   " -> -1
         if (pos == INDEX_NOT_FOUND) {
-            //return str;
             return EMPTY_STRING;
         }
 
-        // check last char
-        //if (pos == length(str) - 1) {
-        //    return EMPTY_STRING;
-        //}
-
-        //return str.substring(pos + 1);
         return str.substring(pos);
     }
 
@@ -725,19 +682,10 @@ public class StrLib {
         }
 
         int pos = findFirstNotOf(str, terms); // TODO: ch <= ' ' (?): See String.trim()
-
-        // not found: all chars are 'ch', for example "   " -> -1
         if (pos == INDEX_NOT_FOUND) {
-            //return str;
             return EMPTY_STRING;
         }
 
-        // check last char
-        //if (pos == length(str) - 1) {
-        //    return EMPTY_STRING;
-        //}
-
-        //return str.substring(pos + 1);
         return str.substring(pos);
     }
 
@@ -753,19 +701,10 @@ public class StrLib {
         }
 
         int pos = findLastNotOf(str, ch); // TODO: ch <= ' ' (?): See String.trim()
-
-        // not found
         if (pos == INDEX_NOT_FOUND) {
-            //return str;
             return EMPTY_STRING;
         }
 
-        // check first char
-        //if (pos == 0) {
-        //    return EMPTY_STRING;
-        //}
-
-        //return str.substring(0, pos);
         return str.substring(0, pos + 1);
     }
 
@@ -776,19 +715,10 @@ public class StrLib {
         }
 
         int pos = findLastNotOf(str, terms); // TODO: ch <= ' ' (?): See String.trim()
-
-        // not found
         if (pos == INDEX_NOT_FOUND) {
-            //return str;
             return EMPTY_STRING;
         }
 
-        // check first char
-        //if (pos == 0) {
-        //    return EMPTY_STRING;
-        //}
-
-        //return str.substring(0, pos);
         return str.substring(0, pos + 1);
     }
 
@@ -802,20 +732,17 @@ public class StrLib {
         if (isEmpty(str)) {
             return INDEX_NOT_FOUND;
         }
+        
         int len = str.length();
         if (start < 0 || start > len - 1) {
             return INDEX_NOT_FOUND;
         }
-        //int pos = INDEX_NOT_FOUND;
 
         for (int index = start; index < len; index++) {
             if (str.charAt(index) != ch) {
-                //break;
                 return index;
             }
-            //pos = index;
         }
-        //return pos;
         return INDEX_NOT_FOUND;
     }
 
@@ -827,20 +754,18 @@ public class StrLib {
         if (isEmpty(str) || isEmpty(terms)) {
             return INDEX_NOT_FOUND;
         }
+        
         int len = str.length();
         if (start < 0 || start > len - 1) {
             return INDEX_NOT_FOUND;
         }
-        //int pos = INDEX_NOT_FOUND;
 
         for (int index = start; index < len; index++) {
             if (!in(str.charAt(index), terms)) {
-                //break;
                 return index;
             }
-            //pos = index;
         }
-        //return pos;
+        
         return INDEX_NOT_FOUND;
     }
 
@@ -861,20 +786,18 @@ public class StrLib {
         if (isEmpty(str)) {
             return INDEX_NOT_FOUND;
         }
+        
         int len = str.length();
         if (end < 0 || end > len - 1) {
             return INDEX_NOT_FOUND;
         }
-        //int pos = INDEX_NOT_FOUND;
 
         for (int index = end; index >= 0; index--) {
             if (str.charAt(index) != ch) {
-                //break;
                 return index;
             }
-            //pos = index;
         }
-        //return pos;
+        
         return INDEX_NOT_FOUND;
     }
 
@@ -886,20 +809,18 @@ public class StrLib {
         if (isEmpty(str) || isEmpty(terms)) {
             return INDEX_NOT_FOUND;
         }
+        
         int len = str.length();
         if (end < 0 || end > len - 1) {
             return INDEX_NOT_FOUND;
         }
-        //int pos = INDEX_NOT_FOUND;
 
         for (int index = end; index >= 0; index--) {
             if (!in(str.charAt(index), terms)) {
-                //break;
                 return index;
             }
-            //pos = index;
         }
-        //return pos;
+        
         return INDEX_NOT_FOUND;
     }
 
