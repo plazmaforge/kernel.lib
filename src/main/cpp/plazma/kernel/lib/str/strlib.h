@@ -24,7 +24,7 @@
 // 1.2 
 //
 // - normalize(const string &str)                                              - trim
-// - normalizeQuoted(const string  &str)                                        - trim in quoted value
+// - normalizeQuoted(const string  &str)                                       - trim in quoted value
 //
 // - defautIfEmpty(const string &str, const string &defautStr)                 - str.empty() ? defautStr: str
 //
@@ -435,7 +435,7 @@ namespace strlib {
 
     std::string lpad(const std::string &str, int len);
 
-    std::string lpad(const std::string &str, int len, const std::string pad);
+    std::string lpad(const std::string &str, int len, const std::string &pad);
 
     std::string lpad(const std::string &str, int len, const char pad);
 
@@ -443,7 +443,7 @@ namespace strlib {
 
     std::string rpad(const std::string &str, int len);
 
-    std::string rpad(const std::string &str, int len, const std::string pad);
+    std::string rpad(const std::string &str, int len, const std::string &pad);
 
     std::string rpad(const std::string &str, int len, const char pad);
 

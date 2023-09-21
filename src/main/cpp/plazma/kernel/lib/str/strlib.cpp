@@ -688,7 +688,7 @@ namespace strlib {
         return lpad(str, len, DEFAULT_PAD);
     }
 
-    std::string lpad(const std::string &str, int len, const std::string pad) {
+    std::string lpad(const std::string &str, int len, const std::string &pad) {
         std::string result;
         if (isEmpty(str)) {
             //result = EMPTY_STRING; // TODO: copy std::string 
@@ -727,7 +727,7 @@ namespace strlib {
         return lpad(str, len, DEFAULT_PAD);
     }
 
-    std::string rpad(const std::string &str, int len, const std::string pad) {
+    std::string rpad(const std::string &str, int len, const std::string &pad) {
         std::string result;
         if (isEmpty(str)) {
             //result = EMPTY_STRING; // TODO: copy std::string 
