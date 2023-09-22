@@ -844,6 +844,7 @@ public class StrLib {
         if (n == 1) {
             return str;
         }
+        
         StringBuilder buf = new StringBuilder(str.length() * n);
         for (int i = 0; i < n; i++) {
             buf.append(str);
@@ -863,6 +864,7 @@ public class StrLib {
         if (n < 1) {
             return EMPTY_STRING;
         }
+        
         char[] chars = new char[n];
         Arrays.fill(chars, ch);
         return new String(chars);
@@ -893,18 +895,28 @@ public class StrLib {
         if (str == null) {
             return null;
         }
-        if (pad == null || !isValidPadLen(len)) {
+        if (len <= 0 || pad == null) {      // pad == null: no padding
             return str;
         }
+        
         int strLen = str.length();
         int padLen = pad.length();
-        if (len <= strLen || padLen == 0) {
+        if (len <= strLen || padLen == 0) { // padLen == 0: no padding
             return str;
         }
-        int ln = len - strLen;
-        ln = (int) Math.ceil((double) ln / padLen);
-        String s = replicate(pad, ln) + str;
-        return s.substring(s.length() - len);
+        
+        int fillLen = len - strLen;
+        int padCount = fillLen / padLen;
+        if (fillLen % padLen > 0) { // ceil
+            padCount++;            
+        }        
+        String fillStr = replicate(pad, padCount);
+        
+        if (fillStr.length() > fillLen) {
+            return fillStr.substring(0, fillLen) + str;            
+        } else {
+            return fillStr + str;
+        }
     }
 
     /**
@@ -919,12 +931,21 @@ public class StrLib {
         if (str == null) {
             return null;
         }
-        if (pad == 0 || !isValidPadLen(len)) {
+        if (len <= 0 || pad == 0) {     // pad == 0: no padding
             return str;
         }
-        char[] ch = new char[1];
-        ch[0] = pad;
-        return lpad(str, len, new String(ch));
+        
+        int strLen = str.length();
+        if (len <= strLen) {
+            return str;
+        }
+        
+        int padCount = len - strLen;
+        return replicate(pad, padCount) + str;
+        
+        //char[] ch = new char[1];
+        //ch[0] = pad;
+        //return lpad(str, len, new String(ch));
     }
 
     // rpad
@@ -952,18 +973,28 @@ public class StrLib {
         if (str == null) {
             return null;
         }
-        if (pad == null || !isValidPadLen(len)) {
+        if (len <= 0 || pad == null) {      // pad == null: no padding
             return str;
         }
+        
         int strLen = str.length();
         int padLen = pad.length();
-        if (len <= strLen || padLen == 0) {
+        if (len <= strLen || padLen == 0) { // padLen == 0: no padding
             return str;
         }
-        int ln = len - strLen;
-        ln = (int) Math.ceil((double) ln / padLen);
-        String s = str + replicate(pad, ln);
-        return s.substring(0, len);
+        
+        int fillLen = len - strLen;
+        int padCount = fillLen / padLen;
+        if (fillLen % padLen > 0) { // ceil
+            padCount++;            
+        }
+        String fillStr = replicate(pad, padCount);
+        
+        if (fillStr.length() > fillLen) {
+            return str + fillStr.substring(0, fillLen);            
+        } else {
+            return str + fillStr;
+        }        
     }
 
     /**
@@ -978,16 +1009,21 @@ public class StrLib {
         if (str == null) {
             return null;
         }
-        if (pad == 0 || !isValidPadLen(len)) {
+        if (len <= 0 || pad == 0) { // pad == 0: no padding
             return str;
         }
-        char[] ch = new char[1];
-        ch[0] = pad;
-        return rpad(str, len, new String(ch));
-    }
+        
+        int strLen = str.length();
+        if (len <= strLen) {
+            return str;
+        }
 
-    private static boolean isValidPadLen(int len) {
-        return len > 0;
+        int padCount = len - strLen;
+        return str + replicate(pad, padCount);
+        
+        //char[] ch = new char[1];
+        //ch[0] = pad;
+        //return rpad(str, len, new String(ch));
     }
 
     //// 2.3

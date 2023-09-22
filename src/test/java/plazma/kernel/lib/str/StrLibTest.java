@@ -124,8 +124,21 @@ public class StrLibTest extends AbstractTestCase {
         // lpad: value
         assertEquals("  a", StrLib.lpad("a", 3));
         assertEquals(" a ", StrLib.lpad(" a ", 3));
-        assertEquals(" abcd ", StrLib.lpad(" abcd ", 3)); // ???
-
+        assertEquals(" abcd ", StrLib.lpad(" abcd ", 3));
+        
+        assertEquals("abc", StrLib.lpad("abc", -1, '*'));
+        assertEquals("abc", StrLib.lpad("abc", 0, '*'));
+        assertEquals("abc", StrLib.lpad("abc", 1, '*'));
+        assertEquals("abc", StrLib.lpad("abc", 3, '*'));
+        assertEquals("*abc", StrLib.lpad("abc", 4, '*'));
+        
+        assertEquals("yzyzyabc", StrLib.lpad("abc", 8, "yz"));
+        // 12345678
+        // yzyzyz**
+        // *****abc
+        //---------
+        // yzyzyabc
+        
         // rpad: null
         assertNull(StrLib.rpad(null, 3));
 
@@ -135,7 +148,21 @@ public class StrLibTest extends AbstractTestCase {
         // lpad: value
         assertEquals("a  ", StrLib.rpad("a", 3));
         assertEquals(" a ", StrLib.rpad(" a ", 3));
-        assertEquals(" abcd ", StrLib.rpad(" abcd ", 3)); // ???
+        assertEquals(" abcd ", StrLib.rpad(" abcd ", 3));
+
+        assertEquals("abc", StrLib.rpad("abc", -1, '*'));
+        assertEquals("abc", StrLib.rpad("abc", 0, '*'));
+        assertEquals("abc", StrLib.rpad("abc", 1, '*'));
+        assertEquals("abc", StrLib.rpad("abc", 3, '*'));
+        assertEquals("abc*", StrLib.rpad("abc", 4, '*'));
+
+        assertEquals("abcyzyzy", StrLib.rpad("abc", 8, "yz"));
+        // 12345678
+        // abc*****
+        // ***yzyzyz
+        // --------
+        // abcyzyzy
+        
     }
 
     public void testLeftRight() {
