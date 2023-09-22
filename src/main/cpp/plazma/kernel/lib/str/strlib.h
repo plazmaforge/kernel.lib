@@ -453,7 +453,7 @@ namespace strlib {
 
     std::string fill(const std::string &str, int len, const std::string &pad);
 
-    std::string fill(const std::string &str, int len, const char &pad);
+    std::string fill(const std::string &str, int len, const char pad);
 
     //
 

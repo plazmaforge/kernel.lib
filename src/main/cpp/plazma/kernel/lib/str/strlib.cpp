@@ -658,13 +658,11 @@ namespace strlib {
     //// 2.1
 
     std::string replicate(const std::string &str, int n) {
-        // TODO: Use std::string  constructor
-        std::string result;
         if (isEmpty(str) || n < 1) {
-            //result = EMPTY_STRING; // TODO: copy std::string 
-            return result;
+            return EMPTY_STRING;
         }
 
+        std::string result;
         result.reserve(str.length() * n); // avoid repeated reallocation
         for (int i = 0; i < n; i++) {
             result += str;
@@ -674,7 +672,7 @@ namespace strlib {
 
     std::string replicate(const char ch, int n) {
         if (isEmpty(ch) || n < 1) {
-            return "";
+            return EMPTY_STRING;
         }
         std::string result(n, ch);
         return result;
@@ -688,37 +686,56 @@ namespace strlib {
         return lpad(str, len, DEFAULT_PAD);
     }
 
-    std::string lpad(const std::string &str, int len, const std::string &pad) {
-        std::string result;
+    std::string lpad(const std::string &str, int len, const std::string &pad) {        
         if (isEmpty(str)) {
-            //result = EMPTY_STRING; // TODO: copy std::string 
-            return result;
+            return EMPTY_STRING;
         }
 
-        if (isEmpty(pad) || len < 1) {
-            result = str; // TODO: copy std::string 
-            return result;
+        if (len < 1 || isEmpty(pad)) { // isEmpty(pad): no padding
+            return str;
         }
 
         int strLen = str.length();
         int padLen = pad.length();
-
-        // TODO: What about truncate std::string  (...)
         if (len <= strLen) {
             return str;
         }
-        int ln = len - strLen;
 
-        ln = (int) ceil((double) ln / padLen);
-        result = replicate(pad, ln) + str;
-        return result.substr(result.length() - len);
+        int fillLen = len - strLen;
+        int padCount = fillLen / padLen;
+         if (fillLen % padLen > 0) { // ceil
+            padCount++;            
+        }
+
+        std::string fill = replicate(pad, padCount);
+        if (fill.length() > fillLen) {
+            return fill.substr(0, fillLen) + str;            
+        } else {
+            return fill + str;
+        }
     }
 
     //
 
     std::string lpad(const std::string &str, int len, const char pad) {
-        std::string strpad(1, pad);
-        return lpad(str, len, strpad);
+        if (isEmpty(str)) {
+            return EMPTY_STRING;
+        }
+
+        if (len < 1 || pad == 0) { // isEmpty(pad): no padding
+            return str;
+        }
+
+        int strLen = str.length();
+        if (len <= strLen) {
+            return str;
+        }
+
+        int padCount = len - strLen;
+        return replicate(pad, padCount) + str;
+        
+        //std::string strpad(1, pad);
+        //return lpad(str, len, strpad);
     }
 
     // rpad
@@ -728,36 +745,55 @@ namespace strlib {
     }
 
     std::string rpad(const std::string &str, int len, const std::string &pad) {
-        std::string result;
         if (isEmpty(str)) {
-            //result = EMPTY_STRING; // TODO: copy std::string 
-            return result;
+            return EMPTY_STRING;
         }
 
-        if (isEmpty(pad) || len < 1) {
-            result = str; // TODO: copy std::string 
-            return result;
+        if (len < 1 || isEmpty(pad)) {
+            return str;
         }
 
         int strLen = str.length();
         int padLen = pad.length();
-
-        // TODO: What about truncate std::string  (...)
         if (len <= strLen) {
             return str;
         }
-        int ln = len - strLen;
 
-        ln = (int) ceil((double) ln / padLen);
-        result = str + replicate(pad, ln);
-        return result.substr(0, len);
+        int fillLen = len - strLen;
+        int padCount = fillLen / padLen;
+        if (fillLen % padLen > 0) { // ceil
+            padCount++;            
+        }
+        std::string fill = replicate(pad, padCount);
+        
+        if (fill.length() > fillLen) {
+            return str + fill.substr(0, fillLen);            
+        } else {
+            return str + fill;
+        }        
     }
 
     //
 
     std::string rpad(const std::string &str, int len, const char pad) {
-        std::string strpad(1, pad);
-        return rpad(str, len, strpad);
+        if (isEmpty(str)) {
+            return EMPTY_STRING;
+        }
+
+        if (len < 1 || pad == 0) {
+            return str;
+        }
+
+        int strLen = str.length();
+        if (len <= strLen) {
+            return str;
+        }
+
+        int padCount = len - strLen;
+        return str + replicate(pad, padCount);
+
+        //std::string strpad(1, pad);
+        //return rpad(str, len, strpad);
     }
 
     //// 2.3
@@ -788,7 +824,7 @@ namespace strlib {
         return strn;
     }
 
-    std::string fill(const std::string &str, int len, const char &pad) {
+    std::string fill(const std::string &str, int len, const char pad) {
         std::string strpad(1, pad);
         return fill(str, len, strpad);
     }
