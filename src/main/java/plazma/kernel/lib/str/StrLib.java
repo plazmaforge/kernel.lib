@@ -895,13 +895,14 @@ public class StrLib {
         if (str == null) {
             return null;
         }
-        if (len <= 0 || pad == null) {      // pad == null: no padding
+        
+        if (len < 1 || isEmpty(pad)) { // isEmpty(pad): no padding
             return str;
         }
         
         int strLen = str.length();
         int padLen = pad.length();
-        if (len <= strLen || padLen == 0) { // padLen == 0: no padding
+        if (len <= strLen) {
             return str;
         }
         
@@ -910,12 +911,11 @@ public class StrLib {
         if (fillLen % padLen > 0) { // ceil
             padCount++;            
         }        
-        String fillStr = replicate(pad, padCount);
-        
-        if (fillStr.length() > fillLen) {
-            return fillStr.substring(0, fillLen) + str;            
+        String fill = replicate(pad, padCount);        
+        if (fill.length() > fillLen) {
+            return fill.substring(0, fillLen) + str;            
         } else {
-            return fillStr + str;
+            return fill + str;
         }
     }
 
@@ -931,7 +931,7 @@ public class StrLib {
         if (str == null) {
             return null;
         }
-        if (len <= 0 || pad == 0) {     // pad == 0: no padding
+        if (len < 1 || pad == 0) { // pad == 0: no padding
             return str;
         }
         
@@ -941,11 +941,7 @@ public class StrLib {
         }
         
         int padCount = len - strLen;
-        return replicate(pad, padCount) + str;
-        
-        //char[] ch = new char[1];
-        //ch[0] = pad;
-        //return lpad(str, len, new String(ch));
+        return replicate(pad, padCount) + str;        
     }
 
     // rpad
@@ -973,7 +969,8 @@ public class StrLib {
         if (str == null) {
             return null;
         }
-        if (len <= 0 || pad == null) {      // pad == null: no padding
+
+        if (len < 1 || pad == null) {      // pad == null: no padding
             return str;
         }
         
@@ -988,12 +985,12 @@ public class StrLib {
         if (fillLen % padLen > 0) { // ceil
             padCount++;            
         }
-        String fillStr = replicate(pad, padCount);
+        String fill = replicate(pad, padCount);
         
-        if (fillStr.length() > fillLen) {
-            return str + fillStr.substring(0, fillLen);            
+        if (fill.length() > fillLen) {
+            return str + fill.substring(0, fillLen);            
         } else {
-            return str + fillStr;
+            return str + fill;
         }        
     }
 
@@ -1009,7 +1006,8 @@ public class StrLib {
         if (str == null) {
             return null;
         }
-        if (len <= 0 || pad == 0) { // pad == 0: no padding
+
+        if (len < 1 || pad == 0) { // pad == 0: no padding
             return str;
         }
         
@@ -1020,10 +1018,6 @@ public class StrLib {
 
         int padCount = len - strLen;
         return str + replicate(pad, padCount);
-        
-        //char[] ch = new char[1];
-        //ch[0] = pad;
-        //return rpad(str, len, new String(ch));
     }
 
     //// 2.3
