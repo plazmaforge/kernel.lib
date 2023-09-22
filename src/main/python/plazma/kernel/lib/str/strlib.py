@@ -160,7 +160,7 @@ def replicate(str, n):
     if (str == None):
         return None
     
-    if (n <= 0):
+    if (n < 1):
         return str
 
     return str * n
@@ -171,7 +171,7 @@ def lpad(str, len, pad = " "):
     if (str == None):
         return None
     
-    if (len <= 0 or pad == None):      # pad == None: no padding
+    if (len < 1 or pad == None):      # pad == None: no padding
         return str
         
     padLen = size(pad)
@@ -199,7 +199,7 @@ def rpad(str, len, pad = " "):
     if (str == None):
         return None
     
-    if (len <= 0 or pad == None):      # pad == None: no padding
+    if (len < 1 or pad == None):      # pad == None: no padding
         return str
         
     padLen = size(pad)
