@@ -92,13 +92,6 @@ def defaultIfNull(str, defaultStr):
 
 #### 1.3
 
-#### 2.1
-
-def replicate(str, n):
-    if (str == None):
-        return None
-    return str * n
-
 ## trim
 
 def trim(str, ch = None):
@@ -115,6 +108,8 @@ def rtrim(str, ch = None):
     if (str == None):
         return None
     return str.rstrip(ch)
+
+#### 1.4
 
 def findFirstNotOf(str, ch, start = None):
     if (str == None):
@@ -157,4 +152,74 @@ def findLastNotOf(str, ch, end = None):
             return i
         i -= 1
     return -1
+
+
+#### 2.1
+
+def replicate(str, n):
+    if (str == None):
+        return None
+    
+    if (n <= 0):
+        return str
+
+    return str * n
+
+#### 2.2
+
+def lpad(str, len, pad = " "):
+    if (str == None):
+        return None
+    
+    if (len <= 0 or pad == None):      # pad == None: no padding
+        return str
+        
+    padLen = size(pad)
+    if (padLen == 1):
+        return str.rjust(len, pad)     # lpad = rjust for padlen = 1
+    
+    strLen = size(str)
+    if (len <= strLen or padLen == 0): # padLen == 0: no padding
+        return str
+    
+    fillLen = len - strLen
+    padCount = fillLen // padLen
+
+    if (fillLen % padLen > 0):
+        padCount = padCount + 1
+
+    fillStr = replicate(pad, padCount)
+
+    if (size(fillStr) > fillLen):
+        return fillStr[:fillLen] + str
+    else:
+        return fillStr + str
+
+def rpad(str, len, pad = " "):
+    if (str == None):
+        return None
+    
+    if (len <= 0 or pad == None):      # pad == None: no padding
+        return str
+        
+    padLen = size(pad)
+    if (padLen == 1):
+        return str.ljust(len, pad)     # rpad = ljust for padlen = 1
+    
+    strLen = size(str)
+    if (len <= strLen or padLen == 0): # padLen == 0: no padding
+        return str
+    
+    fillLen = len - strLen
+    padCount = fillLen // padLen
+
+    if (fillLen % padLen > 0):
+        padCount = padCount + 1
+
+    fillStr = replicate(pad, padCount)
+
+    if (size(fillStr) > fillLen):
+        return str + fillStr[:fillLen]
+    else:
+        return str + fillStr
 
