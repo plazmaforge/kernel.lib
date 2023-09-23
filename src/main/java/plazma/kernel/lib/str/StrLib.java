@@ -40,8 +40,6 @@ public class StrLib {
     // 1.1 empty, blank, size
     //
     // - isEmpty(String str)                                               - check empty
-    // - isEmpty(String str, boolean trim)                                 - trim, check empty
-    //
     // - isBlank(String str)                                               - check blank
     // - size(String str)                                                  - length
     //
@@ -308,9 +306,11 @@ public class StrLib {
 
     public static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    public static final String BLANK_STRING = " ";
+    //public static final String BLANK_STRING = " ";
 
-    public static final char BLANK_CHAR = ' ';
+    //public static final char BLANK_CHAR = ' ';
+    
+    public static final char SPACE_CHAR = ' ';
 
     public static final String ELLIPSIS = "...";
 
@@ -459,13 +459,6 @@ public class StrLib {
 
     public static boolean isEmpty(String str) {
         return str == null || str.isEmpty();
-    }
-
-    public static boolean isEmpty(String str, boolean trim) {
-        if (trim) {
-            str = trim(str);
-        }
-        return isEmpty(str);
     }
 
     public static boolean isBlank(String str) {
@@ -658,7 +651,7 @@ public class StrLib {
 
     // left trim
     public static String ltrim(String str) {
-        return ltrim(str, BLANK_CHAR);
+        return ltrim(str, SPACE_CHAR);
     }
 
     // left trim
@@ -691,7 +684,7 @@ public class StrLib {
 
     // right trim
     public static String rtrim(String str) {
-        return rtrim(str, BLANK_CHAR);
+        return rtrim(str, SPACE_CHAR);
     }
 
     // right trim
@@ -839,7 +832,7 @@ public class StrLib {
             return str;
         }
         if (n < 1) {
-            return BLANK_STRING;
+            return EMPTY_STRING;
         }
         if (n == 1) {
             return str;
@@ -1043,7 +1036,7 @@ public class StrLib {
             return rpad(str, len, pad);
         } else {
             // remove chars from right side
-            return trunc(str, len, true, true);
+            return trunc(str, len, false, true);
         }
     }
 
@@ -1053,12 +1046,12 @@ public class StrLib {
     
     // ellipsis
     public static String ellipsis(String str, int len) {
-        return trunc(str, len, true, true);
+        return trunc(str, len, false, true);
     }
 
     // trunc
     public static String trunc(String str, int len) {
-        return trunc(str, len, true, false);
+        return trunc(str, len, false, false);
     }
 
     // trunc
