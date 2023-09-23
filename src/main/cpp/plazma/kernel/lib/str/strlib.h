@@ -13,8 +13,6 @@
 // 1.1 empty, size
 //
 // - isEmpty(const string &str)                                                - check empty
-// - isEmpty(const string &str, bool trim)                                     - trim, check empty
-//
 // - isBlank(const string &str)                                                - check blank
 // - size(const string &str)                                                   - length
 //
@@ -256,9 +254,11 @@ namespace strlib {
 
     CONST_STRING EMPTY_STRING = "";
 
-    CONST_STRING  BLANK_STRING = " ";
+    //CONST_STRING  BLANK_STRING = " ";
 
-    const char BLANK_CHAR = ' ';
+    //const char BLANK_CHAR = ' ';
+
+    const char SPACE_CHAR = ' ';
 
     CONST_STRING  ELLIPSIS = "...";
 
@@ -337,7 +337,7 @@ namespace strlib {
 
     bool isEmpty(const std::string &str);
 
-    bool isEmpty(const std::string &str, bool trim);
+    //bool isEmpty(const std::string &str, bool trim);
 
     bool isBlank(const std::string &str);
 

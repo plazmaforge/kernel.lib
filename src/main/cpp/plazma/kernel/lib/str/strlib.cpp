@@ -15,8 +15,6 @@
 // 1.1 empty, size
 //
 // - isEmpty(const string  &str)                                                - check empty
-// - isEmpty(const string  &str, bool trim)                                     - trim, check empty
-//
 // - isBlank(const string  &str)                                                - check blank
 // - size(const string  &str)                                                   - length
 //
@@ -314,12 +312,12 @@ namespace strlib {
      isEmpty("   ", false) = false
      isEmpty("   ", true)  = true
     */
-    bool isEmpty(const std::string &str, bool trim) {
-        if (!trim) {
-            return str.empty();
-        }
-        return isBlank(str);
-    }
+    //bool isEmpty(const std::string &str, bool trim) {
+    //    if (!trim) {
+    //        return str.empty();
+    //    }
+    //    return isBlank(str);
+    //}
 
     /*
      isEmpty('a')  = false
@@ -513,7 +511,7 @@ namespace strlib {
     */
     std::string trim(const std::string &str) {
         std::string strn = str;
-        _trim(strn, BLANK_CHAR);
+        _trim(strn, SPACE_CHAR);
         return strn;
     }
 
@@ -539,7 +537,7 @@ namespace strlib {
     }
 
     void _trim(std::string &str) {
-        _trim(str, BLANK_CHAR);
+        _trim(str, SPACE_CHAR);
     }
 
     void _trim(std::string &str, const char ch) {
@@ -569,7 +567,7 @@ namespace strlib {
 
     std::string ltrim(const std::string &str) {
         std::string strn = str;
-        _ltrim(strn, BLANK_CHAR);
+        _ltrim(strn, SPACE_CHAR);
         return strn;
     }
 
@@ -589,7 +587,7 @@ namespace strlib {
     }
 
     void _ltrim(std::string &str) {
-        _ltrim(str, BLANK_CHAR);
+        _ltrim(str, SPACE_CHAR);
     }
 
     void _ltrim(std::string &str, const char ch) {
@@ -608,7 +606,7 @@ namespace strlib {
 
     std::string rtrim(const std::string &str) {
         std::string strn = str;
-        _rtrim(strn, BLANK_CHAR);
+        _rtrim(strn, SPACE_CHAR);
         return strn;
     }
 
@@ -628,7 +626,7 @@ namespace strlib {
     }
 
     void _rtrim(std::string &str) {
-        _rtrim(str, BLANK_CHAR);
+        _rtrim(str, SPACE_CHAR);
     }
 
     void _rtrim(std::string &str, const char ch) {
@@ -733,7 +731,7 @@ namespace strlib {
 
         int padCount = len - strLen;
         return replicate(pad, padCount) + str;
-        
+
         //std::string strpad(1, pad);
         //return lpad(str, len, strpad);
     }
@@ -819,7 +817,7 @@ namespace strlib {
             
         } else {
             // remove chars from right side
-            strn = trunc(str, len, true, true);
+            strn = trunc(str, len, false, true);
         }
         return strn;
     }
@@ -836,13 +834,13 @@ namespace strlib {
     std::string ellipsis(const std::string &str, int len) {
         std::string strn = str;
         // trunc with ellipsis ('...') by default
-        _trunc(strn, len, true, true); 
+        _trunc(strn, len, false, true); 
         return strn;
     }
 
     std::string trunc(const std::string &str, int len) {
         std::string strn = str;
-        _trunc(strn, len, true, false);
+        _trunc(strn, len, false, false);
         return strn;
     }
 
