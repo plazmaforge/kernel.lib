@@ -1,5 +1,5 @@
-import plazma.kernel.lib.sys.syslib as syslib
-import plazma.kernel.lib.fmt.fmtlib as fmtlib
+import plazma.lib.sys.syslib as syslib
+import plazma.lib.fmt.fmtlib as fmtlib
 
 MESSAGE_INFO = "[INFO] %s"
 MESSAGE_WARN = "[WARNING] %s"

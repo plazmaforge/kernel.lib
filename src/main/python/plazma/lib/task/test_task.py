@@ -1,7 +1,7 @@
 import time
 
-import plazma.kernel.lib.task.task_helper as this
-import plazma.kernel.lib.sys.syslib as syslib
+import plazma.lib.task.task_helper as this
+import plazma.lib.sys.syslib as syslib
 
 #
 # Intel Core i5, 1.4 GHz, 8GB, Mac OS X

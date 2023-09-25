@@ -16,4 +16,4 @@ PYTHONPATH=$LIB_MAIN_PATH:$LIB_TEST_PATH
 export PYTHONPATH
 #echo $PYTHONPATH
 
-python3 -m unittest discover -v -s $LIB_TEST_PATH/plazma/kernel/lib/str -p "strlib_test.py"
+python3 -m unittest discover -v -s $LIB_TEST_PATH/plazma/lib/str -p "strlib_test.py"

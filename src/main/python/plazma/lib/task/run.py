@@ -2,10 +2,10 @@ import sys
 import os
 import datetime
 
-import plazma.kernel.lib.task.task_helper as this
-import plazma.kernel.lib.task.task_executor as executor
+import plazma.lib.task.task_helper as this
+import plazma.lib.task.task_executor as executor
 
-import plazma.kernel.lib.str.strlib as strlib
+import plazma.lib.str.strlib as strlib
 
 MESSAGE_TASK_NOT_SETTING = "-task is not setting"
 MESSAGE_TASK_EMPTY = "Task is empty"

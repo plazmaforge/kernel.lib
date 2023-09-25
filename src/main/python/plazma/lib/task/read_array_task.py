@@ -1,6 +1,6 @@
-import plazma.kernel.lib.task.task_helper as this
-import plazma.kernel.lib.sys.syslib as syslib
-import plazma.kernel.lib.num.numlib as numlib
+import plazma.lib.task.task_helper as this
+import plazma.lib.sys.syslib as syslib
+import plazma.lib.num.numlib as numlib
 
 TASK_READ_FLOAT_ARRAY = "read-float-array"
 

@@ -1,5 +1,5 @@
 import unittest
-import plazma.kernel.lib.str.strlib as s
+import plazma.lib.str.strlib as s
 
 class StrlibTest(unittest.TestCase):
 

@@ -1,8 +1,8 @@
 import datetime
 
-import plazma.kernel.lib.task.task_helper as this
-import plazma.kernel.lib.sys.syslib as syslib
-import plazma.kernel.lib.fmt.fmtlib as fmtlib
+import plazma.lib.task.task_helper as this
+import plazma.lib.sys.syslib as syslib
+import plazma.lib.fmt.fmtlib as fmtlib
 
 # print
 TASK_PRINT_SYSTEM_INFO = "print-system-info"
