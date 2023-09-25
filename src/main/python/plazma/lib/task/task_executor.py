@@ -1,8 +1,9 @@
 import plazma.lib.task.task_helper as this
-import plazma.lib.task.print_task as print_task 
-import plazma.lib.task.read_array_task as read_array_task 
-import plazma.lib.task.generate_array_task as generate_array_task
-import plazma.lib.task.test_task as test_task
+
+import plazma.lib.task.sys.print_task as print_task 
+import plazma.lib.task.array.read_array_task as read_array_task 
+import plazma.lib.task.array.generate_array_task as generate_array_task
+import plazma.lib.task.test.test_task as test_task
 
 #import plazma.lib.sys.syslib as syslib
 import plazma.lib.fmt.fmtlib as fmtlib

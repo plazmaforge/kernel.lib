@@ -7,4 +7,4 @@ PYTHONPATH=`cd "$LIB_PATH" && pwd`
 export PYTHONPATH
 #echo $PYTHONPATH
 
-python -m plazma.lib.task.run "$@"
+python3 -m plazma.lib.task.run "$@"

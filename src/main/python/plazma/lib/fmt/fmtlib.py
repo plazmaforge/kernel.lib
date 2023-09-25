@@ -162,5 +162,5 @@ def _normalizeFormat(formats, format, defaultFormat = None):
 
 try:
 	__module_init()
-except Exception, e:
+except Exception as e:
 	raise Exception("Initialization error")

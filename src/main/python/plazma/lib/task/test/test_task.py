@@ -39,8 +39,8 @@ def executeTest(args):
     #########################################
     # Performance 1
     #########################################
-    elements = xrange(0, COUNT)
-    #elements = range(0, COUNT)
+    elements = range(0, COUNT)
+    #elements = xrange(0, COUNT)    
     #elements = [i for i in range(0, COUNT)]
 
     for i in elements:
