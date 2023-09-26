@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="plazma-kernel-lib" default="create-jar">
+<project name="plazma-lib" default="create-jar">
 
 	<property file="build.properties" />
 
@@ -13,11 +13,11 @@
 
 	<target name="create-jar" description="Create jar file">
 		<mkdir dir="${dist.dir}" />
-		<jar destfile="${dist.dir}/plazma-kernel-lib-${version}.jar" basedir="${classes.dir}" includes="**">
+		<jar destfile="${dist.dir}/plazma-lib-${version}.jar" basedir="${classes.dir}" includes="**">
 
 			<exclude name="cpp/**/**" />
-			<exclude name="org/plazmaforge/kernel/**/*Test.class" />
-			<exclude name="org/plazmaforge/kernel/**/*TestCase.class" />
+			<exclude name="plazma/lib/**/*Test.class" />
+			<exclude name="plazma/lib/**/*TestCase.class" />
 
 			<manifest>
 				<attribute name="Manifest-Version" value="1.0" />
@@ -26,33 +26,33 @@
 		</jar>
 	</target>
 
-	<target name="clean-kernel-lib" description="Clean kernel lib">
-		<delete dir="${kernel.lib.target.dir}"/>
+	<target name="clean-lib" description="Clean Plazma Lib">
+		<delete dir="${plazma.lib.target.dir}"/>
 	</target>
 
 
-	<target name="create-kernel-lib" description="Create kernel lib" depends="clean-kernel-lib">
+	<target name="create-lib" description="Create Plazma Lib" depends="clean-lib">
 
 		<mkdir dir="${plazma.source.dir}" />
-		<mkdir dir="${kernel.lib.target.dir}" />
-		<mkdir dir="${kernel.lib.target.dir}/dist" />
-		<mkdir dir="${kernel.lib.target.dir}/lib" />
+		<mkdir dir="${plazma.lib.target.dir}" />
+		<mkdir dir="${plazma.lib.target.dir}/dist" />
+		<mkdir dir="${plazma.lib.target.dir}/lib" />
 
-		<copy todir="${kernel.lib.target.dir}">
-			<fileset dir="${kernel.lib.dir}">
+		<copy todir="${plazma.lib.target.dir}">
+			<fileset dir="${plazma.lib.dir}">
 				<include name="**" />
 				<exclude name=".settings/**" />
 			</fileset>
 		</copy>
 
-		<copy todir="${kernel.lib.target.dir}/dist">
+		<copy todir="${plazma.lib.target.dir}/dist">
 			<fileset dir="${dist.dir}">
 				<include name="plazma-lib-${version}.jar" />
 			</fileset>
 		</copy>
 
 		<!--
-		<copy todir="${kernel.lib.target.dir}/lib">
+		<copy todir="${plazma.lib.target.dir}/lib">
 			<fileset dir="${lib.dir}">
 				<include name="hsqldb.jar" />
 				<include name="jdom_1_0.jar" />
@@ -60,7 +60,7 @@
 		</copy>
 		-->
 
-		<replace file="${kernel.lib.target.dir}/.classpath" token="/lib/" value = "lib/"/>
+		<replace file="${plazma.lib.target.dir}/.classpath" token="/lib/" value = "lib/"/>
 
 	</target>
 

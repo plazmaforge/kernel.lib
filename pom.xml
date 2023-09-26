@@ -9,12 +9,11 @@
   </properties>
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>plazma.kernel.lib</groupId>
-  <artifactId>plazma-kernel-lib</artifactId>
+  <groupId>plazma.lib</groupId>
+  <artifactId>plazma-lib</artifactId>
   <version>${app.version}</version>
   <packaging>jar</packaging>
   <name>PlazmaLib</name>
-
 
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
@@ -30,7 +29,6 @@
     -->
  
     <plugins>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -61,23 +59,16 @@
 -->
 
       </plugin>
-
-
     </plugins>
-
   </build>
 
-
-
   <dependencies>
-
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.4</version>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
+  
 </project>
