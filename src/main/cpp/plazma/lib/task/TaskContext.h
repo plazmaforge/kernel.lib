@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_TASK_TASK_CONTEXT_H
-#define PLAZMA_KERNEL_LIB_TASK_TASK_CONTEXT_H
+#ifndef PLAZMA_LIB_TASK_TASK_CONTEXT_H
+#define PLAZMA_LIB_TASK_TASK_CONTEXT_H
 
 #include "plazma/lib/sys/Parameters.h" 
 
@@ -62,4 +62,4 @@ namespace task {
     };
 
 }
-#endif // PLAZMA_KERNEL_LIB_TASK_TASK_CONTEXT_H
+#endif // PLAZMA_LIB_TASK_TASK_CONTEXT_H

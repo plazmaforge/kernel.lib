@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_DATA_CSV_CSV_TOKENIZER_H
-#define PLAZMA_KERNEL_DATA_CSV_CSV_TOKENIZER_H
+#ifndef PLAZMA_LIB_DATA_CSV_CSV_TOKENIZER_H
+#define PLAZMA_LIB_DATA_CSV_CSV_TOKENIZER_H
 
 #include <string>
 #include <vector>
@@ -27,4 +27,4 @@ namespace csvtokenizer {
     StringList* tokenizeCsvFromArray(const char* input, int size);
     
 }
-#endif // PLAZMA_KERNEL_DATA_CSV_CSV_TOKENIZER_H
+#endif // PLAZMA_LIB_DATA_CSV_CSV_TOKENIZER_H

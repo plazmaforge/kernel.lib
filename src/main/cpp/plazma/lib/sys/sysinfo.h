@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_SYSINFO_H
-#define PLAZMA_KERNEL_LIB_SYSINFO_H
+#ifndef PLAZMA_LIB_SYSINFO_H
+#define PLAZMA_LIB_SYSINFO_H
 
 #ifdef OS_WIN
 #include <windows.h>
@@ -65,4 +65,4 @@ namespace syslib {
 
 }
 
-#endif // PLAZMA_KERNEL_LIB_SYSINFO_H
+#endif // PLAZMA_LIB_SYSINFO_H

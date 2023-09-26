@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_SYSARG_H
-#define PLAZMA_KERNEL_LIB_SYSARG_H
+#ifndef PLAZMA_LIB_SYSARG_H
+#define PLAZMA_LIB_SYSARG_H
 
 #include <string>
 #include <map>
@@ -40,4 +40,4 @@ namespace syslib {
 
 }
 
-#endif // PLAZMA_KERNEL_LIB_SYSARG_H
+#endif // PLAZMA_LIB_SYSARG_H

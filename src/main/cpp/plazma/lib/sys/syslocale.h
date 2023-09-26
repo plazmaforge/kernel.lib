@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_SYSLOCALE_H
-#define PLAZMA_KERNEL_LIB_SYSLOCALE_H
+#ifndef PLAZMA_LIB_SYSLOCALE_H
+#define PLAZMA_LIB_SYSLOCALE_H
 
 #include <locale>
 
@@ -37,4 +37,4 @@ typedef struct {
 
 }
 
-#endif // PLAZMA_KERNEL_LIB_SYSLOCALE_H
+#endif // PLAZMA_LIB_SYSLOCALE_H

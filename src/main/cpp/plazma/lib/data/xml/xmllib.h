@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_DATA_XML_XMLLIB_H
-#define PLAZMA_KERNEL_DATA_XML_XMLLIB_H
+#ifndef PLAZMA_LIB_DATA_XML_XMLLIB_H
+#define PLAZMA_LIB_DATA_XML_XMLLIB_H
 
 #include <string>
 
@@ -75,4 +75,4 @@ namespace xmllib {
     std::string getTokensText(StringList* tokens);
 
 }
-#endif // PLAZMA_KERNEL_DATA_XML_XMLLIB_H
+#endif // PLAZMA_LIB_DATA_XML_XMLLIB_H

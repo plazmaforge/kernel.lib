@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_SYSINIT_WIN_H
-#define PLAZMA_KERNEL_LIB_SYSINIT_WIN_H
+#ifndef PLAZMA_LIB_SYSINIT_WIN_H
+#define PLAZMA_LIB_SYSINIT_WIN_H
 
 #include "os.h"
 #ifdef OS_WIN
@@ -639,4 +639,4 @@ void initSysInfoWin(SysInfo& sysInfo) {
 }
 
 #endif
-#endif // PLAZMA_KERNEL_LIB_SYSINIT_WIN_H
+#endif // PLAZMA_LIB_SYSINIT_WIN_H

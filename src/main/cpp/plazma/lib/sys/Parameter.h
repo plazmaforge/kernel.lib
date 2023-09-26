@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_SYS_PARAMETER_H
-#define PLAZMA_KERNEL_LIB_SYS_PARAMETER_H
+#ifndef PLAZMA_LIB_SYS_PARAMETER_H
+#define PLAZMA_LIB_SYS_PARAMETER_H
 
 #include <string>
 
@@ -86,4 +86,4 @@ namespace sys {
     };
 
 }
-#endif // PLAZMA_KERNEL_LIB_SYS_PARAMETER_H
+#endif // PLAZMA_LIB_SYS_PARAMETER_H

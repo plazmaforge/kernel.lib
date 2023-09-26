@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_FS_FSLIB_H
-#define PLAZMA_KERNEL_LIB_FS_FSLIB_H
+#ifndef PLAZMA_LIB_FS_FSLIB_H
+#define PLAZMA_LIB_FS_FSLIB_H
 
 #include <string>
 
@@ -18,4 +18,4 @@ namespace fslib {
     std::string generateFileName(const std::string& filePrefix, int number, const std::string& fileExt);
 
 }
-#endif // PLAZMA_KERNEL_LIB_FS_FSLIB_H
+#endif // PLAZMA_LIB_FS_FSLIB_H

@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_SYS_EXPORT_H
-#define PLAZMA_KERNEL_LIB_SYS_EXPORT_H
+#ifndef PLAZMA_LIB_SYS_EXPORT_H
+#define PLAZMA_LIB_SYS_EXPORT_H
 
 #if defined(__cplusplus)
   #define EXTERN_C extern "C"
@@ -21,4 +21,4 @@
 //  #define LIBRARY_EXPORT_C EXTERN_C __attribute__ ((visibility ("default")))
 //#endif
 
-#endif // PLAZMA_KERNEL_LIB_SYS_EXPORT_H
+#endif // PLAZMA_LIB_SYS_EXPORT_H

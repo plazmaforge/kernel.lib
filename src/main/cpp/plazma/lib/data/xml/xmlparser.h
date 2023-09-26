@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_DATA_XML_XML_PARSER_H
-#define PLAZMA_KERNEL_DATA_XML_XML_PARSER_H
+#ifndef PLAZMA_LIB_DATA_XML_XML_PARSER_H
+#define PLAZMA_LIB_DATA_XML_XML_PARSER_H
 
 #include "XmlParserContext.h"
 #include "XmlReaderConfig.h"
@@ -230,4 +230,4 @@ namespace xmlparser {
     std::string normalizeName(char* str);
     
 }
-#endif // PLAZMA_KERNEL_DATA_XML_XML_PARSER_H
+#endif // PLAZMA_LIB_DATA_XML_XML_PARSER_H

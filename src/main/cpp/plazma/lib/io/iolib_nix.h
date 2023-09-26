@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_IO_IOLIB_NIX_H
-#define PLAZMA_KERNEL_LIB_IO_IOLIB_NIX_H
+#ifndef PLAZMA_LIB_IO_IOLIB_NIX_H
+#define PLAZMA_LIB_IO_IOLIB_NIX_H
 
 #include "plazma/lib/sys/os.h"
 
@@ -17,4 +17,4 @@ namespace iolib_nix {
 
 #endif
 
-#endif // PLAZMA_KERNEL_LIB_IO_IOLIB_NIX_H
+#endif // PLAZMA_LIB_IO_IOLIB_NIX_H

@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_SYS_SYSLIB_H
-#define PLAZMA_KERNEL_LIB_SYS_SYSLIB_H
+#ifndef PLAZMA_LIB_SYS_SYSLIB_H
+#define PLAZMA_LIB_SYS_SYSLIB_H
 
 #include <string>
 
@@ -244,4 +244,4 @@ namespace syslib {
     SysInfo* getSysInfo();
 
 }
-#endif // PLAZMA_KERNEL_LIB_SYS_SYSLIB_H
+#endif // PLAZMA_LIB_SYS_SYSLIB_H

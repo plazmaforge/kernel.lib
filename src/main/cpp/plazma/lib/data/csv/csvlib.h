@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_DATA_CSV_CSVLIB_H
-#define PLAZMA_KERNEL_DATA_CSV_CSVLIB_H
+#ifndef PLAZMA_LIB_DATA_CSV_CSVLIB_H
+#define PLAZMA_LIB_DATA_CSV_CSVLIB_H
 
 #include <string>
 
@@ -18,4 +18,4 @@ namespace csvlib {
     StringList* tokenizeCsvFromArray(const char* input, int size);
     
 }
-#endif // PLAZMA_KERNEL_DATA_CSV_CSVLB_H
+#endif // PLAZMA_LIB_DATA_CSV_CSVLB_H

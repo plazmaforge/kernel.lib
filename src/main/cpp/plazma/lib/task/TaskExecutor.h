@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_TASK_TASK_EXECUTOR_H
-#define PLAZMA_KERNEL_LIB_TASK_TASK_EXECUTOR_H
+#ifndef PLAZMA_LIB_TASK_TASK_EXECUTOR_H
+#define PLAZMA_LIB_TASK_TASK_EXECUTOR_H
 
 #include <string>
 #include <map>
@@ -26,4 +26,4 @@ namespace task {
     };
 
 }
-#endif // PLAZMA_KERNEL_LIB_TASK_TASK_EXECUTOR_H
+#endif // PLAZMA_LIB_TASK_TASK_EXECUTOR_H

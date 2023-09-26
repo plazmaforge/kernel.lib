@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_DATA_JSON_JSON_PARSER_H
-#define PLAZMA_KERNEL_DATA_JSON_JSON_PARSER_H
+#ifndef PLAZMA_LIB_DATA_JSON_JSON_PARSER_H
+#define PLAZMA_LIB_DATA_JSON_JSON_PARSER_H
 
 #include <string>
 
@@ -84,4 +84,4 @@ namespace jsonparser {
     void onStartArrayValue(json::JsonParserContext* context);
 
 }
-#endif // PLAZMA_KERNEL_DATA_JSON_JSON_PARSER_H
+#endif // PLAZMA_LIB_DATA_JSON_JSON_PARSER_H

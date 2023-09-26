@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_STRING_STRINGLIB2_H
-#define PLAZMA_KERNEL_LIB_STRING_STRINGLIB2_H
+#ifndef PLAZMA_LIB_STRING_STRINGLIB2_H
+#define PLAZMA_LIB_STRING_STRINGLIB2_H
 
 #include <string>
 #include <cstring>
@@ -141,4 +141,4 @@ void _toCase(std::basic_string<char_t> &str, bool upper) {
 
 }
 
-#endif // PLAZMA_KERNEL_LIB_STRING_STRINGLIB2_H
+#endif // PLAZMA_LIB_STRING_STRINGLIB2_H

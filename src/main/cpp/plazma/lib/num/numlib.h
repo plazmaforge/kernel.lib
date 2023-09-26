@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_NUM_NUMLIB_H
-#define PLAZMA_KERNEL_LIB_NUM_NUMLIB_H
+#ifndef PLAZMA_LIB_NUM_NUMLIB_H
+#define PLAZMA_LIB_NUM_NUMLIB_H
 
 #include <string>
 #include <vector>
@@ -50,4 +50,4 @@ namespace numlib {
 
 }
 
-#endif // PLAZMA_KERNEL_LIB_NUM_NUMLIB_H
+#endif // PLAZMA_LIB_NUM_NUMLIB_H

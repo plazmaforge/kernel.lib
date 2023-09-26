@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_DATA_JSON_JSONLIB_H
-#define PLAZMA_KERNEL_DATA_JSON_JSONLIB_H
+#ifndef PLAZMA_LIB_DATA_JSON_JSONLIB_H
+#define PLAZMA_LIB_DATA_JSON_JSONLIB_H
 
 #include <string>
 
@@ -75,4 +75,4 @@ namespace jsonlib {
     std::string getTokensText(StringList* tokens);
 
  }
- #endif // PLAZMA_KERNEL_DATA_JSON_JSONLIB_H
+ #endif // PLAZMA_LIB_DATA_JSON_JSONLIB_H

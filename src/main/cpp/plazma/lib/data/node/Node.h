@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_DATA_NODE_NODE_H
-#define PLAZMA_KERNEL_DATA_NODE_NODE_H
+#ifndef PLAZMA_LIB_DATA_NODE_NODE_H
+#define PLAZMA_LIB_DATA_NODE_NODE_H
 
 #include <string>
 #include <vector>
@@ -126,4 +126,4 @@ namespace node {
     };
 
 }
-#endif // PLAZMA_KERNEL_DATA_NODE_NODE_H
+#endif // PLAZMA_LIB_DATA_NODE_NODE_H

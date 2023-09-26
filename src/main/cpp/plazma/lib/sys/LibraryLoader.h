@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_SYS_LIBRARY_LOADER_H
-#define PLAZMA_KERNEL_LIB_SYS_LIBRARY_LOADER_H
+#ifndef PLAZMA_LIB_SYS_LIBRARY_LOADER_H
+#define PLAZMA_LIB_SYS_LIBRARY_LOADER_H
 
 #include <string>
 #include <iostream>
@@ -125,4 +125,4 @@ template <class T> class LibraryLoader {
 };
 
 }
-#endif // PLAZMA_KERNEL_LIB_SYS_LIBRARY_LOADER_H
+#endif // PLAZMA_LIB_SYS_LIBRARY_LOADER_H

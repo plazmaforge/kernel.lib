@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_DATA_JSON_JSON_TOKENIZER_H
-#define PLAZMA_KERNEL_DATA_JSON_JSON_TOKENIZER_H
+#ifndef PLAZMA_LIB_DATA_JSON_JSON_TOKENIZER_H
+#define PLAZMA_LIB_DATA_JSON_JSON_TOKENIZER_H
 
 #include <string>
 #include <vector>
@@ -33,4 +33,4 @@ namespace jsontokenizer {
     std::string getTokensText(StringList* tokens);
 
 }
-#endif // PLAZMA_KERNEL_DATA_JSON_JSON_TOKENIZER_H
+#endif // PLAZMA_LIB_DATA_JSON_JSON_TOKENIZER_H

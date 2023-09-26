@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_TASK_BASE_TASK_H
-#define PLAZMA_KERNEL_LIB_TASK_BASE_TASK_H
+#ifndef PLAZMA_LIB_TASK_BASE_TASK_H
+#define PLAZMA_LIB_TASK_BASE_TASK_H
 
 #include "TaskContext.h"
 #include "Task.h"
@@ -53,4 +53,4 @@ namespace task {
     };
 
 }
-#endif // PLAZMA_KERNEL_LIB_TASK_BASE_TASK_H
+#endif // PLAZMA_LIB_TASK_BASE_TASK_H

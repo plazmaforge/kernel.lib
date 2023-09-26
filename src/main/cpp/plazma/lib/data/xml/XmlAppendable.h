@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_DATA_XML_XML_APPENDABLE_H
-#define PLAZMA_KERNEL_LIB_DATA_XML_XML_APPENDABLE_H
+#ifndef PLAZMA_LIB_DATA_XML_XML_APPENDABLE_H
+#define PLAZMA_LIB_DATA_XML_XML_APPENDABLE_H
 
 #include <string>
 #include "plazma/lib/ext/Appendable.h"
@@ -41,4 +41,4 @@ namespace xml {
     };
 
 }
-#endif // PLAZMA_KERNEL_LIB_DATA_XML_XML_APPENDABLE_H
+#endif // PLAZMA_LIB_DATA_XML_XML_APPENDABLE_H

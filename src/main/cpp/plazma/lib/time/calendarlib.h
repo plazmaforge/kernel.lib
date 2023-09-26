@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_TIME_CALENDARLIB_H
-#define PLAZMA_KERNEL_TIME_CALENDARLIB_H
+#ifndef PLAZMA_LIB_TIME_CALENDARLIB_H
+#define PLAZMA_LIB_TIME_CALENDARLIB_H
 
 #include <string>
 #include <vector>
@@ -26,4 +26,4 @@ namespace calendarlib {
 
 }
 
-#endif // PLAZMA_KERNEL_LIB_TIME_CALENDARLIB_H
+#endif // PLAZMA_LIB_TIME_CALENDARLIB_H

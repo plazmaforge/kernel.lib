@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_STR_STRLIB_H
-#define PLAZMA_KERNEL_LIB_STR_STRLIB_H
+#ifndef PLAZMA_LIB_STR_STRLIB_H
+#define PLAZMA_LIB_STR_STRLIB_H
 
 #include <string>
 #include <vector>
@@ -791,4 +791,4 @@ namespace strlib {
 
 }
 
-#endif // PLAZMA_KERNEL_LIB_STR_STRLIB_H
+#endif // PLAZMA_LIB_STR_STRLIB_H

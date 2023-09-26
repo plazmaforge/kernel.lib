@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_DATA_YAML_YAML_PARSER_H
-#define PLAZMA_KERNEL_DATA_YAML_YAML_PARSER_H
+#ifndef PLAZMA_LIB_DATA_YAML_YAML_PARSER_H
+#define PLAZMA_LIB_DATA_YAML_YAML_PARSER_H
 
 #include <string>
 
@@ -161,4 +161,4 @@ namespace yamlparser {
     void tryLookupNode(yaml::YamlParserContext* context, int indent);
 
 }
-#endif // PLAZMA_KERNEL_DATA_YAML_YAML_PARSER_H
+#endif // PLAZMA_LIB_DATA_YAML_YAML_PARSER_H

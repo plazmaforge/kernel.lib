@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_DATA_YAML_YAML_WRRITER_H
-#define PLAZMA_KERNEL_DATA_YAML_YAML_WRRITER_H
+#ifndef PLAZMA_LIB_DATA_YAML_YAML_WRRITER_H
+#define PLAZMA_LIB_DATA_YAML_YAML_WRRITER_H
 
 #include <string>
 
@@ -68,4 +68,4 @@ namespace yamlwriter {
     void writeJsonChildren(yaml::YamlWriterConfig* config, yaml::YamlAppendable* buf, node::Node* node, int level);
 
 }
-#endif // PLAZMA_KERNEL_DATA_YAML_YAML_WRRITER_H
+#endif // PLAZMA_LIB_DATA_YAML_YAML_WRRITER_H

@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_DATA_XML_XML_TOKENIZER_H
-#define PLAZMA_KERNEL_DATA_XML_XML_TOKENIZER_H
+#ifndef PLAZMA_LIB_DATA_XML_XML_TOKENIZER_H
+#define PLAZMA_LIB_DATA_XML_XML_TOKENIZER_H
 
 #include <string>
 #include <vector>
@@ -37,4 +37,4 @@ namespace xmltokenizer {
     std::string getTokensText(StringList* tokens);
 
 }
-#endif // PLAZMA_KERNEL_DATA_XML_XML_TOKENIZER_H
+#endif // PLAZMA_LIB_DATA_XML_XML_TOKENIZER_H

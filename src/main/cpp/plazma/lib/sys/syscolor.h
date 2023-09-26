@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_SYSCOLOR_H
-#define PLAZMA_KERNEL_LIB_SYSCOLOR_H
+#ifndef PLAZMA_LIB_SYSCOLOR_H
+#define PLAZMA_LIB_SYSCOLOR_H
 
 #include <string>
 
@@ -105,4 +105,4 @@ namespace syslib {
 
 }
 
-#endif // PLAZMA_KERNEL_LIB_SYSCOLOR_H
+#endif // PLAZMA_LIB_SYSCOLOR_H

@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_MATH_MATHLIB_H
-#define PLAZMA_KERNEL_LIB_MATH_MATHLIB_H
+#ifndef PLAZMA_LIB_MATH_MATHLIB_H
+#define PLAZMA_LIB_MATH_MATHLIB_H
 
 #include <vector>
 
@@ -1077,4 +1077,4 @@ namespace mathlib {
 
 }
 
-#endif // PLAZMA_KERNEL_LIB_MATH_MATHLIB_H
+#endif // PLAZMA_LIB_MATH_MATHLIB_H

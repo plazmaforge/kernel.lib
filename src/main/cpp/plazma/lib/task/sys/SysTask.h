@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_TASK_SYS_SYS_TASK_H
-#define PLAZMA_KERNEL_LIB_TASK_SYS_SYS_TASK_H
+#ifndef PLAZMA_LIB_TASK_SYS_SYS_TASK_H
+#define PLAZMA_LIB_TASK_SYS_SYS_TASK_H
 
 #include <string>
 
@@ -85,4 +85,4 @@ namespace task {
     };
 
 }
-#endif // PLAZMA_KERNEL_LIB_TASK_SYS_SYS_TASK_H
+#endif // PLAZMA_LIB_TASK_SYS_SYS_TASK_H

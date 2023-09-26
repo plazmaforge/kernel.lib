@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_DATA_XML_XML_WRITER_H
-#define PLAZMA_KERNEL_DATA_XML_XML_WRITER_H
+#ifndef PLAZMA_LIB_DATA_XML_XML_WRITER_H
+#define PLAZMA_LIB_DATA_XML_XML_WRITER_H
 
 #include <string>
 
@@ -43,4 +43,4 @@ namespace xmlwriter {
     void writeXmlChildren(xml::XmlWriterConfig* config, xml::XmlAppendable* buf, node::Node* node, int level);
 
 }
-#endif // PLAZMA_KERNEL_DATA_XML_XML_WRITER_H
+#endif // PLAZMA_LIB_DATA_XML_XML_WRITER_H

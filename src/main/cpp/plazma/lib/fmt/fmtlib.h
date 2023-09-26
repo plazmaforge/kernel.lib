@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_FMT_FMTLIB_H
-#define PLAZMA_KERNEL_FMT_FMTLIB_H
+#ifndef PLAZMA_FMT_FMTLIB_H
+#define PLAZMA_FMT_FMTLIB_H
 
 #include <string>
 #include <chrono>
@@ -90,4 +90,4 @@ std::string formatDateTime(const std::chrono::system_clock::time_point& date, co
 }
 
 
-#endif // PLAZMA_KERNEL_LIB_FMT_FMTLIB_H
+#endif // PLAZMA_LIB_FMT_FMTLIB_H

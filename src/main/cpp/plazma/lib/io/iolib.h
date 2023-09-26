@@ -1,6 +1,5 @@
-//#pragma once
-#ifndef PLAZMA_KERNEL_LIB_IO_IOLIB_H
-#define PLAZMA_KERNEL_LIB_IO_IOLIB_H
+#ifndef PLAZMA_LIB_IO_IOLIB_H
+#define PLAZMA_LIB_IO_IOLIB_H
 
 
 #include <string>
@@ -160,4 +159,4 @@ namespace iolib {
 
 }
 
-#endif // PLAZMA_KERNEL_LIB_IO_IOLIB_H
+#endif // PLAZMA_LIB_IO_IOLIB_H

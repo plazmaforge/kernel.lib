@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_TASK_TASK_HELPER_H
-#define PLAZMA_KERNEL_LIB_TASK_TASK_HELPER_H
+#ifndef PLAZMA_LIB_TASK_TASK_HELPER_H
+#define PLAZMA_LIB_TASK_TASK_HELPER_H
 
 #include <string>
 
@@ -71,4 +71,4 @@ int maxParameterLen(Parameters* parameters);
 
 std::string getOptionalPath(const std::string& p1, const std::string& p2);
 
-#endif // PLAZMA_KERNEL_LIB_TASK_TASK_HELPER_H
+#endif // PLAZMA_LIB_TASK_TASK_HELPER_H

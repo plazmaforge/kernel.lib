@@ -1,6 +1,6 @@
 //#pragma once
-#ifndef PLAZMA_KERNEL_LIB_TEXT_WRITER_CONFIG_H
-#define PLAZMA_KERNEL_LIB_TEXT_WRITER_CONFIG_H
+#ifndef PLAZMA_LIB_TEXT_WRITER_CONFIG_H
+#define PLAZMA_LIB_TEXT_WRITER_CONFIG_H
 
 #include <string>
 
@@ -50,4 +50,4 @@ namespace text {
 
 }
 
-#endif // PLAZMA_KERNEL_LIB_TEXT_WRITER_CONFIG_H
+#endif // PLAZMA_LIB_TEXT_WRITER_CONFIG_H

@@ -1,6 +1,5 @@
-//#pragma once
-#ifndef PLAZMA_KERNEL_LIB_EXT_ARRAY_H
-#define PLAZMA_KERNEL_LIB_EXT_ARRAY_H
+#ifndef PLAZMA_LIB_EXT_ARRAY_H
+#define PLAZMA_LIB_EXT_ARRAY_H
 
 #include <stdio.h>
 
@@ -89,4 +88,4 @@ namespace ext {
     }
 
 }
-#endif // PLAZMA_KERNEL_LIB_EXT_ARRAY_H
+#endif // PLAZMA_LIB_EXT_ARRAY_H

@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_DATA_YAML_YAMLLIB_H
-#define PLAZMA_KERNEL_DATA_YAML_YAMLLIB_H
+#ifndef PLAZMA_LIB_DATA_YAML_YAMLLIB_H
+#define PLAZMA_LIB_DATA_YAML_YAMLLIB_H
 
 #include <string>
 
@@ -76,4 +76,4 @@ namespace yamllib {
     std::string getTokensText(StringList* tokens);    
 
  }
- #endif // PLAZMA_KERNEL_DATA_YAML_YAMLLIB_H
+ #endif // PLAZMA_LIB_DATA_YAML_YAMLLIB_H

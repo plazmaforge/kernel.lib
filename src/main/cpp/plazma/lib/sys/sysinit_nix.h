@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_SYSINIT_NIX_H
-#define PLAZMA_KERNEL_LIB_SYSINIT_NIX_H
+#ifndef PLAZMA_LIB_SYSINIT_NIX_H
+#define PLAZMA_LIB_SYSINIT_NIX_H
 
 #include "os.h"
 #ifdef OS_UNIX
@@ -119,4 +119,4 @@ void initSysInfoNix(SysInfo& sysInfo) {
 }
 
 #endif
-#endif // PLAZMA_KERNEL_LIB_SYSINIT_NIX_H
+#endif // PLAZMA_LIB_SYSINIT_NIX_H

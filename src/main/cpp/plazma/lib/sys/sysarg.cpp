@@ -95,4 +95,3 @@ float getDoubleParameter(std::map<std::string, std::string> &parameters, const s
 
 
 }
-//#endif // PLAZMA_KERNEL_LIB_SYSARG_H

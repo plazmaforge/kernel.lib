@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_IO_IOLIB_WIN_H
-#define PLAZMA_KERNEL_LIB_IO_IOLIB_WIN_H
+#ifndef PLAZMA_LIB_IO_IOLIB_WIN_H
+#define PLAZMA_LIB_IO_IOLIB_WIN_H
 
 #include <string>
 #include <locale>
@@ -336,4 +336,4 @@ void _err(const std::wstring &str) {
 
 #endif
 
-#endif // PLAZMA_KERNEL_LIB_IO_IOLIB_WIN_H
+#endif // PLAZMA_LIB_IO_IOLIB_WIN_H

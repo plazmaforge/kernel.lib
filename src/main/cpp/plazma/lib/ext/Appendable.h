@@ -1,5 +1,5 @@
-#ifndef PLAZMA_KERNEL_LIB_EXT_APPENDABLE_H
-#define PLAZMA_KERNEL_LIB_EXT_APPENDABLE_H
+#ifndef PLAZMA_LIB_EXT_APPENDABLE_H
+#define PLAZMA_LIB_EXT_APPENDABLE_H
 
 #include <string>
 
@@ -17,4 +17,4 @@ namespace ext {
     };
 
 }
-#endif // PLAZMA_KERNEL_LIB_EXT_APPENDABLE_H
+#endif // PLAZMA_LIB_EXT_APPENDABLE_H
