@@ -6,4 +6,4 @@ LIB_PATH=$LIB_PATH/target
 CP=$LIB_PATH/plazma-kernel-lib-1.0.8.jar
 
 #-Xmx64m
-java -cp $CP plazma.kernel.lib.task.Run "$@"
+java -cp $CP plazma.lib.task.Run "$@"
