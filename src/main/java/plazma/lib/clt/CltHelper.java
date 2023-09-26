@@ -20,7 +20,7 @@
  * ohapon@users.sourceforge.net
  */
 
-package plazma.lib.collection;
+package plazma.lib.clt;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,9 +33,9 @@ import java.util.Set;
 
 import plazma.lib.obj.ObjLib;
 
-public class CollectionHelper {
+public class CltHelper {
 
-    private CollectionHelper() {
+    private CltHelper() {
     }
 
     // create default list

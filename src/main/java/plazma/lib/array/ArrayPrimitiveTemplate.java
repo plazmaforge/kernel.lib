@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 
 import plazma.lib.ArithmeticContext;
 import plazma.lib.ArithmeticEnvironment;
-import plazma.lib.collection.CollectionLib;
+import plazma.lib.clt.CltLib;
 import plazma.lib.num.NumLib;
 import plazma.lib.obj.ObjLib;
 
@@ -310,8 +310,8 @@ public class ArrayPrimitiveTemplate {
             int[] r = (x == null) ? null : _copy(x); // sub
             return r;
         }
-        List<Integer> r = CollectionLib.toList(x); // TODO: maybe own _toList(array)
-        List<Integer> yr = CollectionLib.toList(y);
+        List<Integer> r = CltLib.toList(x); // TODO: maybe own _toList(array)
+        List<Integer> yr = CltLib.toList(y);
         r.removeAll(yr);
         return _toPrimitiveIntArray(r);
     }
@@ -328,7 +328,7 @@ public class ArrayPrimitiveTemplate {
         }
 
         // distinct
-        Set<Integer> set = CollectionLib.toSet(result);
+        Set<Integer> set = CltLib.toSet(result);
         return _toPrimitiveIntArray(set);
     }
 
@@ -491,7 +491,7 @@ public class ArrayPrimitiveTemplate {
         if (array.length == 0) {
             return EMPTY_INT_ARRAY;
         }
-        Set<Integer> set = CollectionLib.toSet(array);
+        Set<Integer> set = CltLib.toSet(array);
         return _toPrimitiveIntArray(set);
     }
 

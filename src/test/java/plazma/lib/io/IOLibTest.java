@@ -3,7 +3,8 @@ package plazma.lib.io;
 import java.util.List;
 
 import plazma.lib.AbstractTestCase;
-import plazma.lib.collection.CollectionLib;
+import plazma.lib.clt.CltLib;
+
 import static plazma.lib.fs.FSLib.*;
 import plazma.lib.io.IOLib;
 
@@ -13,14 +14,14 @@ public class IOLibTest extends AbstractTestCase {
 
         String fileName = TEST_DIR + "/" + "tmp_lines.dat";
 
-        List<String> lines = CollectionLib.asList("Line 1", "Line 2", "Line 3");
+        List<String> lines = CltLib.asList("Line 1", "Line 2", "Line 3");
 
         IOLib.writeLines(fileName, lines);
 
         List<String> lines2 = IOLib.readLines(fileName);
         rm(fileName);
 
-        assertTrue(CollectionLib.equals(lines, lines2));
+        assertTrue(CltLib.equals(lines, lines2));
     }
 
     public void testIOText() throws Exception {

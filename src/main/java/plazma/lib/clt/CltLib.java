@@ -20,7 +20,7 @@
  * ohapon@users.sourceforge.net
  */
 
-package plazma.lib.collection;
+package plazma.lib.clt;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,7 +39,7 @@ import plazma.lib.ArithmeticEnvironment;
 import plazma.lib.array.ArrayLib;
 import plazma.lib.obj.ObjLib;
 
-public class CollectionLib {
+public class CltLib {
 
     // Functions:
 
@@ -162,7 +162,7 @@ public class CollectionLib {
 
     private static final int FILL_THRESHOLD = 25;
 
-    private CollectionLib() {
+    private CltLib() {
     }
 
     public static ArithmeticContext getContext() {
@@ -310,7 +310,7 @@ public class CollectionLib {
         }
 
         // distinct
-        Set<T> set = CollectionLib.toSet(result);
+        Set<T> set = CltLib.toSet(result);
         return set;
     }
 
@@ -492,10 +492,10 @@ public class CollectionLib {
         int size = list.size();
 
         if (size < FILL_THRESHOLD || list instanceof RandomAccess) {
-            CollectionHelper._fill(list, value, 0, size);
+            CltHelper._fill(list, value, 0, size);
         } else {
             ListIterator<? super T> itr = list.listIterator();
-            CollectionHelper._fill(itr, value, 0, size);
+            CltHelper._fill(itr, value, 0, size);
         }
     }
 
@@ -520,13 +520,13 @@ public class CollectionLib {
         }
 
         if (size < FILL_THRESHOLD || list instanceof RandomAccess) {
-            CollectionHelper._fill(list, value, fromIndex, toIndex);
+            CltHelper._fill(list, value, fromIndex, toIndex);
         } else {
             ListIterator<? super T> itr = list.listIterator();
             if (fromIndex > 0) {
-                CollectionHelper._next(itr, fromIndex);
+                CltHelper._next(itr, fromIndex);
             }
-            CollectionHelper._fill(itr, value, fromIndex, toIndex);
+            CltHelper._fill(itr, value, fromIndex, toIndex);
         }
     }
 
@@ -564,21 +564,21 @@ public class CollectionLib {
     //// 3.3
 
     public static <T> void removeAll(Collection<T> collection, Collection<T> elements) {
-        CollectionHelper._removeAll(collection, elements);
+        CltHelper._removeAll(collection, elements);
     }
 
     public static <T> void removeAll(Collection<T> collection, T[] elements) {
-        CollectionHelper._removeAll(collection, elements);
+        CltHelper._removeAll(collection, elements);
     }
 
     //// 3.4
 
     public static <T> boolean replaceAll(List<T> list, T oldValue, T newValue) {
-        return CollectionHelper._replaceAll(list, oldValue, newValue);
+        return CltHelper._replaceAll(list, oldValue, newValue);
     }
 
     public static <T> boolean[] replaceAll(List<T> list, T[] oldValues, T[] newValues) {
-        return CollectionHelper._replaceAll(list, oldValues, newValues);
+        return CltHelper._replaceAll(list, oldValues, newValues);
     }
 
     ///
@@ -703,73 +703,73 @@ public class CollectionLib {
     }
 
     public static <T> int count(Collection<T> collection, T value) {
-        return CollectionHelper._count(collection, value, true);
+        return CltHelper._count(collection, value, true);
     }
 
     public static <T> int countNot(Collection<T> collection, T value) {
-        return CollectionHelper._count(collection, value, false); // Not
+        return CltHelper._count(collection, value, false); // Not
     }
 
     public static <T> int countNull(Collection<T> collection) {
-        return CollectionHelper._count(collection, null, true);
+        return CltHelper._count(collection, null, true);
     }
 
     public static <T> int countNotNull(Collection<T> collection) {
-        return CollectionHelper._count(collection, null, false); // Not
+        return CltHelper._count(collection, null, false); // Not
     }
 
     ////
 
     public static <T extends Comparable<T>> T min(Collection<T> collection) {
-        return CollectionHelper._min(collection, null, false);
+        return CltHelper._min(collection, null, false);
     }
 
     public static <T extends Comparable<T>> T min(Collection<T> collection, T def) {
-        return CollectionHelper._min(collection, def, true);
+        return CltHelper._min(collection, def, true);
     }
 
     public static <T extends Comparable<T>> T max(Collection<T> collection) {
-        return CollectionHelper._max(collection, null, false);
+        return CltHelper._max(collection, null, false);
     }
 
     public static <T extends Comparable<T>> T max(Collection<T> collection, T def) {
-        return CollectionHelper._max(collection, def, true);
+        return CltHelper._max(collection, def, true);
     }
 
     ////
 
     public static <T extends Comparable<? super T>> void sort(List<T> list) {
-        CollectionStreamHelper._sort(list);
+        CltStreamHelper._sort(list);
     }
 
     public static <T> void sort(List<T> list, Comparator<? super T> comparator) {
-        CollectionStreamHelper._sort(list, comparator);
+        CltStreamHelper._sort(list, comparator);
     }
 
     //// filter
 
     public static <T> Collection<T> filter(Collection<T> collection, Predicate<T> filter) {
-        return CollectionStreamHelper._filter(collection, filter);
+        return CltStreamHelper._filter(collection, filter);
     }
 
     public static <T> List<T> filter(List<T> list, Predicate<T> filter) {
-        return CollectionStreamHelper._filter(list, filter);
+        return CltStreamHelper._filter(list, filter);
     }
 
     //// distinct
 
     public static <T> List<T> distinct(List<T> list) {
-        return CollectionStreamHelper._distinct(list);
+        return CltStreamHelper._distinct(list);
     }
 
     public static <T> Collection<T> distinct(Collection<T> collection) {
-        return CollectionStreamHelper._distinct(collection);
+        return CltStreamHelper._distinct(collection);
     }
 
     //// reverse
 
     public static <T> void reverse(List<T> list) {
-        CollectionHelper._reverse(list);
+        CltHelper._reverse(list);
     }
 
     ////
@@ -781,13 +781,13 @@ public class CollectionLib {
     //// toList: Collection
 
     public static <T> List<T> toList(Collection<T> collection) {
-        return CollectionHelper._toList(collection);
+        return CltHelper._toList(collection);
     }
 
     //// toList: Array
 
     public static <T> List<T> toList(T[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     //// toSortList: Collection
@@ -800,7 +800,7 @@ public class CollectionLib {
         if (collection == null) {
             return null;
         }
-        List<T> list = CollectionHelper._toList(collection);
+        List<T> list = CltHelper._toList(collection);
         sort(list, comparator);
         return list;
     }
@@ -818,7 +818,7 @@ public class CollectionLib {
     //// toFilterList: Collection
 
     public static <T> List<T> toFilterList(Collection<T> collection, Predicate<T> filter) {
-        return CollectionStreamHelper._filterList(collection, filter);
+        return CltStreamHelper._filterList(collection, filter);
     }
 
     //// toFilterList: Array
@@ -830,7 +830,7 @@ public class CollectionLib {
     //// toDistinctList: Collection
 
     public static <T> List<T> toDistinctList(Collection<T> collection) {
-        return CollectionStreamHelper._distinctList(collection);
+        return CltStreamHelper._distinctList(collection);
     }
 
     //// toDistinctList: Array
@@ -919,113 +919,113 @@ public class CollectionLib {
     //// array[] -> List<Array>
 
     public static List<Boolean> toList(boolean[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     public static List<Byte> toList(byte[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     public static List<Character> toList(char[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     public static List<Short> toList(short[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     public static List<Integer> toList(int[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     public static List<Long> toList(long[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     public static List<Float> toList(float[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     public static List<Double> toList(double[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     //// Array[] -> List<Array>
 
     public static List<Boolean> toList(Boolean[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     public static List<Byte> toList(Byte[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     public static List<Character> toList(Character[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     public static List<Short> toList(Short[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     public static List<Integer> toList(Integer[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     public static List<Long> toList(Long[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     public static List<Float> toList(Float[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     public static List<Double> toList(Double[] array) {
-        return CollectionHelper._toList(array);
+        return CltHelper._toList(array);
     }
 
     //// toSet
 
     public static <T> Set<T> toSet(Collection<T> collection) {
-        return CollectionHelper._toSet(collection);
+        return CltHelper._toSet(collection);
     }
 
     public static <T> Set<T> toSet(T[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     //// array[] -> Set<Array>
 
     public static Set<Boolean> toSet(boolean[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     public static Set<Byte> toSet(byte[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     public static Set<Character> toSet(char[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     public static Set<Short> toSet(short[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     public static Set<Integer> toSet(int[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     public static Set<Long> toSet(long[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     public static Set<Float> toSet(float[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     public static Set<Double> toSet(double[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     // NonJS
@@ -1038,74 +1038,74 @@ public class CollectionLib {
     //// Array[] -> Set<Array>
 
     public static Set<Boolean> toSet(Boolean[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     public static Set<Byte> toSet(Byte[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     public static Set<Character> toSet(Character[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     public static Set<Short> toSet(Short[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     public static Set<Integer> toSet(Integer[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     public static Set<Long> toSet(Long[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     public static Set<Float> toSet(Float[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     public static Set<Double> toSet(Double[] array) {
-        return CollectionHelper._toSet(array);
+        return CltHelper._toSet(array);
     }
 
     //// asList
     //// Usage: For Eclipse Java Compiler (ecj) only.
 
     public static List<Boolean> asList(boolean... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static List<Byte> asList(byte... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static List<Character> asList(char... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static List<Short> asList(short... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static List<Integer> asList(int... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static List<Long> asList(long... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static List<Float> asList(float... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static List<Double> asList(double... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static <T> List<T> asList(T... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     //// as<Type>List
@@ -1114,74 +1114,74 @@ public class CollectionLib {
     //// For Eclipse Java Compiler (ecj) it's OK.
 
     public static List<Boolean> asBooleanList(boolean... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static List<Byte> asByteList(byte... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static List<Character> asCharacterList(char... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static List<Short> asShortList(short... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static List<Integer> asIntegerList(int... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static List<Long> asLongList(long... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static List<Float> asFloatist(float... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     public static List<Double> asDoubleList(double... array) {
-        return CollectionHelper._asList(array);
+        return CltHelper._asList(array);
     }
 
     //// asSet
     //// Usage: For Eclipse Java Compiler (ecj) only.
 
     public static Set<Boolean> asSet(boolean... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static Set<Byte> asSet(byte... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static Set<Character> asSet(char... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static Set<Short> asSet(short... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static Set<Integer> asSet(int... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static Set<Long> asSet(long... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static Set<Float> asSet(float... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static Set<Double> asSet(double... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static <T> Set<T> asSet(T... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     //// as<Type>Set
@@ -1190,35 +1190,35 @@ public class CollectionLib {
     //// For Eclipse Java Compiler (ecj) it's OK.
 
     public static Set<Boolean> asBooleanSet(boolean... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static Set<Byte> asByteSet(byte... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static Set<Character> asCharacterSet(char... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static Set<Short> asShortSet(short... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static Set<Integer> asIntegerSet(int... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static Set<Long> asLongSet(long... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static Set<Float> asFloatSet(float... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     public static Set<Double> asDoubleSet(double... array) {
-        return CollectionHelper._asSet(array);
+        return CltHelper._asSet(array);
     }
 
     //// asCollection

@@ -29,7 +29,7 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 
 import plazma.lib.array.ArrayLib;
-import plazma.lib.collection.CollectionLib;
+//import plazma.lib.clt.CltLib;
 
 public class StrLib {
     
@@ -2391,8 +2391,16 @@ public class StrLib {
         return toList(splitLines(str));
     }
 
-    public static List<String> toList(String[] array) {
-        return CollectionLib.toList(array);
+    public static List<String> toList(String[] array) {        
+        if (array == null) {
+            return null;
+        }
+        List<String> list = new ArrayList<String>();
+        for (int i = 0; i < array.length; i++) {
+            list.add(array[i]);
+        }
+        return list;        
+        //return CltLib.toList(array);
     }
 
     //// 9.1

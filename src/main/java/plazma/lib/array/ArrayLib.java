@@ -32,7 +32,7 @@ import java.util.function.Predicate;
 
 import plazma.lib.ArithmeticContext;
 import plazma.lib.ArithmeticEnvironment;
-import plazma.lib.collection.CollectionLib;
+import plazma.lib.clt.CltLib;
 import plazma.lib.num.NumLib;
 import plazma.lib.obj.ObjLib;
 
@@ -2367,7 +2367,7 @@ public class ArrayLib {
     //// 18.1
 
     private static <T> List<T> toList(T[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     //// 19.1 random<Type>Array

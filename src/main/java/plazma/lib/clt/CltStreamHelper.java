@@ -20,7 +20,7 @@
  * ohapon@users.sourceforge.net
  */
 
-package plazma.lib.collection;
+package plazma.lib.clt;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,7 +33,7 @@ import java.util.function.Predicate;
 
 import plazma.lib.obj.ObjLib;
 
-public class CollectionStreamHelper {
+public class CltStreamHelper {
 
     // Functions:
 
@@ -46,7 +46,7 @@ public class CollectionStreamHelper {
     // - filter(list) (+)
     // - filter(set) (???)
 
-    private CollectionStreamHelper() {
+    private CltStreamHelper() {
     }
 
     ////
@@ -77,7 +77,7 @@ public class CollectionStreamHelper {
         }
         // no filter - return all
         if (filter == null) {
-            return CollectionLib.copy(list);
+            return CltLib.copy(list);
         }
 
         // TODO: CollectionLib.FILL_THRESHOLD ?
@@ -99,7 +99,7 @@ public class CollectionStreamHelper {
         }
         // no filter - return all
         if (filter == null) {
-            return CollectionLib.copy(collection);
+            return CltLib.copy(collection);
         }
 
         // TODO: CollectionLib.FILL_THRESHOLD ?
@@ -125,7 +125,7 @@ public class CollectionStreamHelper {
 
         // no filter - return all
         if (filter == null) {
-            return CollectionLib.toList(collection);
+            return CltLib.toList(collection);
         }
 
         // TODO: CollectionLib.FILL_THRESHOLD ?
@@ -148,7 +148,7 @@ public class CollectionStreamHelper {
             return null;
         }
         Set<T> set = _toSet(collection);
-        return CollectionLib.toList(set); // TODO: new instance by original type
+        return CltLib.toList(set); // TODO: new instance by original type
     }
 
     //
@@ -194,7 +194,7 @@ public class CollectionStreamHelper {
             return null;
         }
         Set<T> set = _toSet(list);
-        return CollectionLib.toList(set); // TODO: new instance by original type
+        return CltLib.toList(set); // TODO: new instance by original type
     }
 
     static <T> Collection<T> _distinct(Collection<T> collection) {

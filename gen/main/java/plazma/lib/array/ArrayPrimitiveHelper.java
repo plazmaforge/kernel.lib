@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 
 import plazma.lib.ArithmeticContext;
 import plazma.lib.ArithmeticEnvironment;
-import plazma.lib.collection.CollectionLib;
+import plazma.lib.clt.CltLib;
 import plazma.lib.num.NumLib;
 import plazma.lib.obj.ObjLib;
 
@@ -1920,8 +1920,8 @@ public class ArrayPrimitiveHelper {
   	    boolean[] r = (x == null) ? null : _copy(x); // sub
   	    return r;
   	}
-  	List<Boolean> r = CollectionLib.toList(x); // TODO: maybe own _toList(array)
-  	List<Boolean> yr = CollectionLib.toList(y);
+  	List<Boolean> r = CltLib.toList(x); // TODO: maybe own _toList(array)
+  	List<Boolean> yr = CltLib.toList(y);
   	r.removeAll(yr);
   	return _toPrimitiveBooleanArray(r);
     }    
@@ -1941,8 +1941,8 @@ public class ArrayPrimitiveHelper {
   	    byte[] r = (x == null) ? null : _copy(x); // sub
   	    return r;
   	}
-  	List<Byte> r = CollectionLib.toList(x); // TODO: maybe own _toList(array)
-  	List<Byte> yr = CollectionLib.toList(y);
+  	List<Byte> r = CltLib.toList(x); // TODO: maybe own _toList(array)
+  	List<Byte> yr = CltLib.toList(y);
   	r.removeAll(yr);
   	return _toPrimitiveByteArray(r);
     }    
@@ -1962,8 +1962,8 @@ public class ArrayPrimitiveHelper {
   	    char[] r = (x == null) ? null : _copy(x); // sub
   	    return r;
   	}
-  	List<Character> r = CollectionLib.toList(x); // TODO: maybe own _toList(array)
-  	List<Character> yr = CollectionLib.toList(y);
+  	List<Character> r = CltLib.toList(x); // TODO: maybe own _toList(array)
+  	List<Character> yr = CltLib.toList(y);
   	r.removeAll(yr);
   	return _toPrimitiveCharArray(r);
     }    
@@ -1983,8 +1983,8 @@ public class ArrayPrimitiveHelper {
   	    short[] r = (x == null) ? null : _copy(x); // sub
   	    return r;
   	}
-  	List<Short> r = CollectionLib.toList(x); // TODO: maybe own _toList(array)
-  	List<Short> yr = CollectionLib.toList(y);
+  	List<Short> r = CltLib.toList(x); // TODO: maybe own _toList(array)
+  	List<Short> yr = CltLib.toList(y);
   	r.removeAll(yr);
   	return _toPrimitiveShortArray(r);
     }    
@@ -2004,8 +2004,8 @@ public class ArrayPrimitiveHelper {
   	    int[] r = (x == null) ? null : _copy(x); // sub
   	    return r;
   	}
-  	List<Integer> r = CollectionLib.toList(x); // TODO: maybe own _toList(array)
-  	List<Integer> yr = CollectionLib.toList(y);
+  	List<Integer> r = CltLib.toList(x); // TODO: maybe own _toList(array)
+  	List<Integer> yr = CltLib.toList(y);
   	r.removeAll(yr);
   	return _toPrimitiveIntArray(r);
     }    
@@ -2025,8 +2025,8 @@ public class ArrayPrimitiveHelper {
   	    long[] r = (x == null) ? null : _copy(x); // sub
   	    return r;
   	}
-  	List<Long> r = CollectionLib.toList(x); // TODO: maybe own _toList(array)
-  	List<Long> yr = CollectionLib.toList(y);
+  	List<Long> r = CltLib.toList(x); // TODO: maybe own _toList(array)
+  	List<Long> yr = CltLib.toList(y);
   	r.removeAll(yr);
   	return _toPrimitiveLongArray(r);
     }    
@@ -2046,8 +2046,8 @@ public class ArrayPrimitiveHelper {
   	    float[] r = (x == null) ? null : _copy(x); // sub
   	    return r;
   	}
-  	List<Float> r = CollectionLib.toList(x); // TODO: maybe own _toList(array)
-  	List<Float> yr = CollectionLib.toList(y);
+  	List<Float> r = CltLib.toList(x); // TODO: maybe own _toList(array)
+  	List<Float> yr = CltLib.toList(y);
   	r.removeAll(yr);
   	return _toPrimitiveFloatArray(r);
     }    
@@ -2067,8 +2067,8 @@ public class ArrayPrimitiveHelper {
   	    double[] r = (x == null) ? null : _copy(x); // sub
   	    return r;
   	}
-  	List<Double> r = CollectionLib.toList(x); // TODO: maybe own _toList(array)
-  	List<Double> yr = CollectionLib.toList(y);
+  	List<Double> r = CltLib.toList(x); // TODO: maybe own _toList(array)
+  	List<Double> yr = CltLib.toList(y);
   	r.removeAll(yr);
   	return _toPrimitiveDoubleArray(r);
     }    
@@ -2113,7 +2113,7 @@ public class ArrayPrimitiveHelper {
 	}
 
 	// distinct
-	Set<Boolean> set = CollectionLib.toSet(result);
+	Set<Boolean> set = CltLib.toSet(result);
 	return _toPrimitiveBooleanArray(set);
     }
       
@@ -2126,7 +2126,7 @@ public class ArrayPrimitiveHelper {
 	}
 
 	// distinct
-	Set<Byte> set = CollectionLib.toSet(result);
+	Set<Byte> set = CltLib.toSet(result);
 	return _toPrimitiveByteArray(set);
     }
       
@@ -2139,7 +2139,7 @@ public class ArrayPrimitiveHelper {
 	}
 
 	// distinct
-	Set<Character> set = CollectionLib.toSet(result);
+	Set<Character> set = CltLib.toSet(result);
 	return _toPrimitiveCharArray(set);
     }
       
@@ -2152,7 +2152,7 @@ public class ArrayPrimitiveHelper {
 	}
 
 	// distinct
-	Set<Short> set = CollectionLib.toSet(result);
+	Set<Short> set = CltLib.toSet(result);
 	return _toPrimitiveShortArray(set);
     }
       
@@ -2165,7 +2165,7 @@ public class ArrayPrimitiveHelper {
 	}
 
 	// distinct
-	Set<Integer> set = CollectionLib.toSet(result);
+	Set<Integer> set = CltLib.toSet(result);
 	return _toPrimitiveIntArray(set);
     }
       
@@ -2178,7 +2178,7 @@ public class ArrayPrimitiveHelper {
 	}
 
 	// distinct
-	Set<Long> set = CollectionLib.toSet(result);
+	Set<Long> set = CltLib.toSet(result);
 	return _toPrimitiveLongArray(set);
     }
       
@@ -2191,7 +2191,7 @@ public class ArrayPrimitiveHelper {
 	}
 
 	// distinct
-	Set<Float> set = CollectionLib.toSet(result);
+	Set<Float> set = CltLib.toSet(result);
 	return _toPrimitiveFloatArray(set);
     }
       
@@ -2204,7 +2204,7 @@ public class ArrayPrimitiveHelper {
 	}
 
 	// distinct
-	Set<Double> set = CollectionLib.toSet(result);
+	Set<Double> set = CltLib.toSet(result);
 	return _toPrimitiveDoubleArray(set);
     }
       
@@ -3422,7 +3422,7 @@ public class ArrayPrimitiveHelper {
    	if (array.length == 0) {
  	    return EMPTY_BOOLEAN_ARRAY;
  	}
-   	Set<Boolean> set = CollectionLib.toSet(array);
+   	Set<Boolean> set = CltLib.toSet(array);
    	return _toPrimitiveBooleanArray(set);
     }
     
@@ -3433,7 +3433,7 @@ public class ArrayPrimitiveHelper {
    	if (array.length == 0) {
  	    return EMPTY_BYTE_ARRAY;
  	}
-   	Set<Byte> set = CollectionLib.toSet(array);
+   	Set<Byte> set = CltLib.toSet(array);
    	return _toPrimitiveByteArray(set);
     }
     
@@ -3444,7 +3444,7 @@ public class ArrayPrimitiveHelper {
    	if (array.length == 0) {
  	    return EMPTY_CHAR_ARRAY;
  	}
-   	Set<Character> set = CollectionLib.toSet(array);
+   	Set<Character> set = CltLib.toSet(array);
    	return _toPrimitiveCharArray(set);
     }
     
@@ -3455,7 +3455,7 @@ public class ArrayPrimitiveHelper {
    	if (array.length == 0) {
  	    return EMPTY_SHORT_ARRAY;
  	}
-   	Set<Short> set = CollectionLib.toSet(array);
+   	Set<Short> set = CltLib.toSet(array);
    	return _toPrimitiveShortArray(set);
     }
     
@@ -3466,7 +3466,7 @@ public class ArrayPrimitiveHelper {
    	if (array.length == 0) {
  	    return EMPTY_INT_ARRAY;
  	}
-   	Set<Integer> set = CollectionLib.toSet(array);
+   	Set<Integer> set = CltLib.toSet(array);
    	return _toPrimitiveIntArray(set);
     }
     
@@ -3477,7 +3477,7 @@ public class ArrayPrimitiveHelper {
    	if (array.length == 0) {
  	    return EMPTY_LONG_ARRAY;
  	}
-   	Set<Long> set = CollectionLib.toSet(array);
+   	Set<Long> set = CltLib.toSet(array);
    	return _toPrimitiveLongArray(set);
     }
     
@@ -3488,7 +3488,7 @@ public class ArrayPrimitiveHelper {
    	if (array.length == 0) {
  	    return EMPTY_FLOAT_ARRAY;
  	}
-   	Set<Float> set = CollectionLib.toSet(array);
+   	Set<Float> set = CltLib.toSet(array);
    	return _toPrimitiveFloatArray(set);
     }
     
@@ -3499,7 +3499,7 @@ public class ArrayPrimitiveHelper {
    	if (array.length == 0) {
  	    return EMPTY_DOUBLE_ARRAY;
  	}
-   	Set<Double> set = CollectionLib.toSet(array);
+   	Set<Double> set = CltLib.toSet(array);
    	return _toPrimitiveDoubleArray(set);
     }
     

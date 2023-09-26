@@ -31,7 +31,7 @@ import java.util.Set;
 
 import plazma.lib.ArithmeticContext;
 import plazma.lib.ArithmeticEnvironment;
-import plazma.lib.collection.CollectionLib;
+import plazma.lib.clt.CltLib;
 import plazma.lib.num.NumLib;
 import plazma.lib.obj.ObjLib;
 
@@ -228,7 +228,7 @@ final class ArrayHelper {
         }
 
         // distinct
-        Set<T> set = CollectionLib.toSet(result);
+        Set<T> set = CltLib.toSet(result);
         return set.toArray(_copy(result, 0));
     }
 
@@ -1111,6 +1111,6 @@ final class ArrayHelper {
 //    } 
 
     private static <T> List<T> _toList(T[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 }

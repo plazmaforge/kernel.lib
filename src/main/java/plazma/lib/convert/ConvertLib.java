@@ -29,7 +29,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import plazma.lib.array.ArrayLib;
-import plazma.lib.collection.CollectionLib;
+import plazma.lib.clt.CltLib;
 
 public class ConvertLib {
 
@@ -196,182 +196,182 @@ public class ConvertLib {
     //// 2.1 toList
 
     public static <T> List<T> toList(Collection<T> collection) {
-        return CollectionLib.toList(collection);
+        return CltLib.toList(collection);
     }
 
     public static <T> List<T> toList(T[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     //// 2.2 toSortList
 
     public static <T> List<T> toSortList(Collection<T> collection) {
-        return CollectionLib.toSortList(collection);
+        return CltLib.toSortList(collection);
     }
 
     public static <T> List<T> toSortList(Collection<T> collection, Comparator<? super T> comparator) {
-        return CollectionLib.toSortList(collection, comparator);
+        return CltLib.toSortList(collection, comparator);
     }
 
     //// 2.3 toFilterList
 
     public static <T> List<T> toFilterList(Collection<T> collection, Predicate<T> filter) {
-        return CollectionLib.toFilterList(collection, filter);
+        return CltLib.toFilterList(collection, filter);
     }
 
     //// 2.4 toCriteriaList
 
     public static <T> List<T> toCriteriaList(Collection<T> collection, Predicate<T> filter,
             Comparator<? super T> sorter, boolean isDistinct) {
-        return CollectionLib.toCriteriaList(collection, filter, sorter, isDistinct);
+        return CltLib.toCriteriaList(collection, filter, sorter, isDistinct);
     }
 
     //// 2.5
     //// array[] -> List<Array>
 
     public static List<Boolean> toList(boolean[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     public static List<Byte> toList(byte[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     public static List<Character> toList(char[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     public static List<Short> toList(short[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     public static List<Integer> toList(int[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     public static List<Long> toList(long[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     public static List<Float> toList(float[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     public static List<Double> toList(double[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     //// Array[] -> List<Array>
 
     public static List<Boolean> toList(Boolean[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     public static List<Byte> toList(Byte[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     public static List<Character> toList(Character[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     public static List<Short> toList(Short[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     public static List<Integer> toList(Integer[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     public static List<Long> toList(Long[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     public static List<Float> toList(Float[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     public static List<Double> toList(Double[] array) {
-        return CollectionLib.toList(array);
+        return CltLib.toList(array);
     }
 
     //// 3.1 toSet
 
     public static <T> Set<T> toSet(Collection<T> collection) {
-        return CollectionLib.toSet(collection);
+        return CltLib.toSet(collection);
     }
 
     public static <T> Set<T> toSet(T[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     //// 3.2
     //// array[] -> Set<Array>
 
     public static Set<Boolean> toSet(boolean[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     public static Set<Byte> toSet(byte[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     public static Set<Character> toSet(char[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     public static Set<Short> toSet(short[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     public static Set<Integer> toSet(int[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     public static Set<Long> toSet(long[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     public static Set<Float> toSet(float[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     public static Set<Double> toSet(double[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     //// Array[] -> Set<Array>
 
     public static Set<Boolean> toSet(Boolean[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     public static Set<Byte> toSet(Byte[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     public static Set<Character> toSet(Character[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     public static Set<Short> toSet(Short[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     public static Set<Integer> toSet(Integer[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     public static Set<Long> toSet(Long[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     public static Set<Float> toSet(Float[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     public static Set<Double> toSet(Double[] array) {
-        return CollectionLib.toSet(array);
+        return CltLib.toSet(array);
     }
 
     //// 4.1
@@ -526,81 +526,81 @@ public class ConvertLib {
     //// 6.1
 
     public static List<Boolean> asList(boolean... array) {
-        return CollectionLib.asList(array);
+        return CltLib.asList(array);
     }
 
     public static List<Byte> asList(byte... array) {
-        return CollectionLib.asList(array);
+        return CltLib.asList(array);
     }
 
     public static List<Character> asList(char... array) {
-        return CollectionLib.asList(array);
+        return CltLib.asList(array);
     }
 
     public static List<Short> asList(short... array) {
-        return CollectionLib.asList(array);
+        return CltLib.asList(array);
     }
 
     public static List<Integer> asList(int... array) {
-        return CollectionLib.asList(array);
+        return CltLib.asList(array);
     }
 
     public static List<Long> asList(long... array) {
-        return CollectionLib.asList(array);
+        return CltLib.asList(array);
     }
 
     public static List<Float> asList(float... array) {
-        return CollectionLib.asList(array);
+        return CltLib.asList(array);
     }
 
     public static List<Double> asList(double... array) {
-        return CollectionLib.asList(array);
+        return CltLib.asList(array);
     }
 
     ////
 
     public static <T> List<T> asList(T... array) {
-        return CollectionLib.asList(array);
+        return CltLib.asList(array);
     }
 
     ////
 
     public static Set<Boolean> asSet(boolean... array) {
-        return CollectionLib.asSet(array);
+        return CltLib.asSet(array);
     }
 
     public static Set<Byte> asSet(byte... array) {
-        return CollectionLib.asSet(array);
+        return CltLib.asSet(array);
     }
 
     public static Set<Character> asSet(char... array) {
-        return CollectionLib.asSet(array);
+        return CltLib.asSet(array);
     }
 
     public static Set<Short> asSet(short... array) {
-        return CollectionLib.asSet(array);
+        return CltLib.asSet(array);
     }
 
     public static Set<Integer> asSet(int... array) {
-        return CollectionLib.asSet(array);
+        return CltLib.asSet(array);
     }
 
     public static Set<Long> asSet(long... array) {
-        return CollectionLib.asSet(array);
+        return CltLib.asSet(array);
     }
 
     public static Set<Float> asSet(float... array) {
-        return CollectionLib.asSet(array);
+        return CltLib.asSet(array);
     }
 
     public static Set<Double> asSet(double... array) {
-        return CollectionLib.asSet(array);
+        return CltLib.asSet(array);
     }
 
     ////
 
     public static <T> Set<T> asSet(T... array) {
-        return CollectionLib.asSet(array);
+        return CltLib.asSet(array);
     }
     
 }
