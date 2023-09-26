@@ -1,7 +1,7 @@
 
-set "KERNEL_LIB=..\..\src\main\cpp\plazma\kernel\lib"
+set "PLAZMA_LIB=..\..\src\main\cpp\plazma\lib"
 
-del /s %KERNEL_LIB%\*.o
+del /s %PLAZMA_LIB%\*.o
 
 del run.exe
 del run_test.exe

@@ -10,7 +10,7 @@ LDFLAGS=
 #SOURCES1=$(wildcard $(START)/**/*.cpp)
 #SOURCES2=$(wildcard $(START)/**/**/*.cpp)
 
-START=../../src/main/cpp/plazma/kernel/lib
+START=../../src/main/cpp/plazma/lib
 SOURCES:=$(wildcard $(START)/**/*.cpp) $(wildcard $(START)/**/**/*.cpp)
 SOURCES:=$(filter-out $(START)/task/run.cpp, $(SOURCES))
 

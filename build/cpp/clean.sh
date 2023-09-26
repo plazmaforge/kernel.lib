@@ -1,9 +1,9 @@
 #!/bin/sh
 
-KERNEL_LIB="../../src/main/cpp/plazma/kernel/lib"
+PLAZMA_LIB="../../src/main/cpp/plazma/lib"
 
-rm -f $KERNEL_LIB/**/*.o
-rm -f $KERNEL_LIB/**/**/*.o
+rm -f $PLAZMA_LIB/**/*.o
+rm -f $PLAZMA_LIB/**/**/*.o
 
 rm -f run
 rm -f run_test

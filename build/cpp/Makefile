@@ -50,8 +50,8 @@ LDFLAGS=
 
 #######################################################################
 
-START=../../src/main/cpp/plazma/kernel/lib
-START_W=..\..\src\main\cpp\plazma\kernel\lib
+START=../../src/main/cpp/plazma/lib
+START_W=..\..\src\main\cpp\plazma\lib
 
 SOURCES_ALL:=$(wildcard $(START)/**/*.cpp) $(wildcard $(START)/**/**/*.cpp)
 
