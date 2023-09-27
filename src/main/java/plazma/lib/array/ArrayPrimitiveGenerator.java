@@ -14,7 +14,7 @@ public class ArrayPrimitiveGenerator {
     private static String USER_DIR = System.getProperty("user.dir");
     private static String SRC_DIR = USER_DIR + "/" + "src/main/java";
     private static String GEN_DIR = USER_DIR + "/" + "gen/main/java";
-    private static String PACKAGE_DIR = "plazma/kernel/lib/array";
+    private static String PACKAGE_DIR = "plazma/lib/array";
 
     public static void main(String[] args) {
         process();
