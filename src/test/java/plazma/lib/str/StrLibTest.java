@@ -5,6 +5,89 @@ import plazma.lib.str.StrLib;
 
 public class StrLibTest extends AbstractTestCase {
 
+    // 1.1
+
+    public void testIsEmpty() {
+
+        // isEmpty(null), isEmpty(empty)
+        assertTrue(StrLib.isEmpty(null));
+        assertTrue(StrLib.isEmpty(""));
+
+        // isEmpty(blank)
+        assertFalse(StrLib.isEmpty(" "));
+        assertFalse(StrLib.isEmpty("  "));
+
+        // isEmpty(value)
+        assertFalse(StrLib.isEmpty("abc"));
+        assertFalse(StrLib.isEmpty(" abc"));
+        assertFalse(StrLib.isEmpty("abc "));
+        assertFalse(StrLib.isEmpty(" abc "));
+    }
+
+    public void testIsBlank() {
+
+        // isBlank(null), isBlank(empty)
+        assertTrue(StrLib.isBlank(null));
+        assertTrue(StrLib.isBlank(""));
+
+        // isBlank(blank)
+        assertTrue(StrLib.isBlank(" "));
+        assertTrue(StrLib.isBlank("  "));
+
+        // isBlank(value)
+        assertFalse(StrLib.isBlank("abc"));
+        assertFalse(StrLib.isBlank(" abc"));
+        assertFalse(StrLib.isBlank("abc "));
+        assertFalse(StrLib.isBlank(" abc "));        
+    }
+
+    public void testSize() {
+
+        // size(null), size(empty)
+        assertEquals(0, StrLib.size(null));
+        assertEquals(0, StrLib.size(""));
+
+        // size(blank)
+        assertEquals(1, StrLib.size(" "));
+        assertEquals(2, StrLib.size("  "));
+
+        // size(value)
+        assertEquals(3, StrLib.size("abc"));
+        assertEquals(4, StrLib.size(" abc"));
+        assertEquals(4, StrLib.size("abc "));
+        assertEquals(5, StrLib.size(" abc "));
+
+    }
+
+    public void testEquals() {
+
+        // equals(null, null)
+        assertFalse(StrLib.equals(null, null));
+
+        // equals(null, empty), equals(null, value)
+        assertFalse(StrLib.equals(null, ""));
+        assertFalse(StrLib.equals(null, " "));
+        assertFalse(StrLib.equals(null, "abc"));
+
+        // equals(empty, null), equals(value, null)
+        assertFalse(StrLib.equals("", null));
+        assertFalse(StrLib.equals(" ", null));
+        assertFalse(StrLib.equals("abc", null));
+
+        assertFalse(StrLib.equals("", "abc"));
+        assertFalse(StrLib.equals("abc", ""));
+        assertFalse(StrLib.equals(" abc", "abc"));
+        assertFalse(StrLib.equals("abc ", "abc"));
+        assertFalse(StrLib.equals(" abc ", "abc"));
+
+        assertTrue(StrLib.equals("", ""));
+        assertTrue(StrLib.equals(" ", " "));
+        assertTrue(StrLib.equals("abc", "abc"));
+
+    }
+
+    // 1.2
+
     public void testTrim() {
 
         // trim: null
@@ -402,19 +485,19 @@ public class StrLibTest extends AbstractTestCase {
     // isDigit, isISODigit
     public void testIsDigit() {
 
-        println("isDigit: " + Character.isDigit('\u0660'));
-        println("isLetter: " + Character.isLetter('\u0660'));
-        println("isAlpha: " + Character.isAlphabetic('\u0660'));
+        //println("isDigit: " + Character.isDigit('\u0660'));
+        //println("isLetter: " + Character.isLetter('\u0660'));
+        //println("isAlpha: " + Character.isAlphabetic('\u0660'));
 
-        println();
-        println("isDigit: " + Character.isDigit('\u00B5'));
-        println("isLetter: " + Character.isLetter('\u00B5'));
-        println("isAlpha: " + Character.isAlphabetic('\u00B5'));
+        //println();
+        //println("isDigit: " + Character.isDigit('\u00B5'));
+        //println("isLetter: " + Character.isLetter('\u00B5'));
+        //println("isAlpha: " + Character.isAlphabetic('\u00B5'));
 
-        println();
-        println("isDigit: " + Character.isDigit('\u00B6'));
-        println("isLetter: " + Character.isLetter('\u00B6'));
-        println("isAlpha: " + Character.isAlphabetic('\u00B6'));
+        //println();
+        //println("isDigit: " + Character.isDigit('\u00B6'));
+        //println("isLetter: " + Character.isLetter('\u00B6'));
+        //println("isAlpha: " + Character.isAlphabetic('\u00B6'));
 
         ///////////////////////////////////////
         //
@@ -502,15 +585,15 @@ public class StrLibTest extends AbstractTestCase {
     }
 
     public void testIsISO() {
-        char x = ' ';
-        println("" + (int) x + ": '" + x + "'");
+        //char x = ' ';
+        //println("" + (int) x + ": '" + x + "'");
 
         assertTrue(StrLib.isISOWhitespace(' '));
         assertTrue(StrLib.isISOUnderline('_'));
         assertTrue(StrLib.isISODot('.'));
 
-        x = '\u00B7';
-        println("" + (int) x + ": '" + x + "'");
+        //x = '\u00B7';
+        //println("" + (int) x + ": '" + x + "'");
 
         assertFalse(StrLib.isISOWhitespace('#'));
         assertFalse(StrLib.isISOUnderline('-')); // minus is not underline
@@ -520,7 +603,7 @@ public class StrLibTest extends AbstractTestCase {
     public void testIsISOIdentifier() {
 
         char x = 'x';
-        println("" + (int) x + ": '" + x + "'");
+        //println("" + (int) x + ": '" + x + "'");
 
         assertTrue(StrLib.isISOLowerLetter(x));
         assertTrue(StrLib.isISOLetter(x));
