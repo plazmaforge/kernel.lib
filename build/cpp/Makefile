@@ -1,11 +1,7 @@
-
 CC=g++
 #CC=clang++
 
 CFLAGS=-c -std=c++17 -Wall -I../../src/main/cpp -O2 -Os
-#CFLAGS=-c -std=c++17 -Wall -I../../src/main/cpp $(addprefix -W, all extra pedantic) -g -O2 -Os 
-#CFLAGS=-c -finput-charset=UTF-8 -O2 -Os -I"/Library/Frameworks/R.framework/Resources/include"
-
 LDFLAGS=
 
 #clang and MacOS (libc++): Resolved "Undefined symbols for architecture x86_64"
@@ -118,27 +114,25 @@ EXECUTABLE=run
 ifeq ($(OS),Windows_NT)
     #LIB_CMD=$(CC) $(LDFLAGS) -shared -o task-base.dll -Wl,--out-implib,task-base.a -W1,--export-all-symbols-Wl,--enable-auto-image-base $(OBJECTS_LIB)
     LIB_CMD=$(CC) $(LDFLAGS) -shared -o task-base.dll -Wl,--out-implib,task-base.a $(OBJECTS_LIB)
-    DEL_CMD_1=del /s $(START_W)\*.o
-    DEL_CMD_2=del run.exe run_test.exe lib-*.dll task-*.dll task-*.a  
+    DEL_OBJ_CMD=del /s $(START_W)\*.o
+    DEL_EXE_CMD=del run.exe run_test.exe lib-*.dll task-*.dll task-*.a  
 else
     UNAME_S := $(shell uname -s)
     
     #ifeq ($(UNAME_S),Linux)
     #
     #endif
-    
-    #DEL_CMD=rm -f $(START)/**/*.o $(START)/**/**/*.o run run_test
-    
-    DEL_CMD_1=rm -f $(START)/**/*.o $(START)/**/**/*.o
-    DEL_CMD_2=rm -f run run_test
+        
+    DEL_OBJ_CMD=rm -f $(START)/**/*.o $(START)/**/**/*.o
+    DEL_EXE_CMD=rm -f run run_test
     
     ifeq ($(UNAME_S),Darwin)
         LDFLAGS += -framework CoreFoundation -framework CoreServices
         LIB_CMD=$(CC) $(LDFLAGS) -dynamiclib -fPIC -o task-base.dylib $(OBJECTS_LIB)
-        DEL_CMD_2 += lib-*.dylib task-*.dylib
+        DEL_EXE_CMD += lib-*.dylib task-*.dylib
     else
         LIB_CMD=$(CC) $(LDFLAGS) -shared -fPIC -o task-base.so $(OBJECTS_LIB)
-        DEL_CMD_2 += lib-*.so task-*.so
+        DEL_EXE_CMD += lib-*.so task-*.so
     endif
     
 endif
@@ -162,8 +156,8 @@ lib: $(OBJECTS_LIB)
 	$(LIB_CMD)
 
 clean:
-	$(DEL_CMD_1)
-	$(DEL_CMD_2)
+	$(DEL_OBJ_CMD)
+	$(DEL_EXE_CMD)
 
 ######################################################################
 

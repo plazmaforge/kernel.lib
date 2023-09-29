@@ -1,14 +1,8 @@
 #include <string>
-#include <vector>
-#include <list>
-#include <array>
-#include <iterator>
-
-#include <map>
 #include <iostream>
 
-#include <locale>
-#include <codecvt>
+//#include <locale>
+//#include <codecvt>
 
 #include "plazma/lib/sys/syslib.h"
 #include "plazma/lib/ext/ustring.h" 
@@ -27,59 +21,21 @@
 
 #include "plazma/lib/data/node/Node.h"
 
-#include "run_test.h"
-#include "task_helper.h"
-
 // TODO
 #include <cmath>
-
-//#include <io.h>
-//#include <fcntl.h>
-//#include <wchar.h>
-//#include <stdarg.h>
-//#include <chrono>
-//#include <thread>
 
 using namespace mathlib;
 using namespace syslib;
 using namespace ext;
 
-const std::string MESSAGE_TASK_NOT_SETTING = "-task is not setting";
-const std::string MESSAGE_TASK_EMPTY = "Task is empty";
-
-const std::string PARAMETER_ABOUT = "about";
-const std::string PARAMETER_HELP = "help";
-const std::string PARAMETER_TASK = "task";
-const std::string PARAMETER_TASK_LIST = "task-list";
-
-//https://github.com/fffaraz/awesome-cppf
-//https://github.com/sumeetchhetri/ffead-cpp
-//https://github.com/davisking/dlib/tree/master/dlib
-//https://thispointer.com/stdmap-tutorial-part-1-usage-detail-with-examples/
-
-// Locale
-// =========
-// https://en.cppreference.com/w/cpp/locale/setlocale
-// https://www.linux.org.ru/forum/development/3469000
-// https://code-live.ru/post/cpp-russian-locale-for-windows-cmd/
-// https://stackoverflow.com/questions/42769095/how-to-handle-utf-8-encoded-source-when-compiling-on-windows
-
-
-void printAbout() {
-  std::cout << "TaskTool Test [C++] v1.0.8" << std::endl << std::endl;
-}
-
-void print(std::vector<std::string> data) {
-  for (int i = 0; i < data.size(); i++) {
-    std::cout << "'" << data.at(i) << "'" << std::endl;
-  }
-}
 
 void printHeader(std::string text) {
   //iolib::_out(text);
   std::cout << std::endl << text << std::endl;
   std::cout << "============================================================================================" << std::endl;
 }
+
+//////////////////////////////////
 
 void app1(std::string &str) {
   str.append(" app1");

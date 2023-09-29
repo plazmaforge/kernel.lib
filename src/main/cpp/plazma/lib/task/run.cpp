@@ -4,7 +4,7 @@
 #include "plazma/lib/sys/syslib.h"
 #include "plazma/lib/io/iolib.h"
 
-#include "run.h"
+//#include "run.h"
 #include "task_helper.h"
 
 #include "BaseTaskExecutor.h"
@@ -81,6 +81,18 @@ void printTaskList() {
 
 ////
 
+void executeTask(std::map<std::string, std::string> &parameters) {
+  std::string taskName = getParameter(parameters, PARAMETER_TASK);
+  if (taskName.empty()) {
+    error(MESSAGE_TASK_EMPTY);
+    printUsage();
+    return;
+  }
+  getExecutor()->executeTask(taskName, parameters);
+}
+
+////
+
 void execute(std::map<std::string, std::string> &parameters) {
 
     // COLORIZED: CONSOLE
@@ -135,16 +147,6 @@ void execute(std::map<std::string, std::string> &parameters) {
    
    printUsage();
 
-}
-
-void executeTask(std::map<std::string, std::string> &parameters) {
-  std::string taskName = getParameter(parameters, PARAMETER_TASK);
-  if (taskName.empty()) {
-    error(MESSAGE_TASK_EMPTY);
-    printUsage();
-    return;
-  }
-  getExecutor()->executeTask(taskName, parameters);
 }
 
 ////

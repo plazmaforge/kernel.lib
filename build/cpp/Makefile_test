@@ -7,15 +7,39 @@ LDFLAGS=
 
 #######################################################################
 
-#SOURCES1=$(wildcard $(START)/**/*.cpp)
-#SOURCES2=$(wildcard $(START)/**/**/*.cpp)
-
 START=../../src/main/cpp/plazma/lib
 SOURCES:=$(wildcard $(START)/**/*.cpp) $(wildcard $(START)/**/**/*.cpp)
 SOURCES:=$(filter-out $(START)/task/run.cpp, $(SOURCES))
 
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=run_test
+
+#######################################################################
+
+ifeq ($(OS),Windows_NT)
+    DEL_OBJ_CMD=del /s $(START_W)\*.o
+    DEL_EXE_CMD=del run.exe run_test.exe lib-*.dll task-*.dll task-*.a  
+else
+    UNAME_S := $(shell uname -s)
+    
+    #ifeq ($(UNAME_S),Linux)
+    #
+    #endif
+    
+    DEL_OBJ_CMD=rm -f $(START)/**/*.o $(START)/**/**/*.o
+    DEL_EXE_CMD=rm -f run run_test
+    
+    ifeq ($(UNAME_S),Darwin)
+        LDFLAGS += -framework CoreFoundation -framework CoreServices
+        DEL_EXE_CMD += lib-*.dylib task-*.dylib
+    else
+        LIB_CMD=$(CC) $(LDFLAGS) -shared -fPIC -o task-base.so $(OBJECTS_LIB)
+        DEL_EXE_CMD += lib-*.so task-*.so
+    endif
+    
+endif
+
+######################################################################
 
 all: $(SOURCES) $(EXECUTABLE)
 	
