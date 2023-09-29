@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-c  -std=c++17 -Wall -I../../src/main/cpp -O2
+CFLAGS=-c  -std=c++17 -Wall -I../../src/main/cpp -I../../src/test/cpp -O2
 
 #CFLAGS=-c -finput-charset=UTF-8
 
@@ -8,7 +8,9 @@ LDFLAGS=
 #######################################################################
 
 START=../../src/main/cpp/plazma/lib
-SOURCES:=$(wildcard $(START)/**/*.cpp) $(wildcard $(START)/**/**/*.cpp)
+START_TEST=../../src/test/cpp/plazma/lib
+
+SOURCES:=$(wildcard $(START)/**/*.cpp) $(wildcard $(START)/**/**/*.cpp) $(wildcard $(START_TEST)/*.cpp)
 SOURCES:=$(filter-out $(START)/task/run.cpp, $(SOURCES))
 
 OBJECTS=$(SOURCES:.cpp=.o)
