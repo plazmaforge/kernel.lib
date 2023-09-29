@@ -47,7 +47,10 @@ LDFLAGS=
 #######################################################################
 
 START=../../src/main/cpp/plazma/lib
+START_TEST=../../src/test/cpp/plazma/lib
+
 START_W=..\..\src\main\cpp\plazma\lib
+START_TEST_W=..\..\src\test\cpp\plazma\lib
 
 SOURCES_ALL:=$(wildcard $(START)/**/*.cpp) $(wildcard $(START)/**/**/*.cpp)
 
@@ -114,7 +117,7 @@ EXECUTABLE=run
 ifeq ($(OS),Windows_NT)
     #LIB_CMD=$(CC) $(LDFLAGS) -shared -o task-base.dll -Wl,--out-implib,task-base.a -W1,--export-all-symbols-Wl,--enable-auto-image-base $(OBJECTS_LIB)
     LIB_CMD=$(CC) $(LDFLAGS) -shared -o task-base.dll -Wl,--out-implib,task-base.a $(OBJECTS_LIB)
-    DEL_OBJ_CMD=del /s $(START_W)\*.o
+    DEL_OBJ_CMD=del /s $(START_W)\*.o $(START_TEST_W)\*.o
     DEL_EXE_CMD=del run.exe run_test.exe lib-*.dll task-*.dll task-*.a  
 else
     UNAME_S := $(shell uname -s)
@@ -123,7 +126,7 @@ else
     #
     #endif
         
-    DEL_OBJ_CMD=rm -f $(START)/**/*.o $(START)/**/**/*.o
+    DEL_OBJ_CMD=rm -f $(START)/**/*.o $(START)/**/**/*.o $(START_TEST)/*.o
     DEL_EXE_CMD=rm -f run run_test
     
     ifeq ($(UNAME_S),Darwin)
