@@ -21,132 +21,28 @@
 
 #include "plazma/lib/data/node/Node.h"
 
+#include "test_helper.h"
+
+#include "test_strlib.h"
+#include "test_node.h"
+#include "test_csvlib.h"
+#include "test_xmllib.h"
+#include "test_jsonlib.h"
+
+#include "test_stdstr.h"
+
 // TODO
 #include <cmath>
 
-using namespace mathlib;
+//using namespace mathlib;
 using namespace syslib;
 using namespace ext;
 
-
-void printHeader(std::string text) {
-  //iolib::_out(text);
-  printf("\n%s\n", text.c_str());
-  printf("============================================================================================\n");
-
-  //std::cout << std::endl << text << std::endl;
-  //std::cout << "============================================================================================" << std::endl;
-}
-
-//////////////////////////////////
-
-void app1(std::string &str) {
-  str.append(" app1");
-}
-
-void app2(std::string &str) {
-  str.append(" app2");
-}
-
-node::Node createNode0(std::string name) {
-  node::Node node = node::Node();
-  node.setName(name);
-  return node;
-}
-
-node::Node* createNode(std::string name) {
-  node::Node node = node::Node();
-  node::Node* n = &node; //new node::Node();
-  n->setName(name);
-  return n;
-}
-
-uintptr_t createNode2(std::string name) {
-  node::Node* n = new node::Node();
-  n->setName(name);
-  return reinterpret_cast<uintptr_t>(n);;
-}
-
-
-/*
-long createNode3(string name) {
-  node::Node* n = new node::Node();
-  n->setName(name);
-  return reinterpret_cast<long>(n);;
-}
-
-string createNode4(string name) {
-  node::Node node = node::Node();
-  node::Node* n = &node; // new node::Node();
-  n->setName(name);
-  long addr = reinterpret_cast<long>(n);;
-  return "" + to_string(addr) + "";
-}
-*/
-
-void testNode(std::string name) {
-  node::Node* n11 = new node::Node();
-  n11->setName(name);
-  //delete n11;
-}
-
-// void testNode2(string name) {
-//   node::Node n12 = node::Node();
-//   n12.setName(name);
-
-//     node::Node n1_1 = node::Node();
-//   n1_1.setName("Child N2_1");
-//   n12.addChild(&n1_1);
-
-//   node::Node n1_2 = node::Node();
-//   n1_2.setName("Child N2_2");
-//   n12.addChild(&n1_2);
-
-// }
-
-int getStringLen(const char* testChars) {
-  return strlen(testChars);
-}
 
 // ============================================================================================
 // TESTS
 // ============================================================================================
 
-// 1. TEST NORMALIZE
-void testNormalize() {
-  std::string str = strlib::normalize(" abc ");
-  
-  std::cout << std::endl;
-  std::cout << "Normalize string-1: [" << str << "]" << std::endl;
-
-  char* c2 = " abc ";
-  std::string s22 = std::string(c2);
-  strlib::_trim(s22);
-
-  std::cout << "Normalize string-2: [" << s22 << "]" << std::endl;
-
-}
-
-// 2. TEST NODE
-void testNode() {
-  
-  node::Node* n1 = new node::Node();
-  n1->setName("N1");
-
-  node::Node* n1_1 = new node::Node();
-  n1_1->setName("D-Child N1_1");
-  n1->addChild(n1_1);
-
-  node::Node* n1_2 = new node::Node();
-  n1_2->setName("D-Child N1_2");
-  n1->addChild(n1_2);
-
-  delete n1;
-
- testNode("N11");
-  //testNode2("N12_777");
-
-}
 
 // 3. TEST READ/WRITE XML
 void testReadWriteXml() {
@@ -203,311 +99,86 @@ void testReadWriteXml() {
 
 }
 
-// 4. TEST TOKENS
-void testTokens() {
+void test_min(std::map<std::string, std::string>& parameters) {
+  test_strlib_all();
+  test_node_all();
+  test_stdstr_all(parameters);  
+}
 
-  // CSV Input
-  std::string input = "1, 'Name', 123.56, 2020-10-10";
-  StringList* tokens = csvlib::tokenizeCsvFromText(input); 
+void test_all(std::map<std::string, std::string>& parameters) {
+  test_strlib_all();
+  test_node_all();
+  test_csvlib_all();
+  test_xmllib_all();
+  test_jsonlib_all();
+  test_stdstr_all(parameters);  
+}
 
-  printHeader("CSV-Text");
-
-  std::cout << input << std::endl;
+void run(std::map<std::string, std::string>& parameters) {
+  std::string test = parameters["test"];
   
-  printHeader("CSV-Tokens");
-  
-  int size = tokens->size();
-  for (int i = 0; i < size; i++) {
-    std::cout << tokens->get(i) << std::endl;
+  if (test == "" || test == "*") {
+    test_all(parameters);
+    return;
   }
 
-  // Json Input
-  input = "{'id': 1234, 'name': 'Alex', 'contacts': [1, 2, 3]}";
-  tokens = jsonlib::tokenizeJsonFromText(input); 
-
-  printHeader("Json-Text");
-  
-  std::cout << input << std::endl;
-
-  printHeader("Json-Tokens");
-  
-  size = tokens->size();
-  for (int i = 0; i < size; i++) {
-    std::cout << tokens->get(i) << std::endl;
+  if (test == ".") {
+    test_min(parameters);
+    return;
   }
 
-  // XML Input
-  input = "<table    spacing='0>0'>   <tr><td>1</td><td>2</td></tr></table>";
-  tokens = xmllib::tokenizeXmlFromText(input); 
-
-  printHeader("XML-Text");
-  
-  std::cout << input << std::endl;
-
-  printHeader("XML-Tokens");
-  
-  size = tokens->size();
-  for (int i = 0; i < size; i++) {
-    std::cout << tokens->get(i) << std::endl;
+  if (test == "strlib") {
+    test_strlib_all();
+    return;
   }
 
-  node::Node* node2 = xmllib::parseXmlFromTokens(tokens);
-  std::string nodeString = xmllib::writeXmlToText(node2);
-  std::cout << nodeString << std::endl;
-
-  /*
-  cout << "Node-2-toString" << endl;
-  cout << node2->toString() << endl;
-
-  node::Node* node3 = node2->getChildren()->at(0);
-  cout << "Node3: " << node3->getName() << endl;
-
-  node::Node* node = new node::Node();
-  node->setName("Kolo-Name");
-  node->setText("Kolo-Text");
-
-  cout << endl;
-  cout << "Node:name=" << node->getName() << endl;
-  cout << "Node:text=" << node->getText() << endl;
-
-  string app = "app";
-  app1(app);
-  app2(app);
-
-  cout << "Test-App: " << app << endl;
-  */
-
-} 
-
-// 5. TEST STRING
-void testString() {
-
-  std::string** xx = new std::string*[3];
-
-  //const std::string** xx = (std::string *[]) {"dd"};
-
-  std::string s1 = "String1"; 
-  std::string s2 = "String2"; 
-  std::string s3 = "String3"; 
-
-  xx[0] = &s1;
-  xx[1] = &s2;
-  xx[2] = &s3;
-
-  std::cout << std::endl;
-
-  for (int k = 0; k < 3; k++) {
-    std::cout << *xx[k] << std::endl;
+  if (test == "node") {
+    test_node_all();
+    return;
   }
 
-  char* test = new char[3];
-  test[0] = 'a';
-  test[1] = 'b';
-  test[2] = 'c';
+  if (test == "csvlib") {
+    test_csvlib_all();
+    return;
+  }
 
-  std::cout << std::endl;
-  std::cout << "TEST-STR-LEN-1: " << strlen(test) << std::endl;
-  std::cout << "TEST-STR-LEN-2: " << getStringLen(test) << std::endl;
+  if (test == "xmllib") {
+    test_xmllib_all();
+    return;
+  }
 
-} 
+  if (test == "jsonlib") {
+    test_jsonlib_all();
+    return;
+  }
 
-// 6. TEST UNICODE STRING
-void testUnicodeString(std::map<std::string, std::string> parameters) {
+  if (test == "stdstr") {
+    test_stdstr_all(parameters);
+    return;
+  }
 
-  // ===========================================================================================
-  // TEST OUTPUT STRING CONSTANT
-  // ===========================================================================================
-
-  // [ЇїІіÄäüöß]
-  // [Hello world! Привет мир! 😃]
-
-  printHeader("OUTPUT STRING CONSTANT");
-
-  std::cout << std::endl;
-  std::cout << "1.  COUT--s8: Hello world! Привет мир!" << std::endl;
-  std::cout << u8"2.  COUT--u8: Hello world! Привет мир!" << std::endl;
-  std::wcout << L"3. WCOUT--ws: Hello world! Привет мир!" << std::endl;
-  iolib::_out("4.  _OUT--s8: Hello world! Привет мир!\n");
-  iolib::_out(L"5.  _OUT--ws: Hello world! Привет мир!\n");
-
-  // ===========================================================================================
-  // TEST OUTPUT STRING VARIABLE
-  // ===========================================================================================
-
-  printHeader("OUTPUT STRING VARIABLE");
-
-  std::string test_s8 = "1.  COUT--s8: Hello world! Привет мир!";
-  std::wstring test_ws = L"2. WCOUT--ws: Hello world! Привет мир!";
-  std::string test_s8_ = "3.  _OUT--s8: Hello world! Привет мир!\n";
-  std::wstring test_ws_ = L"4.  _OUT--ws: Hello world! Привет мир!\n";
-  ext::ustring test_us = iolib::wstring_to_ustring (L"5.  _OUT--us: Hello world! Привет мир!\n");
-
-  std::cout << std::endl;
-  std::cout << test_s8 << std::endl;
-  std::wcout << test_ws << std::endl;
-  iolib::_out(test_s8_);
-  iolib::_out(test_ws_);
-  iolib::_out(test_us);
-
-
-  std::cout << std::endl;
-  std::cout << " COUT--xs: ";
-  std::cout << "\xc3\xbc" << std::endl;
-
-
-  // ===========================================================================================
-  // TEST OUTPUT STRING FROM FILE
-  // ===========================================================================================
-
-  printHeader("OUTPUT STRING FROM FILE");
-
-  std::string testFileName = "test_utf.txt";
-
-  test_s8 = iolib::readText(testFileName);
-  std::cout << "Read text from file: " << testFileName << std::endl;
-
-  test_ws = iolib::utf8_to_wstring(test_s8);
-  test_us = iolib::utf8_to_ustring(test_s8);
-  std::cout << "Convert text from file: " << testFileName << std::endl;
-
-  // Length
-
-  std::cout << std::endl;
-  std::cout << "Length of [s8]: " << test_s8.length() << std::endl;
-  std::cout << "Length of [ws]: " << test_ws.length() << std::endl;
-  std::cout << "Length of [us]: " << test_us.length() << std::endl;
-
-  // s8
-  std::cout << std::endl;
-  std::cout << "1.  COUT--s8: From file    [ string]: ";
-  std::cout << test_s8 << std::endl;
-
-  iolib::_out("2.  _OUT--s8: From file    [ string]: "); 
-  iolib::_out(test_s8); iolib::_out("\n");
-
-  strlib2::_toCase(test_s8, true);
-  iolib::_out("3.  _OUT--s8: From file UP [ string]: ");
-  iolib::_out(test_s8); iolib::_out("\n");
-
-  strlib2::_toCase(test_s8, false);
-  iolib::_out("4.  _OUT--s8: From file LW [ string]: ");
-  iolib::_out(test_s8); iolib::_out("\n");
-
-  // ws
-  iolib::_out("5.  _OUT--ws: From file    [wstring]: ");
-  iolib::_out(test_ws); iolib::_out("\n");
-
-  strlib2::_toCase(test_ws, true);
-  iolib::_out("6.  _OUT--ws: From file UP [wstring]: ");
-  iolib::_out(test_ws); iolib::_out("\n");
-
-  strlib2::_toCase(test_ws, false);
-  iolib::_out("7.  _OUT--ws: From file LW [wstring]: ");
-  iolib::_out(test_ws); iolib::_out("\n");
-
-  // us
-  iolib::_out("8.  _OUT--us: From file    [ustring]: ");
-  iolib::_out(test_us); iolib::_out("\n");
-
-  strlib2::_toCase(test_us, true);
-  iolib::_out("9.  _OUT--us: From file UP [ustring]: ");
-  iolib::_out(test_us); iolib::_out("\n");
-
-  strlib2::_toCase(test_us, false);
-  iolib::_out("X.  _OUT--us: From file LW [ustring]: ");
-  iolib::_out(test_us); iolib::_out("\n");
-
-
-  // ===========================================================================================
-  // TEST OUTPUT STRING FROM ARGUMENTS
-  // ===========================================================================================
-
-  std::string test_s8_arg = parameters["test"];
-  std::wstring test_ws_arg = iolib::arg_to_wstring(test_s8_arg);
-  ext::ustring test_us_arg = iolib::arg_to_ustring(test_s8_arg);
-
-  printHeader("OUTPUT STRING FROM ARGUMENTS");
-
-  std::cout << std::endl;
-  std::cout << "1.  COUT--s8: " << test_s8_arg << std::endl;
-  std::wcout << L"2. WCOUT--ws: " << test_ws_arg << std::endl;
-  iolib::_out("3.  _OUT--s8: "); iolib::_out(test_s8_arg); iolib::_out("\n");
-  iolib::_out(L"4.  _OUT--ws: "); iolib::_out(test_ws_arg); iolib::_out("\n");
-  iolib::_out(L"5.  _OUT--us: "); iolib::_out(test_us_arg); iolib::_out("\n");
-
-
-  // ===========================================================================================
-  // TEST OUTPUT STRING FROM INPUT
-  // ===========================================================================================
-
-  printHeader("OUTPUT STRING FROM INPUT");
-
-  std::cout << std::endl;
-  std::cout << " COUT----: Input text: ";
-  std::cout << std::endl;
-
-  //cin >> test_in;
-  test_s8 = iolib::_in();
-  test_ws = iolib::utf8_to_wstring(test_s8);
-  test_us = iolib::utf8_to_ustring(test_s8);
-  //cout << test_in << endl;
-
-  std::cout << std::endl;
-
-  // s8
-  iolib::_out(" _OUT--s8: From input   [ string]: "); 
-  iolib::_out(test_s8); iolib::_out("\n");
-
-  // ws
-  iolib::_out(" _OUT--ws: From input   [wstring]: "); 
-  iolib::_out(test_ws); iolib::_out("\n");
-
-  // us
-  iolib::_out(" _OUT--us: From input   [ustring]: "); 
-  iolib::_out(test_us); iolib::_out("\n");
-
-  //char16_t v = 42;
-  //std::wcout << static_cast<wchar_t>(v) << std::endl;
-
-  //wchar_t * unicode_text = L"aäbcdefghijklmnoöpqrsßtuüvwxyz";
-  //wprintf(L"%ls \n", unicode_text);
-  //wprintf (L"Characters: %ls \n", L"aäbcdefghijklmnoöpqrsßtuüvwxyz");
-  //printf("File not found: %s \n", "MyFile.txt");
-
-  //int mode = fwide(stdout,0);
-  //std::cout<<"0.mode="<<mode<<std::endl;
-  //std::cout<<"ABC"<<std::endl;
-  //mode = fwide(stdout,0);
-  //std::cout<<"1.mode="<<mode<<std::endl;
-  //freopen(NULL,"w",stdout);
-  //setlocale(LC_ALL, "en_US.UTF-8");
-  //mode = fwide(stdout,0);
-  //std::wcout<<stW_2<<mode<<std::endl;
-
+  test_all(parameters);
 
 }
 
-
-// =============================================================================================
 int main(int argc, char* argv[]) {
 
-  //setlocale(LC_ALL, "Ukrainian");
   //setlocale(LC_ALL, "en_US.UTF-8");
-
   //SetConsoleOutputCP(CP_UTF8);
   //SetConsoleCP(CP_UTF8);
 
   iolib::init_utf8_console();
 
-   // Parse command line arguments
+  // Parse command line arguments
   std::map<std::string, std::string> parameters = parseArguments(argc, argv);
 
+  run(parameters);
 
   // 1. TEST NORMALIZE
-  //testNormalize();
+  //test_Normalize();
 
   // 2. TEST NODE
-  //testNode();
+  //test_Node();
 
   // 3. TEST READ/WRITE XML
   //testReadWriteXml();
@@ -516,10 +187,10 @@ int main(int argc, char* argv[]) {
   //testTokens();
 
   // 5. TEST STRING
-  //testString();
+  //test_LatinString();
 
   // 6. TEST UNICODE STRING
-  testUnicodeString(parameters);
+  //test_UnicodeString(parameters);
 
   /*
    string testString = "123456";
