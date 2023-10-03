@@ -1,25 +1,25 @@
 
-Type           Size  Range                           XSD             Java             C++            C#              Swift
-=============================================================================================================================
+Type           Size  Range                           XSD             Java             C++            C#              Swift        Kotlin
+============================================================================================================================================
 
-byte           8     -128..127                       byte            byte             byte            sbyte          Int8    
-short          16    -32 768..32 767                 short           short            short           short          Int16
-int            32    -2 147 483 648..2 147 483 647   int             int              int             int            Int32
-long           64    -9 223 372 036 854 775 808..    long            long             long            long           Int64
+byte           8     -128..127                       byte            byte             char            sbyte          Int8         Byte
+short          16    -32 768..32 767                 short           short            short           short          Int16        Short
+int            32    -2 147 483 648..2 147 483 647   int             int              int             int            Int32        Int
+long           64    -9 223 372 036 854 775 808..    long            long             long (long?)    long           Int64        Long
                       9 223 372 036 854 775 807
 
-unsigned byte  8     0..255                          unsignedByte    -                unsigned byte   byte           UInt8
-unsigned short 16    0..65 535                       unsignedShort   -                unsigned short  ushort         UInt16
-unsigned int   32    0..4 294 967 295                unsignedInt     -                unsigned int    uint           UInt32
-unsigned long  64    0..18 446 744 073 709 551 615   unsignedLong    -                unsigned long   ulong          UInt64
+unsigned byte  8     0..255                          unsignedByte    -                unsigned char   byte           UInt8        UByte
+unsigned short 16    0..65 535                       unsignedShort   -                unsigned short  ushort         UInt16       UShort
+unsigned int   32    0..4 294 967 295                unsignedInt     -                unsigned int    uint           UInt32       UInt
+unsigned long  64    0..18 446 744 073 709 551 615   unsignedLong    -                unsigned long   ulong          UInt64       ULong
  
-float          32    +/-3.4E-038..3.4E+038           float           float            float           float          Float
-double         64    +/-1.7E-308..1.7E+308           double          double           double          double         Double
+float          32    +/-3.4E-038..3.4E+038           float           float            float           float          Float        Float
+double         64    +/-1.7E-308..1.7E+308           double          double           double          double         Double       Double
 
-signed char    8     -128..127                       byte (?)        byte (?)         char            sbyte (?)      Int8 (?)
-char           16    0..65 535                       -               char             unsigned short  char
+signed char    8     -128..127                       byte (?)        byte (?)         char            sbyte (?)      Int8 (?)     Byte (?)
+char           16    0..65 535                       -               char             unsigned short  char           Character    Char
 
-=============================================================================================================================
+============================================================================================================================================
 
 XSD data Types
 ==============
@@ -50,6 +50,9 @@ Swift Data Types
 https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html
 https://docs.swift.org/swift-book/LanguageGuide/Methods.html
 
+Kotlin Data Types
+=================
+https://kotlinlang.org/docs/basic-types.html
 
 https://stackoverflow.com/questions/28251058/significant-precision-difference-in-floating-point-calculations-in-java-c-shar
 
