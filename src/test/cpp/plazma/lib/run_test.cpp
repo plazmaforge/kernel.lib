@@ -23,6 +23,7 @@
 
 #include "test_helper.h"
 
+#include "test_type.h"
 #include "test_strlib.h"
 #include "test_node.h"
 #include "test_csvlib.h"
@@ -100,12 +101,14 @@ void testReadWriteXml() {
 }
 
 void test_min(std::map<std::string, std::string>& parameters) {
+  test_type_all();
   test_strlib_all();
   test_node_all();
   test_stdstr_all(parameters);  
 }
 
 void test_all(std::map<std::string, std::string>& parameters) {
+  test_type_all();
   test_strlib_all();
   test_node_all();
   test_csvlib_all();
@@ -119,6 +122,11 @@ void run(std::map<std::string, std::string>& parameters) {
   
   if (test == "" || test == "*") {
     test_all(parameters);
+    return;
+  }
+
+  if (test == "type") {
+    test_type_all();
     return;
   }
 
