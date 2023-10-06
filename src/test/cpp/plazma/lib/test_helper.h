@@ -2,6 +2,7 @@
 #define PLAZMA_LIB_TEST_HELPER_H
 
 #include <string>
+#include <vector>
 #include <iostream>
 
 /*
@@ -19,6 +20,13 @@ void println() {
 }
 */
 
+void println(std::vector<std::string>& data) {
+    int size = data.size();
+    for (int i = 0;i < data.size(); i++) {
+        std::cout << data.at(i) << std::endl;
+    }
+}
+
 void printHeader(std::string str) {
   //println();
   //println(str);
@@ -31,6 +39,7 @@ void printHeader(std::string str) {
   std::cout << std::endl << str << std::endl;
   std::cout << "============================================================================================" << std::endl;
 }
+
 
 #endif //PLAZMA_LIB_TEST_HELPER_H
 

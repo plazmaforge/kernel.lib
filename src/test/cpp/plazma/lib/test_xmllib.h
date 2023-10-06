@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 
+#include "plazma/lib/io/iolib.h"
 #include "plazma/lib/data/xml/xmllib.h"
 #include "test_helper.h"
 
