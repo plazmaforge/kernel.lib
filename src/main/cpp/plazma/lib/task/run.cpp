@@ -1,10 +1,8 @@
 #include <map>
-//#include <iostream>
 
 #include "plazma/lib/sys/syslib.h"
 #include "plazma/lib/io/iolib.h"
 
-//#include "run.h"
 #include "task_helper.h"
 
 #include "BaseTaskExecutor.h"
@@ -41,22 +39,22 @@ TaskProvider* createTaskProvider() {
   return new RootTaskProvider();
 }
 
-TaskExecutor* getExecutor() {
-  if (executor == nullptr) {
+TaskExecutor* createTaskExecutor() {
+  TaskExecutor* executor = new BaseTaskExecutor();    
+  TaskProvider* provider = createTaskProvider();
 
-    executor = new BaseTaskExecutor();
-    
-    TaskProvider* provider = createTaskProvider();
-
-    if (provider == nullptr) {
-      error("Provider is not implemented");
-      return executor;
-    }
-
-    provider->init();
-
-    executor->setTaskProvider(provider);
+  if (provider == nullptr) {
+    error("Provider is not implemented");
+    return executor;
   }
+
+  provider->init();
+
+  executor->setTaskProvider(provider);
+  return executor;
+}
+
+TaskExecutor* getExecutor() {
   return executor;
 }
 
@@ -158,10 +156,13 @@ int main(int argc, char* argv[]) {
   // Parse command line arguments
   std::map<std::string, std::string> parameters = parseArguments(argc, argv);
 
+  // Create task executor
+  executor = createTaskExecutor();
+
   // Execute task
   execute(parameters);
 
-  if (executor == nullptr) {
+  if (executor) {
     delete executor;
   }
 
