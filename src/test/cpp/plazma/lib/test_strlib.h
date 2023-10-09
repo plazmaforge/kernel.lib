@@ -4,43 +4,68 @@
 #include "plazma/lib/str/strlib.h" 
 #include "test_helper.h"
 
+void test_isEmpty() {
+
+  // isEmpty(empty)
+  ASSERT_TRUE(strlib::isEmpty(""));
+
+  // isEmpty(blank)
+  ASSERT_FALSE(strlib::isEmpty(" "));
+  ASSERT_FALSE(strlib::isEmpty("  "));
+
+  // isEmpty(value)
+  ASSERT_FALSE(strlib::isEmpty("abc"));
+  ASSERT_FALSE(strlib::isEmpty(" abc"));
+  ASSERT_FALSE(strlib::isEmpty("abc "));
+  ASSERT_FALSE(strlib::isEmpty(" abc "));
+
+}
+
+void test_size() {
+
+  ASSERT_EQ(0, strlib::size(""));
+
+  ASSERT_EQ(1, strlib::size(" "));
+  ASSERT_EQ(2, strlib::size("  "));
+
+  ASSERT_EQ(3, strlib::size("abc"));
+  ASSERT_EQ(4, strlib::size(" abc"));
+  ASSERT_EQ(4, strlib::size("abc "));
+  ASSERT_EQ(5, strlib::size(" abc "));
+
+}
+
 void test_normalize() {
 
-  printHeader("TEST strlib::normalize");
-  std::string str = strlib::normalize(" abc ");
-  
-  std::cout << std::endl;
-  std::cout << "Normalize string-1: [" << str << "]" << std::endl;
+  // normalize(empty)
+  ASSERT_EQ("", strlib::normalize(""));
+  ASSERT_EQ("", strlib::normalize(" "));
+  ASSERT_EQ("", strlib::normalize("  "));
 
-  char* c2 = " abc ";
-  std::string s22 = std::string(c2);
-  strlib::_trim(s22);
-
-  std::cout << "Normalize string-2: [" << s22 << "]" << std::endl;
+  // normalize(value)
+  ASSERT_EQ("abc", strlib::normalize("abc"));
+  ASSERT_EQ("abc", strlib::normalize(" abc"));
+  ASSERT_EQ("abc", strlib::normalize("abc "));
+  ASSERT_EQ("abc", strlib::normalize(" abc "));
 
 }
 
 void test_lpad() {
 
-  printHeader("TEST strlib::lpad");
-  std::cout << "lpad((\"Volume\", 20, '*'): " << strlib::lpad("Volume", 20, '*') << std::endl;
+  ASSERT_EQ("****Volume", strlib::lpad("Volume", 10, '*'));
 
 }
 
 void test_rpad() {
 
-  printHeader("TEST strlib::rpad");
-  std::cout << "rpad(\"Volume\", 20, '.'): " << strlib::rpad("Volume", 20, '.') << ": 1.8 m3" << std::endl;
-  std::cout << "rpad(\"Speed\", 20, '.') : " << strlib::rpad("Speed", 20, '.') << ": 180 km/h" << std::endl;  
+  ASSERT_EQ("Volume****", strlib::rpad("Volume", 10, '*'));
+
 }
 
 void test_fill() {
 
-  printHeader("TEST strlib::fill");
-
-  std::cout << "fill(\"Volume\", 20, '.'): " << strlib::fill("Volume", 20, '.') << ": 1.8 m3" << std::endl;
-  std::cout << "fill(\"Speed\", 20, '.') : " << strlib::fill("Speed", 20, '.') << ": 180 km/h" << std::endl;
-  std::cout << "fill(\"Total amount in currency\", 20, '.'): " << strlib::fill("Total amount in currency", 20, '.') << ": $20 000" << std::endl;
+  ASSERT_EQ("Volume****", strlib::fill("Volume", 10, '*'));
+  ASSERT_EQ("Volume**", strlib::fill("Volume", 8, '*'));
 
 }
 
@@ -204,10 +229,13 @@ void test_toString() {
 }
 
 void test_strlib_all() {   
+    test_isEmpty();
+    test_size();
     test_normalize();
     test_lpad();
     test_rpad();
     test_fill();
+        
     test_ellipsis();
     test_trunc();
     test_case();
@@ -222,4 +250,5 @@ void test_strlib_all() {
     test_replaceAll();
     test_isIdentifier();
     test_toString();
+    
 }

@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 
+#include "test.h"
+
 /*
 void print(std::string str) {
   //printf(str.c_str());
