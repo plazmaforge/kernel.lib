@@ -4,7 +4,7 @@
 #include "plazma/lib/str/strlib.h" 
 #include "test_helper.h"
 
-void test_isEmpty() {
+TEST(isEmpty) {
 
   // isEmpty(empty)
   ASSERT_TRUE(strlib::isEmpty(""));
@@ -21,7 +21,7 @@ void test_isEmpty() {
 
 }
 
-void test_size() {
+TEST(size) {
 
   ASSERT_EQ(0, strlib::size(""));
 
@@ -35,7 +35,7 @@ void test_size() {
 
 }
 
-void test_normalize() {
+TEST(normalize) {
 
   // normalize(empty)
   ASSERT_EQ("", strlib::normalize(""));
@@ -50,26 +50,26 @@ void test_normalize() {
 
 }
 
-void test_lpad() {
+TEST(lpad) {
 
   ASSERT_EQ("****Volume", strlib::lpad("Volume", 10, '*'));
 
 }
 
-void test_rpad() {
+TEST(rpad) {
 
   ASSERT_EQ("Volume****", strlib::rpad("Volume", 10, '*'));
 
 }
 
-void test_fill() {
+TEST(fill) {
 
   ASSERT_EQ("Volume****", strlib::fill("Volume", 10, '*'));
   ASSERT_EQ("Volume**", strlib::fill("Volume", 8, '*'));
 
 }
 
-void test_ellipsis() {
+TEST(ellipsis) {
 
   printHeader("TEST strlib::ellipsis");
   std::cout << "ellipsis(\"Translation\", 10): " << strlib::ellipsis("Translation", 10) << std::endl;
@@ -228,14 +228,29 @@ void test_toString() {
    
 }
 
-void test_strlib_all() {   
-    test_isEmpty();
-    test_size();
-    test_normalize();
-    test_lpad();
-    test_rpad();
-    test_fill();
-        
+
+INIT(strlib) {
+  SET_CASE(strlib);
+
+  SET_TEST(isEmpty);
+  SET_TEST(size);
+  SET_TEST(normalize);
+  SET_TEST(lpad);
+  SET_TEST(rpad);
+  SET_TEST(fill);
+}
+
+
+//TEST_ALL(strlib) { 
+
+//     RUN(isEmpty);
+//     RUN(size);
+//     RUN(normalize);
+//     RUN(lpad);
+//     RUN(rpad);
+//     RUN(fill);
+
+    /*        
     test_ellipsis();
     test_trunc();
     test_case();
@@ -250,5 +265,6 @@ void test_strlib_all() {
     test_replaceAll();
     test_isIdentifier();
     test_toString();
+    */
     
-}
+ //}

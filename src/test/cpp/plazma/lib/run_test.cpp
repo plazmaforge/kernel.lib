@@ -4,22 +4,6 @@
 //#include <locale>
 //#include <codecvt>
 
-//#include "plazma/lib/sys/syslib.h"
-//#include "plazma/lib/ext/ustring.h" 
-//#include "plazma/lib/str/strlib.h" 
-//#include "plazma/lib/str/strlib2.h" 
-//#include "plazma/lib/num/numlib.h" 
-
-//#include "plazma/lib/math/mathlib.h"
-//#include "plazma/lib/time/datelib.h"
-//#include "plazma/lib/io/iolib.h"
-//#include "plazma/lib/text/textlib.h"
-//#include "plazma/lib/data/csv/csvlib.h"
-//#include "plazma/lib/data/json/jsonlib.h"
-//#include "plazma/lib/data/xml/xmllib.h"
-
-//#include "plazma/lib/data/node/Node.h"
-
 #include "test_helper.h"
 
 #include "test_type.h"
@@ -38,7 +22,6 @@
 // TODO
 #include <cmath>
 
-//using namespace mathlib;
 using namespace syslib;
 using namespace ext;
 
@@ -49,14 +32,17 @@ using namespace ext;
 
 void test_min(std::map<std::string, std::string>& parameters) {
   test_type_all();
-  test_strlib_all();
+  //test_strlib_all();
+  RUN_ALL(strlib);
   test_node_all();
   test_stdstr_all(parameters);  
 }
 
 void test_all(std::map<std::string, std::string>& parameters) {
   test_type_all();
-  test_strlib_all();
+  //test_strlib_all();
+  SET_ALL(strlib);
+  RUN_ALL(strlib);
   test_datelib_all();
   test_node_all();
   test_textlib_all();
@@ -79,7 +65,9 @@ bool test_by_name(std::string& test, std::map<std::string, std::string>& paramet
   }
 
   if (test == "strlib") {
-    test_strlib_all();
+    //test_strlib_all();
+    SET_ALL(strlib);
+    RUN_ALL(strlib);
     return true;
   }
 
@@ -164,6 +152,8 @@ int main(int argc, char* argv[]) {
   std::map<std::string, std::string> parameters = parseArguments(argc, argv);
 
   run(parameters);
+
+  printResult();
 
   //cout << "Locale BEFORE: " << setlocale(LC_ALL, NULL) << endl;
 
