@@ -57,7 +57,7 @@ test_##name();                                                         \
 registerTestCase(__FILE__, #name);                                     \
 
 #define SET_TEST(name)                                                 \
-registerTest(__FILE__, _strcat("test_", #name), &test_##name);         \
+registerTest(__FILE__, strcatnew("test_", #name), &test_##name);       \
 
 struct Error {
     char* file = NULL;
@@ -135,26 +135,14 @@ void registerTestCase(const char* file, const char* name) {
     }
     registeredTestCases.push_back(testCase);
 }
-char* _strcat(const char* s1, const char* s2) {
-    if (s1 == NULL || s2 == NULL) {
+char* strcatnew(const char* str1, const char* str2) {
+    if (str1 == NULL || str2 == NULL) {
         return NULL;
     }
-    int len1 = strlen(s1);
-    int len2 = strlen(s2);
-    int len = len1 + len2;
-    char* result = (char*) malloc(len + 1);
-
-    for (int i = 0; i < len1; i++) {
-        result[i] = s1[i];
-    }
-
-    for (int i = 0; i < len2; i++) {
-        result[i + len1] = s2[i];
-    }
-
-    result[len] = '\0';
-    return result;
-
+    char* str = (char*) malloc(strlen(str1) + strlen(str2) + 1);
+    strcpy(str, str1);
+    strcat(str, str2);
+    return str;
 }
 
 void registerTest(const char* file, const char* name, void (*func)()) {
