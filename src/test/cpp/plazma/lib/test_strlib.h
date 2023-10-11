@@ -71,21 +71,17 @@ TEST(fill) {
 
 TEST(ellipsis) {
 
-  printHeader("TEST strlib::ellipsis");
   std::cout << "ellipsis(\"Translation\", 10): " << strlib::ellipsis("Translation", 10) << std::endl;
 
 }
 
-void test_trunc() {
+TEST(trunc) {
 
-  printHeader("TEST strlib::trunc");  
   std::cout << "trunc(\"Abcdef123456789\"): " << strlib::trunc("Abcdef123456789", 6) << std::endl;
 
 }
 
-void test_case() {
-
-  printHeader("TEST strlib::case");
+TEST(toCase) {
 
   std::cout << "upper(\"AvSx\")               : " << strlib::upper("AvSx") << std::endl;
   std::cout << "lower(\"AvSx\")               : " << strlib::lower("AvSx") << std::endl;
@@ -103,24 +99,21 @@ void test_case() {
 
 }
 
-void test_reverse() {
+TEST(reverse) {
 
-  printHeader("TEST strlib::reverse");
   std::cout << "reverse(\"abcdef\")                         : " << strlib::reverse("abcdef") << std::endl;
 
 }
 
-void test_hasPrefix() {
+TEST(hasPrefix) {
 
-  printHeader("TEST strlib::hasPrefix");
   std::cout << "hasPrefix(\"myfile.txt\", \"abc\")            : " << strlib::hasPrefix("myfile.txt", "abc") << std::endl;
   std::cout << "hasPrefix(\"myfile.txt\", \"my\")             : " << strlib::hasPrefix("myfile.txt", "my") << std::endl;
 
 }
 
-void test_hasSuffix() {
+TEST(hasSuffix) {
 
-  printHeader("TEST strlib::hasSuffix");
   std::cout << "hasSuffix(\"myfile.txt\", \".doc\")           : " << strlib::hasSuffix("myfile.txt", ".doc") << std::endl;
   std::cout << "hasSuffix(\"myfile.txt\", \".txt\")           : " << strlib::hasSuffix("myfile.txt", ".txt") << std::endl;
 
@@ -128,35 +121,28 @@ void test_hasSuffix() {
 
 }
 
-void test_removePrefix() {
+TEST(removePrefix) {
 
-  printHeader("TEST strlib::removePrefix");
   std::cout << "removePrefix(\"myfile.txt\", \"my\")          : " << strlib::removePrefix("myfile.txt", "my") << std::endl;
   std::cout << "removePrefix(\"myfile.txt\", \"myfile.txt\")  : " << strlib::removePrefix("myfile.txt", "myfile.txt") << std::endl;
 
 }
 
-void test_removeSuffix() {
+TEST(removeSuffix) {
 
-  printHeader("TEST strlib::removeSuffix");
   std::cout << "removeSuffix(\"myfile.txt\", \".txt\")        : " << strlib::removeSuffix("myfile.txt", ".txt") << std::endl;
   std::cout << "removeSuffix(\"myfile.txt\", \"myfile.txt\")  : " << strlib::removeSuffix("myfile.txt", "myfile.txt") << std::endl;
 }
 
-void test_count() {
+TEST(count) {
 
-  printHeader("TEST strlib::count");
-  
   std::cout << "countChar()                               : " << strlib::countChar("Hello world, my world is veri nice world", 'o') << std::endl;
   std::cout << "countString()                             : " << strlib::countString("Hello world, my world is veri nice world", "world") << std::endl;
   std::cout << "countWord()                               : " << strlib::countWord("Hello world, my world is veri nice world. But we have other worlds.") << std::endl;
 
-
 }
 
-void test_split() {
-
-  printHeader("TEST strlib::split");
+TEST(split) {
 
   std::vector<std::string> res;
 
@@ -174,9 +160,7 @@ void test_split() {
 
 }
 
-void test_splitWords() {
-
-  printHeader("TEST strlib::splitWords");
+TEST(splitWords) {
 
   std::cout << "splitWords(\"Hello world, my world is very nice world. But we have other worlds.\"): " << std::endl;
   std::vector<std::string> res = strlib::splitWords("Hello world, my world is very nice world. But we have other worlds.");
@@ -184,9 +168,7 @@ void test_splitWords() {
 
 }
 
-void test_replaceAll() {
-
-  printHeader("TEST strlib::replaceAll");
+TEST(replaceAll) {
 
   std::cout << "replaceAll(): " << strlib::replaceAll("abcdef12345abcdef", "a", "A") << std::endl;
 
@@ -202,9 +184,7 @@ void test_replaceAll() {
 
 }
 
-void test_isIdentifier() {
-
-  printHeader("TEST strlib::isIdentifier");
+TEST(isIdentifier) {
 
   std::cout << "isIdentifier(\"12345\")    : " << strlib::isIdentifier("12345") << std::endl;
   std::cout << "isIdentifier(\"1abcd\")    : " << strlib::isIdentifier("1abcd") << std::endl;
@@ -214,10 +194,8 @@ void test_isIdentifier() {
 
 }
 
-void test_toString() {
+TEST(toString) {
  
-  printHeader("TEST strlib::toString");
-
   char a[] = {'H', 'e', 'l', 'l', 'o'};
   char b[] = "Nova Code 1";
   //char* c = "Nova Code 2";
@@ -238,33 +216,46 @@ INIT(strlib) {
   SET_TEST(lpad);
   SET_TEST(rpad);
   SET_TEST(fill);
+  SET_TEST(ellipsis);
+  SET_TEST(trunc);
+  SET_TEST(toCase);
+  SET_TEST(reverse);
+  SET_TEST(hasPrefix);
+  SET_TEST(hasSuffix);
+  SET_TEST(removePrefix);
+  SET_TEST(removeSuffix);
+  SET_TEST(count);
+  SET_TEST(split);
+  SET_TEST(splitWords);
+  SET_TEST(replaceAll);
+  SET_TEST(isIdentifier);
+  SET_TEST(toString);
+
 }
 
+/*
+TEST_ALL(strlib) { 
 
-//TEST_ALL(strlib) { 
-
-//     RUN(isEmpty);
-//     RUN(size);
-//     RUN(normalize);
-//     RUN(lpad);
-//     RUN(rpad);
-//     RUN(fill);
-
-    /*        
-    test_ellipsis();
-    test_trunc();
-    test_case();
-    test_reverse();
-    test_hasPrefix();
-    test_hasSuffix();
-    test_removePrefix();
-    test_removeSuffix();
-    test_count();
-    test_split();
-    test_splitWords();
-    test_replaceAll();
-    test_isIdentifier();
-    test_toString();
-    */
+  RUN(isEmpty);
+  RUN(size);
+  RUN(normalize);
+  RUN(lpad);
+  RUN(rpad);
+  RUN(fill);
+  RUN(ellipsis);
+  RUN(trunc);
+  RUN(toCase);
+  RUN(reverse);
+  RUN(hasPrefix);
+  RUN(hasSuffix);
+  RUN(removePrefix);
+  RUN(removeSuffix);
+  RUN(count);
+  RUN(split);
+  RUN(splitWords);
+  RUN(replaceAll);
+  RUN(isIdentifier);
+  RUN(toString);
     
- //}
+ }
+ */

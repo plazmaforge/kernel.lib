@@ -147,13 +147,13 @@ int main(int argc, char* argv[]) {
   //SetConsoleCP(CP_UTF8);
 
   iolib::init_utf8_console();
-
+  
   // Parse command line arguments
   std::map<std::string, std::string> parameters = parseArguments(argc, argv);
 
   run(parameters);
 
-  printResult();
+  printTotalResult();
 
   //cout << "Locale BEFORE: " << setlocale(LC_ALL, NULL) << endl;
 
@@ -181,7 +181,7 @@ int main(int argc, char* argv[]) {
 
   ////wprintf(L"%c\n", L'й');
   ////wprintf(L"%c\n", L'і'); 
-
+ 
   //wprintf(L"Привет UTF8\n");
   //wprintf(L"Пока UTF8\n");
   //wprintf(L"Їжачок і лисичка\n");

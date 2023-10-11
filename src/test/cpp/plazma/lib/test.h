@@ -38,14 +38,14 @@ void test_##name_all()                                       \
 #define SET_ALL_(name)                                       \
 void set_##name_all()                                        \
 
-#define INIT(name)                                        \
+#define INIT(name)                                           \
 void test_##name_all() {                                     \
-  runTestCase(#name);                                        \
+  runTestCase(__FILE__, #name);                              \
 }                                                            \
 void set_##name_all()                                        \
 
 #define SET_ALL(name)                                        \
-set_##name_all();                                           \
+set_##name_all();                                            \
 
 #define RUN_ALL(name)                                        \
 test_##name_all();                                           \
@@ -60,19 +60,20 @@ registerTestCase(__FILE__, #name);                           \
 registerTest(__FILE__, #name, &test_##name);                 \
 
 struct Error {
-    char* file;
-    char* func;
-    int line;
+    char* file = NULL;
+    char* func = NULL;
+    int line = 0;
 };
 
 struct Test {
-    char* name;
-    void (*func)();
+    char* name = NULL;
+    void (*func)() = NULL;
+    bool failed = false;
 };
 
 struct TestCase {
-    char* file;
-    char* name;
+    char* file = NULL;
+    char* name = NULL;
     int failed = 0;
     std::vector<Test*> tests;
 };
@@ -95,7 +96,7 @@ TestCase* findTestCaseByFile(const char* file) {
 
 TestCase* findTestCaseByName(const char* name) {
     if (registeredTestCases.empty()) {
-        fprintf(stderr, "[ERROR] Registered TestCases is empty\n"); 
+        fprintf(stderr, "[ERROR] No registered TestCases\n"); 
         return NULL;
     }
     TestCase* testCase = NULL;
@@ -103,6 +104,20 @@ TestCase* findTestCaseByName(const char* name) {
         testCase = registeredTestCases[i];
         if (strcmp(testCase->name, name) == 0) {
             return testCase;
+        }
+    }
+    return NULL;
+}
+
+Test* findTestByName(TestCase* testCase, const char* name) {
+    if (testCase == NULL) {
+        return NULL;
+    }
+    Test* test = NULL;
+    for (int i = 0; i < testCase->tests.size(); i++) {
+        test = testCase->tests[i];
+        if (strcmp(test->name, name) == 0) {
+            return test;
         }
     }
     return NULL;
@@ -145,13 +160,91 @@ void runTest(Test* test) {
     test->func();
 }
 
-void runTestCase(const char* name) {
-    TestCase* testCase = findTestCaseByName(name);
-    if (testCase == NULL) {
-        fprintf(stderr, "[ERROR] TestCase not found: %s\n", name); 
+void fill(char* array, int len, char value) {
+    if (len == 0) {
+        return;
+    }    
+    for (int i = 0; i < len - 1; i++) {
+        array[i] = value;
+    }
+    array[len - 1] = '\0';
+}
+
+void fill(char* array, int len) {
+    fill(array, len, ' ');
+}
+
+int getPadLen(int len) {
+    int MAX_LEN = 80;
+    return (len < MAX_LEN) ? (MAX_LEN - len) : 0;
+}
+
+void printTotalResult() {
+    if (registeredTestCases.empty()) {
+        fprintf(stdout, "No Tests\n"); 
         return;
     }
-    fprintf(stdout, "[RUN   ] '%s'\n", name); 
+    TestCase* testCase = NULL;
+    int total = 0;
+    int failed = 0;
+    int passed = 0;
+    for (int i = 0; i < registeredTestCases.size(); i++) {
+        testCase = registeredTestCases[i];
+        total += testCase->tests.size();
+        failed += testCase->failed;
+    }
+    passed = total - failed;
+
+    fprintf(stdout, "\n"); 
+    if (failed > 0) {
+        //fprintf(stdout, "%d TEST FAILED\n", failed); 
+        fprintf(stdout, "TEST FAILED: %d\n", failed); 
+    }
+    fprintf(stdout, "TEST PASSED: %d\n", passed);
+    fprintf(stdout, "TEST TOTAL : %d\n", passed);
+    fprintf(stdout, "\n");
+    fprintf(stdout, (failed > 0 ? "FAILED" : "OK"));
+    fprintf(stdout, "\n");
+}
+
+void printTestResult(const char* file, const char* name, Test* test) {
+    int padLen = getPadLen(strlen(file) + strlen(name) + strlen(test->name) + 4); // +18 = 7 + 4 + 1 + 6
+    char pad[padLen];
+    fill(pad, padLen);
+
+    fprintf(stdout, "[TEST] %s: %s: %s %s" , file, name, test->name, pad);
+    fprintf(stdout, (test->failed ? "- FAIL\n" : "- OK\n"));
+}
+
+void printTestCaseResult(const char* file, const char* name, TestCase* testCase, bool isPrintTest) {
+    int padLen = getPadLen(strlen(file) + strlen(name) + 2);
+    char pad[padLen];
+    fill(pad, padLen);
+
+    fprintf(stdout, (isPrintTest ? "[CASE] %s: %s %s" : "[TEST] %s: %s %s"), file, name, pad);
+    fprintf(stdout, (testCase->failed > 0 ? "- FAIL\n" : "- OK\n"));
+
+    //if (testCase->failed > 0) {
+        //fprintf(stdout, "[FAILED ] '%s: %s'\n", file, name); 
+    //} else {
+        //fprintf(stdout, "[PASSED ] '%s: %s'\n", file, name); 
+    //}
+}
+
+void runTestCase(const char* file, const char* name) {
+    TestCase* testCase = findTestCaseByName(name);
+    if (testCase == NULL) {
+        fprintf(stderr, "[ERROR] TestCase not found: %s: %s\n", file, name); 
+        return;
+    }
+
+    //fprintf(stdout, "[RUNNNING] %s: %s\n", file, name);
+    //fprintf(stdout, "[RUNNNING] %s: %s\t", file, name);
+
+    int printMode = 3; // 1 - Test, 2 - TestCase, 3 - Test & TestCase
+    bool isPrintTest = printMode == 1 || printMode == 3;
+    bool isPrintCase = printMode == 2 || printMode == 3;;
+
     std::vector<Test*> tests = testCase->tests;
     if (tests.empty()) {
         return;
@@ -160,39 +253,26 @@ void runTestCase(const char* name) {
     for (int i = 0; i < tests.size(); i++) {
         test = tests[i];
         runTest(test);
-    }
-    if (testCase->failed > 0) {
-        fprintf(stdout, "[FAILED] '%s'\n", name); 
-    } else {
-        fprintf(stdout, "[PASSED] '%s'\n", name); 
-    }
-}
-
-void printResult() {
-    if (registeredTestCases.empty()) {
-        fprintf(stdout, "No Tests\n"); 
-        return;
-    }
-    TestCase* testCase = NULL;
-    int total = 0;
-    int failed = 0;
-    for (int i = 0; i < registeredTestCases.size(); i++) {
-        testCase = registeredTestCases[i];
-        total += testCase->tests.size();
-        failed += testCase->failed;
+                
+        if (isPrintTest) {
+            printTestResult(file, name, test);
+        }
     }
 
-    if (failed > 0) {
-        fprintf(stdout, "%d TEST FAILED\n", failed); 
-    } else {
-        fprintf(stdout, "%d TEST PASSED\n", total); 
+    if (isPrintCase) {
+        printTestCaseResult(file, name, testCase, isPrintTest);
     }
+    
 }
 
 void registerError(const char* file, const char* func, const int line) {
     TestCase* testCase = findTestCaseByFile(file);
     if (testCase) {
         testCase->failed++;
+        Test* test = findTestByName(testCase, func);
+        if (test) {
+            test->failed = true;
+        }
     }
 }
 
