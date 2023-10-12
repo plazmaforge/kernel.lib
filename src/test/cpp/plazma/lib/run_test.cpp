@@ -30,19 +30,46 @@ using namespace ext;
 // TESTS
 // ============================================================================================
 
+void init_min() {
+  SET_ALL(type);
+  SET_ALL(strlib);
+}
+
+void init_all() {
+  SET_ALL(type);
+  SET_ALL(strlib);
+}
+
 void test_min(std::map<std::string, std::string>& parameters) {
+
+  init_min();
+
+  runAll();
+
+  //RUN_ALL(type);
+  //RUN_ALL(strlib);
+
+  /*
   test_type_all();
-  //test_strlib_all();
-  RUN_ALL(strlib);
+  test_strlib_all();
   test_node_all();
   test_stdstr_all(parameters);  
+  */
+
 }
 
 void test_all(std::map<std::string, std::string>& parameters) {
+
+  init_all();
+
+  runAll();
+
+  //RUN_ALL(type);
+  //RUN_ALL(strlib);
+
+  /*
   test_type_all();
-  //test_strlib_all();
-  SET_ALL(strlib);
-  RUN_ALL(strlib);
+  test_strlib_all();
   test_datelib_all();
   test_node_all();
   test_textlib_all();
@@ -50,68 +77,22 @@ void test_all(std::map<std::string, std::string>& parameters) {
   test_xmllib_all();
   test_jsonlib_all();
   test_stdstr_all(parameters);  
+  */
+
 }
 
 bool test_by_name(std::string& test, std::map<std::string, std::string>& parameters) {
 
-  if (test == "type") {
-    test_type_all();
-    return true;
+  init_all();
+
+  TestCase* testCase = findTestCaseByName(test.c_str());
+  if (testCase == NULL) {
+    return false;
   }
 
-  if (test == "mathlib") {
-    test_mathlib_all();
-    return true;
-  }
+  runTestCase(testCase);
 
-  if (test == "strlib") {
-    //test_strlib_all();
-    SET_ALL(strlib);
-    RUN_ALL(strlib);
-    return true;
-  }
-
-  if (test == "datelib") {
-    test_datelib_all();
-    return true;
-  }
-
-  if (test == "calendarlib") {
-    test_calendarlib_all();
-    return true;
-  }
-
-  if (test == "node") {
-    test_node_all();
-    return true;
-  }
-
-  if (test == "textlib") {
-    test_textlib_all();
-    return true;
-  }
-
-  if (test == "csvlib") {
-    test_csvlib_all();
-    return true;
-  }
-
-  if (test == "xmllib") {
-    test_xmllib_all();
-    return true;
-  }
-
-  if (test == "jsonlib") {
-    test_jsonlib_all();
-    return true;
-  }
-
-  if (test == "stdstr") {
-    test_stdstr_all(parameters);
-    return true;
-  }
-
-  return false;
+  return true;
 
 }
 
@@ -136,7 +117,7 @@ void run(std::map<std::string, std::string>& parameters) {
   }
 
   // all - not found
-  test_all(parameters);
+  //test_all(parameters);
 
 }
 

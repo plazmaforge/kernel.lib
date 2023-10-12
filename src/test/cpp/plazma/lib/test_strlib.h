@@ -208,7 +208,7 @@ TEST(toString) {
 
 
 INIT(strlib) {
-  SET_CASE(strlib);
+  //SET_CASE(strlib);
 
   SET_TEST(isEmpty);
   SET_TEST(size);

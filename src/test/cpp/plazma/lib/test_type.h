@@ -1,6 +1,6 @@
 #include <iostream>
 
-void test_type_size() {
+TEST(type_size) {
     std::cout << "bool:\t\t" << sizeof(bool) << " bytes" << std::endl;
     std::cout << "char:\t\t" << sizeof(char) << " bytes" << std::endl;
     std::cout << "wchar_t:\t" << sizeof(wchar_t) << " bytes" << std::endl;
@@ -15,6 +15,6 @@ void test_type_size() {
     std::cout << "long double:\t" << sizeof(long double) << " bytes" << std::endl;
 }
 
-void test_type_all() {
-    test_type_size();
+INIT(type) {
+    SET_TEST(type_size);
 }
