@@ -340,13 +340,13 @@ void registerError(const char* file, const int line, const char* func) {
 
 void fail(const char* file, const int line, const char* func, const char* message) {
     fprintf(stderr, "Assertion failed in %s on line %d: %s\n", file, line, message); 
-    registerError(file, line, NULL);
+    registerError(file, line, func);
 }
 
 // op
 void fail(const char* file, const int line, const char* func, const char* a, const char* op, const char* b) {
     fprintf(stderr, "Assertion failed in %s on line %d: %s %s %s\n", file, line, a, op, b); 
-    registerError(file, line, NULL);
+    registerError(file, line, func);
 }
 
 // op
