@@ -422,6 +422,19 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("FIRST-NAME", StrLib.toKebabCase("FirstName", true));
 
     }
+    
+    public void testHasPrefix() {
+        
+        assertFalse(StrLib.hasPrefix("", "abc"));  
+        assertFalse(StrLib.hasPrefix("myfile.txt", "abc"));
+
+        assertTrue(StrLib.hasPrefix("", ""));
+        assertTrue(StrLib.hasPrefix("myfile.txt", ""));
+        assertTrue(StrLib.hasPrefix("myfile.txt", "my"));
+        assertTrue(StrLib.hasPrefix("myfile.txt", "myfile"));
+        assertTrue(StrLib.hasPrefix("myfile.txt", "myfile.txt"));
+        
+    }
 
     public void testPrefixSuffix() {
 
