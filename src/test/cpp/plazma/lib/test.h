@@ -11,11 +11,9 @@ if (!expression) {                                                     \
 }                     
 
 #define _ASSERT_OP(a, op, b)                                           \
-if (!(a op b)) {                                                       \    
+if (!(a op b)) {                                                       \
     fail(__FILE__, __LINE__, __func__, toString(a), #op, toString(b)); \
 }
-
-//// __func__
 
 #define ASSERT(expression) _ASSERT(expression) 
 
@@ -32,11 +30,11 @@ if (!(a op b)) {                                                       \
 #define TEST(name)                                                     \
 void test_##name()                                                     \
 
-//#define TEST_ALL(name)                                               \
-//void test_##name##_all()                                             \
+//#define TEST_ALL(name)
+//void test_##name##_all()
 
-//#define SET_ALL_(name)                                               \
-//void set_##name##_all()                                              \
+//#define SET_ALL_(name)
+//void set_##name##_all()
 
 #define INIT(name)                                                     \
 void test_##name##_all() {                                             \
@@ -52,8 +50,8 @@ void set_##name##_all() {                                              \
 }                                                                      \
 void set_##name##_tests()                                              \
 
-//#define SET_CASE(name)                                               \
-//registerTestCase(__FILE__, #name);                                   \
+//#define SET_CASE(name)
+//registerTestCase(__FILE__, #name);
 
 #define SET_TEST(name)                                                 \
 registerTest(__FILE__, strcatnew("test_", #name), &test_##name);       \
@@ -61,11 +59,11 @@ registerTest(__FILE__, strcatnew("test_", #name), &test_##name);       \
 #define SET_ALL(name)                                                  \
 set_##name##_all();                                                    \
 
-//#define RUN_ALL(name)                                                \
-//test_##name##_all();                                                 \
+//#define RUN_ALL(name)
+//test_##name##_all();
 
-//#define RUN(name)                                                    \
-//test_##name();                                                       \
+//#define RUN(name)
+//test_##name();
 
 struct Error;
 struct Test;
@@ -97,6 +95,45 @@ struct TestCase {
 };
 
 static std::vector<TestCase*> testCases;
+
+char* strnew(const int len) {
+    if (len < 0) {
+        return NULL;
+    }
+    char* res = (char*) malloc(len + 1);
+    if (res == NULL) {
+        return NULL;
+    }
+    for (int i = 0; i < len + 1; i++)
+        res[i] = '\0';
+    return res;
+}
+
+// strdup, strcpynew
+char* strnew(const char* str) {
+    if (str == NULL) {
+        return NULL;
+    }
+    char* res = strnew(strlen(str));
+    if (res == NULL) {
+        return NULL;
+    }
+    strcpy(res, str);
+    return res;
+}
+
+char* strcatnew(const char* str1, const char* str2) {
+    if (str1 == NULL || str2 == NULL) {
+        return NULL;
+    }
+    char* res = strnew(strlen(str1) + strlen(str2));
+    if (res == NULL) {
+        return NULL;
+    }
+    strcpy(res, str1);
+    strcat(res, str2);
+    return res;
+}
 
 TestCase* findTestCaseByFile(const char* file) {
     if (testCases.empty()) {
@@ -144,25 +181,13 @@ Test* findTestByName(TestCase* testCase, const char* name) {
 void registerTestCase(const char* file, const char* name, void (*setall)()) {
     TestCase* testCase = new TestCase();
     if (file) {
-        testCase->file = (char*) malloc(strlen(file)); 
-        strcpy(testCase->file, file);
+        testCase->file = strnew(file);
     }
     if (name) {
-        testCase->name = (char*) malloc(strlen(name)); 
-        strcpy(testCase->name, name);
+        testCase->name = strnew(name);
     }
     testCase->setall = setall;
     testCases.push_back(testCase);
-}
-
-char* strcatnew(const char* str1, const char* str2) {
-    if (str1 == NULL || str2 == NULL) {
-        return NULL;
-    }
-    char* str = (char*) malloc(strlen(str1) + strlen(str2) + 1);
-    strcpy(str, str1);
-    strcat(str, str2);
-    return str;
 }
 
 void registerTest(const char* file, const char* name, void (*func)()) {
@@ -173,8 +198,7 @@ void registerTest(const char* file, const char* name, void (*func)()) {
     Test* test = new Test();
     test->parent = testCase;
     if (name) {
-        test->name = (char*) malloc(strlen(name));
-        strcpy(test->name, name);
+        test->name = strnew(name);
     }
     test->func = func;
     testCase->tests.push_back(test);
@@ -339,19 +363,19 @@ void registerError(const char* file, const int line, const char* func) {
 }
 
 void fail(const char* file, const int line, const char* func, const char* message) {
-    fprintf(stderr, "Assertion failed in %s on line %d: %s\n", file, line, message); 
+    fprintf(stderr, "[FAIL] Assertion failed in %s on line %d: %s\n", file, line, message); 
     registerError(file, line, func);
 }
 
 // op
 void fail(const char* file, const int line, const char* func, const char* a, const char* op, const char* b) {
-    fprintf(stderr, "Assertion failed in %s on line %d: %s %s %s\n", file, line, a, op, b); 
+    fprintf(stderr, "[FAIL] Assertion failed in %s on line %d: %s %s %s\n", file, line, a, op, b); 
     registerError(file, line, func);
 }
 
 // op
 void fail(const char* file, const int line, const char* func, const std::string& a, const char* op, const std::string& b) {
-    fprintf(stderr, "Assertion failed in %s on line %d: %s %s %s\n", file, line, a.c_str(), op, b.c_str()); 
+    fprintf(stderr, "[FAIL] Assertion failed in %s on line %d: %s %s %s\n", file, line, a.c_str(), op, b.c_str()); 
     registerError(file, line, func);
 }
 
