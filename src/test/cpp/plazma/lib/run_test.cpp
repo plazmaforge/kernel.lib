@@ -51,9 +51,9 @@ void test_min(std::map<std::string, std::string>& parameters) {
 
   /*
   test_type_all();
-  test_strlib_all();
+  test_strlib_all();s
   test_node_all();
-  test_stdstr_all(parameters);  
+  test_stdstr_all(parameters);
   */
 
 }

@@ -71,144 +71,260 @@ TEST(fill) {
 
 TEST(ellipsis) {
 
-  std::cout << "ellipsis(\"Translation\", 10): " << strlib::ellipsis("Translation", 10) << std::endl;
+  ASSERT_EQ("Transla...", strlib::ellipsis("Translation", 10));
 
 }
 
 TEST(trunc) {
 
-  std::cout << "trunc(\"Abcdef123456789\"): " << strlib::trunc("Abcdef123456789", 6) << std::endl;
+  ASSERT_EQ("Abcdef", strlib::trunc("Abcdef123456789", 6));
+
+}
+
+TEST(toUpperCase) {
+
+  ASSERT_EQ("", strlib::toUpperCase(""));
+  ASSERT_EQ(" ", strlib::toUpperCase(" "));
+  ASSERT_EQ("ABCD", strlib::toUpperCase("abcd"));
+  ASSERT_EQ("ABCD", strlib::toUpperCase("AbCd"));
+
+}
+
+TEST(toLowerCase) {
+
+  ASSERT_EQ("", strlib::toLowerCase(""));
+  ASSERT_EQ(" ", strlib::toLowerCase(" "));
+  ASSERT_EQ("abcd", strlib::toLowerCase("ABCD"));
+  ASSERT_EQ("abcd", strlib::toLowerCase("AbCd"));
 
 }
 
 TEST(toCase) {
 
-  std::cout << "upper(\"AvSx\")               : " << strlib::upper("AvSx") << std::endl;
-  std::cout << "lower(\"AvSx\")               : " << strlib::lower("AvSx") << std::endl;
-  std::cout << "toCase(\"AvSx\", true)        : " << strlib::toCase("AvSx", true) << std::endl;
-  std::cout << "toCase(\"AvSx\", false)       : " << strlib::toCase("AvSx", false) << std::endl;
+  ASSERT_EQ("", strlib::toCase("", true));
+  ASSERT_EQ(" ", strlib::toCase(" ", true));
+  ASSERT_EQ("ABCD", strlib::toCase("abcd", true));
+  ASSERT_EQ("ABCD", strlib::toCase("AbCd", true));
 
-  std::cout << "capitalize(\"avSx\")          : " << strlib::capitalize("avSx") << std::endl;
-  std::cout << "capitalize(\"avSx\", true)    : " << strlib::capitalize("avSx", true) << std::endl;
+  ASSERT_EQ("", strlib::toCase("", false));
+  ASSERT_EQ(" ", strlib::toCase(" ", false));
+  ASSERT_EQ("abcd", strlib::toCase("ABCD", false));
+  ASSERT_EQ("abcd", strlib::toCase("AbCd", false));
+  
+}
 
-  std::cout << "decapitalize(\"avSx\")        : " << strlib::decapitalize("avSx") << std::endl;
-  std::cout << "decapitalize(\"avSx\", true)  : " << strlib::decapitalize("avSx", true) << std::endl;
+TEST(toCamelCase) {
 
-  std::cout << "toCamelCase(\"first_name\")   : " << strlib::toCamelCase("first_name") << std::endl;
-  std::cout << "toSnakeCase(\"FirstName\")    : " << strlib::toSnakeCase("FirstName") << std::endl;
+  ASSERT_EQ("", strlib::toCamelCase(""));
+  ASSERT_EQ(" ", strlib::toCamelCase(" "));
+  ASSERT_EQ("FirstName", strlib::toCamelCase("first_name"));
+
+}
+
+TEST(toSnakeCase) {
+
+  ASSERT_EQ("", strlib::toSnakeCase(""));
+  ASSERT_EQ(" ", strlib::toSnakeCase(" "));
+  ASSERT_EQ("first_name", strlib::toSnakeCase("FirstName"));
+
+}
+
+TEST(toKebabCase) {
+
+  ASSERT_EQ("", strlib::toKebabCase(""));
+  ASSERT_EQ(" ", strlib::toKebabCase(" "));
+  ASSERT_EQ("first-name", strlib::toKebabCase("FirstName"));
+
+}
+
+TEST(capitalize) {
+
+  ASSERT_EQ("", strlib::capitalize(""));
+  ASSERT_EQ(" ", strlib::capitalize(" "));
+  ASSERT_EQ("Abcd", strlib::capitalize("abcd"));
+  ASSERT_EQ("AbCd", strlib::capitalize("abCd"));
+  ASSERT_EQ("Abcd", strlib::capitalize("abCd", true));
+
+}
+
+TEST(decapitalize) {
+
+  ASSERT_EQ("", strlib::decapitalize(""));
+  ASSERT_EQ(" ", strlib::decapitalize(" "));
+  ASSERT_EQ("abcd", strlib::decapitalize("Abcd"));
+  ASSERT_EQ("abCd", strlib::decapitalize("AbCd"));
+  ASSERT_EQ("abcd", strlib::decapitalize("AbCd", true));
 
 }
 
 TEST(reverse) {
 
-  std::cout << "reverse(\"abcdef\")                         : " << strlib::reverse("abcdef") << std::endl;
+  ASSERT_EQ("", strlib::reverse(""));
+  ASSERT_EQ(" ", strlib::reverse(" "));
+  ASSERT_EQ("*", strlib::reverse("*"));
+  ASSERT_EQ("**", strlib::reverse("**"));
+  ASSERT_EQ("***", strlib::reverse("***"));
+  ASSERT_EQ("****", strlib::reverse("****"));
+  ASSERT_EQ("fedcba", strlib::reverse("abcdef"));
 
 }
 
 TEST(hasPrefix) {
 
-  std::cout << "hasPrefix(\"myfile.txt\", \"abc\")            : " << strlib::hasPrefix("myfile.txt", "abc") << std::endl;
-  std::cout << "hasPrefix(\"myfile.txt\", \"my\")             : " << strlib::hasPrefix("myfile.txt", "my") << std::endl;
+  ASSERT_FALSE(strlib::hasPrefix("", "abc"));  
+  ASSERT_FALSE(strlib::hasPrefix("myfile.txt", "abc"));
+
+  ASSERT_TRUE(strlib::hasPrefix("", ""));
+  ASSERT_TRUE(strlib::hasPrefix("myfile.txt", ""));
+  ASSERT_TRUE(strlib::hasPrefix("myfile.txt", "my"));
+  ASSERT_TRUE(strlib::hasPrefix("myfile.txt", "myfile"));
+  ASSERT_TRUE(strlib::hasPrefix("myfile.txt", "myfile.txt"));
 
 }
 
 TEST(hasSuffix) {
 
-  std::cout << "hasSuffix(\"myfile.txt\", \".doc\")           : " << strlib::hasSuffix("myfile.txt", ".doc") << std::endl;
-  std::cout << "hasSuffix(\"myfile.txt\", \".txt\")           : " << strlib::hasSuffix("myfile.txt", ".txt") << std::endl;
+  ASSERT_FALSE(strlib::hasSuffix("", "abc"));  
+  ASSERT_FALSE(strlib::hasSuffix("myfile.txt", "abc"));
 
-  std::cout << "hasSuffixIgnoreCase(\"myfile.txt\", \".TxT\") : " << strlib::hasSuffixIgnoreCase("myfile.txt", ".TxT") << std::endl;
+  ASSERT_TRUE(strlib::hasSuffix("", ""));
+  ASSERT_TRUE(strlib::hasSuffix("myfile.txt", ""));
+  ASSERT_TRUE(strlib::hasSuffix("myfile.txt", "txt"));
+  ASSERT_TRUE(strlib::hasSuffix("myfile.txt", ".txt"));
+  ASSERT_TRUE(strlib::hasSuffix("myfile.txt", "myfile.txt"));
 
 }
 
 TEST(removePrefix) {
 
-  std::cout << "removePrefix(\"myfile.txt\", \"my\")          : " << strlib::removePrefix("myfile.txt", "my") << std::endl;
-  std::cout << "removePrefix(\"myfile.txt\", \"myfile.txt\")  : " << strlib::removePrefix("myfile.txt", "myfile.txt") << std::endl;
+  ASSERT_EQ("", strlib::removePrefix("", ""));
+  ASSERT_EQ("", strlib::removePrefix("", "my"));
+  ASSERT_EQ("myfile.txt", strlib::removePrefix("myfile.txt", ""));
+  ASSERT_EQ("myfile.txt", strlib::removePrefix("myfile.txt", "abc"));
+
+  ASSERT_EQ("file.txt", strlib::removePrefix("myfile.txt", "my"));
+  ASSERT_EQ(".txt", strlib::removePrefix("myfile.txt", "myfile"));
+  ASSERT_EQ("txt", strlib::removePrefix("myfile.txt", "myfile."));
+  ASSERT_EQ("", strlib::removePrefix("myfile.txt", "myfile.txt"));
+
+  ASSERT_EQ("myfile.txt", strlib::removePrefix("myfile.txt", "abcmyfile.txt"));
 
 }
 
 TEST(removeSuffix) {
 
-  std::cout << "removeSuffix(\"myfile.txt\", \".txt\")        : " << strlib::removeSuffix("myfile.txt", ".txt") << std::endl;
-  std::cout << "removeSuffix(\"myfile.txt\", \"myfile.txt\")  : " << strlib::removeSuffix("myfile.txt", "myfile.txt") << std::endl;
+  ASSERT_EQ("", strlib::removeSuffix("", ""));
+  ASSERT_EQ("", strlib::removeSuffix("", "my"));
+  ASSERT_EQ("myfile.txt", strlib::removeSuffix("myfile.txt", ""));
+  ASSERT_EQ("myfile.txt", strlib::removeSuffix("myfile.txt", "abc"));
+
+  ASSERT_EQ("myfile.", strlib::removeSuffix("myfile.txt", "txt"));
+  ASSERT_EQ("myfile", strlib::removeSuffix("myfile.txt", ".txt"));
+  ASSERT_EQ("", strlib::removeSuffix("myfile.txt", "myfile.txt"));
+
+  ASSERT_EQ("myfile.txt", strlib::removeSuffix("myfile.txt", "abcmyfile.txt"));
+
 }
 
 TEST(count) {
 
-  std::cout << "countChar()                               : " << strlib::countChar("Hello world, my world is veri nice world", 'o') << std::endl;
-  std::cout << "countString()                             : " << strlib::countString("Hello world, my world is veri nice world", "world") << std::endl;
-  std::cout << "countWord()                               : " << strlib::countWord("Hello world, my world is veri nice world. But we have other worlds.") << std::endl;
+  ASSERT_EQ(4, strlib::countChar("Hello world, my world is veri nice world", 'o'));
+  ASSERT_EQ(3, strlib::countString("Hello world, my world is veri nice world", "world"));
+  ASSERT_EQ(13, strlib::countWord("Hello world, my world is veri nice world. But we have other worlds."));
 
 }
 
 TEST(split) {
 
-  std::vector<std::string> res;
+  ASSERT_TRUE(((std::vector<std::string>){"1","200", "500", "-12"} == strlib::split("1,200,500,-12", ',')));
+  ASSERT_TRUE(((std::vector<std::string>){"1","200", "500", "-12"} == strlib::split("1|200|500|-12", '|')));
 
-  std::cout << "split(\"1, 200, 500, -12\", ',')  : " << std::endl;
-  res = strlib::split("1, 200, 500, -12", ',');
-  println(res);
+  ASSERT_TRUE(((std::vector<std::string>){"1", " 200", " 500", " -12"} == strlib::split("1, 200, 500, -12", ',')));
+  ASSERT_TRUE(((std::vector<std::string>){"1", " 200", " 500", " -12"} == strlib::split("1| 200| 500| -12", '|')));
 
-  std::cout << "split(\"1, 200, 500, -12\", ' ,') : " << std::endl;
-  res = strlib::split("1, 200, 500, -12", " ,");
-  println(res);
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1, 200, 500, -12", " ,")));
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1| 200| 500| -12", " |")));
 
-  std::cout << "split(\"1, 200| 500|| -12\", \" ,|\") :" << std::endl;
-  res = strlib::split("1, 200| 500|| -12", " ,|");
-  println(res);
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1, 200| 500|| -12", " ,|")));
+
+  //ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "", "-12"} == strlib::split("1, 200| 500|| -12", ",|", true))); // trim
 
 }
 
 TEST(splitWords) {
 
-  std::cout << "splitWords(\"Hello world, my world is very nice world. But we have other worlds.\"): " << std::endl;
-  std::vector<std::string> res = strlib::splitWords("Hello world, my world is very nice world. But we have other worlds.");
-  println(res);
+  std::vector<std::string> words = {"Hello", "world", "my", "world", "is", "very", "nice", "world", "But", "we", "have", "other", "worlds"};
+  ASSERT_TRUE((words == strlib::splitWords("Hello world, my world is very nice world. But we have other worlds.")));
 
 }
 
 TEST(replaceAll) {
 
-  std::cout << "replaceAll(): " << strlib::replaceAll("abcdef12345abcdef", "a", "A") << std::endl;
+  ASSERT_EQ("Abcdef12345Abcdef", strlib::replaceAll("abcdef12345abcdef", "a", "A"));
 
-  std::vector<std::string> from;
-  from.push_back("1");
-  from.push_back("2");
-
-  std::vector<std::string> to;
-  to.push_back("A");
-  to.push_back("B");
-
-  std::cout << "replaceAll(): " << strlib::replaceAll("12345", from, to) << std::endl;
+  std::vector<std::string> from = {"1", "2", "3", "4", "5", "6"};
+  std::vector<std::string> to = {"A", "B", "C", "D", "E", "F"};
+  ASSERT_EQ("ABCDEF", strlib::replaceAll("123456", from, to));
 
 }
 
 TEST(isIdentifier) {
 
-  std::cout << "isIdentifier(\"12345\")    : " << strlib::isIdentifier("12345") << std::endl;
-  std::cout << "isIdentifier(\"1abcd\")    : " << strlib::isIdentifier("1abcd") << std::endl;
-  std::cout << "isIdentifier(\"____\")     : " << strlib::isIdentifier("____") << std::endl;
-  std::cout << "isIdentifier(\"_abcd123\") : " << strlib::isIdentifier("_abcd123") << std::endl;
-  std::cout << "isIdentifier(\"abcd123\")  : " << strlib::isIdentifier("abcd123") << std::endl;
+  ASSERT_FALSE(strlib::isIdentifier(""));
+  ASSERT_FALSE(strlib::isIdentifier(" "));
+  
+  ASSERT_FALSE(strlib::isIdentifier("`"));
+  ASSERT_FALSE(strlib::isIdentifier("~"));
+  ASSERT_FALSE(strlib::isIdentifier("!"));
+  ASSERT_FALSE(strlib::isIdentifier("@"));
+  ASSERT_FALSE(strlib::isIdentifier("#"));
+  ASSERT_FALSE(strlib::isIdentifier("$"));
+  ASSERT_FALSE(strlib::isIdentifier("%"));
+  ASSERT_FALSE(strlib::isIdentifier("^"));
+  ASSERT_FALSE(strlib::isIdentifier("&"));
+  ASSERT_FALSE(strlib::isIdentifier("*"));
+  ASSERT_FALSE(strlib::isIdentifier("("));
+  ASSERT_FALSE(strlib::isIdentifier(")"));
+  ASSERT_FALSE(strlib::isIdentifier("{"));
+  ASSERT_FALSE(strlib::isIdentifier("}"));
+  ASSERT_FALSE(strlib::isIdentifier("["));
+  ASSERT_FALSE(strlib::isIdentifier("]"));
+
+  ASSERT_FALSE(strlib::isIdentifier("-"));
+  ASSERT_FALSE(strlib::isIdentifier("+"));
+  ASSERT_FALSE(strlib::isIdentifier("_"));
+  ASSERT_FALSE(strlib::isIdentifier("="));
+  ASSERT_FALSE(strlib::isIdentifier("?"));
+
+  ASSERT_FALSE(strlib::isIdentifier("."));
+  ASSERT_FALSE(strlib::isIdentifier(","));
+  ASSERT_FALSE(strlib::isIdentifier(";"));
+  ASSERT_FALSE(strlib::isIdentifier("\'"));
+  ASSERT_FALSE(strlib::isIdentifier("\""));
+  ASSERT_FALSE(strlib::isIdentifier("/"));
+  ASSERT_FALSE(strlib::isIdentifier("\\"));
+  
+  ASSERT_FALSE(strlib::isIdentifier("12345"));
+  ASSERT_FALSE(strlib::isIdentifier("1abcd"));
+  ASSERT_FALSE(strlib::isIdentifier("____"));
+
+  ASSERT_TRUE(strlib::isIdentifier("_abcd123"));
+  ASSERT_TRUE(strlib::isIdentifier("abcd123"));
 
 }
 
 TEST(toString) {
  
   char a[] = {'H', 'e', 'l', 'l', 'o'};
-  char b[] = "Nova Code 1";
-  //char* c = "Nova Code 2";
+  char b[] = "Hello";
 
-  std::cout << "toStriing({'H', 'e', 'l', 'l', 'o'}) : " << strlib::toString(a) << std::endl;
-  std::cout << "toStriing(\"Nova Code 1\")              : " << strlib::toString(b) << std::endl;
-  //std::cout << "toStriing(c): " << strlib::toString(c) << std::endl;
+  ASSERT_EQ("Hello", strlib::toString(a));
+  ASSERT_EQ("Hello", strlib::toString(b));
    
 }
 
 
 INIT(strlib) {
-  //SET_CASE(strlib);
 
   SET_TEST(isEmpty);
   SET_TEST(size);
@@ -218,7 +334,14 @@ INIT(strlib) {
   SET_TEST(fill);
   SET_TEST(ellipsis);
   SET_TEST(trunc);
+  SET_TEST(toUpperCase);
+  SET_TEST(toLowerCase);
   SET_TEST(toCase);
+  SET_TEST(toCamelCase);
+  SET_TEST(toSnakeCase);
+  SET_TEST(toKebabCase);
+  SET_TEST(capitalize);
+  SET_TEST(decapitalize);
   SET_TEST(reverse);
   SET_TEST(hasPrefix);
   SET_TEST(hasSuffix);
