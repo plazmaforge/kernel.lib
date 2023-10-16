@@ -81,6 +81,7 @@ struct Test {
     void (*func)() = NULL;
     bool started = false;
     bool failed = false;
+    int asserted = 0;
 };
 
 struct TestCase {
@@ -91,6 +92,7 @@ struct TestCase {
     void (*setdown)() = NULL;
     int started = 0;
     int failed = 0;
+    int asserted = 0;
     std::vector<Test*> tests;
 };
 
@@ -354,10 +356,16 @@ void runAll() {
 void registerError(const char* file, const int line, const char* func) {
     TestCase* testCase = findTestCaseByFile(file);
     if (testCase) {
-        testCase->failed++;
+        //testCase->failed++;
         Test* test = findTestByName(testCase, func);
         if (test) {
+            test->asserted++;
+            testCase->asserted++;
+            if (test->failed) {
+                return;
+            }
             test->failed = true;
+            testCase->failed++;
         }
     }
 }
