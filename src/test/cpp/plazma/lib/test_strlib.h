@@ -21,13 +21,33 @@ TEST(isEmpty) {
 
 }
 
+TEST(isBlank) {
+
+  // isBlank(empty)
+  ASSERT_TRUE(strlib::isBlank(""));
+
+  // isBlank(blank)
+  ASSERT_TRUE(strlib::isBlank(" "));
+  ASSERT_TRUE(strlib::isBlank("  "));
+
+  // isBlank(value)
+  ASSERT_FALSE(strlib::isBlank("abc"));
+  ASSERT_FALSE(strlib::isBlank(" abc"));
+  ASSERT_FALSE(strlib::isBlank("abc "));
+  ASSERT_FALSE(strlib::isBlank(" abc "));
+
+}
+
 TEST(size) {
 
+  // size(empty)
   ASSERT_EQ(0, strlib::size(""));
 
+  // size(blank)
   ASSERT_EQ(1, strlib::size(" "));
   ASSERT_EQ(2, strlib::size("  "));
 
+  // size(value)
   ASSERT_EQ(3, strlib::size("abc"));
   ASSERT_EQ(4, strlib::size(" abc"));
   ASSERT_EQ(4, strlib::size("abc "));
@@ -35,10 +55,41 @@ TEST(size) {
 
 }
 
+TEST(equals) {
+
+  // equals(empty, value), equals(value, empty)
+  ASSERT_FALSE(strlib::equals("", "abc"));
+  ASSERT_FALSE(strlib::equals("abc", ""));
+
+  // equals(empty, empty), equals(blank, blank)
+  ASSERT_TRUE(strlib::equals("", ""));
+  ASSERT_TRUE(strlib::equals(" ", " "));
+  ASSERT_TRUE(strlib::equals("  ", "  "));
+
+  // equals(empty, blank), equals(blank, empty)
+  ASSERT_FALSE(strlib::equals("", " "));
+  ASSERT_FALSE(strlib::equals("", "  "));
+  ASSERT_FALSE(strlib::equals(" ", ""));
+  ASSERT_FALSE(strlib::equals("  ", ""));
+
+  // equals(value, value)
+  ASSERT_FALSE(strlib::equals(" abc", "abc"));
+  ASSERT_FALSE(strlib::equals("abc ", "abc"));
+  ASSERT_FALSE(strlib::equals(" abc ", "abc"));
+
+  ASSERT_TRUE(strlib::equals("abc", "abc"));
+  ASSERT_TRUE(strlib::equals(" abc", " abc"));
+  ASSERT_TRUE(strlib::equals("abc ", "abc "));
+  ASSERT_TRUE(strlib::equals(" abc ", " abc "));
+  
+}
+
 TEST(normalize) {
 
   // normalize(empty)
   ASSERT_EQ("", strlib::normalize(""));
+
+  // normalize(blank)
   ASSERT_EQ("", strlib::normalize(" "));
   ASSERT_EQ("", strlib::normalize("  "));
 
@@ -48,7 +99,15 @@ TEST(normalize) {
   ASSERT_EQ("abc", strlib::normalize("abc "));
   ASSERT_EQ("abc", strlib::normalize(" abc "));
 
+  // normalize(" \t\n\r\f\v")
+  ASSERT_EQ("", strlib::normalize(" \t\n\r\f\v"));
+  ASSERT_EQ("abc", strlib::normalize(" \t\n\r\f\vabc"));
+  ASSERT_EQ("abc", strlib::normalize("abc\t\n\r\f\v "));
+  ASSERT_EQ("abc", strlib::normalize(" \t\n\r\f\vabc\t\n\r\f\v "));
+
 }
+
+// 1.2
 
 TEST(lpad) {
 
@@ -327,8 +386,11 @@ TEST(toString) {
 INIT(strlib) {
 
   SET_TEST(isEmpty);
+  SET_TEST(isBlank);
   SET_TEST(size);
+  SET_TEST(equals);
   SET_TEST(normalize);
+
   SET_TEST(lpad);
   SET_TEST(rpad);
   SET_TEST(fill);

@@ -74,15 +74,54 @@ public class StrLibTest extends AbstractTestCase {
         assertFalse(StrLib.equals(" ", null));
         assertFalse(StrLib.equals("abc", null));
 
+        // equals(empty, value), equals(value, empty)
         assertFalse(StrLib.equals("", "abc"));
         assertFalse(StrLib.equals("abc", ""));
+
+        // equals(empty, empty), equals(blank, blank)
+        assertTrue(StrLib.equals("", ""));
+        assertTrue(StrLib.equals(" ", " "));
+        assertTrue(StrLib.equals("  ", "  "));
+
+        // equals(empty, blank), equals(blank, empty)
+        assertFalse(StrLib.equals("", " "));
+        assertFalse(StrLib.equals("", "  "));
+        assertFalse(StrLib.equals(" ", ""));
+        assertFalse(StrLib.equals("  ", ""));
+
+        // equals(value, value)
         assertFalse(StrLib.equals(" abc", "abc"));
         assertFalse(StrLib.equals("abc ", "abc"));
         assertFalse(StrLib.equals(" abc ", "abc"));
 
-        assertTrue(StrLib.equals("", ""));
-        assertTrue(StrLib.equals(" ", " "));
         assertTrue(StrLib.equals("abc", "abc"));
+        assertTrue(StrLib.equals(" abc", " abc"));
+        assertTrue(StrLib.equals("abc ", "abc "));
+        assertTrue(StrLib.equals(" abc ", " abc "));        
+
+    }
+
+    public void testNormalize() {
+
+        // normalize(null), normalize(empty)
+        assertNull(StrLib.normalize(null));
+        assertNull(StrLib.normalize(""));
+
+        // normalize(blank)
+        assertNull(StrLib.normalize(" "));
+        assertNull(StrLib.normalize("  "));
+
+        // normalize(value)
+        assertEquals("abc", StrLib.normalize("abc"));
+        assertEquals("abc", StrLib.normalize(" abc"));
+        assertEquals("abc", StrLib.normalize("abc "));
+        assertEquals("abc", StrLib.normalize(" abc "));
+
+        // normalize(" \t\n\r\f\v")
+        assertNull("abc", StrLib.normalize(" \t\n\r\f\u000B"));                      // \v -> \u000B
+        assertEquals("abc", StrLib.normalize(" \t\n\r\f\u000Babc"));                 // \v -> \u000B
+        assertEquals("abc", StrLib.normalize("abc\t\n\r\f\u000B "));                 // \v -> \u000B
+        assertEquals("abc", StrLib.normalize(" \t\n\r\f\u000Babc\t\n\r\f\u000B "));  // \v -> \u000B
 
     }
 
