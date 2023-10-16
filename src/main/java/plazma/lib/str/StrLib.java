@@ -609,7 +609,7 @@ public class StrLib {
             return str;
         }
 
-        return trim(str, " \t\n\r\f"); // \v - ?
+        return trim(str, " \t\n\r\f\u000B"); // \v -> \u000B
         // return str.trim();
     }
 
