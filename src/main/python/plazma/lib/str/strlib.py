@@ -66,7 +66,7 @@ def normalizeBlank(str, trimAll, trimBlank):
         # trimBlank=True, because we have condition (not trimAll and not trimBlank) before
         # Analize blank
         if isBlank(str):
-            return EMPTY_STRING
+            return None
         else:
             return str
     else:
