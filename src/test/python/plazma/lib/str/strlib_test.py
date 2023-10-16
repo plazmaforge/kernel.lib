@@ -91,6 +91,7 @@ class StrlibTest(unittest.TestCase):
         self.assertTrue(strlib.equals('abc ', 'abc '))
         self.assertTrue(strlib.equals(' abc ', ' abc '))
         
+    # 1.2
 
     def test_normilize(self):
 
@@ -109,56 +110,141 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('abc', strlib.normalize(' abc '))
 
         # normalize(' \t\n\r\f\v')
-        self.assertEqual(None, strlib.normalize(' \t\n\r\f\v'))
+        self.assertIsNone(strlib.normalize(' \t\n\r\f\v'))
         self.assertEqual('abc', strlib.normalize(' \t\n\r\f\vabc'))
         self.assertEqual('abc', strlib.normalize('abc\t\n\r\f\v '))
         self.assertEqual('abc', strlib.normalize(' \t\n\r\f\vabc\t\n\r\f\v '))
 
-    # 1.2
+    def test_normilizeBlank(self):
+
+        # False, False
+        # normalizeBlank(None, False, False), normalizeBlank(empty, False, False)
+        self.assertIsNone(strlib.normalizeBlank(None, False, False));
+        self.assertEqual("", strlib.normalizeBlank("", False, False));
+
+        # normalizeBlank(blank, False, False)
+        self.assertEqual(" ", strlib.normalizeBlank(" ", False, False));
+        self.assertEqual("  ", strlib.normalizeBlank("  ", False, False));
+
+        # normalizeBlank(value, False, False)
+        self.assertEqual("abc", strlib.normalizeBlank("abc", False, False));
+        self.assertEqual(" abc", strlib.normalizeBlank(" abc", False, False));
+        self.assertEqual("abc ", strlib.normalizeBlank("abc ", False, False));
+        self.assertEqual(" abc ", strlib.normalizeBlank(" abc ", False, False));
+
+        # False, True
+        # normalizeBlank(None, False, True), normalizeBlank(empty, False, True)
+        self.assertIsNone(strlib.normalizeBlank(None, False, True));
+        self.assertIsNone(strlib.normalizeBlank("", False, True));
+
+        # normalizeBlank(blank, False, True)
+        self.assertIsNone(strlib.normalizeBlank(" ", False, True));
+        self.assertIsNone(strlib.normalizeBlank("  ", False, True));
+
+        # normalizeBlank(value, False, True)
+        self.assertEqual("abc", strlib.normalizeBlank("abc", False, True));
+        self.assertEqual(" abc", strlib.normalizeBlank(" abc", False, True));
+        self.assertEqual("abc ", strlib.normalizeBlank("abc ", False, True));
+        self.assertEqual(" abc ", strlib.normalizeBlank(" abc ", False, True));
+
+        # True, True
+        # normalizeBlank(None, True, True), normalizeBlank(empty, True, True)
+        self.assertIsNone(strlib.normalizeBlank(None, True, True));
+        self.assertIsNone(strlib.normalizeBlank("", True, True));
+
+        # normalizeBlank(blank, True, True)
+        self.assertIsNone(strlib.normalizeBlank(" ", True, True));
+        self.assertIsNone(strlib.normalizeBlank("  ", True, True));
+
+        # normalizeBlank(value, True, True)
+        self.assertEqual("abc", strlib.normalizeBlank("abc", True, True));
+        self.assertEqual("abc", strlib.normalizeBlank(" abc", True, True));
+        self.assertEqual("abc", strlib.normalizeBlank("abc ", True, True));
+        self.assertEqual("abc", strlib.normalizeBlank(" abc ", True, True));
+
+        # True, False
+        # normalizeBlank(None, True, False), normalizeBlank(empty, True, False)
+        self.assertIsNone(strlib.normalizeBlank(None, True, False));
+        self.assertIsNone(strlib.normalizeBlank("", True, False));
+
+        # normalizeBlank(blank, true, false)
+        self.assertIsNone(strlib.normalizeBlank(" ", True, False));
+        self.assertIsNone(strlib.normalizeBlank("  ", True, False));
+
+        # normalizeBlank(value, true, false)
+        self.assertEqual("abc", strlib.normalizeBlank("abc", True, False));
+        self.assertEqual("abc", strlib.normalizeBlank(" abc", True, False));
+        self.assertEqual("abc", strlib.normalizeBlank("abc ", True, False));
+        self.assertEqual("abc", strlib.normalizeBlank(" abc ", True, False));
+
+    # 1.3
 
     def test_trim(self):
 
-        self.assertIsNone(strlib.trim(None))
+        # trim(None), trim(empty)
+        self.assertIsNone(strlib.trim(None))        
+        self.assertEqual('', strlib.trim(''))
 
-        self.assertEqual(strlib.trim(''), '')
-        self.assertEqual(strlib.trim('abc'), 'abc')
-        self.assertEqual(strlib.trim(' abc'), 'abc')
-        self.assertEqual(strlib.trim('abc '), 'abc')
-        self.assertEqual(strlib.trim(' abc '), 'abc')
+        # trim(blank)
+        self.assertEqual('', strlib.trim(' '))
+        self.assertEqual('', strlib.trim('  '))
+        
+        # trim(value)
+        self.assertEqual('abc', strlib.trim('abc'))
+        self.assertEqual('abc', strlib.trim(' abc'))
+        self.assertEqual('abc', strlib.trim('abc '))
+        self.assertEqual('abc', strlib.trim(' abc '))
 
-        self.assertEqual(strlib.trim(' \t\r\nabc'), 'abc')
-        self.assertEqual(strlib.trim('abc \t\r\n'), 'abc')
-        self.assertEqual(strlib.trim(' \t\r\nabc \t\r\n'), 'abc')
+        # trim(' \t\n\r\f\v')
+        self.assertEqual('', strlib.trim(' \t\n\r\f\v'))
+        self.assertEqual('abc', strlib.trim(' \t\n\r\f\vabc'))
+        self.assertEqual('abc', strlib.trim('abc \t\n\r\f\v'))
+        self.assertEqual('abc', strlib.trim(' \t\n\r\f\vabc \t\n\r\f\v'))
 
 
     def test_ltrim(self):
 
+        # ltrim(None), ltrim(empty)
         self.assertIsNone(strlib.ltrim(None))
+        self.assertEqual('', strlib.ltrim(''))
 
-        self.assertEqual(strlib.ltrim(''), '')
-        self.assertEqual(strlib.ltrim('abc'), 'abc')
-        self.assertEqual(strlib.ltrim(' abc'), 'abc')
-        self.assertEqual(strlib.ltrim('abc '), 'abc ')
-        self.assertEqual(strlib.ltrim(' abc '), 'abc ')
+        # ltrim(blank)
+        self.assertEqual('', strlib.ltrim(' '))
+        self.assertEqual('', strlib.ltrim('  '))
 
-        self.assertEqual(strlib.ltrim(' \t\r\nabc'), 'abc')
-        self.assertEqual(strlib.ltrim('abc \t\r\n'), 'abc \t\r\n')
-        self.assertEqual(strlib.ltrim(' \t\r\nabc \t\r\n'), 'abc \t\r\n')
+        # trim(value)
+        self.assertEqual('abc', strlib.ltrim('abc'))
+        self.assertEqual('abc', strlib.ltrim(' abc'))
+        self.assertEqual('abc ', strlib.ltrim('abc '))
+        self.assertEqual('abc ', strlib.ltrim(' abc '))
 
+        # trim(' \t\n\r\f\v')
+        self.assertEqual('', strlib.ltrim(' \t\n\r\f\v'))
+        self.assertEqual('abc', strlib.ltrim(' \t\n\r\f\vabc'))
+        self.assertEqual('abc \t\n\r\f\v', strlib.ltrim('abc \t\n\r\f\v'))
+        self.assertEqual('abc \t\n\r\f\v', strlib.ltrim(' \t\n\r\f\vabc \t\n\r\f\v'))
 
     def test_rtrim(self):
 
-        self.assertIsNone(strlib.ltrim(None))
+        # rtrim(None), rtrim(empty)
+        self.assertIsNone(strlib.rtrim(None))
+        self.assertEqual('', strlib.rtrim(''))
 
-        self.assertEqual(strlib.rtrim(''), '')
-        self.assertEqual(strlib.rtrim('abc'), 'abc')
-        self.assertEqual(strlib.rtrim('abc '), 'abc')
-        self.assertEqual(strlib.rtrim(' abc'), ' abc')        
-        self.assertEqual(strlib.rtrim(' abc '), ' abc')
+        # rtrim(blank)
+        self.assertEqual('', strlib.rtrim(' '))
+        self.assertEqual('', strlib.rtrim('  '))
+
+        # trim(value)
+        self.assertEqual('abc', strlib.rtrim('abc'))
+        self.assertEqual(' abc', strlib.rtrim(' abc'))
+        self.assertEqual('abc', strlib.rtrim('abc '))
+        self.assertEqual(' abc', strlib.rtrim(' abc '))
         
-        self.assertEqual(strlib.rtrim('abc \t\r\n'), 'abc')
-        self.assertEqual(strlib.rtrim(' \t\r\nabc'), ' \t\r\nabc')
-        self.assertEqual(strlib.rtrim(' \t\r\nabc \t\r\n'), ' \t\r\nabc')
+        # trim(' \t\n\r\f\v')
+        self.assertEqual('', strlib.rtrim(' \t\n\r\f\v'))
+        self.assertEqual(' \t\n\r\f\vabc', strlib.rtrim(' \t\n\r\f\vabc'))
+        self.assertEqual('abc', strlib.rtrim('abc \t\n\r\f\v'))
+        self.assertEqual(' \t\n\r\f\vabc', strlib.rtrim(' \t\n\r\f\vabc \t\n\r\f\v'))
 
 
 if __name__ == '__main__':

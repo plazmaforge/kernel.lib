@@ -84,6 +84,8 @@ TEST(equals) {
   
 }
 
+// 1.2
+
 TEST(normalize) {
 
   // normalize(empty)
@@ -107,7 +109,140 @@ TEST(normalize) {
 
 }
 
-// 1.2
+TEST(normalizeBlank) {
+
+  // false, false
+  // normalizeBlank(empty, false, false)
+  ASSERT_EQ("", strlib::normalizeBlank("", false, false));
+
+  // normalizeBlank(blank, false, false)
+  ASSERT_EQ(" ", strlib::normalizeBlank(" ", false, false));
+  ASSERT_EQ("  ", strlib::normalizeBlank("  ", false, false));
+
+  // normalizeBlank(value, false, false)
+  ASSERT_EQ("abc", strlib::normalizeBlank("abc", false, false));
+  ASSERT_EQ(" abc", strlib::normalizeBlank(" abc", false, false));
+  ASSERT_EQ("abc ", strlib::normalizeBlank("abc ", false, false));
+  ASSERT_EQ(" abc ", strlib::normalizeBlank(" abc ", false, false));
+
+  // false, true
+  // normalizeBlank(empty, false, true)
+  ASSERT_EQ("", strlib::normalizeBlank("", false, true));
+
+  // normalizeBlank(blank, false, true)
+  ASSERT_EQ("", strlib::normalizeBlank(" ", false, true));
+  ASSERT_EQ("", strlib::normalizeBlank("  ", false, true));
+
+  // normalizeBlank(value, false, true)
+  ASSERT_EQ("abc", strlib::normalizeBlank("abc", false, true));
+  ASSERT_EQ(" abc", strlib::normalizeBlank(" abc", false, true));
+  ASSERT_EQ("abc ", strlib::normalizeBlank("abc ", false, true));
+  ASSERT_EQ(" abc ", strlib::normalizeBlank(" abc ", false, true));
+
+  // true, true
+  // normalizeBlank(empty, true, true)
+  ASSERT_EQ("", strlib::normalizeBlank("", true, true));
+
+  // normalizeBlank(blank, true, true)
+  ASSERT_EQ("", strlib::normalizeBlank(" ", true, true));
+  ASSERT_EQ("", strlib::normalizeBlank("  ", true, true));
+
+  // normalizeBlank(value, true, true)
+  ASSERT_EQ("abc", strlib::normalizeBlank("abc", true, true));
+  ASSERT_EQ("abc", strlib::normalizeBlank(" abc", true, true));
+  ASSERT_EQ("abc", strlib::normalizeBlank("abc ", true, true));
+  ASSERT_EQ("abc", strlib::normalizeBlank(" abc ", true, true));
+
+  // true, false
+  // normalizeBlank(empty, true, false)
+  ASSERT_EQ("", strlib::normalizeBlank("", true, false));
+
+  // normalizeBlank(blank, true, false)
+  ASSERT_EQ("", strlib::normalizeBlank(" ", true, false));
+  ASSERT_EQ("", strlib::normalizeBlank("  ", true, false));
+
+  // normalizeBlank(value, true, false)
+  ASSERT_EQ("abc", strlib::normalizeBlank("abc", true, false));
+  ASSERT_EQ("abc", strlib::normalizeBlank(" abc", true, false));
+  ASSERT_EQ("abc", strlib::normalizeBlank("abc ", true, false));
+  ASSERT_EQ("abc", strlib::normalizeBlank(" abc ", true, false));
+
+}
+
+// 1.3
+
+TEST(trim) {
+
+  // trim(empty)
+  ASSERT_EQ("", strlib::trim(""));
+
+  // trim(blank)
+  ASSERT_EQ("", strlib::trim(" "));
+  ASSERT_EQ("", strlib::trim("  "));
+
+  // trim(value)
+  ASSERT_EQ("abc", strlib::trim("abc"));
+  ASSERT_EQ("abc", strlib::trim(" abc"));
+  ASSERT_EQ("abc", strlib::trim("abc "));
+  ASSERT_EQ("abc", strlib::trim(" abc "));
+
+  // trim(" \t\n\r\f\v")
+  //ASSERT_EQ("", strlib::trim(" \t\n\r\f\v"));
+  //ASSERT_EQ("abc", strlib::trim(" \t\n\r\f\vabc"));
+  //ASSERT_EQ("abc", strlib::trim("abc \t\n\r\f\v"))
+  //ASSERT_EQ("abc", strlib::trim(" \t\n\r\f\vabc \t\n\r\f\v"));
+
+}
+
+TEST(ltrim) {
+
+  // ltrim(empty)
+  ASSERT_EQ("", strlib::ltrim(""));
+
+  // ltrim(blank)
+  ASSERT_EQ("", strlib::ltrim(" "));
+  ASSERT_EQ("", strlib::ltrim("  "));
+
+  // ltrim(value)
+  ASSERT_EQ("abc", strlib::ltrim("abc"));
+  ASSERT_EQ("abc", strlib::ltrim(" abc"));
+  ASSERT_EQ("abc ", strlib::ltrim("abc "));
+  ASSERT_EQ("abc ", strlib::ltrim(" abc "));
+
+  // ltrim(" \t\n\r\f\v")
+  //ASSERT_EQ("", strlib::ltrim(" \t\n\r\f\v"));
+  //ASSERT_EQ("abc", strlib::ltrim(" \t\n\r\f\vabc"));
+  //ASSERT_EQ("abc", strlib::ltrim("abc \t\n\r\f\v"))
+  //ASSERT_EQ("abc", strlib::ltrim(" \t\n\r\f\vabc \t\n\r\f\v"));
+  
+}
+
+TEST(rtrim) {
+
+  // rtrim(empty)
+  ASSERT_EQ("", strlib::rtrim(""));
+
+  // rtrim(blank)
+  ASSERT_EQ("", strlib::rtrim(" "));
+  ASSERT_EQ("", strlib::rtrim("  "));
+
+  // rtrim(value)
+  ASSERT_EQ("abc", strlib::rtrim("abc"));
+  ASSERT_EQ(" abc", strlib::rtrim(" abc"));
+  ASSERT_EQ("abc", strlib::rtrim("abc "));
+  ASSERT_EQ(" abc", strlib::rtrim(" abc "));
+
+  // rtrim(" \t\n\r\f\v")
+  //ASSERT_EQ("", strlib::rtrim(" \t\n\r\f\v"));
+  //ASSERT_EQ(" \t\n\r\f\vabc", strlib::rtrim(" \t\n\r\f\vabc"));
+  //ASSERT_EQ("abc", strlib::rtrim("abc \t\n\r\f\v"))
+  //ASSERT_EQ(" \t\n\r\f\vabc", strlib::rtrim(" \t\n\r\f\vabc \t\n\r\f\v"));
+  
+}
+
+// ...
+
+// 2.2
 
 TEST(lpad) {
 
@@ -374,7 +509,7 @@ TEST(isIdentifier) {
 
 TEST(toString) {
  
-  char a[] = {'H', 'e', 'l', 'l', 'o'};
+  char a[] = {'H', 'e', 'l', 'l', 'o', '\0'};
   char b[] = "Hello";
 
   ASSERT_EQ("Hello", strlib::toString(a));
@@ -390,6 +525,10 @@ INIT(strlib) {
   SET_TEST(size);
   SET_TEST(equals);
   SET_TEST(normalize);
+  SET_TEST(normalizeBlank)
+  SET_TEST(trim)
+  SET_TEST(ltrim)
+  SET_TEST(rtrim)
 
   SET_TEST(lpad);
   SET_TEST(rpad);
