@@ -29,7 +29,6 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 
 import plazma.lib.array.ArrayLib;
-//import plazma.lib.clt.CltLib;
 
 public class StrLib {
     
@@ -207,11 +206,11 @@ public class StrLib {
     /////////////////////////////////////////////////////////////////////////////////
     // 5.1
     //
-    // - countChar(String str, char ch)
-    // - countString(String str, String findStr)
-    // - countWord(String str)
-    // - countWord(String str, String[] seperators)
-    // - countLine(String str)
+    // - countChars(String str, char ch)
+    // - countStrings(String str, String findStr)
+    // - countWords(String str)
+    // - countWords(String str, String[] seperators)
+    // - countLines(String str)
     
     /////////////////////////////////////////////////////////////////////////////////
     // 6.1
@@ -2135,9 +2134,9 @@ public class StrLib {
 
     //// 5.1
 
-    // TODO: countUniqueChar(str), countUniqueWord(str), countUniqueLine(str)
+    // TODO: countUniqueChars(str), countUniqueWords(str), countUniqueLines(str)
 
-    public static int countChar(String str, char ch) {
+    public static int countChars(String str, char ch) {
         if (isEmpty(str)) {
             return 0;
         }
@@ -2151,7 +2150,7 @@ public class StrLib {
         return count;
     }
 
-    public static int countString(String str, String findStr) {
+    public static int countStrings(String str, String findStr) {
         if (isEmpty(str) || isEmpty(findStr)) {
             return 0;
         }
@@ -2231,11 +2230,11 @@ public class StrLib {
 
     ////
 
-    public static int countWord(String str) {
-        return countWord(str, null);
+    public static int countWords(String str) {
+        return countWords(str, null);
     }
 
-    public static int countWord(String str, String seperators) {
+    public static int countWords(String str, String seperators) {
         str = normalize(str);
         if (str == null) {
             return 0;
@@ -2247,7 +2246,7 @@ public class StrLib {
         return words == null ? 0 : words.length;
     }
 
-    public static int countLine(String str) {
+    public static int countLines(String str) {
         str = normalize(str);
         if (str == null) {
             return 0;

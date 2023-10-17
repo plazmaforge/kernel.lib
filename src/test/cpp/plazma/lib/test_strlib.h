@@ -531,21 +531,21 @@ TEST(removeSuffix) {
 
 }
 
-TEST(countChar) {
+TEST(countChars) {
 
-  ASSERT_EQ(4, strlib::countChar("Hello world, my world is very nice world", 'o'));
-
-}
-
-TEST(countString) {
-
-  ASSERT_EQ(3, strlib::countString("Hello world, my world is very nice world", "world"));
+  ASSERT_EQ(4, strlib::countChars("Hello world, my world is very nice world", 'o'));
 
 }
 
-TEST(countWord) {
+TEST(countStrings) {
 
-  ASSERT_EQ(13, strlib::countWord("Hello world, my world is very nice world. But we have other worlds."));
+  ASSERT_EQ(3, strlib::countStrings("Hello world, my world is very nice world", "world"));
+
+}
+
+TEST(countWords) {
+
+  ASSERT_EQ(13, strlib::countWords("Hello world, my world is very nice world. But we have other worlds."));
 
 }
 
@@ -672,9 +672,9 @@ INIT(strlib) {
   SET_TEST(hasSuffix);
   SET_TEST(removePrefix);
   SET_TEST(removeSuffix);
-  SET_TEST(countChar);
-  SET_TEST(countString);
-  SET_TEST(countWord);
+  SET_TEST(countChars);
+  SET_TEST(countStrings);
+  SET_TEST(countWords);
   SET_TEST(split);
   SET_TEST(splitWords);
   SET_TEST(replaceAll);

@@ -843,23 +843,23 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("abc", StrLib.removeSuffix("abcde", "de"));
     }
 
-    public void testCountString() {
+    public void testCountStrings() {
 
-        assertEquals(0, StrLib.countString("abcde", "xyz"));
-        assertEquals(1, StrLib.countString("abcde", "abc"));
-        assertEquals(2, StrLib.countString("abcdeabcx", "abc"));
+        assertEquals(0, StrLib.countStrings("abcde", "xyz"));
+        assertEquals(1, StrLib.countStrings("abcde", "abc"));
+        assertEquals(2, StrLib.countStrings("abcdeabcx", "abc"));
 
-        assertEquals(2, StrLib.countString("abcdeabc", "abc"));
-        assertEquals(2, StrLib.countString("abc de abc", "abc"));
-        assertEquals(2, StrLib.countString("abc de abc x", "abc"));
+        assertEquals(2, StrLib.countStrings("abcdeabc", "abc"));
+        assertEquals(2, StrLib.countStrings("abc de abc", "abc"));
+        assertEquals(2, StrLib.countStrings("abc de abc x", "abc"));
 
     }
 
-    public void testCountChar() {
+    public void testCountChars() {
 
-        assertEquals(0, StrLib.countChar("abcde", 'z'));
-        assertEquals(1, StrLib.countChar("abcde", 'a'));
-        assertEquals(2, StrLib.countChar("abcdeabcx", 'a'));
+        assertEquals(0, StrLib.countChars("abcde", 'z'));
+        assertEquals(1, StrLib.countChars("abcde", 'a'));
+        assertEquals(2, StrLib.countChars("abcdeabcx", 'a'));
 
     }
 

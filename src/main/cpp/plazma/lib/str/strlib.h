@@ -174,11 +174,11 @@
 /////////////////////////////////////////////////////////////////////////////////
 // 5.1
 //
-// - countChar(const string &str, char ch)
-// - countString(const string &str, const string &findStr)
-// - countWord(const string &str)
-// - countWord(const string &str, const string &separators)
-// - countLine(const string &str)
+// - countChars(const string &str, char ch)
+// - countStrings(const string &str, const string &findStr)
+// - countWords(const string &str)
+// - countWords(const string &str, const string &separators)
+// - countLines(const string &str)
 
 /////////////////////////////////////////////////////////////////////////////////
 // 6.1
@@ -710,15 +710,15 @@ namespace strlib {
 
     //// 5.1
 
-    int countChar(const std::string &str, char ch);
+    int countChars(const std::string &str, char ch);
 
-    int countString(const std::string &str, const std::string &findStr);
+    int countStrings(const std::string &str, const std::string &findStr);
 
-    int countWord(const std::string &str);
+    int countWords(const std::string &str);
 
-    int countWord(const std::string &str, const std::string &separators);
+    int countWords(const std::string &str, const std::string &separators);
 
-    int countLine(const std::string &str);
+    int countLines(const std::string &str);
 
     //// 6.1
 
