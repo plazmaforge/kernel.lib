@@ -4,32 +4,100 @@ SPACE_CHAR = ' '
 ELLIPSIS = '...'
 ELLIPSIS_LEN = 3
 
-#### 1.1
+#################################################################################
+# 1.1 empty, blank, size
+#
+# - isEmpty(str)                                               - check empty
+# - isBlank(str)                                               - check blank
+# - size(str)                                                  - length
+#
+# - equals(str1, str2)
+#
+# 1.2 normalization
+#
+# - normalize(str)                                             - trim, '' - > None
+# - normalizeSafe(str)                                         - trim, '' - > ''
+# - normalizeBlank(str, trimAll, trimBlank)
+# ? normalizeQuoted(str)                                       - trim in quoted value: "\' text    \'" - > "\'text\'" 
+#
+# - emptyIfNone(str)                                           - None -> ''
+#
+# - noneIfEmpty(str)                                           - '' -> None
+# - noneIfEmpty(str, trim)                                     - trim, '' -> None
+#
+# - defaultIfNone(str, defaultStr)                             - str == None ? defaultStr : str
+# - defaultIfEmpty(str, defaultStr)                            - isEmpty(str) ? defaultStr : str
+#
+# 1.3 trim (left, right)
+# 
+# - trim(str)                                                  - all trim (left, right)
+# - trim(str, ch)
+#
+# - ltrim(str)                                                 - left trim
+# - ltrim(str, ch)
+#
+# - rtrim(str)                                                 - right trim
+# - rtrim(str, ch)
+#
+# 1.4
+#
+# - findFirstNotOf(str, ch)
+# - findFirstNotOf(str, ch, start)
+#
+# - findLastNotOf(str, ch)
+# - findLastNotOf(str, ch, end)
+
+#################################################################################
+#
+#  2.1
+#
+# - replicate(str, n)                                          - replicate("abc", 3) = "abcabcabc" : repeat (?)
+# - replicate(ch, n)                                           - replicate('a', 3) = "aaa"
+#
+# 2.2
+#
+# - lpad(str, len)                                             - lpad("abc", 5)      = "  abc"
+# - lpad(str, len, pad)                                        - lpad("abc", 5, "*") = "**abc"
+#
+# - rpad(str, len)                                             - rpad("abc", 5)      = "abc  "
+# - rpad(str, len, pad)                                        - rpad("abc", 5, "*") = "abc**"
+#
+# 2.3
+#
+# - fill(str, en)
+# - fill(str, len, pad)
+#
+# - ellipsis(str, len)
+#
+# - trunc(str, len)
+# - trunc(str, len, trim, ellipsis)
+#
+# - left(str, len)
+# - right(str, len)
+
+# 1.1
 
 def isEmpty(str):
     if str == None:
         return True    
     return len(str) == 0
 
-
 def isBlank(str):
     if str == None:
         return True    
     return len(str.strip()) == 0 # trim
-
 
 def size(str):
     if str == None:
         return 0
     return len(str)
 
-
 def equals(str1, str2):
     if str1 == None or str2 == None:
         return False    
     return str1 == str2    
 
-#### 1.2
+# 1.2
 
 def normalize(str):
     if str == None:
@@ -38,19 +106,17 @@ def normalize(str):
     if len(str) == 0:
         return None
 
-    s = str.strip() # trim
+    res = str.strip() # trim
 
-    if len(s) == 0:
+    if len(res) == 0:
         return None
     else:
-        return s
-
+        return res
 
 def normalizeSafe(str):
     if str == None:
         return EMPTY_STRING    
     return str.strip() # trim
-
 
 def normalizeBlank(str, trimAll, trimBlank):
     if str == None:
@@ -72,21 +138,20 @@ def normalizeBlank(str, trimAll, trimBlank):
     else:
         return normalize(str)
 
-
-# None: experimental
 def emptyIfNone(str):
     if str == None:
         return EMPTY_STRING
     else:
         return str
 
-
-def noneIfEmpty(str):
+def noneIfEmpty(str, trim = False):
     if str == None or len(str) == 0:
         return None
     else:
-        return str
-
+        if trim:
+            return str.strip() # trim
+        else:
+            return str
 
 def defaultIfNone(str, defaultStr):
     if str == None:
@@ -94,27 +159,23 @@ def defaultIfNone(str, defaultStr):
     else:
         return str
 
-
 def defaultIfEmpty(str, defaultStr):
     if str == None or len(str) == 0:
         return defaultStr
     else:
         return str
 
-
 # Null: experimental
-def emptyIfNull(str):
-    return emptyIfNone(str);
+#def emptyIfNull(str):
+#    return emptyIfNone(str);
 
+#def nullIfEmpty(str):
+#    return noneIfEmpty(str)
 
-def nullIfEmpty(str):
-    return noneIfEmpty(str)
+#def defaultIfNull(str, defaultStr):
+#    return defaultIfNone(str, defaultStr)
 
-
-def defaultIfNull(str, defaultStr):
-    return defaultIfNone(str, defaultStr)
-
-#### 1.3
+# 1.3
 
 ## trim
 
@@ -123,23 +184,21 @@ def trim(str, ch = None):
         return None
     return str.strip(ch)
 
-
 def ltrim(str, ch = None):
     if str == None:
         return None
     return str.lstrip(ch)
-
 
 def rtrim(str, ch = None):
     if str == None:
         return None
     return str.rstrip(ch)
 
-#### 1.4
+# 1.4
 
 def findFirstNotOf(str, ch, start = None):
     if str == None:
-        return None
+        return -1
 
     if start == None:
         start = 0
@@ -161,7 +220,7 @@ def findFirstNotOf(str, ch, start = None):
 
 def findLastNotOf(str, ch, end = None):
     if str == None:
-        return None
+        return -1
 
     len = size(str)
     if len == 0:
@@ -181,7 +240,7 @@ def findLastNotOf(str, ch, end = None):
     return -1
 
 
-#### 2.1
+# 2.1
 
 def replicate(str, n):
     if str == None:
@@ -193,7 +252,7 @@ def replicate(str, n):
     return str * n
 
 
-#### 2.2
+# 2.2
 
 def lpad(str, len, pad = ' '):
     if str == None:

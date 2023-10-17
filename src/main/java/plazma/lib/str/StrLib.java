@@ -51,6 +51,8 @@ public class StrLib {
     // 1.2 normalization
     //
     // - normalize(String str)                                             - trim, '' - > null
+    // - normalizeSafe(String str)                                         - trim, '' - > ''
+    // - normalizeBlank(String str, boolean trimAll, boolean trimBlank)
     // - normalizeQuoted(String str)                                       - trim in quoted value: "\' text    \'" - > "\'text\'" 
     //
     // - emptyIfNull(String str)                                           - null -> ''
@@ -58,8 +60,8 @@ public class StrLib {
     // - nullIfEmpty(String str)                                           - '' -> null
     // - nullIfEmpty(String str, boolean trim)                             - trim, '' -> null
     //
-    // - defaultIfNull(String str, String defaultStr)                      - str == null ? defaultStr: str
-    // - defaultIfEmpty(String str, String defaultStr)                     - isEmpty(str) ? defaultStr: str
+    // - defaultIfNull(String str, String defaultStr)                      - str == null ? defaultStr : str
+    // - defaultIfEmpty(String str, String defaultStr)                     - isEmpty(str) ? defaultStr : str
     //
     // 1.3 trim (left, right)
     // 
@@ -520,7 +522,12 @@ public class StrLib {
         str = trimAll(str);
         return isEmpty(str) ? null : str;
     }
-    
+
+    public static String normalizeSafe(String str) {
+        str = trimAll(str);
+        return isEmpty(str) ? EMPTY_STRING : str;
+    }
+
     public static String normalizeBlank(String str, boolean trimAll, boolean trimBlank) {
         if (str == null) {
             return null;

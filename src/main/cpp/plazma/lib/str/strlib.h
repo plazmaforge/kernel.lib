@@ -22,9 +22,10 @@
 // 1.2 
 //
 // - normalize(const string &str)                                              - trim
+// - normalizeBlank(const string &str, bool trimAll, bool trimBlank)
 // - normalizeQuoted(const string  &str)                                       - trim in quoted value
 //
-// - defautIfEmpty(const string &str, const string &defautStr)                 - str.empty() ? defautStr: str
+// - defautIfEmpty(const string &str, const string &defautStr)                 - str.empty() ? defautStr : str
 //
 // 1.3 trim (left, right)
 // 
@@ -40,10 +41,10 @@
 // 1.4
 //
 // - findFirstNotOf(const string &str, char ch)
-// - findFirstNotOf(const string &str, char ch, int start)                     - N/A
+// - findFirstNotOf(const string &str, char ch, int start)
 //
-// - findLastNotOf(const string &str, ch)
-// - findLastNotOf(const string &str, char ch, int end)                        - N/A
+// - findLastNotOf(const string &str, char ch)
+// - findLastNotOf(const string &str, char ch, int end)
 
 /////////////////////////////////////////////////////////////////////////////////
 // 2.1
@@ -423,7 +424,11 @@ namespace strlib {
 
     int findFirstNotOf(const std::string &str, const char ch);
 
+    int findFirstNotOf(const std::string &str, const char ch, int start);
+
     int findLastNotOf(const std::string &str, const char ch);
+
+    int findLastNotOf(const std::string &str, const char ch, int end);
 
     //// 2.1
 

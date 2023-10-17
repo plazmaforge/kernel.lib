@@ -14,190 +14,191 @@
 //
 // 1.1 empty, size
 //
-// - isEmpty(const string  &str)                                                - check empty
-// - isBlank(const string  &str)                                                - check blank
-// - size(const string  &str)                                                   - length
+// - isEmpty(const string &str)                                                - check empty
+// - isBlank(const string &str)                                                - check blank
+// - size(const string &str)                                                   - length
 //
 // - equals(const char* str1, const char* str2)
-// - equals(const string  &str1, const string  &str2)
+// - equals(const string &str1, const string &str2)
 //
-// - equalsContent(const string  &str, ???)                                     - N/A
+// - equalsContent(const string &str, ???)                                     - N/A
 //
 // 1.2 
 //
-// - normalize(const string  &str)                                              - trim
-// - normalizeQuoted(const string  &str)                                        - trim in quoted value
+// - normalize(const string &str)                                              - trim
+// - normalizeBlank(const string &str, bool trimAll, bool trimBlank)
+// - normalizeQuoted(const string &str)                                        - trim in quoted value
 //
-// - defaultIfEmpty(const string  &str, const string  &defaultStr)              - str.empty() ? defaultStr: str
+// - defaultIfEmpty(const string &str, const string  &defaultStr)              - str.empty() ? defaultStr : str
 //
 // 1.3 trim (left, right)
 // 
-// - trim(const string  &str)                                                   - all trim (left, right)
-// - trim(const string  &str, char ch)           
+// - trim(const string &str)                                                   - all trim (left, right)
+// - trim(const string &str, char ch)           
 //
-// - ltrim(const string  &str)                                                  - left trim
-// - ltrim(const string  &str, char ch)
+// - ltrim(const string &str)                                                  - left trim
+// - ltrim(const string &str, char ch)
 //
-// - rtrim(const string  &str)                                                  - right trim
-// - rtrim(const string  &str, char ch)
+// - rtrim(const string &str)                                                  - right trim
+// - rtrim(const string &str, char ch)
 //
 // 1.4
 //
-// - findFirstNotOf(const string  &str, char ch)
-// - findFirstNotOf(const string  &str, char ch, int start)                     - N/A
+// - findFirstNotOf(const string &str, char ch)
+// - findFirstNotOf(const string &str, char ch, int start)
 //
-// - findLastNotOf(const string  &str, ch)
-// - findLastNotOf(const string  &str, char ch, int end)                        - N/A
+// - findLastNotOf(const string &str, ch)
+// - findLastNotOf(const string &str, char ch, int end)
 
 /////////////////////////////////////////////////////////////////////////////////
 // 2.1
 //
-// - replicate(const string  &str, int n)                                       - replicate("abc", 3) = 'abcabcabc' : repeat (?)
-// - replicate(char ch, int n)                                                  - replicate('a', 3) = "aaa"
+// - replicate(const string &str, int n)                                       - replicate("abc", 3) = 'abcabcabc' : repeat (?)
+// - replicate(char ch, int n)                                                 - replicate('a', 3) = "aaa"
 //
 // 2.2 lpad, rpad
 //
-// - lpad(const string  &str, int len)                                          - lpad("abc", 5) = "  abc"
-// - lpad(const string  &str, int len, string  pad)                             - lpad("abc", 5, "*") = "**abc"
-// - lpad(const string  &str, int len, char pad)                                - lpad("abc", 5, '*') = "**abc"
+// - lpad(const string &str, int len)                                          - lpad("abc", 5) = "  abc"
+// - lpad(const string &str, int len, string  pad)                             - lpad("abc", 5, "*") = "**abc"
+// - lpad(const string &str, int len, char pad)                                - lpad("abc", 5, '*') = "**abc"
 //
-// - rpad(const string  &str, int len)                                          - rpad("abc", 5) = "abc  "
-// - rpad(const string  &str, int len, string  pad)                             - rpad("abc", 5, "*") = "abc**""
-// - rpad(const string  &str, int len, char pad)                                - rpad("abc", 5, '*') = "abc**""
+// - rpad(const string &str, int len)                                          - rpad("abc", 5) = "abc  "
+// - rpad(const string &str, int len, string  pad)                             - rpad("abc", 5, "*") = "abc**""
+// - rpad(const string &str, int len, char pad)                                - rpad("abc", 5, '*') = "abc**""
 //
 // 2.3
 //
-// - fill(const string  &str, int len)                                          - 
-// - fill(const string  &str, int len, const string  &pad)                      -  
-// - fill(const string  &str, int len, const char &pad)                         -  
+// - fill(const string &str, int len)                                          - 
+// - fill(const string &str, int len, const string  &pad)                      -  
+// - fill(const string &str, int len, const char &pad)                         -  
 //
-// - ellipsis(const string  &str, int len)                                      - 
+// - ellipsis(const string &str, int len)                                      - 
 //
-// - trunc(const string  &str, int len)                                         - 
-// - trunc(const string  &str, int len, bool trim, bool ellipsis)               - 
+// - trunc(const string &str, int len)                                         - 
+// - trunc(const string &str, int len, bool trim, bool ellipsis)               - 
 //
-// - left(const string  &str, int len)                                          - 
-// - right(const string  &str, int len)                                         - 
+// - left(const string &str, int len)                                          - 
+// - right(const string &str, int len)                                         - 
 //
 
 /////////////////////////////////////////////////////////////////////////////////
 // 3.1
 //
-// - capitalize(const string  &str)		                                       - capitalize("abc") = "Abc"
-// - capitalize(const string  &str, bool force)		                           - capitalize(("abC") = "Abc"
-// - capitalize(const string  &str, const string  &locale)                     - N/A
-// - capitalize(const string  &str, bool force, const string  &locale)         - N/A
+// - capitalize(const string &str)		                                       - capitalize("abc") = "Abc"
+// - capitalize(const string &str, bool force)		                           - capitalize(("abC") = "Abc"
+// - capitalize(const string &str, const string  &locale)                     - N/A
+// - capitalize(const string &str, bool force, const string  &locale)         - N/A
 //
-// - decapitalize(const string  &str)		                                   - decapitalize("Abc") = "abc"
-// - decapitalize(const string  &str, bool force)	                           - decapitalize("AbC") = "abc"
-// - decapitalize(const string  &str, const string  &locale)                   - N/A
-// - decapitalize(const string  &str, bool force, const string  &locale)       - N/A
+// - decapitalize(const string &str)		                                   - decapitalize("Abc") = "abc"
+// - decapitalize(const string &str, bool force)	                           - decapitalize("AbC") = "abc"
+// - decapitalize(const string &str, const string  &locale)                   - N/A
+// - decapitalize(const string &str, bool force, const string  &locale)       - N/A
 //
-// - upper(const string  &str)			                                       - upper("aBc") = "ABC" 
-// - upper(const string  &str, const string  &locale)                          - N/A
+// - upper(const string &str)			                                       - upper("aBc") = "ABC" 
+// - upper(const string &str, const string  &locale)                          - N/A
 //
-// - lower(const string  &str)			                                       - lower("Abc") = "abc" 
-// - lower(const string  &str, const string  &locale)                          - N/A
+// - lower(const string &str)			                                       - lower("Abc") = "abc" 
+// - lower(const string &str, const string  &locale)                          - N/A
 //
-// - toUpperCase(const string  &str)
-// - toUpperCase(const string  &str, const string  &locale)                    - N/A
+// - toUpperCase(const string &str)
+// - toUpperCase(const string &str, const string  &locale)                    - N/A
 //
-// - toLowerCase(const string  &str)
-// - toLowerCase(const string  &str, const string  &locale)                    - N/A
+// - toLowerCase(const string &str)
+// - toLowerCase(const string &str, const string  &locale)                    - N/A
 //
-// - toCase(const string  &str, bool upper)
-// - toCase(const string  &str, bool upper, const string  &locale)             - N/A
+// - toCase(const string &str, bool upper)
+// - toCase(const string &str, bool upper, const string  &locale)             - N/A
 // - toCase(char ch, bool upper);
 //
-// - toCamelCase(const string  &str)		                                   - toCamelCase("property_name") = "PropertyName"
-// - toCamelCase(const string  &str, const string  &separator)                 - 
-// - toCamelCase(const string  &str, bool capitalize)                          - 
-// - toCamelCase(const string  &str, const string  &separator, bool capitalize)- 
+// - toCamelCase(const string &str)		                                   - toCamelCase("property_name") = "PropertyName"
+// - toCamelCase(const string &str, const string  &separator)                 - 
+// - toCamelCase(const string &str, bool capitalize)                          - 
+// - toCamelCase(const string &str, const string  &separator, bool capitalize)- 
 //
-// - toSnakeCase(const string  &str)		                                    - toSnakeCase("PropertyName") = "property_name"
-// - toSnakeCase(const string  &str, const string  &separator)                  - 
-// - toSnakeCase(const string  &str, bool upper)                                -  
-// - toSnakeCase(const string  &str, const string  &separator, bool upper)      -  
-// - toSnakeCase(const string  &str, const string  &separator, bool upper, bool trim) -  
+// - toSnakeCase(const string &str)		                                    - toSnakeCase("PropertyName") = "property_name"
+// - toSnakeCase(const string &str, const string  &separator)                  - 
+// - toSnakeCase(const string &str, bool upper)                                -  
+// - toSnakeCase(const string &str, const string  &separator, bool upper)      -  
+// - toSnakeCase(const string &str, const string  &separator, bool upper, bool trim) -  
 //
-// - toKebabCase(const string  &str)		                                    - toKebabCase("PropertyName") = "property-name"
-// - toKebabCase(const string  &str, const string  &separator)                  - 
-// - toKebabCase(const string  &str, const string  &separator, bool upper)      -  
-// - toKebabCase(const string  &str, bool upper)                                -  
-// - toKebabCase(const string  &str, const string  &separator, bool upper, bool trim) -  
+// - toKebabCase(const string &str)		                                    - toKebabCase("PropertyName") = "property-name"
+// - toKebabCase(const string &str, const string  &separator)                  - 
+// - toKebabCase(const string &str, const string  &separator, bool upper)      -  
+// - toKebabCase(const string &str, bool upper)                                -  
+// - toKebabCase(const string &str, const string  &separator, bool upper, bool trim) -  
 //
-// - toTypeCase(const string  &str, const string  &type)
-// - toTypeCase(const string  &str, const string  &type, const string  &separators, const string  &connector)
+// - toTypeCase(const string &str, const string  &type)
+// - toTypeCase(const string &str, const string  &type, const string  &separators, const string  &connector)
 //
-// - reverse(const string  &str)			                                     - reverse("abc") = "cba"
+// - reverse(const string &str)			                                     - reverse("abc") = "cba"
 //
 
 /////////////////////////////////////////////////////////////////////////////////
 // 4.1
 //
-// - startsWith(const string  &str, const string  &prefix)                       - startsWith("myfile.txt", "myfile") = true
-// - endsWith(const string  &str, const string  &suffix)                         - endsWith("myfile.txt", ".txt") = true
+// - startsWith(const string &str, const string  &prefix)                       - startsWith("myfile.txt", "myfile") = true
+// - endsWith(const string &str, const string  &suffix)                         - endsWith("myfile.txt", ".txt") = true
 //
-// - hasPrefix(const string  &str, const string  &prefix)                        - [alias]: hasPrefix("myfile.txt", "myfile") = true
-// - hasSuffix(const string  &str, const string  &suffix)                        - [alias]: hasSuffix("myfile.txt", ".txt") = true
+// - hasPrefix(const string &str, const string  &prefix)                        - [alias]: hasPrefix("myfile.txt", "myfile") = true
+// - hasSuffix(const string &str, const string  &suffix)                        - [alias]: hasSuffix("myfile.txt", ".txt") = true
 //
-// - startsWithIgnoreCase(const string  &str, const string  &prefix)             - startsWithIgnoreCase("myfile.txt", "MyFile") = true
-// - endsWithIgnoreCase(const string  &str, const string  &suffix)               - endsWithIgnoreCase("myfile.txt", ".TxT") = true
+// - startsWithIgnoreCase(const string &str, const string  &prefix)             - startsWithIgnoreCase("myfile.txt", "MyFile") = true
+// - endsWithIgnoreCase(const string &str, const string  &suffix)               - endsWithIgnoreCase("myfile.txt", ".TxT") = true
 //
-// - hasPrefixIgnoreCase(const string  &str, const string  &prefix)              - [alias]: hasPrefixIgnoreCase("myfile.txt", "MyFile") = true
-// - hasSuffixIgnoreCase(const string  &str, const string  &suffix)              - [alias]: hasSuffixIgnoreCase("myfile.txt", ".TxT") = true
+// - hasPrefixIgnoreCase(const string &str, const string  &prefix)              - [alias]: hasPrefixIgnoreCase("myfile.txt", "MyFile") = true
+// - hasSuffixIgnoreCase(const string &str, const string  &suffix)              - [alias]: hasSuffixIgnoreCase("myfile.txt", ".TxT") = true
 //
 // 4.2
 // 
-// - removePrefix(const string  &str, const string  &prefix)                     -
-// - removePrefixes(const string  &str, const vector<string> &prefixes)          - 
+// - removePrefix(const string &str, const string  &prefix)                     -
+// - removePrefixes(const string &str, const vector<string> &prefixes)          - 
 //
-// - removeSuffix(const string  &str, const string  &suffix)                     -
-// - removeSuffixes(const string  &str, const vector<string> &suffixes)          - 
+// - removeSuffix(const string &str, const string  &suffix)                     -
+// - removeSuffixes(const string &str, const vector<string> &suffixes)          - 
 //
 // 4.3
 // 
-// - isQuoted(const string  &str)                                                -
-// - isQuoted(const string  &str, const string  &startQuote, const string  &endQuote)
-// - needQuote(const string  &str)                                               -
-// - needQuote(const string  &str, const string  &startQuote, const string  &endQuote)
-// - quote(const string  &str)                                                   -
-// - quote(const string  &str, const string  &startQuote, const string  &endQuote)
-// - unquote(const string  &str)                                                 -
-// - unquote(const string  &str, const string  &startQuote, const string  &endQuote)
+// - isQuoted(const string &str)                                                -
+// - isQuoted(const string &str, const string  &startQuote, const string  &endQuote)
+// - needQuote(const string &str)                                               -
+// - needQuote(const string &str, const string  &startQuote, const string  &endQuote)
+// - quote(const string &str)                                                   -
+// - quote(const string &str, const string  &startQuote, const string  &endQuote)
+// - unquote(const string &str)                                                 -
+// - unquote(const string &str, const string  &startQuote, const string  &endQuote)
 //
 // 4.4
 // 
 // - isColumnSeparator(const char ch)                                            -
 // - isColumnText(const char* array, int len)                                    -
-// - isColumnText(const string  &str)                                            -
+// - isColumnText(const string &str)                                            -
 // - isLineText(const char* array, int len)                                      -
-// - isLineText(const string  &str)                                              -
+// - isLineText(const string &str)                                              -
 
 /////////////////////////////////////////////////////////////////////////////////
 // 5.1
 //
-// - countChar(const string  &str, char ch)
-// - countString(const string  &str, const string  &findStr)
-// - countWord(const string  &str)
-// - countWord(const string  &str, const string  &separators)
-// - countLine(const string  &str)
+// - countChar(const string &str, char ch)
+// - countString(const string &str, const string  &findStr)
+// - countWord(const string &str)
+// - countWord(const string &str, const string  &separators)
+// - countLine(const string &str)
 
 /////////////////////////////////////////////////////////////////////////////////
 // 6.1
 //  
-// - replaceAll(const string  &str, const string  &s1, const string  &s2)
-// - replaceAll(const string  &str, const vector<string> &oldValues, const vector<string> &newValues)
+// - replaceAll(const string &str, const string  &s1, const string  &s2)
+// - replaceAll(const string &str, const vector<string> &oldValues, const vector<string> &newValues)
     
 /////////////////////////////////////////////////////////////////////////////////
 // 7.1
 //      
-// - split(const string  &str, const string  &separators)
-// - split(const string  &str, const string  &separators, bool include)          - N/A
+// - split(const string &str, const string  &separators)
+// - split(const string &str, const string  &separators, bool include)          - N/A
 // 
-// - splitWords(const string  &str)
-// - splitWords(const string  &str, const string  &separators)
-// - splitLines(const string  &str)
+// - splitWords(const string &str)
+// - splitWords(const string &str, const string  &separators)
+// - splitLines(const string &str)
 
 /////////////////////////////////////////////////////////////////////////////////
 // 8.1
@@ -206,17 +207,17 @@
 // - toString(const vector<string> values)
 // - toString(const vector<string> values, const string  &separator)
 //
-// - toWordArray(const string  &str)                                            - N/A ???
-// - toWordArray(const string  &str, const string  &separators)                 - N/A ???
+// - toWordArray(const string &str)                                            - N/A ???
+// - toWordArray(const string &str, const string  &separators)                 - N/A ???
 //
-// - toLineArray(const string  &str)                                            - N/A ???
+// - toLineArray(const string &str)                                            - N/A ???
 //
 // 8.2
 //
-// - toWordList(const string  &str)                                             - 
-// - toWordList(const string  &str, const string  &separators)                  - 
+// - toWordList(const string &str)                                             - 
+// - toWordList(const string &str, const string  &separators)                  - 
 //
-// - toLineList(const string  &str)                                             - 
+// - toLineList(const string &str)                                             - 
 // - toList(array)                                                              - N/A ???    
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -229,7 +230,7 @@
 // - isWhitespace(char ch)
 // - isDot(char ch)
 // - isUnderline(char ch)
-// - isIdentifier(const string  &str)
+// - isIdentifier(const string &str)
 //
 // 9.2
 //
@@ -649,8 +650,22 @@ namespace strlib {
         return str.find_first_not_of(ch);
     }
 
+    int findFirstNotOf(const std::string &str, const char ch, int start) {
+        if (start < 0 || start > str.length() - 1) { // find_first_not_of - OK
+            return -1;
+        }
+        return str.find_first_not_of(ch, start);
+    }
+
     int findLastNotOf(const std::string &str, const char ch) {
         return str.find_last_not_of(ch);
+    }
+
+    int findLastNotOf(const std::string &str, const char ch, int end) {
+        if (end < 0 || end > str.length() - 1) { // find_last_not_of - FAIL
+            return -1;
+        }
+        return str.find_last_not_of(ch, end);
     }
 
     //// 2.1
@@ -1699,14 +1714,14 @@ namespace strlib {
     }
 
     // unquote by default: ', "
-    std::string unquote(const std::string  &str) {
+    std::string unquote(const std::string &str) {
         std::string strn = str;
         _unquote(strn);
         return strn;
     }
 
     // unquote by default: ', "
-    void _unquote(std::string  &str) {
+    void _unquote(std::string &str) {
         if (!isQuoted(str, "'", "'") && !isQuoted(str, "\"", "\"")) {
             return;
         }
@@ -1755,7 +1770,7 @@ namespace strlib {
         return false;
     }
 
-    bool isColumnText(const std::string  &str) {
+    bool isColumnText(const std::string &str) {
         if (str.empty()) {
             return false; // by default inline (isColumnText = false)
         }
@@ -1771,7 +1786,7 @@ namespace strlib {
         return !isColumnText(array, len);
     }
 
-    bool isLineText(const std::string  &str) {
+    bool isLineText(const std::string &str) {
         if (str.empty()) {
             return true; // by default inline
         }
@@ -1780,7 +1795,7 @@ namespace strlib {
 
     //// 5.1
 
-    int countChar(const std::string  &str, char ch) {
+    int countChar(const std::string &str, char ch) {
         if (str.empty()) {
             return 0;
         }
