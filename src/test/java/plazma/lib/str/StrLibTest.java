@@ -329,7 +329,7 @@ public class StrLibTest extends AbstractTestCase {
 
     // 2.2
 
-    public void testPad() {
+    public void testLpad() {
 
         // lpad: null
         assertNull(StrLib.lpad(null, 3));
@@ -354,6 +354,10 @@ public class StrLibTest extends AbstractTestCase {
         // *****abc
         //---------
         // yzyzyabc
+        
+    }
+
+    public void testRpad() {
         
         // rpad: null
         assertNull(StrLib.rpad(null, 3));
@@ -381,7 +385,7 @@ public class StrLibTest extends AbstractTestCase {
         
     }
 
-    public void testLeftRight() {
+    public void testLeft() {
 
         // left: null
         assertNull(StrLib.left(null, 3));
@@ -394,6 +398,10 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("ab", StrLib.left("ab", 3));
         assertEquals("abc", StrLib.left("abc", 3));
         assertEquals("abc", StrLib.left("abcd", 3));
+
+    }
+
+    public void testRight() {
 
         // right: null
         assertNull(StrLib.right(null, 3));
@@ -409,7 +417,7 @@ public class StrLibTest extends AbstractTestCase {
 
     }
 
-    public void testCapitalizeDecapitalize() {
+    public void testCapitalize() {
 
         // capitalize: null
         assertNull(StrLib.capitalize(null));
@@ -421,6 +429,10 @@ public class StrLibTest extends AbstractTestCase {
         // capitalize: value
         assertEquals("ABcdE", StrLib.capitalize("aBcdE"));
         assertEquals("Abcde", StrLib.capitalize("aBcdE", true));
+
+    }
+
+    public void testDecapitalize() {
 
         // decapitalize: null
         assertNull(StrLib.decapitalize(null));
@@ -435,7 +447,7 @@ public class StrLibTest extends AbstractTestCase {
 
     }
 
-    public void testUpperLower() {
+    public void testUpper() {
 
         // upper: null
         assertNull(StrLib.upper(null));
@@ -446,6 +458,10 @@ public class StrLibTest extends AbstractTestCase {
 
         // upper: value
         assertEquals("ABCDE", StrLib.upper("aBcdE"));
+
+    }
+
+    public void testLower() {
 
         // lower: null
         assertNull(StrLib.lower(null));
@@ -459,7 +475,7 @@ public class StrLibTest extends AbstractTestCase {
 
     }
 
-    public void testToUpperLowerCase() {
+    public void testToUpperCase() {
 
         // toUpperCase: null
         assertNull(StrLib.toUpperCase(null));
@@ -470,6 +486,10 @@ public class StrLibTest extends AbstractTestCase {
 
         // toUpperCase: value
         assertEquals("ABCDE", StrLib.toUpperCase("aBcdE"));
+
+    }
+
+    public void testToLowerCase() {
 
         // toLowerCase: null
         assertNull(StrLib.toLowerCase(null));
@@ -569,7 +589,7 @@ public class StrLibTest extends AbstractTestCase {
         
     }
 
-    public void testPrefixSuffix() {
+    public void testRemovePrefix() {
 
         // removePrefix: null
         assertNull(StrLib.removePrefix(null, null));
@@ -590,6 +610,10 @@ public class StrLibTest extends AbstractTestCase {
 
         assertEquals("", StrLib.removePrefix("ab", "ab"));
         assertEquals("cde", StrLib.removePrefix("abcde", "ab"));
+
+    }
+
+    public void testRemoveSuffix() {
 
         // removeSuffix: null
         assertNull(StrLib.removeSuffix(null, null));
@@ -612,7 +636,7 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("abc", StrLib.removeSuffix("abcde", "de"));
     }
 
-    public void testCount() {
+    public void testCountString() {
 
         assertEquals(0, StrLib.countString("abcde", "xyz"));
         assertEquals(1, StrLib.countString("abcde", "abc"));
@@ -621,6 +645,10 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals(2, StrLib.countString("abcdeabc", "abc"));
         assertEquals(2, StrLib.countString("abc de abc", "abc"));
         assertEquals(2, StrLib.countString("abc de abc x", "abc"));
+
+    }
+
+    public void testCountChar() {
 
         assertEquals(0, StrLib.countChar("abcde", 'z'));
         assertEquals(1, StrLib.countChar("abcde", 'a'));
