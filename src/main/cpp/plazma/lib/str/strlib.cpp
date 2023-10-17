@@ -171,34 +171,34 @@
 // 
 // - isColumnSeparator(const char ch)                                            -
 // - isColumnText(const char* array, int len)                                    -
-// - isColumnText(const string &str)                                            -
+// - isColumnText(const string& str)                                             -
 // - isLineText(const char* array, int len)                                      -
-// - isLineText(const string &str)                                              -
+// - isLineText(const string& str)                                               -
 
 /////////////////////////////////////////////////////////////////////////////////
 // 5.1
 //
-// - countChars(const string &str, char ch)
-// - countStrings(const string &str, const string  &findStr)
-// - countWords(const string &str)
-// - countWords(const string &str, const string  &separators)
-// - countLines(const string &str)
+// - countChars(const string& str, char ch)
+// - countStrings(const string& str, const string& findStr)
+// - countWords(const string& str)
+// - countWords(const string& str, const string& separators)
+// - countLines(const string& str)
 
 /////////////////////////////////////////////////////////////////////////////////
 // 6.1
 //  
-// - replaceAll(const string &str, const string  &s1, const string  &s2)
-// - replaceAll(const string &str, const vector<string> &oldValues, const vector<string> &newValues)
+// - replaceAll(const string& str, const string& s1, const string& s2)
+// - replaceAll(const string& str, const vector<string>& oldValues, const vector<string>& newValues)
     
 /////////////////////////////////////////////////////////////////////////////////
 // 7.1
 //      
-// - split(const string &str, const string  &separators)
-// - split(const string &str, const string  &separators, bool include)          - N/A
+// - split(const string& str, const string& separators)
+// - split(const string& str, const string& separators, bool include)          - N/A
 // 
-// - splitWords(const string &str)
-// - splitWords(const string &str, const string  &separators)
-// - splitLines(const string &str)
+// - splitWords(const string& str)
+// - splitWords(const string& str, const string& separators)
+// - splitLines(const string& str)
 
 /////////////////////////////////////////////////////////////////////////////////
 // 8.1
@@ -1770,7 +1770,7 @@ namespace strlib {
         return false;
     }
 
-    bool isColumnText(const std::string &str) {
+    bool isColumnText(const std::string& str) {
         if (str.empty()) {
             return false; // by default inline (isColumnText = false)
         }
@@ -1786,7 +1786,7 @@ namespace strlib {
         return !isColumnText(array, len);
     }
 
-    bool isLineText(const std::string &str) {
+    bool isLineText(const std::string& str) {
         if (str.empty()) {
             return true; // by default inline
         }
@@ -1795,7 +1795,7 @@ namespace strlib {
 
     //// 5.1
 
-    int countChars(const std::string &str, char ch) {
+    int countChars(const std::string& str, char ch) {
         if (str.empty()) {
             return 0;
         }
@@ -1808,7 +1808,7 @@ namespace strlib {
         return count;
     }
 
-    int countStrings(const std::string &str, const std::string &findStr) {
+    int countStrings(const std::string& str, const std::string& findStr) {
         if (str.empty() || findStr.empty()) {
             return 0;
         }
@@ -1821,30 +1821,30 @@ namespace strlib {
         return count;
     }
 
-    int countWords(const std::string &str) {
+    int countWords(const std::string& str) {
         std::vector<std::string> words = splitWords(str);
         return words.size();
     }
 
-    int countWords(const std::string &str, const std::string &separators) {
+    int countWords(const std::string& str, const std::string& separators) {
         std::vector<std::string> words = splitWords(str, separators);
         return words.size();
     }
 
-    int countLines(const std::string &str) {
+    int countLines(const std::string& str) {
         std::vector<std::string> lines = splitLines(str);
         return lines.size();
     }
 
     //// 6.1
 
-    std::string replaceAll(const std::string &str, const std::string &s1, const std::string &s2) {
+    std::string replaceAll(const std::string& str, const std::string& s1, const std::string& s2) {
         std::string strn = str;
         _replaceAll(strn, s1, s2);
         return strn;
     }
 
-    void _replaceAll(std::string &str, const std::string &s1, const std::string &s2) {
+    void _replaceAll(std::string& str, const std::string& s1, const std::string& s2) {
         if (str.empty()) {
             return;
         }
@@ -1855,13 +1855,13 @@ namespace strlib {
         }
     }
 
-    std::string replaceAll(const std::string &str, const std::vector<std::string> &oldValues, const std::vector<std::string> &newValues) {
+    std::string replaceAll(const std::string& str, const std::vector<std::string>& oldValues, const std::vector<std::string>& newValues) {
         std::string  strn = str;
         _replaceAll(strn, oldValues, newValues);
         return strn;
     }
 
-    void _replaceAll(std::string &str, const std::vector<std::string> &oldValues, const std::vector<std::string> &newValues) {
+    void _replaceAll(std::string& str, const std::vector<std::string>& oldValues, const std::vector<std::string>& newValues) {
         if (str.empty()) {
             return;
         }
@@ -1884,7 +1884,7 @@ namespace strlib {
 
     // split: std::string , char
 
-    std::vector<std::string> split(const std::string &str, char separator) {
+    std::vector<std::string> split(const std::string& str, char separator) {
         std::vector<std::string> result;
         std::stringstream stream(str);
         std::string token;
@@ -1898,7 +1898,7 @@ namespace strlib {
     }
 
     // split v2.0: std::string , std::string 
-    std::vector<std::string> split2(const std::string &str, const std::string &separator) {
+    std::vector<std::string> split2(const std::string& str, const std::string& separator) {
         size_t pos_start = 0;
         size_t pos_end = 0;
         size_t delim_len = separator.length();
@@ -1918,7 +1918,7 @@ namespace strlib {
     // https://stackoverflow.com/questions/49201654/splitting-a-string-with-multiple-delimiters-in-c
     // https://stackoverflow.com/questions/7621727/split-a-string-into-words-by-multiple-delimiters
 
-    std::vector<std::string> split(const std::string &str, const std::string &separators) {
+    std::vector<std::string> split(const std::string& str, const std::string& separators) {
         std::vector<std::string> result;
         if (str.empty() || separators.empty()) {
             result.push_back(str);
@@ -1939,35 +1939,35 @@ namespace strlib {
 
     // split v3.0 (split and parse float!)
     // TODO: Rename to 'splitf' or 'splitFloat'
-    std::vector<float> split3(const std::string &s, const std::string &separator) {
+    std::vector<float> split3(const std::string& str, const std::string& separator) {
         size_t pos_start = 0;
         size_t pos_end = 0;
         size_t delim_len = separator.length();
         std::string  token;
         std::vector<float> res;
 
-        while ((pos_end = s.find(separator, pos_start)) != std::string ::npos) {
-            token = s.substr(pos_start, pos_end - pos_start);
+        while ((pos_end = str.find(separator, pos_start)) != std::string ::npos) {
+            token = str.substr(pos_start, pos_end - pos_start);
             pos_start = pos_end + delim_len;
             res.push_back(strtof(token.c_str(), 0));           // PARSE
         }
 
-        res.push_back(strtof(s.substr(pos_start).c_str(), 0)); // PARSE
+        res.push_back(strtof(str.substr(pos_start).c_str(), 0)); // PARSE
         return res;
     }
 
     //
 
-    std::vector<std::string> splitWords(const std::string &str) {
+    std::vector<std::string> splitWords(const std::string& str) {
         return splitWords(str, DEFAULT_WORD_SEPARATORS);
     }
 
-    std::vector<std::string> splitWords(const std::string &str, const std::string &separators) {
+    std::vector<std::string> splitWords(const std::string& str, const std::string& separators) {
         std::vector<std::string> result = split(str, separators.empty() ? DEFAULT_WORD_SEPARATORS : separators);
         return result;
     }
 
-    std::vector<std::string> splitLines(const std::string &str) {
+    std::vector<std::string> splitLines(const std::string& str) {
         std::vector<std::string> result = split(str, "\r\n");
         return result;
     }

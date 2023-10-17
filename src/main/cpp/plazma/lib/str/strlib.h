@@ -169,32 +169,32 @@
 // - isColumnText(const char* array, int len)                                  -
 // - isColumnText(const string &str)                                           -
 // - isLineText(const char* array, int len)                                    -
-// - isLineText(const string &str)                                             -
+// - isLineText(const string& str)                                             -
 
 /////////////////////////////////////////////////////////////////////////////////
 // 5.1
 //
 // - countChars(const string &str, char ch)
-// - countStrings(const string &str, const string &findStr)
+// - countStrings(const string &str, const string& findStr)
 // - countWords(const string &str)
-// - countWords(const string &str, const string &separators)
+// - countWords(const string &str, const string& separators)
 // - countLines(const string &str)
 
 /////////////////////////////////////////////////////////////////////////////////
 // 6.1
 //  
-// - replaceAll(const string &str, const string &s1, const string &s2)
-// - replaceAll(const string &str, const vector<string > &oldValues, const vector<string > &newValues)
+// - replaceAll(const string &str, const string& s1, const string& s2)
+// - replaceAll(const string &str, const vector<string>& oldValues, const vector<string>& newValues)
     
 /////////////////////////////////////////////////////////////////////////////////
 // 7.1
 //      
-// - split(const string &str, const string &separators)
-// - split(const string &str, const string &separators, bool include)          - N/A
+// - split(const string &str, const string& separators)
+// - split(const string &str, const string& separators, bool include)          - N/A
 // 
-// - splitWords(const string &str)
-// - splitWords(const string &str, const string &separators)
-// - splitLines(const string &str)
+// - splitWords(const string& str)
+// - splitWords(const string& str, const string& separators)
+// - splitLines(const string& str)
 
 /////////////////////////////////////////////////////////////////////////////////
 // 8.1
@@ -700,55 +700,55 @@ namespace strlib {
 
     bool isColumnText(const char* array, int len);
 
-    bool isColumnText(const std::string &str);
+    bool isColumnText(const std::string& str);
 
     // isLineText
 
     bool isLineText(const char* array, int len);
 
-    bool isLineText(const std::string &str);
+    bool isLineText(const std::string& str);
 
     //// 5.1
 
-    int countChars(const std::string &str, char ch);
+    int countChars(const std::string& str, char ch);
 
-    int countStrings(const std::string &str, const std::string &findStr);
+    int countStrings(const std::string& str, const std::string& findStr);
 
-    int countWords(const std::string &str);
+    int countWords(const std::string& str);
 
-    int countWords(const std::string &str, const std::string &separators);
+    int countWords(const std::string& str, const std::string& separators);
 
-    int countLines(const std::string &str);
+    int countLines(const std::string& str);
 
     //// 6.1
 
     std::string replaceAll(const std::string &str, const std::string &s1, const std::string &s2);
 
-    void _replaceAll(std::string  &str, const std::string &s1, const std::string &s2);
+    void _replaceAll(std::string& str, const std::string &s1, const std::string &s2);
 
-    std::string replaceAll(const std::string &str, const std::vector<std::string > &oldValues, const std::vector<std::string > &newValues);
+    std::string replaceAll(const std::string& str, const std::vector<std::string>& oldValues, const std::vector<std::string>& newValues);
 
-    void _replaceAll(std::string  &str, const std::vector<std::string > &oldValues, const std::vector<std::string > &newValues);
+    void _replaceAll(std::string& str, const std::vector<std::string>& oldValues, const std::vector<std::string>& newValues);
 
     //// 7.1
 
-    std::vector<std::string > split(const std::string &s, char separator);
+    std::vector<std::string> split(const std::string& str, char separator);
 
     // split v2.0
-    std::vector<std::string > split2(const std::string &str, const std::string &separator);
+    std::vector<std::string> split2(const std::string& str, const std::string& separator);
 
-    std::vector<std::string > split(const std::string &str, const std::string &separators);
+    std::vector<std::string> split(const std::string& str, const std::string& separators);
 
     // split v3.0 (split and parse float!)
-    std::vector<float> split3(const std::string &s, const std::string &separator);
+    std::vector<float> split3(const std::string& str, const std::string& separator);
 
     //
 
-    std::vector<std::string > splitWords(const std::string &str);
+    std::vector<std::string> splitWords(const std::string& str);
 
-    std::vector<std::string > splitWords(const std::string &str, const std::string &separators);
+    std::vector<std::string> splitWords(const std::string& str, const std::string& separators);
 
-    std::vector<std::string > splitLines(const std::string &str);
+    std::vector<std::string> splitLines(const std::string& str);
 
     //// 8.1
 
