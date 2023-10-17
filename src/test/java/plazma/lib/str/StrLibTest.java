@@ -120,10 +120,34 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("abc", StrLib.normalize(" abc "));
 
         // normalize(" \t\n\r\f\v")
-        assertNull("abc", StrLib.normalize(" \t\n\r\f\u000B"));                      // \v -> \u000B
+        assertNull(StrLib.normalize(" \t\n\r\f\u000B"));                             // \v -> \u000B
         assertEquals("abc", StrLib.normalize(" \t\n\r\f\u000Babc"));                 // \v -> \u000B
         assertEquals("abc", StrLib.normalize("abc\t\n\r\f\u000B "));                 // \v -> \u000B
         assertEquals("abc", StrLib.normalize(" \t\n\r\f\u000Babc\t\n\r\f\u000B "));  // \v -> \u000B
+
+    }
+
+    public void testNormalizeSafe() {
+
+        // normalizeSafe(null), normalizeSafe(empty)
+        assertEquals("", StrLib.normalizeSafe(null));
+        assertEquals("", StrLib.normalizeSafe(""));
+
+        // normalizeSafe(blank)
+        assertEquals("", StrLib.normalizeSafe(" "));
+        assertEquals("", StrLib.normalizeSafe("  "));
+
+        // normalizeSafe(value)
+        assertEquals("abc", StrLib.normalizeSafe("abc"));
+        assertEquals("abc", StrLib.normalizeSafe(" abc"));
+        assertEquals("abc", StrLib.normalizeSafe("abc "));
+        assertEquals("abc", StrLib.normalizeSafe(" abc "));
+
+        // normalizeSafe(" \t\n\r\f\v")
+        assertEquals("", StrLib.normalizeSafe(" \t\n\r\f\u000B"));                      // \v -> \u000B
+        assertEquals("abc", StrLib.normalizeSafe(" \t\n\r\f\u000Babc"));                 // \v -> \u000B
+        assertEquals("abc", StrLib.normalizeSafe("abc\t\n\r\f\u000B "));                 // \v -> \u000B
+        assertEquals("abc", StrLib.normalizeSafe(" \t\n\r\f\u000Babc\t\n\r\f\u000B "));  // \v -> \u000B
 
     }
 
@@ -190,7 +214,67 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("abc", StrLib.normalizeBlank(" abc ", true, false));
 
     }
+    
+    // emptyIfNull(String str)
+    // nullIfEmpty(String str)
+    // nullIfEmpty(String str, boolean trim)
 
+    public void testDefaultIfNull() {
+        
+        // defaultIffNull(null/empty, null/empty)
+        assertNull(StrLib.defaultIfNull(null, null));
+        assertEquals("", StrLib.defaultIfNull("", null));        
+        assertEquals("", StrLib.defaultIfNull(null, ""));        
+        assertEquals("", StrLib.defaultIfNull("", ""));
+        
+        assertEquals(" ", StrLib.defaultIfNull(" ", null));        
+        assertEquals(" ", StrLib.defaultIfNull(null, " "));        
+        assertEquals("", StrLib.defaultIfNull("", " "));     // 1
+        assertEquals(" ", StrLib.defaultIfNull(" ", " "));
+
+        assertEquals(" ", StrLib.defaultIfNull(" ", ""));        
+        assertEquals("", StrLib.defaultIfNull("", " "));     // 2        
+        assertEquals("", StrLib.defaultIfNull("", " "));     // 3
+
+        assertEquals(".", StrLib.defaultIfNull(".", null));        
+        assertEquals(".", StrLib.defaultIfNull(null, "."));        
+        assertEquals("", StrLib.defaultIfNull("", "."));     // 4
+        assertEquals(".", StrLib.defaultIfNull(".", "."));
+
+        assertEquals(".", StrLib.defaultIfNull(".", ""));        
+        assertEquals("", StrLib.defaultIfNull("", "."));     // 5        
+        assertEquals("", StrLib.defaultIfNull("", "."));     // 6
+
+    }
+
+    public void testDefaultIfEmpty() {
+        
+        // defaultIfEmpty(null/empty, null/empty)
+        assertNull(StrLib.defaultIfEmpty(null, null));
+        assertNull(StrLib.defaultIfEmpty("", null));        
+        assertEquals("", StrLib.defaultIfEmpty(null, ""));        
+        assertEquals("", StrLib.defaultIfEmpty("", ""));
+        
+        assertEquals(" ", StrLib.defaultIfEmpty(" ", null));        
+        assertEquals(" ", StrLib.defaultIfEmpty(null, " "));        
+        assertEquals(" ", StrLib.defaultIfEmpty("", " "));
+        assertEquals(" ", StrLib.defaultIfEmpty(" ", " "));
+
+        assertEquals(" ", StrLib.defaultIfEmpty(" ", ""));        
+        assertEquals(" ", StrLib.defaultIfEmpty("", " "));        
+        assertEquals(" ", StrLib.defaultIfEmpty("", " "));
+
+        assertEquals(".", StrLib.defaultIfEmpty(".", null));        
+        assertEquals(".", StrLib.defaultIfEmpty(null, "."));        
+        assertEquals(".", StrLib.defaultIfEmpty("", "."));
+        assertEquals(".", StrLib.defaultIfEmpty(".", "."));
+
+        assertEquals(".", StrLib.defaultIfEmpty(".", ""));        
+        assertEquals(".", StrLib.defaultIfEmpty("", "."));        
+        assertEquals(".", StrLib.defaultIfEmpty("", "."));
+
+    }
+    
     // 1.3
 
     public void testTrim() {
@@ -324,6 +408,129 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals(" abc", StrLib.rtrim(" abc\r\n", "\r\n"));
         assertEquals("\r\nabc", StrLib.rtrim("\r\nabc\r\n", "\r\n"));
         assertEquals("\r\nabc", StrLib.rtrim("\r\nabc\r\n", "\r\n"));
+
+    }
+    
+    public void testFindFirstNotOf() {
+                
+        // char
+        
+        // NotFound: null/empty
+        assertEquals(-1, StrLib.findFirstNotOf(null, '\0'));
+        assertEquals(-1, StrLib.findFirstNotOf("", '\0'));
+        assertEquals(-1, StrLib.findFirstNotOf(null, ' '));
+        assertEquals(-1, StrLib.findFirstNotOf("", ' '));
+        assertEquals(-1, StrLib.findFirstNotOf(null, '.'));
+        assertEquals(-1, StrLib.findFirstNotOf("", '.'));
+        
+        // NotFound: null/empty, pos
+        assertEquals(-1, StrLib.findFirstNotOf(null, '\0', 0));
+        assertEquals(-1, StrLib.findFirstNotOf("", '\0', 0));
+        assertEquals(-1, StrLib.findFirstNotOf(null, ' ', 0));
+        assertEquals(-1, StrLib.findFirstNotOf("", ' ', 0));
+        assertEquals(-1, StrLib.findFirstNotOf(null, '.', 0));
+        assertEquals(-1, StrLib.findFirstNotOf("", '.', 0));
+
+        assertEquals(-1, StrLib.findFirstNotOf(null, '\0', -1));
+        assertEquals(-1, StrLib.findFirstNotOf("", '\0', -1));
+        assertEquals(-1, StrLib.findFirstNotOf(null, ' ', -1));
+        assertEquals(-1, StrLib.findFirstNotOf("", ' ', -1));
+        assertEquals(-1, StrLib.findFirstNotOf(null, '.', -1));
+        assertEquals(-1, StrLib.findFirstNotOf("", '.', -1));
+
+        assertEquals(-1, StrLib.findFirstNotOf(null, '\0', 1));
+        assertEquals(-1, StrLib.findFirstNotOf("", '\0', 1));
+        assertEquals(-1, StrLib.findFirstNotOf(null, ' ', 1));
+        assertEquals(-1, StrLib.findFirstNotOf("", ' ', 1));
+        assertEquals(-1, StrLib.findFirstNotOf(null, '.', 1));
+        assertEquals(-1, StrLib.findFirstNotOf("", '.', 1));
+        
+        // NotFound: blank/value
+        assertEquals(-1, StrLib.findFirstNotOf(" ", ' '));
+        assertEquals(-1, StrLib.findFirstNotOf("  ", ' '));
+        
+        // Found: value
+        assertEquals(0, StrLib.findFirstNotOf(".", ' '));
+        assertEquals(1, StrLib.findFirstNotOf(" .", ' '));
+        assertEquals(2, StrLib.findFirstNotOf("  .", ' '));
+
+        assertEquals(0, StrLib.findFirstNotOf(".", '*'));
+        assertEquals(1, StrLib.findFirstNotOf("*.", '*'));
+        assertEquals(2, StrLib.findFirstNotOf("**.", '*'));
+        
+        // Found: value, pos
+        assertEquals(2, StrLib.findFirstNotOf("**..**..", '*', 0));
+        assertEquals(2, StrLib.findFirstNotOf("**..**..", '*', 1));
+        assertEquals(2, StrLib.findFirstNotOf("**..**..", '*', 2));
+        assertEquals(3, StrLib.findFirstNotOf("**..**..", '*', 3));        
+        assertEquals(6, StrLib.findFirstNotOf("**..**..", '*', 4));
+        assertEquals(6, StrLib.findFirstNotOf("**..**..", '*', 6));
+        assertEquals(7, StrLib.findFirstNotOf("**..**..", '*', 7));
+        
+        // NotFound: value, pos
+        assertEquals(-1, StrLib.findFirstNotOf("**..**..", '*', 8));
+
+    }
+
+    public void testFindLastNotOf() {
+        
+        // char
+        
+        // NotFound: null/empty
+        assertEquals(-1, StrLib.findLastNotOf(null, '\0'));
+        assertEquals(-1, StrLib.findLastNotOf("", '\0'));
+        assertEquals(-1, StrLib.findLastNotOf(null, ' '));
+        assertEquals(-1, StrLib.findLastNotOf("", ' '));
+        assertEquals(-1, StrLib.findLastNotOf(null, '.'));
+        assertEquals(-1, StrLib.findLastNotOf("", '.'));
+        
+        // NotFound: null/empty, pos
+        assertEquals(-1, StrLib.findLastNotOf(null, '\0', 0));
+        assertEquals(-1, StrLib.findLastNotOf("", '\0', 0));
+        assertEquals(-1, StrLib.findLastNotOf(null, ' ', 0));
+        assertEquals(-1, StrLib.findLastNotOf("", ' ', 0));
+        assertEquals(-1, StrLib.findLastNotOf(null, '.', 0));
+        assertEquals(-1, StrLib.findLastNotOf("", '.', 0));
+
+        assertEquals(-1, StrLib.findLastNotOf(null, '\0', -1));
+        assertEquals(-1, StrLib.findLastNotOf("", '\0', -1));
+        assertEquals(-1, StrLib.findLastNotOf(null, ' ', -1));
+        assertEquals(-1, StrLib.findLastNotOf("", ' ', -1));
+        assertEquals(-1, StrLib.findLastNotOf(null, '.', -1));
+        assertEquals(-1, StrLib.findLastNotOf("", '.', -1));
+
+        assertEquals(-1, StrLib.findLastNotOf(null, '\0', 1));
+        assertEquals(-1, StrLib.findLastNotOf("", '\0', 1));
+        assertEquals(-1, StrLib.findLastNotOf(null, ' ', 1));
+        assertEquals(-1, StrLib.findLastNotOf("", ' ', 1));
+        assertEquals(-1, StrLib.findLastNotOf(null, '.', 1));
+        assertEquals(-1, StrLib.findLastNotOf("", '.', 1));
+        
+        // NotFound: blank/value
+        assertEquals(-1, StrLib.findLastNotOf(" ", ' '));
+        assertEquals(-1, StrLib.findLastNotOf("  ", ' '));
+        
+        // Found: value
+        assertEquals(0, StrLib.findLastNotOf(".", ' '));
+        assertEquals(1, StrLib.findLastNotOf(".. ", ' '));
+        assertEquals(1, StrLib.findLastNotOf("..  ", ' '));
+
+        assertEquals(0, StrLib.findLastNotOf(".", '*'));
+        assertEquals(1, StrLib.findLastNotOf("..*", '*'));
+        assertEquals(1, StrLib.findLastNotOf("..**", '*'));
+        
+        // Found: value, pos
+        assertEquals(5, StrLib.findLastNotOf("..**..**", '*', 7));
+        assertEquals(5, StrLib.findLastNotOf("..**..**", '*', 6));
+        assertEquals(5, StrLib.findLastNotOf("..**..**", '*', 5));
+        assertEquals(4, StrLib.findLastNotOf("..**..**", '*', 4));
+        assertEquals(1, StrLib.findLastNotOf("..**..**", '*', 3));
+        assertEquals(1, StrLib.findLastNotOf("..**..**", '*', 2));
+        assertEquals(1, StrLib.findLastNotOf("..**..**", '*', 1));
+        assertEquals(0, StrLib.findLastNotOf("..**..**", '*', 0));
+        
+        // NotFound: value, pos
+        assertEquals(-1, StrLib.findLastNotOf("..**..**", '*', -1));
 
     }
 

@@ -23,7 +23,6 @@ void println() {
 */
 
 void println(std::vector<std::string>& data) {
-    int size = data.size();
     for (int i = 0;i < data.size(); i++) {
         std::cout << data.at(i) << std::endl;
     }
