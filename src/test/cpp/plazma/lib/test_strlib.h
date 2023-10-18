@@ -4,6 +4,8 @@
 #include "plazma/lib/str/strlib.h" 
 #include "test_helper.h"
 
+// 1.1
+
 TEST(isEmpty) {
 
   // isEmpty(empty)
@@ -257,6 +259,8 @@ TEST(rtrim) {
   
 }
 
+// 1.4
+
 TEST(findFirstNotOf) {
 
   // NotFound: empty
@@ -353,6 +357,8 @@ TEST(findLastNotOf) {
 
 }
 
+// 2.1
+
 // 2.2
 
 TEST(lpad) {
@@ -366,6 +372,8 @@ TEST(rpad) {
   ASSERT_EQ("Volume****", strlib::rpad("Volume", 10, '*'));
 
 }
+
+// 2.3
 
 TEST(fill) {
 
@@ -385,6 +393,34 @@ TEST(trunc) {
   ASSERT_EQ("Abcdef", strlib::trunc("Abcdef123456789", 6));
 
 }
+
+// left
+// right
+
+// 3.1
+
+TEST(capitalize) {
+
+  ASSERT_EQ("", strlib::capitalize(""));
+  ASSERT_EQ(" ", strlib::capitalize(" "));
+  ASSERT_EQ("Abcd", strlib::capitalize("abcd"));
+  ASSERT_EQ("AbCd", strlib::capitalize("abCd"));
+  ASSERT_EQ("Abcd", strlib::capitalize("abCd", true));
+
+}
+
+TEST(decapitalize) {
+
+  ASSERT_EQ("", strlib::decapitalize(""));
+  ASSERT_EQ(" ", strlib::decapitalize(" "));
+  ASSERT_EQ("abcd", strlib::decapitalize("Abcd"));
+  ASSERT_EQ("abCd", strlib::decapitalize("AbCd"));
+  ASSERT_EQ("abcd", strlib::decapitalize("AbCd", true));
+
+}
+
+// upper
+// lower
 
 TEST(toUpperCase) {
 
@@ -442,26 +478,6 @@ TEST(toKebabCase) {
 
 }
 
-TEST(capitalize) {
-
-  ASSERT_EQ("", strlib::capitalize(""));
-  ASSERT_EQ(" ", strlib::capitalize(" "));
-  ASSERT_EQ("Abcd", strlib::capitalize("abcd"));
-  ASSERT_EQ("AbCd", strlib::capitalize("abCd"));
-  ASSERT_EQ("Abcd", strlib::capitalize("abCd", true));
-
-}
-
-TEST(decapitalize) {
-
-  ASSERT_EQ("", strlib::decapitalize(""));
-  ASSERT_EQ(" ", strlib::decapitalize(" "));
-  ASSERT_EQ("abcd", strlib::decapitalize("Abcd"));
-  ASSERT_EQ("abCd", strlib::decapitalize("AbCd"));
-  ASSERT_EQ("abcd", strlib::decapitalize("AbCd", true));
-
-}
-
 TEST(reverse) {
 
   ASSERT_EQ("", strlib::reverse(""));
@@ -473,6 +489,11 @@ TEST(reverse) {
   ASSERT_EQ("fedcba", strlib::reverse("abcdef"));
 
 }
+
+// 4.1
+
+// startsWith
+// endsWith
 
 TEST(hasPrefix) {
 
@@ -499,6 +520,8 @@ TEST(hasSuffix) {
   ASSERT_TRUE(strlib::hasSuffix("myfile.txt", "myfile.txt"));
 
 }
+
+// 4.2
 
 TEST(removePrefix) {
 
@@ -531,6 +554,10 @@ TEST(removeSuffix) {
 
 }
 
+// 4.3
+// 4.4
+// 5.1
+
 TEST(countChars) {
 
   ASSERT_EQ(4, strlib::countChars("Hello world, my world is very nice world", 'o'));
@@ -549,18 +576,35 @@ TEST(countWords) {
 
 }
 
+// 6.1
+
+TEST(replaceAll) {
+
+  ASSERT_EQ("Abcdef12345Abcdef", strlib::replaceAll("abcdef12345abcdef", "a", "A"));
+
+  std::vector<std::string> from = {"1", "2", "3", "4", "5", "6"};
+  std::vector<std::string> to = {"A", "B", "C", "D", "E", "F"};
+  ASSERT_EQ("ABCDEF", strlib::replaceAll("123456", from, to));
+
+}
+
+// 7.1
+
 TEST(split) {
 
-  ASSERT_TRUE(((std::vector<std::string>){"1","200", "500", "-12"} == strlib::split("1,200,500,-12", ',')));
-  ASSERT_TRUE(((std::vector<std::string>){"1","200", "500", "-12"} == strlib::split("1|200|500|-12", '|')));
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1,200,500,-12", ',')));
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1|200|500|-12", '|')));
 
   ASSERT_TRUE(((std::vector<std::string>){"1", " 200", " 500", " -12"} == strlib::split("1, 200, 500, -12", ',')));
   ASSERT_TRUE(((std::vector<std::string>){"1", " 200", " 500", " -12"} == strlib::split("1| 200| 500| -12", '|')));
+
+  //printVector(strlib::split("1, 200, 500, -12", " ,"));
 
   ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1, 200, 500, -12", " ,")));
   ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1| 200| 500| -12", " |")));
 
   ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1, 200| 500|| -12", " ,|")));
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1, 200| 500||    -12", " ,|")));
 
   //ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "", "-12"} == strlib::split("1, 200| 500|| -12", ",|", true))); // trim
 
@@ -573,15 +617,20 @@ TEST(splitWords) {
 
 }
 
-TEST(replaceAll) {
+// 8.1
 
-  ASSERT_EQ("Abcdef12345Abcdef", strlib::replaceAll("abcdef12345abcdef", "a", "A"));
+TEST(toString) {
+ 
+  char a[] = {'H', 'e', 'l', 'l', 'o', '\0'};
+  char b[] = "Hello";
 
-  std::vector<std::string> from = {"1", "2", "3", "4", "5", "6"};
-  std::vector<std::string> to = {"A", "B", "C", "D", "E", "F"};
-  ASSERT_EQ("ABCDEF", strlib::replaceAll("123456", from, to));
-
+  ASSERT_EQ("Hello", strlib::toString(a));
+  ASSERT_EQ("Hello", strlib::toString(b));
+   
 }
+
+// 8.2
+// 9.1
 
 TEST(isIdentifier) {
 
@@ -628,17 +677,6 @@ TEST(isIdentifier) {
 
 }
 
-TEST(toString) {
- 
-  char a[] = {'H', 'e', 'l', 'l', 'o', '\0'};
-  char b[] = "Hello";
-
-  ASSERT_EQ("Hello", strlib::toString(a));
-  ASSERT_EQ("Hello", strlib::toString(b));
-   
-}
-
-
 INIT(strlib) {
 
   SET_TEST(isEmpty);
@@ -659,14 +697,14 @@ INIT(strlib) {
   SET_TEST(fill);
   SET_TEST(ellipsis);
   SET_TEST(trunc);
+  SET_TEST(capitalize);
+  SET_TEST(decapitalize);  
   SET_TEST(toUpperCase);
   SET_TEST(toLowerCase);
   SET_TEST(toCase);
   SET_TEST(toCamelCase);
   SET_TEST(toSnakeCase);
   SET_TEST(toKebabCase);
-  SET_TEST(capitalize);
-  SET_TEST(decapitalize);
   SET_TEST(reverse);
   SET_TEST(hasPrefix);
   SET_TEST(hasSuffix);
@@ -675,11 +713,11 @@ INIT(strlib) {
   SET_TEST(countChars);
   SET_TEST(countStrings);
   SET_TEST(countWords);
+  SET_TEST(replaceAll);
   SET_TEST(split);
   SET_TEST(splitWords);
-  SET_TEST(replaceAll);
-  SET_TEST(isIdentifier);
   SET_TEST(toString);
+  SET_TEST(isIdentifier);
 
 }
 

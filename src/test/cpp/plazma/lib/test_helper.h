@@ -28,6 +28,12 @@ void println(std::vector<std::string>& data) {
     }
 }
 
+void printVector(const std::vector<std::string>& data) {
+    for (int i = 0;i < data.size(); i++) {
+        std::cout << "'" << data.at(i) << "'" <<std::endl;
+    }
+}
+
 void printHeader(std::string str) {
   //println();
   //println(str);

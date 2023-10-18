@@ -734,6 +734,42 @@ namespace strlib {
 
     std::vector<std::string> split(const std::string& str, char separator);
 
+    // splitBySeparator
+
+    std::vector<std::string> splitBySeparator(const std::string& str, const char separator);
+
+    std::vector<std::string> splitBySeparator(const std::string& str, const char separator, bool preserveAll);
+
+    // tokenizeBySeparator
+
+    std::vector<std::string> tokenizeBySeparator(const std::string& str, const char separator);
+
+    std::vector<std::string> tokenizeBySeparator(const std::string& str, const char separator, bool includeAll, bool preserveAll);
+
+    // splitBySeparator
+
+    std::vector<std::string> splitBySeparator(const std::string& str, const std::string& separator);
+
+    std::vector<std::string> splitBySeparator(const std::string& str, const std::string& separator, bool preserveAll);
+
+    // tokenizeBySeparator
+
+    std::vector<std::string> tokenizeBySeparator(const std::string& str, const std::string& separator);
+
+    std::vector<std::string> tokenizeBySeparator(const std::string& str, const std::string& separator, bool includeAll, bool preserveAll);
+
+    // splitBySeparators
+
+    std::vector<std::string> splitBySeparators(const std::string& str, const std::string& separators);
+
+    std::vector<std::string> splitBySeparators(const std::string& str, const std::string& separators, bool preserveAll);
+
+    // tokenizeBySeparators
+
+    std::vector<std::string> tokenizeBySeparators(const std::string& str, const std::string& separators);
+
+    std::vector<std::string> tokenizeBySeparators(const std::string& str, const std::string& separators, bool includeAll, bool preserveAll);
+
     // split v2.0
     std::vector<std::string> split2(const std::string& str, const std::string& separator);
 

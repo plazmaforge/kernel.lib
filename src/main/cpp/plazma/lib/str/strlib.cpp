@@ -1897,28 +1897,14 @@ namespace strlib {
         return result;
     }
 
-    // split v2.0: std::string , std::string 
-    std::vector<std::string> split2(const std::string& str, const std::string& separator) {
-        size_t pos_start = 0;
-        size_t pos_end = 0;
-        size_t delim_len = separator.length();
-        std::string  token;
-        std::vector<std::string> res;
-
-        while ((pos_end = str.find(separator, pos_start)) != std::string ::npos) {
-            token = str.substr(pos_start, pos_end - pos_start);
-            pos_start = pos_end + delim_len;
-            res.push_back(token);
-        }
-
-        res.push_back(str.substr(pos_start));
-        return res;
-    }
-
     // https://stackoverflow.com/questions/49201654/splitting-a-string-with-multiple-delimiters-in-c
     // https://stackoverflow.com/questions/7621727/split-a-string-into-words-by-multiple-delimiters
 
     std::vector<std::string> split(const std::string& str, const std::string& separators) {
+
+        return splitBySeparators(str, separators, false);
+
+        /*
         std::vector<std::string> result;
         if (str.empty() || separators.empty()) {
             result.push_back(str);
@@ -1935,6 +1921,217 @@ namespace strlib {
             result.push_back(token);
         }
         return result;
+        */
+    }
+
+    // splitBySeparator
+
+    std::vector<std::string> splitBySeparator(const std::string& str, const char separator) {
+        return tokenizeBySeparator(str, separator, false, true);
+    }
+
+    std::vector<std::string> splitBySeparator(const std::string& str, const char separator, bool preserveAll) {
+        return tokenizeBySeparator(str, separator, false, preserveAll);
+    }
+
+    // tokenizeBySeparator
+
+    std::vector<std::string> tokenizeBySeparator(const std::string& str, const char separator) {
+        return tokenizeBySeparator(str, separator, true, false);
+    }
+
+    std::vector<std::string> tokenizeBySeparator(const std::string& str, const char separator, bool includeAll, bool preserveAll) {
+        
+        std::vector<std::string> res;
+        if (str.empty()) {
+            return res;
+        }
+
+        if (separator == '\0') {
+            res.push_back(str);
+            return res;
+        }
+
+        size_t pos_start = 0;
+        size_t pos_end = 0;
+        size_t sep_len = 1;
+        std::string token;
+        
+        while ((pos_end = str.find(separator, pos_start)) != std::string ::npos) {            
+            //std::cout << "[" << pos_end - pos_start << "]" << std::endl;            
+            if (pos_end - pos_start == 0) {
+                if (preserveAll && !includeAll) {
+                    res.push_back("");
+                }
+            } else {
+                token = str.substr(pos_start, pos_end - pos_start);
+                res.push_back(token);
+            }            
+
+            if (includeAll) {
+                token = str.substr(pos_end, sep_len);
+                res.push_back(token);
+            }
+
+            pos_start = pos_end + sep_len;
+
+        }
+        
+        if (pos_start == str.length()) {
+            if (preserveAll && !includeAll) {
+                res.push_back("");
+            }
+        } else {
+            res.push_back(str.substr(pos_start));
+        }
+        
+        return res;
+    }
+
+    // splitBySeparator
+
+    std::vector<std::string> splitBySeparator(const std::string& str, const std::string& separator) {
+        return tokenizeBySeparator(str, separator, false, true);
+    }
+
+    std::vector<std::string> splitBySeparator(const std::string& str, const std::string& separator, bool preserveAll) {
+        return tokenizeBySeparator(str, separator, false, preserveAll);
+    }
+
+    // tokenizeBySeparator
+
+    std::vector<std::string> tokenizeBySeparator(const std::string& str, const std::string& separator) {
+        return tokenizeBySeparator(str, separator, true, false);
+    }
+
+    std::vector<std::string> tokenizeBySeparator(const std::string& str, const std::string& separator, bool includeAll, bool preserveAll) {
+        
+        std::vector<std::string> res;
+        if (str.empty()) {
+            return res;
+        }
+
+        if (separator.empty()) {
+            res.push_back(str);
+            return res;
+        }
+
+        size_t pos_start = 0;
+        size_t pos_end = 0;
+        size_t sep_len = separator.length();
+        std::string token;
+        
+        while ((pos_end = str.find(separator, pos_start)) != std::string ::npos) {            
+            //std::cout << "[" << pos_end - pos_start << "]" << std::endl;            
+            if (pos_end - pos_start == 0) {
+                if (preserveAll && !includeAll) {
+                    res.push_back("");
+                }
+            } else {
+                token = str.substr(pos_start, pos_end - pos_start);
+                res.push_back(token);
+            }            
+
+            if (includeAll) {
+                token = str.substr(pos_end, sep_len);
+                res.push_back(token);
+            }
+
+            pos_start = pos_end + sep_len;
+
+        }
+        
+        if (pos_start == str.length()) {
+            if (preserveAll && !includeAll) {
+                res.push_back("");
+            }
+        } else {
+            res.push_back(str.substr(pos_start));
+        }
+        
+        return res;
+    }
+
+    // splitBySeparators
+
+    std::vector<std::string> splitBySeparators(const std::string& str, const std::string& separators) {
+        return tokenizeBySeparators(str, separators, false, true);
+    }
+
+    std::vector<std::string> splitBySeparators(const std::string& str, const std::string& separators, bool preserveAll) {
+        return tokenizeBySeparators(str, separators, false, preserveAll);
+    }
+
+    // tokenizeBySeparators
+
+    std::vector<std::string> tokenizeBySeparators(const std::string& str, const std::string& separators) {
+        return tokenizeBySeparators(str, separators, true, false);
+    }
+
+    std::vector<std::string> tokenizeBySeparators(const std::string& str, const std::string& separators, bool includeAll, bool preserveAll) {
+        
+        std::vector<std::string> res;
+        if (str.empty()) {
+            return res;
+        }
+
+        if (separators.empty()) {
+            res.push_back(str);
+            return res;
+        }
+
+        size_t pos_start = 0;
+        size_t pos_end = 0;
+        size_t sep_len = 1; //separator.length();
+        std::string token;
+        
+        while ((pos_end = str.find_first_of(separators, pos_start)) != std::string ::npos) {            
+            //std::cout << "[" << pos_end - pos_start << "]" << std::endl;            
+            if (pos_end - pos_start == 0) {
+                if (preserveAll && !includeAll) {
+                    res.push_back("");
+                }
+            } else {
+                token = str.substr(pos_start, pos_end - pos_start);
+                res.push_back(token);
+            }            
+
+            if (includeAll) {
+                token = str.substr(pos_end, sep_len);
+                res.push_back(token);
+            }
+
+            pos_start = pos_end + sep_len;
+
+        }
+        
+        if (pos_start == str.length()) {
+            if (preserveAll && !includeAll) {
+                res.push_back("");
+            }
+        } else {
+            res.push_back(str.substr(pos_start));
+        }
+        
+        return res;
+    }
+
+    // split v2.0: std::string , std::string 
+    std::vector<std::string> split2(const std::string& str, const std::string& separator) {
+        size_t pos_start = 0;
+        size_t pos_end = 0;
+        size_t sep_len = separator.length();
+        std::string  token;
+        std::vector<std::string> res;
+
+        while ((pos_end = str.find(separator, pos_start)) != std::string ::npos) {
+            token = str.substr(pos_start, pos_end - pos_start);
+            pos_start = pos_end + sep_len;
+            res.push_back(token);
+        }
+
+        res.push_back(str.substr(pos_start));
+        return res;
     }
 
     // split v3.0 (split and parse float!)
@@ -1942,13 +2139,13 @@ namespace strlib {
     std::vector<float> split3(const std::string& str, const std::string& separator) {
         size_t pos_start = 0;
         size_t pos_end = 0;
-        size_t delim_len = separator.length();
+        size_t sep_len = separator.length();
         std::string  token;
         std::vector<float> res;
 
         while ((pos_end = str.find(separator, pos_start)) != std::string ::npos) {
             token = str.substr(pos_start, pos_end - pos_start);
-            pos_start = pos_end + delim_len;
+            pos_start = pos_end + sep_len;
             res.push_back(strtof(token.c_str(), 0));           // PARSE
         }
 
