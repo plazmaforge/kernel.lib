@@ -189,8 +189,8 @@
 /////////////////////////////////////////////////////////////////////////////////
 // 7.1
 //      
-// - split(const string &str, const string& separators)
-// - split(const string &str, const string& separators, bool include)          - N/A
+// - split(const string& str, const char separator)
+// - split(const string& str, const string& separator)
 // 
 // - splitWords(const string& str)
 // - splitWords(const string& str, const string& separators)
@@ -732,7 +732,9 @@ namespace strlib {
 
     //// 7.1
 
-    std::vector<std::string> split(const std::string& str, char separator);
+    std::vector<std::string> split(const std::string& str, const char separator);
+
+    std::vector<std::string> split(const std::string& str, const std::string& separator);
 
     // splitBySeparator
 
@@ -769,14 +771,6 @@ namespace strlib {
     std::vector<std::string> tokenizeBySeparators(const std::string& str, const std::string& separators);
 
     std::vector<std::string> tokenizeBySeparators(const std::string& str, const std::string& separators, bool includeAll, bool preserveAll);
-
-    // split v2.0
-    std::vector<std::string> split2(const std::string& str, const std::string& separator);
-
-    std::vector<std::string> split(const std::string& str, const std::string& separators);
-
-    // split v3.0 (split and parse float!)
-    std::vector<float> split3(const std::string& str, const std::string& separator);
 
     //
 

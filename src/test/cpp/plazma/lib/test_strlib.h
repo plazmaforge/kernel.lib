@@ -592,6 +592,8 @@ TEST(replaceAll) {
 
 TEST(split) {
 
+  // splitBySeparator = split
+
   ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1,200,500,-12", ',')));
   ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1|200|500|-12", '|')));
 
@@ -600,13 +602,40 @@ TEST(split) {
 
   //printVector(strlib::split("1, 200, 500, -12", " ,"));
 
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1, 200, 500, -12", " ,")));
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1| 200| 500| -12", " |")));
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1, 200, 500, -12", ", ")));
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1| 200| 500| -12", "| ")));
 
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1, 200| 500|| -12", " ,|")));
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1, 200| 500||    -12", " ,|")));
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", " -12"} == strlib::split("1, 200, 500,  -12", ", ")));
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", " -12"} == strlib::split("1| 200| 500|  -12", "| ")));
 
   //ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "", "-12"} == strlib::split("1, 200| 500|| -12", ",|", true))); // trim
+
+}
+
+TEST(splitBySeparator) {
+
+  // splitBySeparator
+
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1,200,500,-12", ',')));
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1|200|500|-12", '|')));
+
+  ASSERT_TRUE(((std::vector<std::string>){"1", " 200", " 500", " -12"} == strlib::split("1, 200, 500, -12", ',')));
+  ASSERT_TRUE(((std::vector<std::string>){"1", " 200", " 500", " -12"} == strlib::split("1| 200| 500| -12", '|')));
+
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1, 200, 500, -12", ", ")));
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1| 200| 500| -12", "| ")));
+
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", " -12"} == strlib::split("1, 200, 500,  -12", ", ")));
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", " -12"} == strlib::split("1| 200| 500|  -12", "| ")));
+
+}
+
+TEST(splitBySeparators) {
+
+  // splitBySeparators
+
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::splitBySeparators("1, 200| 500|| -12", " ,|", false)));
+  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::splitBySeparators("1, 200| 500||    -12", " ,|", false)));
 
 }
 
@@ -715,6 +744,8 @@ INIT(strlib) {
   SET_TEST(countWords);
   SET_TEST(replaceAll);
   SET_TEST(split);
+  SET_TEST(splitBySeparator);
+  SET_TEST(splitBySeparators);
   SET_TEST(splitWords);
   SET_TEST(toString);
   SET_TEST(isIdentifier);
