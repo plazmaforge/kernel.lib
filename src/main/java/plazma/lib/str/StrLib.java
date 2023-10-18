@@ -2324,10 +2324,10 @@ public class StrLib {
     //// 7.1
 
     public static String[] split(String str, String seperators) {
-        return split(str, seperators, false);
-    }
+        return split(str, seperators, false, false);
+    } 
 
-    public static String[] split(String str, String seperators, boolean include) {
+    public static String[] split(String str, String seperators, boolean include, boolean trim) {
         if (isEmpty(str)) {
             return EMPTY_STRING_ARRAY;
         }
@@ -2337,10 +2337,58 @@ public class StrLib {
         StringTokenizer tokens = new StringTokenizer(str, seperators, include);
         String[] result = new String[tokens.countTokens()];
         int i = 0;
+        String token;
         while (tokens.hasMoreTokens()) {
-            result[i++] = tokens.nextToken();
+            token = tokens.nextToken();
+            if (trim) {
+                token = trim(token);                
+            }
+            result[i++] = token;
         }
         return result;
+    }
+    
+    public static String[] splitTrim(String str, String seperators) {
+        return split(str, seperators, false, true);
+    }
+    
+    public static String[] splitWorker(final String str, final char separatorChar, final boolean preserveAllTokens) {
+        
+        if (str == null) {
+            return null;
+        }
+        
+        final int len = str.length();
+        if (len == 0) {
+            return new String[0];
+        }
+        
+        final List<String> list = new ArrayList<>();
+        int i = 0;
+        int start = 0;
+        boolean match = false;
+        boolean lastMatch = false;
+        
+        while (i < len) {
+            if (str.charAt(i) == separatorChar) {
+                if (match || preserveAllTokens) {
+                    list.add(str.substring(start, i));
+                    match = false;
+                    lastMatch = true;
+                }
+                start = ++i;
+                continue;
+            }
+            lastMatch = false;
+            match = true;
+            i++;
+        }
+        
+        if (match || preserveAllTokens && lastMatch) {
+            list.add(str.substring(start, i));
+        }
+        
+        return list.toArray(new String[0]);
     }
 
     public static String[] splitWords(String str) {

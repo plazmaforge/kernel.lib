@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import junit.framework.TestCase;
 import plazma.lib.str.StrLib;
@@ -153,5 +154,16 @@ public abstract class AbstractTestCase extends TestCase {
         String str = obj == null ? "" : obj.toString();
         return StrLib.fill(str, len);
     }
-
+    
+    ////
+    
+    public static <T> List<T> asList(T... a) {
+        return a == null ? null : Arrays.asList(a); 
+        
+    }
+    
+    public static void assertEquals(String[] expected, String[] actual) {
+        assertEquals(asList(expected), asList(actual));
+    }
+    
 }

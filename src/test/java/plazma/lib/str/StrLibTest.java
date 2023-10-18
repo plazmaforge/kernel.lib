@@ -591,6 +591,9 @@ public class StrLibTest extends AbstractTestCase {
         // abcyzyzy
         
     }
+    
+    
+    // 2.3
 
     public void testLeft() {
 
@@ -623,6 +626,8 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("bcd", StrLib.right("abcd", 3));
 
     }
+    
+    // 3.1
 
     public void testCapitalize() {
 
@@ -783,6 +788,8 @@ public class StrLibTest extends AbstractTestCase {
 
     }
     
+    // 4.1
+    
     public void testHasPrefix() {
         
         assertFalse(StrLib.hasPrefix("", "abc"));  
@@ -795,6 +802,8 @@ public class StrLibTest extends AbstractTestCase {
         assertTrue(StrLib.hasPrefix("myfile.txt", "myfile.txt"));
         
     }
+    
+    // 4.2
 
     public void testRemovePrefix() {
 
@@ -842,6 +851,17 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("", StrLib.removeSuffix("ab", "ab"));
         assertEquals("abc", StrLib.removeSuffix("abcde", "de"));
     }
+    
+    
+    // 5.1
+
+    public void testCountChars() {
+
+        assertEquals(0, StrLib.countChars("abcde", 'z'));
+        assertEquals(1, StrLib.countChars("abcde", 'a'));
+        assertEquals(2, StrLib.countChars("abcdeabcx", 'a'));
+
+    }
 
     public void testCountStrings() {
 
@@ -854,13 +874,44 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals(2, StrLib.countStrings("abc de abc x", "abc"));
 
     }
+    
+    // 6.1
+    
+    // 7.1
+        
+    public void testSplit() {
+        
+        //String[] expected = {"1","200", "500", "-12"};
+        //String[] actual = StrLib.split("1,200,500,-12", ",");        
+        //assertEquals(expected, actual);        
+        //assertEquals(Arrays.asList(expected), Arrays.asList(actual));        
+        
+        // ValueSpace=NO, SeparatorSpace=NO
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1,200,500,-12", ","));        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1|200|500|-12", "|"));
 
-    public void testCountChars() {
+        // ValueSpace=YES, SeparatorSpace=NO
+        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1, 200, 500, -12", ","));
+        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1| 200| 500| -12", "|"));
+        
+        // ValueSpace=YES, SeparatorSpace=YES
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1, 200, 500, -12", " ,"));
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1| 200| 500| -12", " |"));
 
-        assertEquals(0, StrLib.countChars("abcde", 'z'));
-        assertEquals(1, StrLib.countChars("abcde", 'a'));
-        assertEquals(2, StrLib.countChars("abcdeabcx", 'a'));
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1, 200| 500|| -12", " ,|"));
+        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1, 200| 500||    -12", " ,|"));
+        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1, 200| 500||    -12", " ,|"));
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1, 200| 500||    -12", ",|"));
+        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1, 200, 500,,    -12", ","));
+        
+        //assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitWorker("1, 200, 500,,    -12", ',' , true));
 
+        //assertEquals(new String[] {"1", "200", "500", "", "-12"}, StrLib.split("1, 200| 500|| -12", ",|", true)); // trim
+        
+        
     }
 
     // isDigit, isISODigit
