@@ -45,10 +45,10 @@
 // 1.4
 //
 // - findFirstNotOf(const string &str, char ch)
-// - findFirstNotOf(const string &str, char ch, int start)
+// - findFirstNotOf(const string &str, char ch, int pos)
 //
 // - findLastNotOf(const string &str, ch)
-// - findLastNotOf(const string &str, char ch, int end)
+// - findLastNotOf(const string &str, char ch, int pos)
 
 /////////////////////////////////////////////////////////////////////////////////
 // 2.1
@@ -179,7 +179,7 @@
 // 5.1
 //
 // - countChars(const string& str, char ch)
-// - countStrings(const string& str, const string& findStr)
+// - countStrings(const string& str, const string& substr)
 // - countWords(const string& str)
 // - countWords(const string& str, const string& separators)
 // - countLines(const string& str)
@@ -644,28 +644,86 @@ namespace strlib {
 
     //// 1.4 
 
-    // findFirstNotOf/LastNotOf
+    // find
+
+    int find(const std::string &str, const char ch) {
+        return findFirstOf(str, ch);
+    }
+
+    int find(const std::string &str, const char ch, int pos) {
+        return findFirstOf(str, ch, pos);
+    }
+
+    // findFirst
+
+    int findFirst(const std::string &str, const char ch) {
+        return findFirstOf(str, ch);
+    }
+
+    int findFirst(const std::string &str, const char ch, int pos) {
+        return findFirstOf(str, ch, pos);
+    }
+
+    // findLast
+
+    int findLast(const std::string &str, const char ch) {
+        return findLastOf(str, ch);
+    }
+
+    int findLast(const std::string &str, const char ch, int pos) {
+        return findLastOf(str, ch, pos);
+    }
+
+    // findFirstOf
+
+    int findFirstOf(const std::string &str, const char ch) {
+        return str.find_first_of(ch);
+    }
+
+    int findFirstOf(const std::string &str, const char ch, int pos) {
+        if (pos < 0 || pos >= str.length()) { // find_first_of - OK
+            return -1;
+        }
+        return str.find_first_of(ch, pos);
+    }
+
+    // findLastOf
+
+    int findLastOf(const std::string &str, const char ch) {
+        return str.find_last_of(ch);
+    }
+
+    int findLastOf(const std::string &str, const char ch, int pos) {
+        if (pos < 0 || pos >= str.length()) { // find_last_of - FAIL
+            return -1;
+        }
+        return str.find_last_of(ch, pos);
+    }
+
+    // findFirstNotOf
 
     int findFirstNotOf(const std::string &str, const char ch) {
         return str.find_first_not_of(ch);
     }
 
-    int findFirstNotOf(const std::string &str, const char ch, int start) {
-        if (start < 0 || start > str.length() - 1) { // find_first_not_of - OK
+    int findFirstNotOf(const std::string &str, const char ch, int pos) {
+        if (pos < 0 || pos >= str.length()) { // find_first_not_of - OK
             return -1;
         }
-        return str.find_first_not_of(ch, start);
+        return str.find_first_not_of(ch, pos);
     }
+
+    // findLastNotOf
 
     int findLastNotOf(const std::string &str, const char ch) {
         return str.find_last_not_of(ch);
     }
 
-    int findLastNotOf(const std::string &str, const char ch, int end) {
-        if (end < 0 || end > str.length() - 1) { // find_last_not_of - FAIL
+    int findLastNotOf(const std::string &str, const char ch, int pos) {
+        if (pos < 0 || pos >= str.length()) { // find_last_not_of - FAIL
             return -1;
         }
-        return str.find_last_not_of(ch, end);
+        return str.find_last_not_of(ch, pos);
     }
 
     //// 2.1
@@ -1796,7 +1854,7 @@ namespace strlib {
     //// 5.1
 
     int countChars(const std::string& str, char ch) {
-        if (str.empty()) {
+        if (str.empty() || ch == '\0') {
             return 0;
         }
         int count = 0;
@@ -1808,20 +1866,23 @@ namespace strlib {
         return count;
     }
 
-    int countStrings(const std::string& str, const std::string& findStr) {
-        if (str.empty() || findStr.empty()) {
+    int countStrings(const std::string& str, const std::string& substr) {
+        if (str.empty() || substr.empty()) {
             return 0;
         }
         size_t pos = 0;
         int count = 0;
-        while ((pos = str.find(findStr, pos)) != std::string::npos && pos > 0) {
-            pos += findStr.length();
+        while ((pos = str.find(substr, pos)) != std::string::npos /*&& pos > 0*/) {
+            pos += substr.length();
             count++;
         }
         return count;
     }
 
     int countWords(const std::string& str) {
+        if (str.empty()) {
+            return 0;
+        }
         std::vector<std::string> words = splitWords(str);
         return words.size();
     }
@@ -1989,6 +2050,22 @@ namespace strlib {
 
     std::vector<std::string> splitBySeparator(const std::string& str, const char separator, bool preserveAll) {
         return tokenizeBySeparator(str, separator, false, preserveAll);
+    }
+
+    //
+
+    std::vector<std::string> splitWords(const std::string& str) {
+        return splitWords(str, DEFAULT_WORD_SEPARATORS);
+    }
+
+    std::vector<std::string> splitWords(const std::string& str, const std::string& separators) {
+        std::vector<std::string> result = splitBySeparators(str, separators.empty() ? DEFAULT_WORD_SEPARATORS : separators, false); // no preserve
+        return result;
+    }
+
+    std::vector<std::string> splitLines(const std::string& str) {
+        std::vector<std::string> result = splitBySeparators(str, "\r\n", false); // no preserve
+        return result;
     }
 
     // tokenizeBySeparator
@@ -2168,22 +2245,6 @@ namespace strlib {
         }
         
         return res;
-    }
-
-    //
-
-    std::vector<std::string> splitWords(const std::string& str) {
-        return splitWords(str, DEFAULT_WORD_SEPARATORS);
-    }
-
-    std::vector<std::string> splitWords(const std::string& str, const std::string& separators) {
-        std::vector<std::string> result = splitBySeparators(str, separators.empty() ? DEFAULT_WORD_SEPARATORS : separators, false); // no preserve
-        return result;
-    }
-
-    std::vector<std::string> splitLines(const std::string& str) {
-        std::vector<std::string> result = splitBySeparators(str, "\r\n", false); // no preserve
-        return result;
     }
 
     //// 8.1

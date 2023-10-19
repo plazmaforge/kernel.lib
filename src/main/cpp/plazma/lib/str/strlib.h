@@ -41,10 +41,10 @@
 // 1.4
 //
 // - findFirstNotOf(const string &str, char ch)
-// - findFirstNotOf(const string &str, char ch, int start)
+// - findFirstNotOf(const string &str, char ch, int pos)
 //
 // - findLastNotOf(const string &str, char ch)
-// - findLastNotOf(const string &str, char ch, int end)
+// - findLastNotOf(const string &str, char ch, int pos)
 
 /////////////////////////////////////////////////////////////////////////////////
 // 2.1
@@ -175,7 +175,7 @@
 // 5.1
 //
 // - countChars(const string &str, char ch)
-// - countStrings(const string &str, const string& findStr)
+// - countStrings(const string &str, const string& substr)
 // - countWords(const string &str)
 // - countWords(const string &str, const string& separators)
 // - countLines(const string &str)
@@ -420,15 +420,47 @@ namespace strlib {
 
     void _rtrim(std::string  &str, const char* ch);
 
-    // findFirst/LastNotOf
+// find
+
+    int find(const std::string &str, const char ch);
+
+    int find(const std::string &str, const char ch, int pos);
+
+    // findFirst
+
+    int findFirst(const std::string &str, const char ch);
+
+    int findFirst(const std::string &str, const char ch, int pos);
+
+    // findLast
+
+    int findLast(const std::string &str, const char ch);
+
+    int findLast(const std::string &str, const char ch, int pos);
+
+    // findFirstOf
+
+    int findFirstOf(const std::string &str, const char ch);
+
+    int findFirstOf(const std::string &str, const char ch, int pos);
+
+    // findLastOf
+
+    int findLastOf(const std::string &str, const char ch);
+
+    int findLastOf(const std::string &str, const char ch, int pos);
+
+    // findFirstNotOf
 
     int findFirstNotOf(const std::string &str, const char ch);
 
-    int findFirstNotOf(const std::string &str, const char ch, int start);
+    int findFirstNotOf(const std::string &str, const char ch, int pos);
+
+    // findLastNotOf
 
     int findLastNotOf(const std::string &str, const char ch);
 
-    int findLastNotOf(const std::string &str, const char ch, int end);
+    int findLastNotOf(const std::string &str, const char ch, int pos);
 
     //// 2.1
 
@@ -712,7 +744,7 @@ namespace strlib {
 
     int countChars(const std::string& str, char ch);
 
-    int countStrings(const std::string& str, const std::string& findStr);
+    int countStrings(const std::string& str, const std::string& substr);
 
     int countWords(const std::string& str);
 
@@ -742,35 +774,17 @@ namespace strlib {
 
     std::vector<std::string> splitBySeparator(const std::string& str, const char separator, bool preserveAll);
 
-    // tokenizeBySeparator
-
-    std::vector<std::string> tokenizeBySeparator(const std::string& str, const char separator);
-
-    std::vector<std::string> tokenizeBySeparator(const std::string& str, const char separator, bool includeAll, bool preserveAll);
-
     // splitBySeparator
 
     std::vector<std::string> splitBySeparator(const std::string& str, const std::string& separator);
 
     std::vector<std::string> splitBySeparator(const std::string& str, const std::string& separator, bool preserveAll);
 
-    // tokenizeBySeparator
-
-    std::vector<std::string> tokenizeBySeparator(const std::string& str, const std::string& separator);
-
-    std::vector<std::string> tokenizeBySeparator(const std::string& str, const std::string& separator, bool includeAll, bool preserveAll);
-
     // splitBySeparators
 
     std::vector<std::string> splitBySeparators(const std::string& str, const std::string& separators);
 
     std::vector<std::string> splitBySeparators(const std::string& str, const std::string& separators, bool preserveAll);
-
-    // tokenizeBySeparators
-
-    std::vector<std::string> tokenizeBySeparators(const std::string& str, const std::string& separators);
-
-    std::vector<std::string> tokenizeBySeparators(const std::string& str, const std::string& separators, bool includeAll, bool preserveAll);
 
     //
 
@@ -779,6 +793,24 @@ namespace strlib {
     std::vector<std::string> splitWords(const std::string& str, const std::string& separators);
 
     std::vector<std::string> splitLines(const std::string& str);
+
+    // tokenizeBySeparator
+
+    std::vector<std::string> tokenizeBySeparator(const std::string& str, const char separator);
+
+    std::vector<std::string> tokenizeBySeparator(const std::string& str, const char separator, bool includeAll, bool preserveAll);
+
+    // tokenizeBySeparator
+
+    std::vector<std::string> tokenizeBySeparator(const std::string& str, const std::string& separator);
+
+    std::vector<std::string> tokenizeBySeparator(const std::string& str, const std::string& separator, bool includeAll, bool preserveAll);
+
+    // tokenizeBySeparators
+
+    std::vector<std::string> tokenizeBySeparators(const std::string& str, const std::string& separators);
+
+    std::vector<std::string> tokenizeBySeparators(const std::string& str, const std::string& separators, bool includeAll, bool preserveAll);
 
     //// 8.1
 
