@@ -368,22 +368,24 @@ TEST(findLastOf) {
   ASSERT_EQ(3, strlib::findLastOf("...*", '*'));
 
   // NotFound: value, pos, min range
-  ASSERT_EQ(-1, strlib::findLastOf("**..**..", '*', -1));
-  ASSERT_EQ(-1, strlib::findLastOf("**..**..", '*', -2));
+  ASSERT_EQ(-1, strlib::findLastOf("..**..**", '*', -1));
+  ASSERT_EQ(-1, strlib::findLastOf("..**..**", '*', -2));
+
+  // NotFound: value, pos
+  ASSERT_EQ(-1, strlib::findLastOf("..**..**", '*', 0));
+  ASSERT_EQ(-1, strlib::findLastOf("..**..**", '*', 1));
 
   // Found: value, pos
-  ASSERT_EQ(0, strlib::findLastOf("**..**..", '*', 0));
-  ASSERT_EQ(1, strlib::findLastOf("**..**..", '*', 1));
-  ASSERT_EQ(1, strlib::findLastOf("**..**..", '*', 2));
-  ASSERT_EQ(1, strlib::findLastOf("**..**..", '*', 3));
-  ASSERT_EQ(4, strlib::findLastOf("**..**..", '*', 4));
-  ASSERT_EQ(5, strlib::findLastOf("**..**..", '*', 5));
-  ASSERT_EQ(5, strlib::findLastOf("**..**..", '*', 6));
-  ASSERT_EQ(5, strlib::findLastOf("**..**..", '*', 7));
+  ASSERT_EQ(2, strlib::findLastOf("..**..**", '*', 2));
+  ASSERT_EQ(3, strlib::findLastOf("..**..**", '*', 3));
+  ASSERT_EQ(3, strlib::findLastOf("..**..**", '*', 4));
+  ASSERT_EQ(3, strlib::findLastOf("..**..**", '*', 5));
+  ASSERT_EQ(6, strlib::findLastOf("..**..**", '*', 6));
+  ASSERT_EQ(7, strlib::findLastOf("..**..**", '*', 7));
 
   // NotFound: value, pos, max range
-  ASSERT_EQ(-1, strlib::findLastOf("**..**..", '*', 8));
-  ASSERT_EQ(-1, strlib::findLastOf("**..**..", '*', 9));
+  ASSERT_EQ(-1, strlib::findLastOf("..**..**", '*', 8));
+  ASSERT_EQ(-1, strlib::findLastOf("..**..**", '*', 9));
 
 }
 
