@@ -860,6 +860,8 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals(0, StrLib.countChars("abcde", 'z'));
         assertEquals(1, StrLib.countChars("abcde", 'a'));
         assertEquals(2, StrLib.countChars("abcdeabcx", 'a'));
+        
+        assertEquals(4, StrLib.countChars("Hello world, my world is very nice world.", 'o'));
 
     }
 
@@ -872,8 +874,16 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals(2, StrLib.countStrings("abcdeabc", "abc"));
         assertEquals(2, StrLib.countStrings("abc de abc", "abc"));
         assertEquals(2, StrLib.countStrings("abc de abc x", "abc"));
+        
+        assertEquals(3, StrLib.countStrings("Hello world, my world is very nice world.", "world"));
 
     }
+    
+    public void testCountWords() {
+
+        assertEquals(13, StrLib.countWords("Hello world, my world is very nice world. But we have other worlds."));
+
+    }    
     
     // 6.1
     
@@ -881,38 +891,126 @@ public class StrLibTest extends AbstractTestCase {
         
     public void testSplit() {
         
-        //String[] expected = {"1","200", "500", "-12"};
-        //String[] actual = StrLib.split("1,200,500,-12", ",");        
-        //assertEquals(expected, actual);        
-        //assertEquals(Arrays.asList(expected), Arrays.asList(actual));        
+        String[] res = null;
         
-        // ValueSpace=NO, SeparatorSpace=NO
+        res = StrLib.split(null, null);        
+        assertNotNull(res);
+        assertEquals(0,  res.length);
+        
+        res = StrLib.split(null, '\0');        
+        assertNotNull(res);
+        assertEquals(0,  res.length);
+        
+        res = StrLib.split(null, "");        
+        assertNotNull(res);
+        assertEquals(0,  res.length);
+        
+        ////
+        
+        res = StrLib.split("", null);        
+        assertNotNull(res);
+        assertEquals(0,  res.length);
+        
+        res = StrLib.split("", '\0');        
+        assertNotNull(res);
+        assertEquals(0,  res.length);
+        
+        res = StrLib.split("", "");        
+        assertNotNull(res);
+        assertEquals(0,  res.length);
+        
+        ////
+
+        res = StrLib.split(" ", null);        
+        assertNotNull(res);
+        assertEquals(1,  res.length);
+        assertEquals(" ",  res[0]);
+        
+        res = StrLib.split(" ", '\0');        
+        assertNotNull(res);
+        assertEquals(1,  res.length);
+        assertEquals(" ",  res[0]);
+        
+        res = StrLib.split(" ", "");        
+        assertNotNull(res);
+        assertEquals(1,  res.length);
+        assertEquals(" ",  res[0]);
+        
+        ////
+
+        // ValueSpace=0, SeparatorSpace=0
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1,200,500,-12", ','));        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1|200|500|-12", '|'));
+        
         assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1,200,500,-12", ","));        
         assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1|200|500|-12", "|"));
+        
 
-        // ValueSpace=YES, SeparatorSpace=NO
+        // ValueSpace=1, SeparatorSpace=0
+        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1, 200, 500, -12", ','));
+        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1| 200| 500| -12", '|'));
+        
         assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1, 200, 500, -12", ","));
         assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1| 200| 500| -12", "|"));
         
-        // ValueSpace=YES, SeparatorSpace=YES
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1, 200, 500, -12", " ,"));
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1| 200| 500| -12", " |"));
-
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1, 200| 500|| -12", " ,|"));
         
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1, 200| 500||    -12", " ,|"));
+        // ValueSpace=1, SeparatorSpace=1
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1, 200, 500, -12", ", "));
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1| 200| 500| -12", "| "));
         
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1, 200| 500||    -12", " ,|"));
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1, 200| 500||    -12", ",|"));
-        
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1, 200, 500,,    -12", ","));
-        
-        //assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitWorker("1, 200, 500,,    -12", ',' , true));
-
-        //assertEquals(new String[] {"1", "200", "500", "", "-12"}, StrLib.split("1, 200| 500|| -12", ",|", true)); // trim
-        
+        // ValueSpace=1-2, SeparatorSpace=1
+        assertEquals(new String[] {"1", "200", "500", " -12"}, StrLib.split("1, 200, 500,  -12", ", "));        
+        assertEquals(new String[] {"1", "200", "500", " -12"}, StrLib.split("1| 200| 500|  -12", "| "));
         
     }
+    
+    public void testSplitBySeparator() {
+                
+        // ValueSpace=0, SeparatorSpace=0
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1,200,500,-12", ','));        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1|200|500|-12", '|'));
+        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1,200,500,-12", ","));        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1|200|500|-12", "|"));
+
+        // ValueSpace=1, SeparatorSpace=0
+        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1, 200, 500, -12", ','));
+        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1| 200| 500| -12", '|'));
+        
+        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1, 200, 500, -12", ","));
+        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1| 200| 500| -12", "|"));
+        
+        // ValueSpace=1, SeparatorSpace=1
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1, 200, 500, -12", ", "));
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1| 200| 500| -12", "| "));
+        
+        // ValueSpace=1-2, SeparatorSpace=1
+        assertEquals(new String[] {"1", "200", "500", " -12"}, StrLib.split("1, 200, 500,  -12", ", "));        
+        assertEquals(new String[] {"1", "200", "500", " -12"}, StrLib.split("1| 200| 500|  -12", "| "));
+                
+    }
+    
+    
+    public void testSplitTrim() {
+                
+        // ValueSpace=0, SeparatorSpace=0
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1,200,500,-12", ","));        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1|200|500|-12", "|"));
+
+        // ValueSpace=1, SeparatorSpace=0
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1, 200, 500, -12", ","));
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1| 200| 500| -12", "|"));
+        
+        // ValueSpace=1, SeparatorSpace=1
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1, 200, 500, -12", ", "));
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1| 200| 500| -12", "| "));
+        
+        // ValueSpace=1-2, SeparatorSpace=1
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1, 200, 500,  -12", ", "));        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1| 200| 500|  -12", "| "));
+                
+    }
+    
 
     // isDigit, isISODigit
     public void testIsDigit() {

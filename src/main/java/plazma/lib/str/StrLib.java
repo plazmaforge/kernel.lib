@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.StringTokenizer;
 
 import plazma.lib.array.ArrayLib;
 
@@ -306,10 +305,6 @@ public class StrLib {
     public static final String EMPTY_STRING = "";
 
     public static final String[] EMPTY_STRING_ARRAY = new String[0];
-
-    //public static final String BLANK_STRING = " ";
-
-    //public static final char BLANK_CHAR = ' ';
     
     public static final char SPACE_CHAR = ' ';
 
@@ -722,22 +717,192 @@ public class StrLib {
     }
 
     //// 1.4
+    
+    private static boolean in(char ch, String elements) {
+        if (elements == null) {
+            return false;            
+        }
+        for (int index = 0; index < elements.length(); index++) {
+            if (ch == elements.charAt(index)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    //// find    
 
-    public static int findFirstNotOf(String str, char ch) {
-        return findFirstNotOf(str, ch, 0);
+    public static int find(String str, char ch) {
+        return findFirst(str, ch, 0);
+    }
+    
+    public static int find(String str, char ch, int pos) {
+        return findFirst(str, ch, pos);        
     }
 
-    public static int findFirstNotOf(String str, char ch, int start) {
+    public static int find(String str, String substr) {
+        return findFirst(str, substr, 0);
+    }
+    
+    public static int find(String str, String substr, int pos) {
+        return findFirst(str, substr, pos);        
+    }
+
+    //// findFirst
+
+    public static int findFirst(String str, char ch) {
+        return findFirst(str, ch, 0);
+    }
+    
+    public static int findFirst(String str, char ch, int pos) {
         if (isEmpty(str)) {
             return INDEX_NOT_FOUND;
         }
         
         int len = str.length();
-        if (start < 0 || start > len - 1) {
+        if (pos < 0 || pos >= len) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        return str.indexOf(ch, pos);
+    }
+        
+    public static int findFirst(String str, String substr) {
+        return findFirst(str, substr, 0);        
+    }
+
+    public static int findFirst(String str, String substr, int pos) {
+        if (isEmpty(str) || isEmpty(substr)) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        int len = str.length();
+        if (pos < 0 || pos >= len) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        return str.indexOf(substr, pos);
+    }
+
+    //// findLast
+
+    public static int findLast(String str, char ch) {
+        return findLast(str, ch, (str == null ? 0 : str.length() - 1));
+    }
+    
+    public static int findLast(String str, char ch, int pos) {
+        if (isEmpty(str)) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        int len = str.length();
+        if (pos < 0 || pos >= len) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        return str.lastIndexOf(ch, pos);
+    }
+
+    public static int findLast(String str, String substr) {
+        return findLast(str, substr, (str == null ? 0 : str.length() - 1));        
+    }
+
+    public static int findLast(String str, String substr, int pos) {
+        if (isEmpty(str) || isEmpty(substr)) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        int len = str.length();
+        if (pos < 0 || pos >= len) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        return str.lastIndexOf(substr, pos);
+    }
+    
+    //// findFirstOf
+
+    public static int findFirstOf(String str, char ch) {
+        return findFirst(str, ch, 0);
+    }
+    
+    public static int findFirstOf(String str, char ch, int pos) {
+        return findFirst(str, ch, pos);
+    }
+        
+    public static int findFirstOf(String str, String terms) {
+        return findFirst(str, terms, 0);        
+    }
+
+    public static int findFirstOf(String str, String terms, int pos) {
+        if (isEmpty(str) || isEmpty(terms)) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        int len = str.length();
+        if (pos < 0 || pos >= len) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        for (int index = pos; index < len; index++) {
+            if (in(str.charAt(index), terms)) {
+                return index;
+            }
+        }
+        
+        return INDEX_NOT_FOUND;                
+    }
+    
+    //// findLastOf
+
+    public static int findLastOf(String str, char ch) {
+        return findLast(str, ch, (str == null ? 0 : str.length() - 1));
+    }
+    
+    public static int findLastOf(String str, char ch, int pos) {
+        return findLast(str, ch, (str == null ? 0 : str.length() - 1));
+    }
+
+    public static int findLastOf(String str, String terms) {
+        return findLastOf(str, terms, (str == null ? 0 : str.length() - 1));        
+    }
+
+    public static int findLastOf(String str, String terms, int pos) {
+        if (isEmpty(str) || isEmpty(terms)) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        int len = str.length();
+        if (pos < 0 || pos >= len) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        for (int index = pos; index >= 0; index--) {
+            if (in(str.charAt(index), terms)) {
+                return index;
+            }
+        }
+        
+        return INDEX_NOT_FOUND;
+    }
+
+    //// findFirstNotOf
+
+    public static int findFirstNotOf(String str, char ch) {
+        return findFirstNotOf(str, ch, 0);
+    }
+
+    public static int findFirstNotOf(String str, char ch, int pos) {
+        if (isEmpty(str)) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        int len = str.length();
+        if (pos < 0 || pos >= len) {
             return INDEX_NOT_FOUND;
         }
 
-        for (int index = start; index < len; index++) {
+        for (int index = pos; index < len; index++) {
             if (str.charAt(index) != ch) {
                 return index;
             }
@@ -749,17 +914,17 @@ public class StrLib {
         return findFirstNotOf(str, terms, 0);
     }
 
-    public static int findFirstNotOf(String str, String terms, int start) {
+    public static int findFirstNotOf(String str, String terms, int pos) {
         if (isEmpty(str) || isEmpty(terms)) {
             return INDEX_NOT_FOUND;
         }
         
         int len = str.length();
-        if (start < 0 || start > len - 1) {
+        if (pos < 0 || pos >= len) {
             return INDEX_NOT_FOUND;
         }
 
-        for (int index = start; index < len; index++) {
+        for (int index = pos; index < len; index++) {
             if (!in(str.charAt(index), terms)) {
                 return index;
             }
@@ -767,31 +932,24 @@ public class StrLib {
         
         return INDEX_NOT_FOUND;
     }
-
-    private static boolean in(char ch, String elements) {
-        for (int index2 = 0; index2 < elements.length(); index2++) {
-            if (ch == elements.charAt(index2)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    
+    //// findLastNotOf
 
     public static int findLastNotOf(String str, char ch) {
         return findLastNotOf(str, ch, (str == null ? 0 : str.length() - 1));
     }
 
-    public static int findLastNotOf(String str, char ch, int end) {
+    public static int findLastNotOf(String str, char ch, int pos) {
         if (isEmpty(str)) {
             return INDEX_NOT_FOUND;
         }
         
         int len = str.length();
-        if (end < 0 || end > len - 1) {
+        if (pos < 0 || pos >= len) {
             return INDEX_NOT_FOUND;
         }
 
-        for (int index = end; index >= 0; index--) {
+        for (int index = pos; index >= 0; index--) {
             if (str.charAt(index) != ch) {
                 return index;
             }
@@ -804,17 +962,17 @@ public class StrLib {
         return findLastNotOf(str, terms, (str == null ? 0 : str.length() - 1));
     }
 
-    public static int findLastNotOf(String str, String terms, int end) {
+    public static int findLastNotOf(String str, String terms, int pos) {
         if (isEmpty(str) || isEmpty(terms)) {
             return INDEX_NOT_FOUND;
         }
         
         int len = str.length();
-        if (end < 0 || end > len - 1) {
+        if (pos < 0 || pos >= len) {
             return INDEX_NOT_FOUND;
         }
 
-        for (int index = end; index >= 0; index--) {
+        for (int index = pos; index >= 0; index--) {
             if (!in(str.charAt(index), terms)) {
                 return index;
             }
@@ -2140,92 +2298,27 @@ public class StrLib {
         if (isEmpty(str)) {
             return 0;
         }
-        char[] chars = str.toCharArray();
         int count = 0;
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] == ch) {
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == ch) {
                 count++;
             }
         }
         return count;
     }
 
-    public static int countStrings(String str, String findStr) {
-        if (isEmpty(str) || isEmpty(findStr)) {
+    public static int countStrings(String str, String substr) {
+        if (isEmpty(str) || isEmpty(substr)) {
             return 0;
         }
-        int length = str.length();
-        int findLength = findStr.length();
-        if (findLength > length) {
-            return 0;
-        }
-
-        char[] chars = str.toCharArray();
-        char[] findChars = findStr.toCharArray();
-
-        if (findLength == length) {
-            return _equalsCharArray(chars, findChars) ? 1 : 0;
-        }
-
+        
+        int pos = 0;
         int count = 0;
-        int i = 0;
-        while (true) {
-            if (i >= length) {
-                break;
-            }
-            if (i + findLength > length) {
-                break;
-            }
-
-            if (_equalsCharArray(chars, findChars, i)) {
-                count++;
-                i += findLength;
-            } else {
-                i++;
-            }
+        while ((pos = find(str, substr, pos)) != INDEX_NOT_FOUND) {
+            pos += substr.length();
+            count++;
         }
         return count;
-    }
-
-    ////
-
-    private static boolean _equalsCharArray(char[] c1, char[] c2) {
-        if (c1 == null || c2 == null) {
-            return false;
-        }
-
-        if (c1.length != c2.length) {
-            return false;
-        }
-        int lenght = c1.length;
-        for (int i = 0; i < lenght; i++) {
-            if (c1[i] != c2[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static boolean _equalsCharArray(char[] c1, char[] c2, int start1) {
-        if (c1 == null || c2 == null) {
-            return false;
-        }
-        int length = start1 + c2.length;
-        if (length > c1.length) {
-            return false;
-        }
-
-        // if (c1.length != c2.length) {
-        // return false;
-        // }
-        // int lenght = c1.length;
-
-        for (int i = start1; i < length; i++) {
-            if (c1[i] != c2[i - start1]) {
-                return false;
-            }
-        }
-        return true;
     }
 
     ////
@@ -2234,23 +2327,12 @@ public class StrLib {
         return countWords(str, null);
     }
 
-    public static int countWords(String str, String seperators) {
-        str = normalize(str);
-        if (str == null) {
-            return 0;
-        }
-        if (seperators == null) {
-            seperators = DEFAULT_WORD_SEPARATORS;
-        }
-        String[] words = split(str, seperators);
+    public static int countWords(String str, String separators) {
+        String[] words = splitWords(str, separators);
         return words == null ? 0 : words.length;
     }
 
     public static int countLines(String str) {
-        str = normalize(str);
-        if (str == null) {
-            return 0;
-        }
         String[] lines = splitLines(str);
         return lines == null ? 0 : lines.length;
     }
@@ -2322,36 +2404,102 @@ public class StrLib {
     }
 
     //// 7.1
-
-    public static String[] split(String str, String seperators) {
-        return split(str, seperators, false, false);
+    
+    public static String[] split(String str, char separator) {
+        return splitBySeparator(str, separator);
     } 
 
-    public static String[] split(String str, String seperators, boolean include, boolean trim) {
-        if (isEmpty(str)) {
-            return EMPTY_STRING_ARRAY;
-        }
-        if (seperators == null) {
-            return new String[] { str };
-        }
-        StringTokenizer tokens = new StringTokenizer(str, seperators, include);
-        String[] result = new String[tokens.countTokens()];
-        int i = 0;
-        String token;
-        while (tokens.hasMoreTokens()) {
-            token = tokens.nextToken();
-            if (trim) {
-                token = trim(token);                
-            }
-            result[i++] = token;
-        }
-        return result;
+    public static String[] split(String str, String separator) {
+        return splitBySeparator(str, separator);
+    } 
+
+    ////
+    
+    public static String[] splitBySeparator(String str, char separator) {
+        return tokenizeBySeparator(str, separator, false, true);
+    } 
+
+    public static String[] splitBySeparator(String str, char separator, boolean preverseAll) {
+        return tokenizeBySeparator(str, separator, false, preverseAll);
+    } 
+    
+    //
+
+    public static String[] splitBySeparator(String str, String separator) {
+        return tokenizeBySeparator(str, separator, false, true);
+    }
+
+    public static String[] splitBySeparator(String str, String separator, boolean preserveAll) {
+        return tokenizeBySeparator(str, separator, false, preserveAll);
     }
     
-    public static String[] splitTrim(String str, String seperators) {
-        return split(str, seperators, false, true);
+    //
+
+    public static String[] splitBySeparators(String str, String separators) {
+        return tokenizeBySeparators(str, separators, false, true);
+    }
+
+    public static String[] splitBySeparators(String str, String separators, boolean preserveAll) {
+        return tokenizeBySeparators(str, separators, false, preserveAll);
+    }
+
+    ////
+
+//    public static String[] split(String str, String seperators) {
+//        return split(str, seperators, false, false);
+//    } 
+//
+//    public static String[] split(String str, String seperators, boolean include, boolean trim) {
+//        if (isEmpty(str)) {
+//            return EMPTY_STRING_ARRAY;
+//        }
+//        if (seperators == null) {
+//            return new String[] { str };
+//        }
+//        StringTokenizer tokens = new StringTokenizer(str, seperators, include);
+//        String[] result = new String[tokens.countTokens()];
+//        int i = 0;
+//        String token;
+//        while (tokens.hasMoreTokens()) {
+//            token = tokens.nextToken();
+//            if (trim) {
+//                token = trim(token);                
+//            }
+//            result[i++] = token;
+//        }
+//        return result;
+//    }
+    
+    
+    ////
+    
+    public static void trimArray(String[] array) {
+        if (array == null || array.length == 0) {
+            return;            
+        }
+        for (int i = 0; i < array.length; i++) {
+            array[i] = trim(array[i]);            
+        }
     }
     
+    ////
+        
+    public static String[] splitTrim(String str, String separator) {
+        return splitTrimBySeparator(str, separator);
+    }
+
+    public static String[] splitTrimBySeparator(String str, String separator) {
+        String[] res = splitBySeparator(str, separator);
+        trimArray(res);
+        return res;
+    }
+
+    public static String[] splitTrimBySeparators(String str, String separators) {
+        String[] res = splitBySeparator(str, separators);
+        trimArray(res);
+        return res;
+    }
+
     public static String[] splitWorker(final String str, final char separatorChar, final boolean preserveAllTokens) {
         
         if (str == null) {
@@ -2390,20 +2538,161 @@ public class StrLib {
         
         return list.toArray(new String[0]);
     }
+    
+    ////
+    
+    public static String[] tokenizeBySeparator(String str, char separator, boolean includeAll, boolean preserveAll) {
+        if (isEmpty(str)) {
+            return EMPTY_STRING_ARRAY;
+        }
+        if (separator == '\0') {
+            return new String[] {str};
+        }
+
+        int start = 0;
+        int end = 0;
+        int sep_len = 1;
+        String token;
+        List<String> res = new ArrayList<String>();
+        
+        while ((end = find(str, separator, start)) != INDEX_NOT_FOUND) {
+            if (end - start == 0) {
+                if (preserveAll && !includeAll) {
+                    res.add("");
+                }
+            } else {
+                token = str.substring(start, end); // end - start
+                res.add(token);
+            }            
+
+            if (includeAll) {
+                token = str.substring(end, end + sep_len); // sep_len
+                res.add(token);
+            }
+
+            start = end + sep_len;
+
+        }
+        
+        if (start == str.length()) {
+            if (preserveAll && !includeAll) {
+                res.add("");
+            }
+        } else {
+            res.add(str.substring(start));
+        }
+        
+        return res.toArray(new String[0]);
+    }
+
+    public static String[] tokenizeBySeparator(String str, String separator, boolean includeAll, boolean preserveAll) {
+        if (isEmpty(str)) {
+            return EMPTY_STRING_ARRAY;
+        }
+        if (isEmpty(separator)) {
+            return new String[] {str};
+        }
+
+        int start = 0;
+        int end = 0;
+        int sep_len = separator.length();
+        String token;
+        List<String> res = new ArrayList<String>();
+        
+        while ((end = find(str, separator, start)) != INDEX_NOT_FOUND) {
+            if (end - start == 0) {
+                if (preserveAll && !includeAll) {
+                    res.add("");
+                }
+            } else {
+                token = str.substring(start, end); // end - start
+                res.add(token);
+            }            
+
+            if (includeAll) {
+                token = str.substring(end, end + sep_len); // sep_len
+                res.add(token);
+            }
+
+            start = end + sep_len;
+
+        }
+        
+        if (start == str.length()) {
+            if (preserveAll && !includeAll) {
+                res.add("");
+            }
+        } else {
+            res.add(str.substring(start));
+        }
+        
+        return res.toArray(new String[0]);
+    }
+    
+    public static String[] tokenizeBySeparators(String str, String separators, boolean includeAll, boolean preserveAll) {
+        if (isEmpty(str)) {
+            return EMPTY_STRING_ARRAY;
+        }
+        if (isEmpty(separators)) {
+            return new String[] {str};
+        }
+
+        int start = 0;
+        int end = 0;
+        int sep_len = 1;
+        String token;
+        List<String> res = new ArrayList<String>();
+        
+        while ((end = findFirstOf(str, separators, start)) != INDEX_NOT_FOUND) {
+            if (end - start == 0) {
+                if (preserveAll && !includeAll) {
+                    res.add("");
+                }
+            } else {
+                token = str.substring(start, end); // end - start
+                res.add(token);
+            }            
+
+            if (includeAll) {
+                token = str.substring(end, end + sep_len); // sep_len
+                res.add(token);
+            }
+
+            start = end + sep_len;
+
+        }
+        
+        if (start == str.length()) {
+            if (preserveAll && !includeAll) {
+                res.add("");
+            }
+        } else {
+            res.add(str.substring(start));
+        }
+        
+        return res.toArray(new String[0]);
+    }
+
+    
+    ////
+    
+    
 
     public static String[] splitWords(String str) {
         return splitWords(str, null);
     }
 
-    public static String[] splitWords(String str, String seperators) {
-        str = normalize(str);
-        if (str == null) {
-            return EMPTY_STRING_ARRAY;
+    public static String[] splitWords(String str, String separators) {
+        //str = normalize(str);
+        //if (str == null) {
+        //    return EMPTY_STRING_ARRAY;
+        //}
+        if (separators == null) {
+            separators = DEFAULT_WORD_SEPARATORS;
         }
-        if (seperators == null) {
-            seperators = DEFAULT_WORD_SEPARATORS;
-        }
-        return split(str, seperators);
+        //return split(str, separators);
+        
+        return splitBySeparators(str, separators, false);
     }
 
     public static String[] splitLines(String str) {
