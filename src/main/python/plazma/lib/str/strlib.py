@@ -42,10 +42,10 @@ ELLIPSIS_LEN = 3
 # 1.4
 #
 # - findFirstNotOf(str, ch)
-# - findFirstNotOf(str, ch, start)
+# - findFirstNotOf(str, ch, pos)
 #
 # - findLastNotOf(str, ch)
-# - findLastNotOf(str, ch, end)
+# - findLastNotOf(str, ch, pos)
 
 #################################################################################
 #
@@ -196,21 +196,21 @@ def rtrim(str, ch = None):
 
 # 1.4
 
-def findFirstNotOf(str, ch, start = None):
+def findFirstNotOf(str, ch, pos = None):
     if str == None:
         return -1
 
-    if start == None:
-        start = 0
+    if pos == None:
+        pos = 0
 
     len = size(str)
     if len == 0:
         return -1
     
-    if start < 0 or start > len - 1:
+    if pos < 0 or pos >= len:
         return -1
 
-    i = start
+    i = pos
     while (i < len):
         if (str[i] != ch):
             return i
@@ -218,7 +218,7 @@ def findFirstNotOf(str, ch, start = None):
     return -1
 
 
-def findLastNotOf(str, ch, end = None):
+def findLastNotOf(str, ch, pos = None):
     if str == None:
         return -1
 
@@ -226,13 +226,13 @@ def findLastNotOf(str, ch, end = None):
     if len == 0:
         return -1
 
-    if end == None:
-        end = len - 1
+    if pos == None:
+        pos = len - 1
 
-    if end < 0 or end > len - 1:
+    if pos < 0 or pos >= len:
         return -1
 
-    i = end
+    i = pos
     while (i >= 0):
         if (str[i] != ch):
             return i
