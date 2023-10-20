@@ -718,18 +718,35 @@ public class StrLib {
 
     //// 1.4
     
-    private static boolean in(char ch, String elements) {
-        if (elements == null) {
+    public static boolean contains(String str, char ch) {
+        if (isEmpty(str)) {
             return false;            
         }
-        for (int index = 0; index < elements.length(); index++) {
-            if (ch == elements.charAt(index)) {
-                return true;
-            }
-        }
-        return false;
+        
+        // "".indexOf('\0')   = -1
+        // " ".indexOf('\0')  = -1
+                
+        return str.indexOf(ch) > -1;
     }
-    
+
+    public static boolean contains(String str, String substr) {
+        if (isEmpty(str)) {
+            return false;            
+        }
+        
+        // "".indexOf("")    = 0 (!): str.charAt(0): StringIndexOutOfBoundsException
+        // " ".indexOf("")   = 0 (!): str.charAt(0): str.charAt(0) != "" 
+        
+        // String str = "";
+        // String substr = "";
+        // int index = str.indexOf(substr); // 0
+        // if (index > -1) {
+        //    System.out.println(str.charAt(index)); // StringIndexOutOfBoundsException: String index out of range: 0
+        // }        
+                
+        return str.indexOf(substr) > -1;
+    }
+
     //// find    
 
     public static int find(String str, char ch) {
@@ -838,7 +855,7 @@ public class StrLib {
         }
         
         for (int index = pos; index < len; index++) {
-            if (in(str.charAt(index), terms)) {
+            if (contains(terms, str.charAt(index))) {    
                 return index;
             }
         }
@@ -880,7 +897,7 @@ public class StrLib {
         }
         
         for (int index = pos; index >= 0; index--) {
-            if (in(str.charAt(index), terms)) {
+            if (contains(terms, str.charAt(index))) {
                 return index;
             }
         }
@@ -927,7 +944,7 @@ public class StrLib {
         }
 
         for (int index = pos; index < len; index++) {
-            if (!in(str.charAt(index), terms)) {
+            if (!contains(terms, str.charAt(index))) {
                 return index;
             }
         }
@@ -975,7 +992,7 @@ public class StrLib {
         }
 
         for (int index = pos; index >= 0; index--) {
-            if (!in(str.charAt(index), terms)) {
+            if (!contains(terms, str.charAt(index))) {
                 return index;
             }
         }
