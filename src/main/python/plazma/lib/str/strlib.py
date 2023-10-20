@@ -196,8 +196,65 @@ def rtrim(str, ch = None):
 
 # 1.4
 
-def findFirstNotOf(str, ch, pos = None):
-    if str == None:
+def contains(str, substr):
+    if isEmpty(str) or isEmpty(substr):
+        return False
+
+    # '' in ''            = True
+    # ''.__contains__('') = True
+    # ''.find('')         = 0 (!): str[0] - IndexError
+    # ''.find('\0')       = -1
+    # ' '.find('')        = 0 (!): str[0] != '' -> ' ' != ''
+
+    # str = ''
+    # substr = ''
+    # 
+    # index = str.find(substr)
+    # if index > -1:
+    #     str[index]       - IndexError: string index out of range (!)
+    #
+
+    # Performance
+    #return substr in str            # 0.15
+    #return str.__contains__(substr) # 0.25   
+    #return str.find(substr) > -1    # 0.30
+
+    return substr in str
+
+def findFirst(str, substr, pos = None):
+    if isEmpty(str) or isEmpty(substr):
+        return -1
+
+    if pos == None:
+        pos = 0
+
+    len = size(str)
+    if len == 0:
+        return -1
+    
+    if pos < 0 or pos >= len:
+        return -1
+    
+    return str.find(substr)
+
+def findLast(str, substr, pos = None):
+    if isEmpty(str) or isEmpty(substr):
+        return -1
+
+    if pos == None:
+        pos = 0
+
+    len = size(str)
+    if len == 0:
+        return -1
+    
+    if pos < 0 or pos >= len:
+        return -1
+    
+    return str.rfind(substr)
+
+def findFirstOf(str, terms, pos = None):
+    if isEmpty(str) or isEmpty(terms):
         return -1
 
     if pos == None:
@@ -211,15 +268,23 @@ def findFirstNotOf(str, ch, pos = None):
         return -1
 
     i = pos
-    while (i < len):
-        if (str[i] != ch):
-            return i
-        i += 1
+
+    if (len == 1):
+        return str.find(terms, pos)
+        #while (i < len):
+        #    if (str[i] == terms):
+        #        return i
+        #    i += 1
+    else:
+        while (i < len):
+            if (contains(terms, str[i])):
+                return i
+            i += 1
+
     return -1
 
-
-def findLastNotOf(str, ch, pos = None):
-    if str == None:
+def findLastOf(str, terms, pos = None):
+    if isEmpty(str) or isEmpty(terms):
         return -1
 
     len = size(str)
@@ -233,10 +298,77 @@ def findLastNotOf(str, ch, pos = None):
         return -1
 
     i = pos
-    while (i >= 0):
-        if (str[i] != ch):
-            return i
-        i -= 1
+
+    if (len == 1):
+        return str.rfind(terms, pos)
+        #while (i >= 0):
+        #    if (str[i] == terms):
+        #        return i
+        #    i -= 1
+    else:
+        while (i >= 0):
+            if (contains(terms, str[i])):
+                return i
+            i -= 1
+
+    return -1
+
+def findFirstNotOf(str, terms, pos = None):
+    if isEmpty(str) or isEmpty(terms):
+        return -1
+
+    if pos == None:
+        pos = 0
+
+    len = size(str)
+    if len == 0:
+        return -1
+    
+    if pos < 0 or pos >= len:
+        return -1
+
+    i = pos
+
+    if (len == 1):
+        while (i < len):
+            if (str[i] != terms):
+                return i
+            i += 1
+    else:
+        while (i < len):
+            if (not contains(terms, str[i])):
+                return i
+            i += 1
+
+    return -1
+
+def findLastNotOf(str, terms, pos = None):
+    if isEmpty(str) or isEmpty(terms):
+        return -1
+
+    len = size(str)
+    if len == 0:
+        return -1
+
+    if pos == None:
+        pos = len - 1
+
+    if pos < 0 or pos >= len:
+        return -1
+
+    i = pos
+
+    if (len == 1):
+        while (i >= 0):
+            if (str[i] != terms):
+                return i
+            i -= 1
+    else:
+        while (i >= 0):
+            if (not contains(terms, str[i])):
+                return i
+            i -= 1
+
     return -1
 
 

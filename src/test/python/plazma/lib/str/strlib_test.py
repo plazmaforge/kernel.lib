@@ -325,6 +325,195 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('abc', strlib.rtrim('abc \t\n\r\f\v'))
         self.assertEqual(' \t\n\r\f\vabc', strlib.rtrim(' \t\n\r\f\vabc \t\n\r\f\v'))
 
+    def test_contains(self):
+
+        # False: contains(None/empty, None/empty)
+        self.assertFalse(strlib.contains(None, None))
+        self.assertFalse(strlib.contains('', None))
+        self.assertFalse(strlib.contains(None, ''))
+        self.assertFalse(strlib.contains('', ''))
+
+        self.assertFalse(strlib.contains(' ', None))
+        self.assertFalse(strlib.contains(None, ' '))
+
+        # False: contains(blank, blank)
+        self.assertTrue(strlib.contains(' ', ' '))
+        self.assertTrue(strlib.contains('  ', '  '))
+        self.assertTrue(strlib.contains('.', '.'))
+
+        # True: contains(value, value)
+        self.assertTrue(strlib.contains('a', 'a'))
+        self.assertTrue(strlib.contains('abc', 'a'))
+        self.assertTrue(strlib.contains('abc', 'b'))
+        self.assertTrue(strlib.contains('abc', 'c'))
+
+        self.assertTrue(strlib.contains('abc', 'ab'))
+        self.assertTrue(strlib.contains('abc', 'bc'))
+        self.assertTrue(strlib.contains('abc', 'abc'))
+
+        # False: contains(value, value)
+        self.assertFalse(strlib.contains('abc', 'ac'))
+
+        self.assertFalse(strlib.contains('abc', '.'))
+        self.assertFalse(strlib.contains('abc', 'x'))
+        self.assertFalse(strlib.contains('abc', 'y'))
+        self.assertFalse(strlib.contains('abc', 'z'))
+        
+        self.assertFalse(strlib.contains('abc', 'def'))
+        self.assertFalse(strlib.contains('abc', 'xyz'))
+
+    def test_findFirstOf(self):
+
+        # char
+        
+        # NotFound: None/empty
+        self.assertEqual(-1, strlib.findFirstOf(None, '\0'))
+        self.assertEqual(-1, strlib.findFirstOf("", '\0'))
+        self.assertEqual(-1, strlib.findFirstOf(None, ' '))
+        self.assertEqual(-1, strlib.findFirstOf("", ' '))
+        self.assertEqual(-1, strlib.findFirstOf(None, '.'))
+        self.assertEqual(-1, strlib.findFirstOf("", '.'))
+        
+        # NotFound: None/empty, pos
+        self.assertEqual(-1, strlib.findFirstOf(None, '\0', 0))
+        self.assertEqual(-1, strlib.findFirstOf("", '\0', 0))
+        self.assertEqual(-1, strlib.findFirstOf(None, ' ', 0))
+        self.assertEqual(-1, strlib.findFirstOf("", ' ', 0))
+        self.assertEqual(-1, strlib.findFirstOf(None, '.', 0))
+        self.assertEqual(-1, strlib.findFirstOf("", '.', 0))
+
+        self.assertEqual(-1, strlib.findFirstOf(None, '\0', -1))
+        self.assertEqual(-1, strlib.findFirstOf("", '\0', -1))
+        self.assertEqual(-1, strlib.findFirstOf(None, ' ', -1))
+        self.assertEqual(-1, strlib.findFirstOf("", ' ', -1))
+        self.assertEqual(-1, strlib.findFirstOf(None, '.', -1))
+        self.assertEqual(-1, strlib.findFirstOf("", '.', -1))
+
+        self.assertEqual(-1, strlib.findFirstOf(None, '\0', 1))
+        self.assertEqual(-1, strlib.findFirstOf("", '\0', 1))
+        self.assertEqual(-1, strlib.findFirstOf(None, ' ', 1))
+        self.assertEqual(-1, strlib.findFirstOf("", ' ', 1))
+        self.assertEqual(-1, strlib.findFirstOf(None, '.', 1))
+        self.assertEqual(-1, strlib.findFirstOf("", '.', 1))
+        
+        # NotFound: blank/value
+        self.assertEqual(0, strlib.findFirstOf(" ", ' '))
+        self.assertEqual(0, strlib.findFirstOf("  ", ' '))
+        
+        # Found: blank/value
+        self.assertEqual(0, strlib.findFirstOf(" .", ' '))
+        self.assertEqual(0, strlib.findFirstOf("  .", ' '))
+
+        self.assertEqual(1, strlib.findFirstOf(". ", ' '))
+        self.assertEqual(1, strlib.findFirstOf(".  ", ' '))
+
+        # Found: value
+        self.assertEqual(0, strlib.findFirstOf("*", '*'))
+
+        self.assertEqual(1, strlib.findFirstOf(".*", '*'))
+        self.assertEqual(2, strlib.findFirstOf("..*", '*'))
+        self.assertEqual(3, strlib.findFirstOf("...*", '*'))
+
+        self.assertEqual(0, strlib.findFirstOf("*.", '*'))
+        self.assertEqual(0, strlib.findFirstOf("*..", '*'))
+        self.assertEqual(0, strlib.findFirstOf("*...", '*'))
+
+        # NotFound: value, pos, min range
+        self.assertEqual(-1, strlib.findFirstOf("**..**..", '*', -1))
+        self.assertEqual(-1, strlib.findFirstOf("**..**..", '*', -2))
+
+        # Found: value, pos
+        self.assertEqual(0, strlib.findFirstOf("**..**..", '*', 0))
+        self.assertEqual(1, strlib.findFirstOf("**..**..", '*', 1))
+        self.assertEqual(4, strlib.findFirstOf("**..**..", '*', 2))
+        self.assertEqual(4, strlib.findFirstOf("**..**..", '*', 3))
+        self.assertEqual(4, strlib.findFirstOf("**..**..", '*', 4))
+        self.assertEqual(5, strlib.findFirstOf("**..**..", '*', 5))
+
+        # NotFound: value, pos
+        self.assertEqual(-1, strlib.findFirstOf("**..**..", '*', 6))
+        self.assertEqual(-1, strlib.findFirstOf("**..**..", '*', 7))
+
+        # NotFound: value, pos, max range
+        self.assertEqual(-1, strlib.findFirstOf("**..**..", '*', 8))
+        self.assertEqual(-1, strlib.findFirstOf("**..**..", '*', 9))
+
+    def test_findLastOf(self):
+
+        # char
+        
+        # NotFound: None/empty
+        self.assertEqual(-1, strlib.findLastOf(None, '\0'))
+        self.assertEqual(-1, strlib.findLastOf("", '\0'))
+        self.assertEqual(-1, strlib.findLastOf(None, ' '))
+        self.assertEqual(-1, strlib.findLastOf("", ' '))
+        self.assertEqual(-1, strlib.findLastOf(None, '.'))
+        self.assertEqual(-1, strlib.findLastOf("", '.'))
+        
+        # NotFound: None/empty, pos
+        self.assertEqual(-1, strlib.findLastOf(None, '\0', 0))
+        self.assertEqual(-1, strlib.findLastOf("", '\0', 0))
+        self.assertEqual(-1, strlib.findLastOf(None, ' ', 0))
+        self.assertEqual(-1, strlib.findLastOf("", ' ', 0))
+        self.assertEqual(-1, strlib.findLastOf(None, '.', 0))
+        self.assertEqual(-1, strlib.findLastOf("", '.', 0))
+
+        self.assertEqual(-1, strlib.findLastOf(None, '\0', -1))
+        self.assertEqual(-1, strlib.findLastOf("", '\0', -1))
+        self.assertEqual(-1, strlib.findLastOf(None, ' ', -1))
+        self.assertEqual(-1, strlib.findLastOf("", ' ', -1))
+        self.assertEqual(-1, strlib.findLastOf(None, '.', -1))
+        self.assertEqual(-1, strlib.findLastOf("", '.', -1))
+
+        self.assertEqual(-1, strlib.findLastOf(None, '\0', 1))
+        self.assertEqual(-1, strlib.findLastOf("", '\0', 1))
+        self.assertEqual(-1, strlib.findLastOf(None, ' ', 1))
+        self.assertEqual(-1, strlib.findLastOf("", ' ', 1))
+        self.assertEqual(-1, strlib.findLastOf(None, '.', 1))
+        self.assertEqual(-1, strlib.findLastOf("", '.', 1))
+        
+        # Found: blank
+        self.assertEqual(0, strlib.findLastOf(" ", ' '))
+        self.assertEqual(1, strlib.findLastOf("  ", ' '))
+
+        # Found: blank/value
+        self.assertEqual(0, strlib.findLastOf(" .", ' '))
+        self.assertEqual(1, strlib.findLastOf("  .", ' '))
+
+        self.assertEqual(1, strlib.findLastOf(". ", ' '))
+        self.assertEqual(2, strlib.findLastOf(".  ", ' '))
+
+        # Found: value
+        self.assertEqual(0, strlib.findLastOf("*", '*'))
+
+        self.assertEqual(0, strlib.findLastOf("*.", '*'))
+        self.assertEqual(0, strlib.findLastOf("*..", '*'))
+        self.assertEqual(0, strlib.findLastOf("*...", '*'))
+
+        self.assertEqual(1, strlib.findLastOf(".*", '*'))
+        self.assertEqual(2, strlib.findLastOf("..*", '*'))
+        self.assertEqual(3, strlib.findLastOf("...*", '*'))
+
+        # NotFound: value, pos, min range
+        self.assertEqual(-1, strlib.findLastOf("..**..**", '*', -1))
+        self.assertEqual(-1, strlib.findLastOf("..**..**", '*', -2))
+
+        # NotFound: value, pos
+        self.assertEqual(-1, strlib.findLastOf("..**..**", '*', 0))
+        self.assertEqual(-1, strlib.findLastOf("..**..**", '*', 1))
+
+        # Found: value, pos
+        self.assertEqual(2, strlib.findLastOf("..**..**", '*', 2))
+        self.assertEqual(3, strlib.findLastOf("..**..**", '*', 3))
+        self.assertEqual(3, strlib.findLastOf("..**..**", '*', 4))
+        self.assertEqual(3, strlib.findLastOf("..**..**", '*', 5))
+        self.assertEqual(6, strlib.findLastOf("..**..**", '*', 6))
+        self.assertEqual(7, strlib.findLastOf("..**..**", '*', 7))
+
+        # NotFound: value, pos, max range
+        self.assertEqual(-1, strlib.findLastOf("..**..**", '*', 8))
+        self.assertEqual(-1, strlib.findLastOf("..**..**", '*', 9))
+
     def test_findFirstNotOf(self):
         
         # NotFound: None/empty
