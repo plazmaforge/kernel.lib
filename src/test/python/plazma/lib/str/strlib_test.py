@@ -376,6 +376,7 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(2, strlib.findFirstNotOf("**..**..", '*', 2))
         self.assertEqual(3, strlib.findFirstNotOf("**..**..", '*', 3))
         self.assertEqual(6, strlib.findFirstNotOf("**..**..", '*', 4))
+        self.assertEqual(6, strlib.findFirstNotOf("**..**..", '*', 5))
         self.assertEqual(6, strlib.findFirstNotOf("**..**..", '*', 6))
         self.assertEqual(7, strlib.findFirstNotOf("**..**..", '*', 7))
 
@@ -427,18 +428,23 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(1, strlib.findLastNotOf('..*', '*'))
         self.assertEqual(1, strlib.findLastNotOf('..**', '*'))
 
-        # Found: value, pos
-        self.assertEqual(5, strlib.findLastNotOf("..**..**", '*', 7))
-        self.assertEqual(5, strlib.findLastNotOf("..**..**", '*', 6))
-        self.assertEqual(5, strlib.findLastNotOf("..**..**", '*', 5))
-        self.assertEqual(4, strlib.findLastNotOf("..**..**", '*', 4))
-        self.assertEqual(1, strlib.findLastNotOf("..**..**", '*', 3))
-        self.assertEqual(1, strlib.findLastNotOf("..**..**", '*', 2))
-        self.assertEqual(1, strlib.findLastNotOf("..**..**", '*', 1))
-        self.assertEqual(0, strlib.findLastNotOf("..**..**", '*', 0))
-
-        # NotFound: value, pos
+        # NotFound: value, pos, min range
         self.assertEqual(-1, strlib.findLastNotOf("..**..**", '*', -1))
+        self.assertEqual(-1, strlib.findLastNotOf("..**..**", '*', -2))
+
+        # Found: value, pos
+        self.assertEqual(0, strlib.findLastNotOf("..**..**", '*', 0))
+        self.assertEqual(1, strlib.findLastNotOf("..**..**", '*', 1))
+        self.assertEqual(1, strlib.findLastNotOf("..**..**", '*', 2))
+        self.assertEqual(1, strlib.findLastNotOf("..**..**", '*', 3))
+        self.assertEqual(4, strlib.findLastNotOf("..**..**", '*', 4))
+        self.assertEqual(5, strlib.findLastNotOf("..**..**", '*', 5))
+        self.assertEqual(5, strlib.findLastNotOf("..**..**", '*', 6))
+        self.assertEqual(5, strlib.findLastNotOf("..**..**", '*', 7))
+
+        # NotFound: value, pos, max range
+        self.assertEqual(-1, strlib.findLastNotOf("..**..**", '*', 8))
+        self.assertEqual(-1, strlib.findLastNotOf("..**..**", '*', 9))
 
 if __name__ == '__main__':
     unittest.main()

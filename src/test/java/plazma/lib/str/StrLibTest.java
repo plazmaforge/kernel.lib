@@ -464,6 +464,7 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals(2, StrLib.findFirstNotOf("**..**..", '*', 2));
         assertEquals(3, StrLib.findFirstNotOf("**..**..", '*', 3));        
         assertEquals(6, StrLib.findFirstNotOf("**..**..", '*', 4));
+        assertEquals(6, StrLib.findFirstNotOf("**..**..", '*', 5));
         assertEquals(6, StrLib.findFirstNotOf("**..**..", '*', 6));
         assertEquals(7, StrLib.findFirstNotOf("**..**..", '*', 7));
         
@@ -519,18 +520,23 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals(1, StrLib.findLastNotOf("..*", '*'));
         assertEquals(1, StrLib.findLastNotOf("..**", '*'));
         
-        // Found: value, pos
-        assertEquals(5, StrLib.findLastNotOf("..**..**", '*', 7));
-        assertEquals(5, StrLib.findLastNotOf("..**..**", '*', 6));
-        assertEquals(5, StrLib.findLastNotOf("..**..**", '*', 5));
-        assertEquals(4, StrLib.findLastNotOf("..**..**", '*', 4));
-        assertEquals(1, StrLib.findLastNotOf("..**..**", '*', 3));
-        assertEquals(1, StrLib.findLastNotOf("..**..**", '*', 2));
-        assertEquals(1, StrLib.findLastNotOf("..**..**", '*', 1));
-        assertEquals(0, StrLib.findLastNotOf("..**..**", '*', 0));
-        
-        // NotFound: value, pos
+        // NotFound: value, pos, min range
         assertEquals(-1, StrLib.findLastNotOf("..**..**", '*', -1));
+        assertEquals(-1, StrLib.findLastNotOf("..**..**", '*', -2));
+        
+        // Found: value, pos
+        assertEquals(0, StrLib.findLastNotOf("..**..**", '*', 0));
+        assertEquals(1, StrLib.findLastNotOf("..**..**", '*', 1));
+        assertEquals(1, StrLib.findLastNotOf("..**..**", '*', 2));
+        assertEquals(1, StrLib.findLastNotOf("..**..**", '*', 3));
+        assertEquals(4, StrLib.findLastNotOf("..**..**", '*', 4));
+        assertEquals(5, StrLib.findLastNotOf("..**..**", '*', 5));
+        assertEquals(5, StrLib.findLastNotOf("..**..**", '*', 6));
+        assertEquals(5, StrLib.findLastNotOf("..**..**", '*', 7));
+        
+        // NotFound: value, pos, max range
+        assertEquals(-1, StrLib.findLastNotOf("..**..**", '*', 8));
+        assertEquals(-1, StrLib.findLastNotOf("..**..**", '*', 9));
 
     }
 
