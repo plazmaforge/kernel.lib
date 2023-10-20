@@ -745,7 +745,7 @@ public class StrLib {
     }
     
     public static int find(String str, String substr, int pos) {
-        return findFirst(str, substr, pos);        
+        return findFirst(str, substr, pos);
     }
 
     //// findFirst
@@ -755,20 +755,11 @@ public class StrLib {
     }
     
     public static int findFirst(String str, char ch, int pos) {
-        if (isEmpty(str)) {
-            return INDEX_NOT_FOUND;
-        }
-        
-        int len = str.length();
-        if (pos < 0 || pos >= len) {
-            return INDEX_NOT_FOUND;
-        }
-        
-        return str.indexOf(ch, pos);
+        return findFirstOf(str, ch, pos); // findFirst = findFirstOf(ch) 
     }
         
     public static int findFirst(String str, String substr) {
-        return findFirst(str, substr, 0);        
+        return findFirst(str, substr, 0);
     }
 
     public static int findFirst(String str, String substr, int pos) {
@@ -791,20 +782,11 @@ public class StrLib {
     }
     
     public static int findLast(String str, char ch, int pos) {
-        if (isEmpty(str)) {
-            return INDEX_NOT_FOUND;
-        }
-        
-        int len = str.length();
-        if (pos < 0 || pos >= len) {
-            return INDEX_NOT_FOUND;
-        }
-        
-        return str.lastIndexOf(ch, pos);
+        return findLastOf(str, ch, pos); // findLast(ch) = findLastOf(ch)
     }
 
     public static int findLast(String str, String substr) {
-        return findLast(str, substr, (str == null ? 0 : str.length() - 1));        
+        return findLast(str, substr, (str == null ? 0 : str.length() - 1));
     }
 
     public static int findLast(String str, String substr, int pos) {
@@ -817,21 +799,32 @@ public class StrLib {
             return INDEX_NOT_FOUND;
         }
         
-        return str.lastIndexOf(substr, pos);
+        return str.lastIndexOf(str, pos);
     }
     
     //// findFirstOf
 
     public static int findFirstOf(String str, char ch) {
-        return findFirst(str, ch, 0);
+        return findFirstOf(str, ch, 0);
     }
     
     public static int findFirstOf(String str, char ch, int pos) {
-        return findFirst(str, ch, pos);
+        if (isEmpty(str)) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        int len = str.length();
+        if (pos < 0 || pos >= len) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        return str.indexOf(ch, pos);
     }
+    
+    //
         
     public static int findFirstOf(String str, String terms) {
-        return findFirst(str, terms, 0);        
+        return findFirstOf(str, terms, 0);        
     }
 
     public static int findFirstOf(String str, String terms, int pos) {
@@ -856,11 +849,20 @@ public class StrLib {
     //// findLastOf
 
     public static int findLastOf(String str, char ch) {
-        return findLast(str, ch, (str == null ? 0 : str.length() - 1));
+        return findLastOf(str, ch, (str == null ? 0 : str.length() - 1));
     }
     
     public static int findLastOf(String str, char ch, int pos) {
-        return findLast(str, ch, (str == null ? 0 : str.length() - 1));
+        if (isEmpty(str)) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        int len = str.length();
+        if (pos < 0 || pos >= len) {
+            return INDEX_NOT_FOUND;
+        }
+        
+        return str.lastIndexOf(ch, pos);
     }
 
     public static int findLastOf(String str, String terms) {
