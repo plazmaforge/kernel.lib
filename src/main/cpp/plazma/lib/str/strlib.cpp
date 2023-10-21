@@ -308,22 +308,8 @@ namespace strlib {
     }
 
     /*
-     isEmpty("abc", false) = false
-     isEmpty("abc", true)  = false
-     isEmpty("   ", false) = false
-     isEmpty("   ", true)  = true
-    */
-    //bool isEmpty(const std::string &str, bool trim) {
-    //    if (!trim) {
-    //        return str.empty();
-    //    }
-    //    return isBlank(str);
-    //}
-
-    /*
      isEmpty('a')  = false
      isEmpty(' ')  = false
-     isEmpty('')   = true
      isEmpty('\0') = true
     */
     bool isEmpty(char ch) {
@@ -381,7 +367,7 @@ namespace strlib {
     }
 
     bool equals(const std::string &str1, const std::string &str2) {
-        return equals(str1.c_str(), str2.c_str());
+        return str1 == str2;
     }
 
     //// 1.2
@@ -1854,7 +1840,7 @@ namespace strlib {
     //// 5.1
 
     int countChars(const std::string& str, char ch) {
-        if (str.empty() || ch == '\0') {
+        if (str.empty()) {
             return 0;
         }
         int count = 0;
@@ -1950,11 +1936,6 @@ namespace strlib {
     std::vector<std::string> split_(const std::string& str, char separator) {        
         std::vector<std::string> res;
         if (str.empty()) {
-            return res;
-        }
-
-        if (separator == '\0') {
-            res.push_back(str);
             return res;
         }
 
@@ -2078,11 +2059,6 @@ namespace strlib {
         
         std::vector<std::string> res;
         if (str.empty()) {
-            return res;
-        }
-
-        if (separator == '\0') {
-            res.push_back(str);
             return res;
         }
 
