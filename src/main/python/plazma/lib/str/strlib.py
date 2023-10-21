@@ -41,11 +41,26 @@ ELLIPSIS_LEN = 3
 #
 # 1.4
 #
-# - findFirstNotOf(str, ch)
-# - findFirstNotOf(str, ch, pos)
+# - contains(str, substr)
 #
-# - findLastNotOf(str, ch)
-# - findLastNotOf(str, ch, pos)
+# - findFirst(str, substr)
+# - findFirst(str, substr, pos)
+#
+# - findLast(str, substr)
+# - findLast(str, substr, pos)
+#
+#
+# - findFirstOf(str, substr)
+# - findFirstOf(str, substr, pos)
+#
+# - findLastOf(str, substr)
+# - findLastOf(str, substr, pos)
+#
+# - findFirstNotOf(str, substr)
+# - findFirstNotOf(str, substr, pos)
+#
+# - findLastNotOf(str, substr)
+# - findLastNotOf(str, substr, pos)
 
 #################################################################################
 #
@@ -383,7 +398,6 @@ def replicate(str, n):
 
     return str * n
 
-
 # 2.2
 
 def lpad(str, len, pad = ' '):
@@ -414,7 +428,6 @@ def lpad(str, len, pad = ' '):
     else:
         return fillStr + str
 
-
 def rpad(str, len, pad = ' '):
     if str == None:
         return None
@@ -443,7 +456,6 @@ def rpad(str, len, pad = ' '):
     else:
         return str + fillStr
 
-
 def fill(str, len, pad = ' '):
     if str == None or len < 1:
         return EMPTY_STRING
@@ -459,10 +471,8 @@ def fill(str, len, pad = ' '):
         # remove chars from right side
         return trunc(str, len, False, True)
 
-
 def ellipsis(str, len):
     return trunc(str, len, False, True)
-
 
 def trunc(str, len, trim = False, ellipsis = False):
     if str == None:
@@ -485,7 +495,6 @@ def trunc(str, len, trim = False, ellipsis = False):
     else:
         return str[:len]
     
-
 def left(str, len):
     if str == None:
         return None
@@ -495,7 +504,6 @@ def left(str, len):
         return str
     else:    
         return str[:len]
-
 
 def right(str, len):
     if str == None:
