@@ -225,40 +225,40 @@ def findFirst(str, substr, pos = None):
     if isEmpty(str) or isEmpty(substr):
         return -1
 
-    if pos == None:
-        pos = 0
-
     len = size(str)
     if len == 0:
         return -1
+
+    if pos == None:
+        pos = 0 # first index
     
     if pos < 0 or pos >= len:
         return -1
     
-    return str.find(substr)
+    return str.find(substr, pos) # [pos: len]
 
 def findLast(str, substr, pos = None):
     if isEmpty(str) or isEmpty(substr):
         return -1
 
-    if pos == None:
-        pos = 0
-
     len = size(str)
     if len == 0:
         return -1
+
+    if pos == None:
+        pos = len - 1 # last index
     
     if pos < 0 or pos >= len:
         return -1
     
-    return str.rfind(substr)
+    return str.rfind(substr, 0, pos + 1) # [0: pos + 1] exclude last index
 
 def findFirstOf(str, terms, pos = None):
     if isEmpty(str) or isEmpty(terms):
         return -1
 
     if pos == None:
-        pos = 0
+        pos = 0 # first index
 
     len = size(str)
     if len == 0:
@@ -270,7 +270,7 @@ def findFirstOf(str, terms, pos = None):
     i = pos
 
     if (len == 1):
-        return str.find(terms, pos)
+        return str.find(terms, pos) # [pos: len]
         #while (i < len):
         #    if (str[i] == terms):
         #        return i
@@ -292,7 +292,7 @@ def findLastOf(str, terms, pos = None):
         return -1
 
     if pos == None:
-        pos = len - 1
+        pos = len - 1 # last index
 
     if pos < 0 or pos >= len:
         return -1
@@ -300,7 +300,7 @@ def findLastOf(str, terms, pos = None):
     i = pos
 
     if (len == 1):
-        return str.rfind(terms, pos)
+        return str.rfind(terms, 0, pos + 1) # [0: pos + 1] exclude last index
         #while (i >= 0):
         #    if (str[i] == terms):
         #        return i
