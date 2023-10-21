@@ -108,8 +108,8 @@ def size(str):
     return len(str)
 
 def equals(str1, str2):
-    if str1 == None or str2 == None:
-        return False    
+    #if str1 == None or str2 == None:
+    #    return False    
     return str1 == str2    
 
 # 1.2

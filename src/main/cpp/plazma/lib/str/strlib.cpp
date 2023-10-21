@@ -308,15 +308,6 @@ namespace strlib {
     }
 
     /*
-     isEmpty('a')  = false
-     isEmpty(' ')  = false
-     isEmpty('\0') = true
-    */
-    bool isEmpty(char ch) {
-        return ch == '\0';
-    }
-
-    /*
      isBlank("abc")    = false
      isBlank(" abc ")  = false
      isBlank("     ")  = true
@@ -360,6 +351,9 @@ namespace strlib {
     ////
 
     bool equals(const char* str1, const char* str2) {
+        if (str1 == str2) {
+            return true;
+        }
         if (str1 == nullptr || str2 == nullptr) {
             return false;
         }
@@ -728,7 +722,7 @@ namespace strlib {
     }
 
     std::string replicate(const char ch, int n) {
-        if (isEmpty(ch) || n < 1) {
+        if (n < 1) {
             return EMPTY_STRING;
         }
         std::string result(n, ch);

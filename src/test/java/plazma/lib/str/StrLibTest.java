@@ -62,7 +62,7 @@ public class StrLibTest extends AbstractTestCase {
     public void testEquals() {
 
         // equals(null, null)
-        assertFalse(StrLib.equals(null, null));
+        assertTrue(StrLib.equals(null, null));
 
         // equals(null, empty), equals(null, value)
         assertFalse(StrLib.equals(null, ""));
@@ -101,6 +101,30 @@ public class StrLibTest extends AbstractTestCase {
 
     }
 
+    public void testEqualsContent() {
+
+        // equals(null, null)
+        assertTrue(StrLib.equalsContent(null, (CharSequence) null));
+        assertTrue(StrLib.equalsContent(null, (char[]) null));
+                
+        assertTrue(StrLib.equalsContent("", ""));
+        assertTrue(StrLib.equalsContent(" ", " "));
+        assertTrue(StrLib.equalsContent("  ", "  "));
+        
+        assertTrue(StrLib.equalsContent("a", "a"));
+        assertTrue(StrLib.equalsContent("ab", "ab"));
+        assertTrue(StrLib.equalsContent("abc", "abc"));
+        
+        assertTrue(StrLib.equalsContent("", new char[] {}));
+        assertTrue(StrLib.equalsContent(" ", new char[] {' '}));
+        assertTrue(StrLib.equalsContent("  ", new char[] {' ', ' '}));
+
+        assertTrue(StrLib.equalsContent("a", new char[] {'a'}));
+        assertTrue(StrLib.equalsContent("ab", new char[] {'a', 'b'}));
+        assertTrue(StrLib.equalsContent("abc", new char[] {'a', 'b', 'c'}));
+
+    }
+    
     // 1.2
     
     public void testNormalize() {

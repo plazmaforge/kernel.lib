@@ -54,7 +54,7 @@ class StrlibTest(unittest.TestCase):
     def test_equals(self):
 
         # equals(None, None)
-        self.assertFalse(strlib.equals(None, None))
+        self.assertTrue(strlib.equals(None, None))
 
         # equals(None, None), equals(None, value)
         self.assertFalse(strlib.equals(None, ''))

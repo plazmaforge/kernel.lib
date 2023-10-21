@@ -513,6 +513,9 @@ public class StrLib {
     //
 
     public static boolean equals(String str1, String str2) {
+        if (str1 == str2) {
+            return true;
+        }
         if (str1 == null || str2 == null) {
             return false;
         }
@@ -520,6 +523,10 @@ public class StrLib {
     }
 
     public static boolean equalsContent(String str, CharSequence cs) {
+        if (str == null && cs == null) {
+            return true;
+        }
+        
         if (str == null || cs == null) {
             return false;
         }
@@ -527,6 +534,9 @@ public class StrLib {
     }
 
     public static boolean equalsContent(String str, char[] array) {
+        if (str == null && array == null) {
+            return true;
+        }        
         if (str == null || array == null) {
             return false;
         }
