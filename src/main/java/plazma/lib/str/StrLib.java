@@ -73,12 +73,44 @@ public class StrLib {
     // - rtrim(String str, char ch)
     //
     // 1.4
+    // 
+    // - contains(String str, char ch)
+    // - contains(String str, String substr)
+    //
+    // - find(String str, char ch)
+    // - find(String str, char ch, int pos)
+    // - find(String str, String substr)
+    // - find(String str, String substr, int pos)
+    //
+    // - findFirst(String str, char ch)
+    // - findFirst(String str, char ch, int pos)
+    // - findFirst(String str, String substr)
+    // - findFirst(String str, String substr, int pos)
+    //
+    // - findLast(String str, char ch)
+    // - findLast(String str, char ch, int pos)
+    // - findLast(String str, String substr)
+    // - findLast(String str, String substr, int pos)
+    //
+    // - findFirstOf(String str, char ch)
+    // - findFirstOf(String str, char ch, int pos)
+    // - findFirstOf(String str, String terms)
+    // - findFirstOf(String str, String terms, int pos)
+    //
+    // - findLastOf(String str, char ch)
+    // - findLastOf(String str, char ch, int pos)
+    // - findLastOf(String str, String terms)
+    // - findLastOf(String str, String terms, int pos)
     //
     // - findFirstNotOf(String str, char ch)
-    // - findFirstNotOf(String str, char ch, int start)
+    // - findFirstNotOf(String str, char ch, int pos)
+    // - findFirstNotOf(String str, String terms)
+    // - findFirstNotOf(String str, String terms, int pos)
     //
     // - findLastNotOf(String str, char ch)
-    // - findLastNotOf(String str, char ch, int end)
+    // - findLastNotOf(String str, char ch, int pos)
+    // - findLastNotOf(String str, String terms)
+    // - findLastNotOf(String str, String terms, int pos)
 
     /////////////////////////////////////////////////////////////////////////////////
     // 2.1
@@ -730,7 +762,7 @@ public class StrLib {
     }
 
     public static boolean contains(String str, String substr) {
-        if (isEmpty(str)) {
+        if (isEmpty(str) || isEmpty(substr)) {
             return false;            
         }
         
@@ -2564,10 +2596,7 @@ public class StrLib {
         if (isEmpty(str)) {
             return EMPTY_STRING_ARRAY;
         }
-        if (separator == '\0') {
-            return new String[] {str};
-        }
-
+        
         int start = 0;
         int end = 0;
         int sep_len = 1;
