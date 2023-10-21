@@ -354,6 +354,8 @@ namespace strlib {
 
     bool equals(const std::string &str1, const std::string &str2);
 
+    bool equalsContent(const std::string& str1, const char* str2);
+
     //// 1.2
 
     std::string normalize(const std::string &str);

@@ -298,6 +298,10 @@ namespace strlib {
 
     //// 1.1
 
+    bool isEmpty(const char* str) {
+        return str == nullptr || str[0] == '\0';
+    }
+
     /*
      isEmpty("abc") = false
      isEmpty("   ") = false
@@ -362,6 +366,27 @@ namespace strlib {
 
     bool equals(const std::string &str1, const std::string &str2) {
         return str1 == str2;
+    }
+
+    bool equalsContent(const std::string& str1, const char* str2) {
+        if (str1.empty()) {
+            return isEmpty(str2);
+        }
+        if (str2 == nullptr) {
+            return false;
+        }
+        int len1 = str1.length();
+        int len2 = strlen(str2);
+        if (len1 != len2) {
+            return false;
+        }
+        for (int i = 0; i < len1; i++) {
+            if (str1[i] != str2[i]) {
+                return false;
+            }
+        }
+        return true;
+        //return str1.compare(str2);
     }
 
     //// 1.2

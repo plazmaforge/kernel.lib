@@ -59,6 +59,51 @@ TEST(size) {
 
 TEST(equals) {
 
+  // char*
+
+  // equals(null, null)
+  ASSERT_TRUE(strlib::equals(nullptr, nullptr));
+
+  // False
+  ASSERT_FALSE(strlib::equals(nullptr, ""));
+  ASSERT_FALSE(strlib::equals("", nullptr));
+  
+  // True
+  const char* str1 = "";
+  const char* str2 = "";
+  ASSERT_TRUE(strlib::equals(str1, str2));
+
+  str1 = " ";
+  str2 = " ";
+  ASSERT_TRUE(strlib::equals(str1, str2));
+
+  str1 = "  ";
+  str2 = "  ";
+  ASSERT_TRUE(strlib::equals(str1, str2));
+
+  str1 = "a";
+  str2 = "a";
+  ASSERT_TRUE(strlib::equals(str1, str2));
+
+  str1 = "ab";
+  str2 = "ab";
+  ASSERT_TRUE(strlib::equals(str1, str2));
+
+  str1 = "abc";
+  str2 = "abc";
+  ASSERT_TRUE(strlib::equals(str1, str2));
+
+  // False
+  str1 = "a";
+  str2 = "b";
+  ASSERT_FALSE(strlib::equals(str1, str2));
+
+  str1 = "abc";
+  str2 = "xyz";
+  ASSERT_FALSE(strlib::equals(str1, str2));
+
+  // string
+
   // equals(empty, value), equals(value, empty)
   ASSERT_FALSE(strlib::equals("", "abc"));
   ASSERT_FALSE(strlib::equals("abc", ""));
@@ -84,6 +129,36 @@ TEST(equals) {
   ASSERT_TRUE(strlib::equals("abc ", "abc "));
   ASSERT_TRUE(strlib::equals(" abc ", " abc "));
   
+}
+
+TEST(equalsContent) {
+
+  // equalsContent(empty, null)
+  ASSERT_TRUE(strlib::equalsContent("", nullptr));
+
+  // False
+  ASSERT_FALSE(strlib::equalsContent(" ", nullptr));
+  ASSERT_FALSE(strlib::equalsContent("  ", nullptr));
+  ASSERT_FALSE(strlib::equalsContent("  ", nullptr));
+
+  ASSERT_FALSE(strlib::equalsContent("a", nullptr));
+  ASSERT_FALSE(strlib::equalsContent("ab", nullptr));
+  ASSERT_FALSE(strlib::equalsContent("abc", nullptr));
+
+  // True
+  ASSERT_TRUE(strlib::equalsContent("", ""));
+  ASSERT_TRUE(strlib::equalsContent(" ", " "));
+  ASSERT_TRUE(strlib::equalsContent("  ", "  "));
+
+  ASSERT_TRUE(strlib::equalsContent("a", "a"));
+  ASSERT_TRUE(strlib::equalsContent("ab", "ab"));
+  ASSERT_TRUE(strlib::equalsContent("abc", "abc"));
+
+  // False
+  ASSERT_FALSE(strlib::equalsContent("ab", "a"));
+  ASSERT_FALSE(strlib::equalsContent("abc", "a"));
+  ASSERT_FALSE(strlib::equalsContent("abc", "xyz"));
+
 }
 
 // 1.2
@@ -845,6 +920,7 @@ INIT(strlib) {
   SET_TEST(isBlank);
   SET_TEST(size);
   SET_TEST(equals);
+  SET_TEST(equalsContent);
   SET_TEST(normalize);
   SET_TEST(normalizeBlank)
   SET_TEST(defautIfEmpty)
@@ -854,7 +930,6 @@ INIT(strlib) {
 
   SET_TEST(findFirstOf);
   SET_TEST(findLastOf);
-
   SET_TEST(findFirstNotOf);
   SET_TEST(findLastNotOf);
 
