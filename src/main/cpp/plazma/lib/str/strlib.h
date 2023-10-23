@@ -23,7 +23,7 @@
 //
 // - normalize(const string& str)                                              - trim
 // - normalizeBlank(const string& str, bool trimAll, bool trimBlank)
-// - normalizeQuoted(const string& str)                                       - trim in quoted value
+// - normalizeQuoted(const string& str)                                        - trim in quoted value
 //
 // - defautIfEmpty(const string& str, const string& defautStr)                 - str.empty() ? defautStr : str
 //

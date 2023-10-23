@@ -29,7 +29,7 @@
 // - normalizeBlank(const string& str, bool trimAll, bool trimBlank)
 // - normalizeQuoted(const string& str)                                        - trim in quoted value
 //
-// - defaultIfEmpty(const string& str, const string& defaultStr)              - str.empty() ? defaultStr : str
+// - defaultIfEmpty(const string& str, const string& defaultStr)               - str.empty() ? defaultStr : str
 //
 // 1.3 trim (left, right)
 // 
@@ -86,51 +86,51 @@
 //
 // - capitalize(const string& str)		                                       - capitalize("abc") = "Abc"
 // - capitalize(const string& str, bool force)		                           - capitalize(("abC") = "Abc"
-// - capitalize(const string& str, const string& locale)                     - N/A
-// - capitalize(const string& str, bool force, const string& locale)         - N/A
+// - capitalize(const string& str, const string& locale)                       - N/A
+// - capitalize(const string& str, bool force, const string& locale)           - N/A
 //
 // - decapitalize(const string& str)		                                   - decapitalize("Abc") = "abc"
 // - decapitalize(const string& str, bool force)	                           - decapitalize("AbC") = "abc"
-// - decapitalize(const string& str, const string& locale)                   - N/A
-// - decapitalize(const string& str, bool force, const string& locale)       - N/A
+// - decapitalize(const string& str, const string& locale)                     - N/A
+// - decapitalize(const string& str, bool force, const string& locale)         - N/A
 //
 // - upper(const string& str)			                                       - upper("aBc") = "ABC" 
-// - upper(const string& str, const string& locale)                          - N/A
+// - upper(const string& str, const string& locale)                            - N/A
 //
 // - lower(const string& str)			                                       - lower("Abc") = "abc" 
-// - lower(const string& str, const string& locale)                          - N/A
+// - lower(const string& str, const string& locale)                            - N/A
 //
 // - toUpperCase(const string& str)
-// - toUpperCase(const string& str, const string& locale)                    - N/A
+// - toUpperCase(const string& str, const string& locale)                      - N/A
 //
 // - toLowerCase(const string& str)
-// - toLowerCase(const string& str, const string& locale)                    - N/A
+// - toLowerCase(const string& str, const string& locale)                      - N/A
 //
 // - toCase(const string& str, bool upper)
-// - toCase(const string& str, bool upper, const string& locale)             - N/A
+// - toCase(const string& str, bool upper, const string& locale)               - N/A
 // - toCase(char ch, bool upper);
 //
-// - toCamelCase(const string& str)		                                   - toCamelCase("property_name") = "PropertyName"
-// - toCamelCase(const string& str, const string& separator)                 - 
-// - toCamelCase(const string& str, bool capitalize)                          - 
-// - toCamelCase(const string& str, const string& separator, bool capitalize)- 
+// - toCamelCase(const string& str)		                                       - toCamelCase("property_name") = "PropertyName"
+// - toCamelCase(const string& str, const string& separator)                   - 
+// - toCamelCase(const string& str, bool capitalize)                           - 
+// - toCamelCase(const string& str, const string& separator, bool capitalize)  - 
 //
-// - toSnakeCase(const string& str)		                                    - toSnakeCase("PropertyName") = "property_name"
-// - toSnakeCase(const string& str, const string& separator)                  - 
+// - toSnakeCase(const string& str)		                                       - toSnakeCase("PropertyName") = "property_name"
+// - toSnakeCase(const string& str, const string& separator)                   - 
 // - toSnakeCase(const string& str, bool upper)                                -  
-// - toSnakeCase(const string& str, const string& separator, bool upper)      -  
+// - toSnakeCase(const string& str, const string& separator, bool upper)       -  
 // - toSnakeCase(const string& str, const string& separator, bool upper, bool trim) -  
 //
-// - toKebabCase(const string& str)		                                    - toKebabCase("PropertyName") = "property-name"
-// - toKebabCase(const string& str, const string& separator)                  - 
-// - toKebabCase(const string& str, const string& separator, bool upper)      -  
+// - toKebabCase(const string& str)		                                       - toKebabCase("PropertyName") = "property-name"
+// - toKebabCase(const string& str, const string& separator)                   - 
+// - toKebabCase(const string& str, const string& separator, bool upper)       -  
 // - toKebabCase(const string& str, bool upper)                                -  
 // - toKebabCase(const string& str, const string& separator, bool upper, bool trim) -  
 //
 // - toTypeCase(const string& str, const string& type)
 // - toTypeCase(const string& str, const string& type, const string& separators, const string& connector)
 //
-// - reverse(const string& str)			                                     - reverse("abc") = "cba"
+// - reverse(const string& str)			                                       - reverse("abc") = "cba"
 //
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -151,29 +151,29 @@
 // 4.2
 // 
 // - removePrefix(const string& str, const string& prefix)                     -
-// - removePrefixes(const string& str, const vector<string> &prefixes)          - 
+// - removePrefixes(const string& str, const vector<string> &prefixes)         - 
 //
 // - removeSuffix(const string& str, const string& suffix)                     -
-// - removeSuffixes(const string& str, const vector<string> &suffixes)          - 
+// - removeSuffixes(const string& str, const vector<string> &suffixes)         - 
 //
 // 4.3
 // 
-// - isQuoted(const string& str)                                                -
+// - isQuoted(const string& str)                                               -
 // - isQuoted(const string& str, const string& startQuote, const string& endQuote)
-// - needQuote(const string& str)                                               -
+// - needQuote(const string& str)                                              -
 // - needQuote(const string& str, const string& startQuote, const string& endQuote)
-// - quote(const string& str)                                                   -
+// - quote(const string& str)                                                  -
 // - quote(const string& str, const string& startQuote, const string& endQuote)
-// - unquote(const string& str)                                                 -
+// - unquote(const string& str)                                                -
 // - unquote(const string& str, const string& startQuote, const string& endQuote)
 //
 // 4.4
 // 
-// - isColumnSeparator(char ch)                                                  -
-// - isColumnText(const char* array, int len)                                    -
-// - isColumnText(const string& str)                                             -
-// - isLineText(const char* array, int len)                                      -
-// - isLineText(const string& str)                                               -
+// - isColumnSeparator(char ch)                                                -
+// - isColumnText(const char* array, int len)                                  -
+// - isColumnText(const string& str)                                           -
+// - isLineText(const char* array, int len)                                    -
+// - isLineText(const string& str)                                             -
 
 /////////////////////////////////////////////////////////////////////////////////
 // 5.1
@@ -208,17 +208,17 @@
 // - toString(const vector<string> values, const string& separator)
 //
 // - toWordArray(const string& str)                                            - N/A ???
-// - toWordArray(const string& str, const string& separators)                 - N/A ???
+// - toWordArray(const string& str, const string& separators)                  - N/A ???
 //
 // - toLineArray(const string& str)                                            - N/A ???
 //
 // 8.2
 //
 // - toWordList(const string& str)                                             - 
-// - toWordList(const string& str, const string& separators)                  - 
+// - toWordList(const string& str, const string& separators)                   - 
 //
 // - toLineList(const string& str)                                             - 
-// - toList(array)                                                              - N/A ???    
+// - toList(array)                                                             - N/A ???    
 
 /////////////////////////////////////////////////////////////////////////////////
 // 9.1
@@ -1282,14 +1282,14 @@ namespace strlib {
     // caseOp =  2: 'MYNAME': UPPERCASE 
     // caseOp =  3: 'myName': camelCase
     // caseOp =  4: 'MyName': PascalCase
-    void _flushOp(std::vector<std::string> *result, std::vector<char> *buf, const int caseOp) {
+    void _flushOp(std::vector<std::string>& result, std::vector<char>& buf, const int caseOp) {
         int _caseOp = caseOp;
         char ch = 0;
         std::string str;
 
-        for (int i = 0; i < buf->size(); i++) {
+        for (int i = 0; i < buf.size(); i++) {
             _caseOp = caseOp;
-            ch = buf->at(i);
+            ch = buf.at(i);
 
             if (caseOp == CO_PascalCase) {
                 if (i == 0) {
@@ -1311,8 +1311,8 @@ namespace strlib {
             str += ch;          // Add char to std::string 
         }
 
-        result->push_back(str); // Add buffer to result
-        buf->clear();           // Clear buffer
+        result.push_back(str); // Add buffer to result
+        buf.clear();           // Clear buffer
 
     }
 
@@ -1367,7 +1367,7 @@ namespace strlib {
                 // flush
                 if (buf.size() > 0) {
                     _caseOp = _normalizeCaseOpByToken(caseOp, first);
-                    _flushOp(&result, &buf, _caseOp);
+                    _flushOp(result, buf, _caseOp);
                     first = false;
                 }
 
@@ -1388,7 +1388,7 @@ namespace strlib {
         // flush
         if (buf.size() > 0) {
             _caseOp = _normalizeCaseOpByToken(caseOp, first);
-            _flushOp(&result, &buf, _caseOp);
+            _flushOp(result, buf, _caseOp);
         }
 
         return result;
