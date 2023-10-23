@@ -25,7 +25,7 @@ ELLIPSIS_LEN = 3
 # - noneIfEmpty(str)                                           - '' -> None
 # - noneIfEmpty(str, trim)                                     - trim, '' -> None
 #
-# - defaultIfNone(str, defaultStr)                             - str == None ? defaultStr : str
+# - defaultIfNone(str, defaultStr)                             - str is None ? defaultStr : str
 # - defaultIfEmpty(str, defaultStr)                            - isEmpty(str) ? defaultStr : str
 #
 # 1.3 trim (left, right)
@@ -93,29 +93,27 @@ ELLIPSIS_LEN = 3
 # 1.1
 
 def isEmpty(str):
-    if str == None:
+    if str is None:
         return True    
     return len(str) == 0
 
 def isBlank(str):
-    if str == None:
+    if str is None:
         return True    
     return len(str.strip()) == 0 # trim
 
 def size(str):
-    if str == None:
+    if str is None:
         return 0
     return len(str)
 
 def equals(str1, str2):
-    #if str1 == None or str2 == None:
-    #    return False    
     return str1 == str2    
 
 # 1.2
 
 def normalize(str):
-    if str == None:
+    if str is None:
         return None
     
     if len(str) == 0:
@@ -129,17 +127,14 @@ def normalize(str):
         return res
 
 def normalizeSafe(str):
-    if str == None:
+    if str is None:
         return EMPTY_STRING    
     return str.strip() # trim
 
 def normalizeBlank(str, trimAll, trimBlank):
-    if str == None:
+    if str is None:
         return None
-
-    #if len(str) == 0:
-    #    return EMPTY_STRING
-    
+   
     if not trimAll and not trimBlank:
         return str
     
@@ -154,13 +149,13 @@ def normalizeBlank(str, trimAll, trimBlank):
         return normalize(str)
 
 def emptyIfNone(str):
-    if str == None:
+    if str is None:
         return EMPTY_STRING
     else:
         return str
 
 def noneIfEmpty(str, trim = False):
-    if str == None or len(str) == 0:
+    if isEmpty(str):
         return None
     else:
         if trim:
@@ -169,13 +164,13 @@ def noneIfEmpty(str, trim = False):
             return str
 
 def defaultIfNone(str, defaultStr):
-    if str == None:
+    if str is None:
         return defaultStr
     else:
         return str
 
 def defaultIfEmpty(str, defaultStr):
-    if str == None or len(str) == 0:
+    if isEmpty(str):
         return defaultStr
     else:
         return str
@@ -195,17 +190,17 @@ def defaultIfEmpty(str, defaultStr):
 ## trim
 
 def trim(str, ch = None):
-    if str == None:
+    if str is None:
         return None
     return str.strip(ch)
 
 def ltrim(str, ch = None):
-    if str == None:
+    if str is None:
         return None
     return str.lstrip(ch)
 
 def rtrim(str, ch = None):
-    if str == None:
+    if str is None:
         return None
     return str.rstrip(ch)
 
@@ -390,7 +385,7 @@ def findLastNotOf(str, terms, pos = None):
 # 2.1
 
 def replicate(str, n):
-    if str == None:
+    if str is None:
         return None
     
     if n < 1:
@@ -401,7 +396,7 @@ def replicate(str, n):
 # 2.2
 
 def lpad(str, len, pad = ' '):
-    if str == None:
+    if str is None:
         return None
     
     if len < 1 or pad == None:       # pad == None: no padding
@@ -429,7 +424,7 @@ def lpad(str, len, pad = ' '):
         return fillStr + str
 
 def rpad(str, len, pad = ' '):
-    if str == None:
+    if str is None:
         return None
     
     if len < 1 or pad == None:       # pad == None: no padding
@@ -457,7 +452,7 @@ def rpad(str, len, pad = ' '):
         return str + fillStr
 
 def fill(str, len, pad = ' '):
-    if str == None or len < 1:
+    if str is None or len < 1:
         return EMPTY_STRING
     
     strLen = size(str)
@@ -475,7 +470,7 @@ def ellipsis(str, len):
     return trunc(str, len, False, True)
 
 def trunc(str, len, trim = False, ellipsis = False):
-    if str == None:
+    if str is None:
         return None
     
     if len < 1:
@@ -496,7 +491,7 @@ def trunc(str, len, trim = False, ellipsis = False):
         return str[:len]
     
 def left(str, len):
-    if str == None:
+    if str is None:
         return None
         
     strLen = size(str)
@@ -506,7 +501,7 @@ def left(str, len):
         return str[:len]
 
 def right(str, len):
-    if str == None:
+    if str is None:
         return None
         
     strLen = size(str)
