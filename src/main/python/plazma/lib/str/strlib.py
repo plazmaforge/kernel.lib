@@ -194,15 +194,37 @@ def trim(str, ch = None):
         return None
     return str.strip(ch)
 
+def trimSpace(str):
+    return trim(str, SPACE_CHAR)
+
+def trimAll(str):
+    return trim(str, None)
+
+##
+
 def ltrim(str, ch = None):
     if str is None:
         return None
     return str.lstrip(ch)
 
+def ltrimSpace(str):
+    return ltrim(str, SPACE_CHAR)
+
+def ltrimAll(str):
+    return ltrim(str, None)
+
+##
+
 def rtrim(str, ch = None):
     if str is None:
         return None
     return str.rstrip(ch)
+
+def rtrimSpace(str):
+    return rtrim(str, SPACE_CHAR)
+
+def rtrimAll(str):
+    return rtrim(str, None)
 
 # 1.4
 
@@ -509,3 +531,65 @@ def right(str, len):
         return str
     else:    
         return str[strLen - len:]
+
+# 3.1
+
+# - capitalize(str)
+# - decapitalize(str
+
+def upper(str):
+    return toUpperCase(str)
+
+def lower(str):
+    return toLowerCase(str)
+
+def toUpperCase(str):
+    if str is None:
+        return None
+    return str.upper()
+
+def toLowerCase(str):
+    if str is None:
+        return None
+    return str.lower()
+
+def toCase(str, upper):
+    if str is None:
+        return None
+    if upper:
+        return str.upper()
+    else:
+        return str.lower()
+    
+def capitalize(str, forceRest = False):
+    if str is None:
+        return None
+    
+    # return str.capitalize()
+    # str[0:1].upper() + str[1:].lower()
+    # return ''.join([str[:1].lower(), (str[1:].upper() if upper_rest else str[1:])])
+
+    len = size(str)
+    if len == 0:
+        return str
+    
+    if len == 1:
+        return str[0].upper()
+    else:
+        # if 'forceRest' then lower rest
+        return ''.join([str[0].upper(), (str[1:].lower() if forceRest else str[1:])])
+    
+def decapitalize(str, forceRest = False):
+    if str is None:
+        return None
+        
+    len = size(str)
+    if len == 0:
+        return str
+    
+    if len == 1:
+        return str[0].lower()
+    else:
+        # if 'forceRest' then upper rest
+        return ''.join([str[0].lower(), (str[1:].upper() if forceRest else str[1:])])
+    

@@ -280,6 +280,50 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('abc', strlib.trim('abc \t\n\r\f\v'))
         self.assertEqual('abc', strlib.trim(' \t\n\r\f\vabc \t\n\r\f\v'))
 
+    def test_trimAll(self): # alias: trim(str)
+
+        # trimAll(None), trimAll(empty)
+        self.assertIsNone(strlib.trimAll(None))        
+        self.assertEqual('', strlib.trimAll(''))
+
+        # trimAll(blank)
+        self.assertEqual('', strlib.trimAll(' '))
+        self.assertEqual('', strlib.trimAll('  '))
+        
+        # trimAll(value)
+        self.assertEqual('abc', strlib.trimAll('abc'))
+        self.assertEqual('abc', strlib.trimAll(' abc'))
+        self.assertEqual('abc', strlib.trimAll('abc '))
+        self.assertEqual('abc', strlib.trimAll(' abc '))
+
+        # trimAll(' \t\n\r\f\v')
+        self.assertEqual('', strlib.trimAll(' \t\n\r\f\v'))
+        self.assertEqual('abc', strlib.trimAll(' \t\n\r\f\vabc'))
+        self.assertEqual('abc', strlib.trimAll('abc \t\n\r\f\v'))
+        self.assertEqual('abc', strlib.trimAll(' \t\n\r\f\vabc \t\n\r\f\v'))
+
+    def test_trimSpace(self):
+
+        # trimSpace(None), trimSpace(empty)
+        self.assertIsNone(strlib.trimSpace(None))        
+        self.assertEqual('', strlib.trimSpace(''))
+
+        # trimSpace(blank)
+        self.assertEqual('', strlib.trimSpace(' '))
+        self.assertEqual('', strlib.trimSpace('  '))
+        
+        # trimSpace(value)
+        self.assertEqual('abc', strlib.trimSpace('abc'))
+        self.assertEqual('abc', strlib.trimSpace(' abc'))
+        self.assertEqual('abc', strlib.trimSpace('abc '))
+        self.assertEqual('abc', strlib.trimSpace(' abc '))
+
+        # trimSpace(' \t\n\r\f\v')
+        self.assertEqual('\t\n\r\f\v', strlib.trimSpace(' \t\n\r\f\v'))
+        self.assertEqual('\t\n\r\f\vabc', strlib.trimSpace(' \t\n\r\f\vabc'))
+        self.assertEqual('abc \t\n\r\f\v', strlib.trimSpace('abc \t\n\r\f\v'))
+        self.assertEqual('\t\n\r\f\vabc \t\n\r\f\v', strlib.trimSpace(' \t\n\r\f\vabc \t\n\r\f\v'))
+
 
     def test_ltrim(self):
 
@@ -786,6 +830,235 @@ class StrlibTest(unittest.TestCase):
         # NotFound: value, pos, max range
         self.assertEqual(-1, strlib.findLastNotOf('..**..**', '*', 8))
         self.assertEqual(-1, strlib.findLastNotOf('..**..**', '*', 9))
+
+    # 3.1
+
+    def test_upper(self): # alias: toUpperCase(str)
+
+        # upper(None), upper(empty)
+        self.assertIsNone(strlib.upper(None))
+        self.assertEqual('', strlib.upper(''))
+
+        # upper(blank)
+        self.assertEqual(' ', strlib.upper(' '))
+        self.assertEqual('  ', strlib.upper('  '))
+
+        self.assertEqual('0123456789.,:!?', strlib.upper('0123456789.,:!?'))
+
+        # upper(value)
+        self.assertEqual('A', strlib.upper('A'))
+        self.assertEqual('AB', strlib.upper('AB'))
+        self.assertEqual('ABC', strlib.upper('ABC'))
+        self.assertEqual('ABCD', strlib.upper('ABCD'))
+
+        self.assertEqual('A', strlib.upper('a'))
+        self.assertEqual('AB', strlib.upper('ab'))
+        self.assertEqual('ABC', strlib.upper('abc'))
+        self.assertEqual('ABCD', strlib.upper('abcd'))
+
+        self.assertEqual('AB', strlib.upper('aB'))
+        self.assertEqual('ABC', strlib.upper('aBc'))
+        self.assertEqual('ABCD', strlib.upper('aBcD'))
+
+    def test_lower(self): # alias: toLowercase(str)
+
+        # lower(None), lower(empty)
+        self.assertIsNone(strlib.lower(None))
+        self.assertEqual('', strlib.lower(''))
+
+        # lower(blank)
+        self.assertEqual(' ', strlib.lower(' '))
+        self.assertEqual('  ', strlib.lower('  '))
+
+        self.assertEqual('0123456789.,:!?', strlib.lower('0123456789.,:!?'))
+
+        # lower(value)
+        self.assertEqual('a', strlib.lower('a'))
+        self.assertEqual('ab', strlib.lower('ab'))
+        self.assertEqual('abc', strlib.lower('abc'))
+        self.assertEqual('abcd', strlib.lower('abcd'))
+
+        self.assertEqual('a', strlib.lower('A'))
+        self.assertEqual('ab', strlib.lower('AB'))
+        self.assertEqual('abc', strlib.lower('ABC'))
+        self.assertEqual('abcd', strlib.lower('ABCD'))
+
+        self.assertEqual('ab', strlib.lower('Ab'))
+        self.assertEqual('abc', strlib.lower('AbC'))
+        self.assertEqual('abcd', strlib.lower('AbCd'))
+
+    def test_toUpperCase(self):
+
+        # toUpperCase(None), toUpperCase(empty)
+        self.assertIsNone(strlib.toUpperCase(None))
+        self.assertEqual('', strlib.toUpperCase(''))
+
+        # toUpperCase(blank)
+        self.assertEqual(' ', strlib.toUpperCase(' '))
+        self.assertEqual('  ', strlib.toUpperCase('  '))
+
+        self.assertEqual('0123456789.,:!?', strlib.toUpperCase('0123456789.,:!?'))
+
+        # toUpperCase(value)
+        self.assertEqual('A', strlib.toUpperCase('A'))
+        self.assertEqual('AB', strlib.toUpperCase('AB'))
+        self.assertEqual('ABC', strlib.toUpperCase('ABC'))
+        self.assertEqual('ABCD', strlib.toUpperCase('ABCD'))
+
+        self.assertEqual('A', strlib.toUpperCase('a'))
+        self.assertEqual('AB', strlib.toUpperCase('ab'))
+        self.assertEqual('ABC', strlib.toUpperCase('abc'))
+        self.assertEqual('ABCD', strlib.toUpperCase('abcd'))
+
+        self.assertEqual('AB', strlib.toUpperCase('aB'))
+        self.assertEqual('ABC', strlib.toUpperCase('aBc'))
+        self.assertEqual('ABCD', strlib.toUpperCase('aBcD'))
+
+    def test_toLowerCase(self):
+
+        # toLowerCase(None), toLowerCase(empty)
+        self.assertIsNone(strlib.toLowerCase(None))
+        self.assertEqual('', strlib.toLowerCase(''))
+
+        # toLowerCase(blank)
+        self.assertEqual(' ', strlib.toLowerCase(' '))
+        self.assertEqual('  ', strlib.toLowerCase('  '))
+
+        self.assertEqual('0123456789.,:!?', strlib.toLowerCase('0123456789.,:!?'))
+
+        # toLowerCase(value)
+        self.assertEqual('a', strlib.toLowerCase('a'))
+        self.assertEqual('ab', strlib.toLowerCase('ab'))
+        self.assertEqual('abc', strlib.toLowerCase('abc'))
+        self.assertEqual('abcd', strlib.toLowerCase('abcd'))
+
+        self.assertEqual('a', strlib.toLowerCase('A'))
+        self.assertEqual('ab', strlib.toLowerCase('AB'))
+        self.assertEqual('abc', strlib.toLowerCase('ABC'))
+        self.assertEqual('abcd', strlib.toLowerCase('ABCD'))
+
+        self.assertEqual('ab', strlib.toLowerCase('Ab'))
+        self.assertEqual('abc', strlib.toLowerCase('AbC'))
+        self.assertEqual('abcd', strlib.toLowerCase('AbCd'))
+
+    def test_toCase(self):
+
+        #### Upper ####
+
+        # toCase(None), toCase(empty, True)
+        self.assertIsNone(strlib.toCase(None, True))
+        self.assertEqual('', strlib.toCase('', True))
+
+        # toCase(blank, True)
+        self.assertEqual(' ', strlib.toCase(' ', True))
+        self.assertEqual('  ', strlib.toCase('  ', True))
+
+        self.assertEqual('0123456789.,:!?', strlib.toCase('0123456789.,:!?', True))
+
+        # toCase(value, True)
+        self.assertEqual('A', strlib.toCase('A', True))
+        self.assertEqual('AB', strlib.toCase('AB', True))
+        self.assertEqual('ABC', strlib.toCase('ABC', True))
+        self.assertEqual('ABCD', strlib.toCase('ABCD', True))
+
+        self.assertEqual('A', strlib.toCase('a', True))
+        self.assertEqual('AB', strlib.toCase('ab', True))
+        self.assertEqual('ABC', strlib.toCase('abc', True))
+        self.assertEqual('ABCD', strlib.toCase('abcd', True))
+
+        self.assertEqual('AB', strlib.toCase('aB', True))
+        self.assertEqual('ABC', strlib.toCase('aBc', True))
+        self.assertEqual('ABCD', strlib.toCase('aBcD', True))
+
+        #### Lower ####
+
+        # toCase(None, False), toCase(empty, False)
+        self.assertIsNone(strlib.toCase(None, False))
+        self.assertEqual('', strlib.toCase('', False))
+
+        # toCase(blank, False)
+        self.assertEqual(' ', strlib.toCase(' ', False))
+        self.assertEqual('  ', strlib.toCase('  ', False))
+
+        self.assertEqual('0123456789.,:!?', strlib.toCase('0123456789.,:!?', False))
+
+        # toCase(value, False)
+        self.assertEqual('a', strlib.toCase('a', False))
+        self.assertEqual('ab', strlib.toCase('ab', False))
+        self.assertEqual('abc', strlib.toCase('abc', False))
+        self.assertEqual('abcd', strlib.toCase('abcd', False))
+
+        self.assertEqual('a', strlib.toCase('A', False))
+        self.assertEqual('ab', strlib.toCase('AB', False))
+        self.assertEqual('abc', strlib.toCase('ABC', False))
+        self.assertEqual('abcd', strlib.toCase('ABCD', False))
+
+        self.assertEqual('ab', strlib.toCase('Ab', False))
+        self.assertEqual('abc', strlib.toCase('AbC', False))
+        self.assertEqual('abcd', strlib.toCase('AbCd', False))
+
+    def test_capitalize(self):
+
+        # capitalize(None), capitalize(empty)
+        self.assertIsNone(strlib.capitalize(None))
+        self.assertEqual('', strlib.capitalize(''))
+
+        self.assertEqual(' ', strlib.capitalize(' '))
+        self.assertEqual('  ', strlib.capitalize('  '))
+
+        self.assertEqual('A', strlib.capitalize('a'))
+        self.assertEqual('Ab', strlib.capitalize('ab'))
+        self.assertEqual('Abc', strlib.capitalize('abc'))
+        self.assertEqual('Abcd', strlib.capitalize('abcd'))
+
+        self.assertEqual('AB', strlib.capitalize('aB'))
+        self.assertEqual('ABc', strlib.capitalize('aBc'))
+        self.assertEqual('ABcd', strlib.capitalize('aBcd'))
+
+        self.assertEqual('Hello world!', strlib.capitalize('Hello world!'))
+        self.assertEqual('Hello world!', strlib.capitalize('hello world!'))
+
+        # Force
+        self.assertEqual('Ab', strlib.capitalize('aB', True))
+        self.assertEqual('Abc', strlib.capitalize('aBc', True))
+        self.assertEqual('Abcd', strlib.capitalize('aBcd', True))
+
+        self.assertEqual('Hello world!', strlib.capitalize('Hello world!', True))
+        self.assertEqual('Hello world!', strlib.capitalize('hello world!', True))
+
+        self.assertEqual('Hello world!', strlib.capitalize('Hello World!', True))
+        self.assertEqual('Hello world!', strlib.capitalize('hello World!', True))
+
+
+    def test_decapitalize(self):
+
+        # decapitalize(None), decapitalize(empty)
+        self.assertIsNone(strlib.decapitalize(None))
+        self.assertEqual('', strlib.decapitalize(''))
+
+        self.assertEqual(' ', strlib.decapitalize(' '))
+        self.assertEqual('  ', strlib.decapitalize('  '))
+
+        self.assertEqual('a', strlib.decapitalize('A'))
+        self.assertEqual('ab', strlib.decapitalize('Ab'))
+        self.assertEqual('abc', strlib.decapitalize('Abc'))
+        self.assertEqual('abcd', strlib.decapitalize('Abcd'))
+
+        self.assertEqual('ab', strlib.decapitalize('Ab'))
+        self.assertEqual('abC', strlib.decapitalize('AbC'))
+        self.assertEqual('abCd', strlib.decapitalize('AbCd'))
+
+        self.assertEqual('hello world!', strlib.decapitalize('hello world!'))
+        self.assertEqual('hello world!', strlib.decapitalize('Hello world!'))        
+
+        # Force
+        self.assertEqual('aB', strlib.decapitalize('Ab', True))
+        self.assertEqual('aBC', strlib.decapitalize('AbC', True))
+        self.assertEqual('aBCD', strlib.decapitalize('AbCd', True))
+
+        self.assertEqual('hELLO WORLD!', strlib.decapitalize('hello world!', True))
+        self.assertEqual('hELLO WORLD!', strlib.decapitalize('Hello world!', True))        
+
 
 if __name__ == '__main__':
     unittest.main()
