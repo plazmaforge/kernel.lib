@@ -14,16 +14,23 @@ DEFAULT_KEBAB_CASE_SEPARATOR = '-' # KEBAB
 ####################################
 # Case Operations
 ####################################
-# caseOp =  1: 'myname': lowercase 
-# caseOp =  2: 'MYNAME': UPPERCASE 
-# caseOp =  3: 'myName': camelCase
-# caseOp =  4: 'MyName': CamelCase
-    
+# caseOp =  1: 'myname': LOWER 
+# caseOp =  2: 'MYNAME': UPPER 
+# caseOp =  3: 'myName': LOWER_CHAR
+# caseOp =  4: 'MyName': UPPER_CHAR    
+
+#CO_lowercase  =  1
+#CO_UPPERCASE  =  2
+#CO_camelCase  =  3
+#CO_PascalCase =  4
+
 CO_NONE       =  0
-CO_lowercase  =  1
-CO_UPPERCASE  =  2
-CO_camelCase  =  3
-CO_PascalCase =  4
+CO_LOWER      =  1
+CO_UPPER      =  2
+CO_LOWER_CHAR =  3
+CO_UPPER_CHAR =  4
+#
+CO_COUNT      = 4
 
 ####################################
 # Case Types
@@ -49,6 +56,8 @@ CT_Snake_Case =  7
 CT_kebab_case =  8
 CT_KEBAB_CASE =  9
 CT_Kebab_Case = 10
+#
+CT_COUNT      = 10
 
 SNAKE_CONNECTOR = '_' # shake_case
 KEBAB_CONNECTOR = '-' # kebab-case
@@ -685,50 +694,7 @@ def toCaseCode(type):
 
 ####
 
-# Normalize Case Operation by Token position
-def _normalizeCaseOpByToken(caseOp, first):
-    _caseOp = caseOp
-    if (caseOp == CO_camelCase):
-        # camelCase: [0] -> 'lowercase', [1..n] -> 'PascalCase'
-        _caseOp = (CO_lowercase if first else CO_PascalCase)    
-    return _caseOp    
-
-# caseOp =  1: 'myname': lowercase 
-# caseOp =  2: 'MYNAME': UPPERCASE 
-# caseOp =  3: 'myName': camelCase
-# caseOp =  4: 'MyName': PascalCase
-def _flushOp(result, buf, caseOp):
-    caseOp = caseOp
-    ch = 0
-    str = ''
-
-    for i in range(0, len(buf)):
-        _caseOp = caseOp
-        ch = buf[i]
-
-        if caseOp == CO_PascalCase:
-            if i == 0:
-                _caseOp = CO_UPPERCASE  # upper char
-            #else:
-            #    _caseOp = CO_lowercase  # lower char
-
-        # WARNING: We don't use 'caseOp' in this code because it is lower case always
-        if _caseOp == CO_lowercase:
-            ch = ch.lower()
-        elif _caseOp == CO_UPPERCASE:
-            ch = ch.upper()
-
-        str = str + ch;                 # Add char to tring
-        
-    result.append(str);                 # Add buffer to result
-    buf.clear();                        # Clear buffer
-
-# splitOp: separators and A (Upper Char)
-# caseOp =  1: 'myname': lowercase 
-# caseOp =  2: 'MYNAME': UPPERCASE 
-# caseOp =  3: 'myName': camelCase
-# caseOp =  4: 'MyName': PascalCase
-def _splitOp(str, separators, caseOp):
+def _splitOp(str, separators):
     result = []
 
     if isEmpty(str) or isEmpty(separators):
@@ -741,17 +707,20 @@ def _splitOp(str, separators, caseOp):
     ch = ''
     separator = ''
     find = False
-    buf = []
-    _caseOp = caseOp
-    first = True
-   
-    for i in range(0, strLen):
+
+    pos = 0
+    end = 0
+    i = 0
+    j = 0
+
+    while i < strLen:
 
         ch = str[i]
         find = False
 
         # Find a separator
-        for j in range(0, sepLen):
+        j = 0
+        while j < sepLen:
             separator = separators[j]
             if separator == 'A': # TODO: 'A' is special marker for check 'Upper Char'
                 if ch.isupper():
@@ -761,43 +730,82 @@ def _splitOp(str, separators, caseOp):
             elif ch == separators[j]:
                 find = True
                 break
+            j += 1
 
         if find:
+            end = i
 
-            # flush
-            if len(buf) > 0:
-                _caseOp = _normalizeCaseOpByToken(caseOp, first)
-                _flushOp(result, buf, _caseOp)
-                first = False
+            if pos < end:
+                result.append(str[pos:end])
+
+            if separator == 'A': # TODO: 'A' is special marker for check 'Upper Char'
+                pos = end     # include 'Upper Char'
+            else:
+                pos = end + 1 # skip separator
+
+        i += 1
                 
-            # Add separator: optional
-            include = False
-            if include or separator == 'A': # TODO: 'A' is special marker for check 'Upper Char'
-                buf.append(ch)
-                
-        else:
-
-            ## Add char
-            buf.append(ch)
-
-    # flush
-    if len(buf) > 0:
-        _caseOp = _normalizeCaseOpByToken(caseOp, first)
-        _flushOp(result, buf, _caseOp)
+    if pos < strLen:
+        result.append(str[pos:])
 
     return result
 
-# caseOp =  1: 'myname': lowercase 
-# caseOp =  2: 'MYNAME': UPPERCASE 
-# caseOp =  3: 'myName': camelCase
-# caseOp =  4: 'MyName': PascalCase
+# Transform token
+def _transformToken(token, caseOp, first):
+    if token is None:
+        return token
+    
+    if len(token) == 0:
+        return token
+    
+    if caseOp == CO_LOWER_CHAR:                 # camelCase
+        if first:
+            return token[0].lower() + token[1:] # lower char (first)
+        else:
+            return token[0].upper() + token[1:] # UPPER char (first)
+
+    elif caseOp == CO_UPPER_CHAR:               # CamelCase, PascalCase
+        return token[0].upper() + token[1:]     # UPPER char (first)
+
+    elif caseOp == CO_LOWER:  
+        return token.lower()                    # lower case
+
+    elif caseOp == CO_UPPER:
+        return token.upper()                    # UPPER case
+
+    return token
+
+# Transformation tokens by caseOp
+def _transformOp(tokens, caseOp):
+    if tokens is None:
+        return
+
+    if len(tokens) == 0:
+        return
+
+    # No tarnsformation
+    if caseOp == CO_NONE:
+        return
+        
+    for i, token in enumerate(tokens):
+        tokens[i] = _transformToken(token, caseOp, i == 0)
+
+# caseOp =  1: 'myname': LOWER
+# caseOp =  2: 'MYNAME': UPPER
+# caseOp =  3: 'myName': LOWER_CHAR
+# caseOp =  4: 'MyName': UPPER_CHAR
 def _toCaseOp(str, separators, connector, caseOp):
     if isBlank(str):
         return str
         
     result = '' 
-    tokens = _splitOp(str, separators, caseOp)
-    #print(tokens)
+    tokens = _splitOp(str, separators)
+
+    #print("str=", str)
+    #print("inp=", tokens)
+    _transformOp(tokens, caseOp)
+    #print("out=", tokens)
+
     hasConnector = not isEmpty(connector)
 
     for i in range(0, len(tokens)):
@@ -819,17 +827,17 @@ def _toCaseOp(str, separators, connector, caseOp):
 # -  9. KEBAB-CASE, DASH-CASE, TRAIN-CASE, COBOL-CASE, [KEBAB], [cobol]~
 # - 10. Kebab-Case, Dash-Case, Train-Case, HTTP-Header-Case, [Kebab], [http]~
 
-# caseOp =  1: 'myname': lowercase 
-# caseOp =  2: 'MYNAME': UPPERCASE 
-# caseOp =  3: 'myName': camelCase
-# caseOp =  4: 'MyName': PascalCase
+# caseOp =  1: 'myname': LOWER
+# caseOp =  2: 'MYNAME': UPPER
+# caseOp =  3: 'myName': LOWER_CHAR
+# caseOp =  4: 'MyName': UPPER_CHAR
 def _toTypeCase(str, type, separators, connector):
 
     if isEmpty(str):
         return str
 
     code = toCaseCode(type)
-    if code <= 0:
+    if code < 1 or code > CT_COUNT:
         # Invalid case code
         return str        
 
@@ -842,37 +850,47 @@ def _toTypeCase(str, type, separators, connector):
     # COMPLEX CASE
     _separators = (DEFAULT_CASE_SEPARATORS_A if isEmpty(separators) else separators)
 
+    _connector = connector
+    if code == CT_kebab_case or code == CT_KEBAB_CASE or code == CT_Kebab_Case:
+        _connector = (KEBAB_CONNECTOR if isEmpty(connector) else connector)
+    elif code == CT_snake_case or code  == CT_SNAKE_CASE or code == CT_Snake_Case:
+        _connector = (SNAKE_CONNECTOR if isEmpty(connector) else connector)
+
+    _caseOp = 0
+
     if code == CT_camelCase:
         # camelCase
-        return _toCaseOp(str, _separators, connector, CO_camelCase); # lower first char
+        _caseOp = CO_LOWER_CHAR # lower first char
 
     elif code == CT_PascalCase:
         # CamelCase
-        return _toCaseOp(str, _separators, connector, CO_PascalCase); # upper first char
+        _caseOp = CO_UPPER_CHAR # upper first char
 
     elif code == CT_kebab_case:
         # kebab-case
-        return _toCaseOp(str, _separators, (KEBAB_CONNECTOR if isEmpty(connector) else connector), CO_lowercase)
+        _caseOp = CO_LOWER
 
     elif code == CT_KEBAB_CASE:
         # KEBAB-CASE
-        return _toCaseOp(str, _separators, (KEBAB_CONNECTOR if isEmpty(connector) else connector), CO_UPPERCASE)
+        _caseOp = CO_UPPER
 
     elif code == CT_Kebab_Case:
         # Kebab_Case
-        return _toCaseOp(str, _separators, (KEBAB_CONNECTOR if isEmpty(connector) else connector), CO_PascalCase)
+        _caseOp = CO_UPPER_CHAR
 
     elif code == CT_snake_case:
         # snake_case
-        return _toCaseOp(str, _separators, (SNAKE_CONNECTOR if isEmpty(connector) else connector), CO_lowercase)
+        _caseOp = CO_LOWER
 
     elif code  == CT_SNAKE_CASE:
         # SNAKE_CASE
-        return _toCaseOp(str, _separators, (SNAKE_CONNECTOR if isEmpty(connector) else connector), CO_UPPERCASE)
+        _caseOp = CO_UPPER
 
     elif code  == CT_Snake_Case:
         # Snake_Case
-        return _toCaseOp(str, _separators, (SNAKE_CONNECTOR if isEmpty(connector) else connector), CO_PascalCase)
+        _caseOp = CO_UPPER_CHAR
+    
+    return _toCaseOp(str, _separators, _connector, _caseOp)
 
     # UNKNOWN CASE: use 'separators', 'connector'
     #_toCaseOp(str, separators, connector, CO_NONE)
@@ -884,16 +902,16 @@ def toCamelCase(str, separators = None, capitalize = True):
     type = 'Camel' if capitalize else 'camel'
     return _toTypeCase(str, type, separators, None)
 
-def toSnakeCase(str, separators = None, upper = True):
+def toSnakeCase(str, separators = None, upper = False):
     if isEmpty(str):
         return str
 
     type = 'SNAKE' if upper else 'snake'
-    return _toTypeCase(str, type, separators, '_')
+    return _toTypeCase(str, type, separators, SNAKE_CONNECTOR)
 
-def toKebabCase(str, separators = None, upper = True):
+def toKebabCase(str, separators = None, upper = False):
     if isEmpty(str):
         return str
 
     type = 'KEBAB' if upper else 'kebab'
-    return _toTypeCase(str, type, separators, '-')
+    return _toTypeCase(str, type, separators, KEBAB_CONNECTOR)
