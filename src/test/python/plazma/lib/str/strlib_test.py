@@ -1182,6 +1182,34 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('productFullName', strlib.toCamelCase('product-_ full -_name', capitalize = False))
         self.assertEqual('productFullName', strlib.toCamelCase('product-_ Full -_name', capitalize = False))
 
+    def test_toSnakeCase(self):
+        
+        # toSnakeCase(None), toSnakeCase(empty)
+        self.assertIsNone(strlib.toSnakeCase(None))
+        self.assertEqual('', strlib.toSnakeCase(''))
+        self.assertEqual(' ', strlib.toSnakeCase(' '))
+        self.assertEqual('  ', strlib.toSnakeCase('  '))
+
+        # toSnakeCase(value)        
+        self.assertEqual('product_name', strlib.toSnakeCase('product name'))
+        self.assertEqual('product_name', strlib.toSnakeCase('product-name'))
+        self.assertEqual('product_name', strlib.toSnakeCase('product_name'))        
+        self.assertEqual('product_name', strlib.toSnakeCase('ProductName'))
+
+    def test_toKebabCase(self):
+        
+        # toKebabCase(None), toKebabCase(empty)
+        self.assertIsNone(strlib.toKebabCase(None))
+        self.assertEqual('', strlib.toKebabCase(''))
+        self.assertEqual(' ', strlib.toKebabCase(' '))
+        self.assertEqual('  ', strlib.toKebabCase('  '))
+
+        # toKebabCase(value)        
+        self.assertEqual('product-name', strlib.toKebabCase('product name'))
+        self.assertEqual('product-name', strlib.toKebabCase('product-name'))
+        self.assertEqual('product-name', strlib.toKebabCase('product_name'))        
+        self.assertEqual('product-name', strlib.toKebabCase('ProductName'))
+
 
 if __name__ == '__main__':
     unittest.main()
