@@ -172,21 +172,19 @@ public class StrLib {
     // - toCase(char ch, boolean upper)
     //
     // - toCamelCase(String str)                                           - toCamelCase("property_name") = "PropertyName"
-    // - toCamelCase(String str, String separator)
+    // - toCamelCase(String str, String separators)
     // - toCamelCase(String str, boolean capitalize)
-    // - toCamelCase(String str, String separator, boolean capitalize)
+    // - toCamelCase(String str, String separators, boolean capitalize)
     //
     // - toSnakeCase(String str)                                            - toSnakeCase("PropertyName") = "property_name"
-    // - toSnakeCase(String str, String separator)
+    // - toSnakeCase(String str, String separators)
     // - toSnakeCase(String str, String boolean upper)
-    // - toSnakeCase(String str, String separator, boolean upper)
-    // - toSnakeCase(String str, String separator, boolean upper, boolean trim) -
+    // - toSnakeCase(String str, String separators, boolean upper)
     //
     // - toKebabCase(String str)                                            - toKebabCase("PropertyName") = "property-name"
-    // - toKebabCase(String str, String separator)
+    // - toKebabCase(String str, String separators)
     // - toKebabCase(String str, String boolean upper)
-    // - toKebabCase(String str, String separator, boolean upper)
-    // - toKebabCase(String str, String separator, boolean upper, boolean trim) -
+    // - toKebabCase(String str, String separators, boolean upper)
     //
     // - reverse(String str)                                               - reverse("abc") = "cba"
 
@@ -1501,11 +1499,11 @@ public class StrLib {
      * "PropertyName" toCamelCase("property-first-name", "-",) = "PropertyFirstName"
      * 
      * @param str
-     * @param separator
+     * @param separators
      * @return
      */
-    public static String toCamelCase(String str, String separator) {
-        return toCamelCase(str, separator, DEFAULT_CAMEL_CASE_CAPITALIZE);
+    public static String toCamelCase(String str, String separators) {
+        return toCamelCase(str, separators, DEFAULT_CAMEL_CASE_CAPITALIZE);
     }
 
     /**
@@ -1531,31 +1529,31 @@ public class StrLib {
      * @param capitalize
      * @return
      */
-    public static String toCamelCase(String str, String separator, boolean capitalize) {
-        return toTypeCase(str, (capitalize ? "Camel" : "camel"), separator, null);
+    public static String toCamelCase(String str, String separators, boolean capitalize) {
+        return toTypeCase(str, (capitalize ? "Camel" : "camel"), separators, null);
     }
 
     ////
 
     /**
-     * Convert 'Camel Case' string to 'Snake Case'
+     * Convert a string to 'Snake Case'
      * 
      * @param str
      * @return
      */
     public static String toSnakeCase(String str) {
-        return toSnakeCase(str, null, false, false);
+        return toSnakeCase(str, null, false);
     }
 
     /**
-     * Convert 'Camel Case' string to 'Snake Case'
+     * Convert a string to 'Snake Case'
      * 
      * @param str
-     * @param separator
+     * @param separators
      * @return
      */
-    public static String toSnakeCase(String str, String separator) {
-        return toSnakeCase(str, separator, false, false);
+    public static String toSnakeCase(String str, String separators) {
+        return toSnakeCase(str, separators, false);
     }
 
     /**
@@ -1566,129 +1564,65 @@ public class StrLib {
      * @return
      */
     public static String toSnakeCase(String str, boolean upper) {
-        return toSnakeCase(str, null, upper, false);
+        return toSnakeCase(str, null, upper);
     }
 
     /**
-     * Convert 'Camel Case' string to 'Snake Case'
+     * Convert a string to 'Snake Case'
      * 
      * @param str
-     * @param separator
+     * @param separators
      * @param upper
      * @return
      */
-    public static String toSnakeCase(String str, String separator, boolean upper) {
-        return toSnakeCase(str, separator, upper, false);
-    }
-
-    /**
-     * Convert 'Camel Case' string to 'Snake Case'
-     * 
-     * @param str
-     * @param separator
-     * @param upper
-     * @param trim
-     * @return
-     */
-    public static String toSnakeCase(String str, String separator, boolean upper, boolean trim) {
-        if (isEmpty(str)) {
-            return str;
-        }
-        if (trim) {
-            str = trim(str);
-            if (isEmpty(str)) {
-                return str;
-            }
-        }
-        // TODO: We use separator as connector!
-        // Add 'connector' parameter
-        String separators = null;
-        String connector = separator;
-
-        // TODO: Maybe remove it because it check in toTypeCase
-        if (connector == null) {
-            connector = DEFAULT_SNAKE_CASE_SEPARATOR;
-        }
-
-        return toTypeCase(str, (upper ? "SNAKE" : "snake"), separators, connector);
+    public static String toSnakeCase(String str, String separators, boolean upper) {
+        return toTypeCase(str, (upper ? "SNAKE" : "snake"), separators, SNAKE_CONNECTOR);
     }
 
     ////
 
     /**
-     * Convert 'Camel Case' string to 'Kebab Case'
+     * Convert a string to 'Kebab Case'
      * 
      * @param str
      * @return
      */
     public static String toKebabCase(String str) {
-        return toKebabCase(str, null, false, false);
+        return toKebabCase(str, null, false);
     }
 
     /**
-     * Convert 'Camel Case' string to 'Kebab Case'
+     * Convert a string to 'Kebab Case'
      * 
      * @param str
-     * @param separator
+     * @param separators
      * @return
      */
-    public static String toKebabCase(String str, String separator) {
-        return toKebabCase(str, separator, false, false);
+    public static String toKebabCase(String str, String separators) {
+        return toKebabCase(str, separators, false);
     }
 
     /**
-     * Convert 'Camel Case' string to 'Kebab Case'
+     * Convert a string to 'Kebab Case'
      * 
      * @param str
      * @param upper
      * @return
      */
     public static String toKebabCase(String str, boolean upper) {
-        return toKebabCase(str, null, upper, false);
+        return toKebabCase(str, null, upper);
     }
 
     /**
-     * Convert 'Camel Case' string to 'Kebab Case'
+     * Convert a string to 'Kebab Case'
      * 
      * @param str
      * @param separator
      * @param upper
      * @return
      */
-    public static String toKebabCase(String str, String separator, boolean upper) {
-        return toKebabCase(str, separator, upper, false);
-    }
-
-    /**
-     * Convert 'Camel Case' string to 'Kebab Case'
-     * 
-     * @param str
-     * @param separator
-     * @param upper
-     * @param trim
-     * @return
-     */
-    public static String toKebabCase(String str, String separator, boolean upper, boolean trim) {
-        if (isEmpty(str)) {
-            return str;
-        }
-        if (trim) {
-            str = trim(str);
-            if (isEmpty(str)) {
-                return str;
-            }
-        }
-        // TODO: We use separator as connector!
-        // Add 'connector' parameter
-        String separators = null;
-        String connector = separator;
-
-        // TODO: Maybe remove it because it check in toTypeCase
-        if (connector == null) {
-            connector = DEFAULT_KEBAB_CASE_SEPARATOR;
-        }
-
-        return toTypeCase(str, (upper ? "KEBAB" : "kebab"), separators, connector);
+    public static String toKebabCase(String str, String separators, boolean upper) {
+        return toTypeCase(str, (upper ? "KEBAB" : "kebab"), separators, KEBAB_CONNECTOR);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1703,13 +1637,6 @@ public class StrLib {
         return _caseOp;
     }
 
-    // Normalize Case Operation by Char position
-    private static int _normalizeCaseOpByChar(int caseOp, boolean first) {
-        // TODO
-        return caseOp;
-    }
-
-    // https://www.techiedelight.com/append-char-end-string-cpp/
     //
     // caseOp =  1: 'myname': lowercase    
     // caseOp =  2: 'MYNAME': UPPERCASE
@@ -1877,7 +1804,7 @@ public class StrLib {
     // caseOp =  4: 'MyName': PascalCase
     private static String _toTypeCase(String str, String type, String separators, String connector) {
 
-        if (str == null || str.isEmpty()) {
+        if (isEmpty(str)) {
             return str;
         }
 
@@ -2403,25 +2330,20 @@ public class StrLib {
     // Non RegExp
     public static String replaceAll(String str, String s1, String s2) {
         if (str == null) {
-            // null: return
             return null;
         }
         if (s1 == null || s2 == null) {
-            // null: return
             return str;
         }
         if (s1 == s2) {
-            // ==: return
             return str;
         }
         if (s1.equals(s2)) {
-            // equals: return
             return str;
         }
 
         int index = str.indexOf(s1);
         if (index == INDEX_NOT_FOUND) {
-            // not found - return original string
             return str;
         }
         int patLen = s1.length();
@@ -2441,12 +2363,10 @@ public class StrLib {
     // Non RegExp
     public static String replaceAll(String str, String[] oldValues, String[] newValues) {
         if (oldValues == null) {
-            // TODO: Exception
             return str;
 
         }
         if (newValues == null) {
-            // TODO: Exception
             return str;
         }
         int size = Math.min(oldValues.length, newValues.length);
@@ -2611,21 +2531,21 @@ public class StrLib {
         int end = 0;
         int sep_len = 1;
         String token;
-        List<String> res = new ArrayList<String>();
+        List<String> result = new ArrayList<String>();
         
         while ((end = find(str, separator, start)) != INDEX_NOT_FOUND) {
             if (end - start == 0) {
                 if (preserveAll && !includeAll) {
-                    res.add("");
+                    result.add(EMPTY_STRING);
                 }
             } else {
                 token = str.substring(start, end); // end - start
-                res.add(token);
+                result.add(token);
             }            
 
             if (includeAll) {
                 token = str.substring(end, end + sep_len); // sep_len
-                res.add(token);
+                result.add(token);
             }
 
             start = end + sep_len;
@@ -2634,13 +2554,13 @@ public class StrLib {
         
         if (start == str.length()) {
             if (preserveAll && !includeAll) {
-                res.add("");
+                result.add(EMPTY_STRING);
             }
         } else {
-            res.add(str.substring(start));
+            result.add(str.substring(start));
         }
         
-        return res.toArray(new String[0]);
+        return result.toArray(new String[0]);
     }
 
     public static String[] tokenizeBySeparator(String str, String separator, boolean includeAll, boolean preserveAll) {
@@ -2655,21 +2575,21 @@ public class StrLib {
         int end = 0;
         int sep_len = separator.length();
         String token;
-        List<String> res = new ArrayList<String>();
+        List<String> result = new ArrayList<String>();
         
         while ((end = find(str, separator, start)) != INDEX_NOT_FOUND) {
             if (end - start == 0) {
                 if (preserveAll && !includeAll) {
-                    res.add("");
+                    result.add(EMPTY_STRING);
                 }
             } else {
                 token = str.substring(start, end); // end - start
-                res.add(token);
+                result.add(token);
             }            
 
             if (includeAll) {
                 token = str.substring(end, end + sep_len); // sep_len
-                res.add(token);
+                result.add(token);
             }
 
             start = end + sep_len;
@@ -2678,13 +2598,13 @@ public class StrLib {
         
         if (start == str.length()) {
             if (preserveAll && !includeAll) {
-                res.add("");
+                result.add(EMPTY_STRING);
             }
         } else {
-            res.add(str.substring(start));
+            result.add(str.substring(start));
         }
         
-        return res.toArray(new String[0]);
+        return result.toArray(new String[0]);
     }
     
     public static String[] tokenizeBySeparators(String str, String separators, boolean includeAll, boolean preserveAll) {
@@ -2699,21 +2619,21 @@ public class StrLib {
         int end = 0;
         int sep_len = 1;
         String token;
-        List<String> res = new ArrayList<String>();
+        List<String> result = new ArrayList<String>();
         
         while ((end = findFirstOf(str, separators, start)) != INDEX_NOT_FOUND) {
             if (end - start == 0) {
                 if (preserveAll && !includeAll) {
-                    res.add("");
+                    result.add(EMPTY_STRING);
                 }
             } else {
                 token = str.substring(start, end); // end - start
-                res.add(token);
+                result.add(token);
             }            
 
             if (includeAll) {
                 token = str.substring(end, end + sep_len); // sep_len
-                res.add(token);
+                result.add(token);
             }
 
             start = end + sep_len;
@@ -2722,39 +2642,30 @@ public class StrLib {
         
         if (start == str.length()) {
             if (preserveAll && !includeAll) {
-                res.add("");
+                result.add(EMPTY_STRING);
             }
         } else {
-            res.add(str.substring(start));
+            result.add(str.substring(start));
         }
         
-        return res.toArray(new String[0]);
+        return result.toArray(new String[0]);
     }
-
     
     ////
     
-    
-
     public static String[] splitWords(String str) {
         return splitWords(str, null);
     }
 
     public static String[] splitWords(String str, String separators) {
-        //str = normalize(str);
-        //if (str == null) {
-        //    return EMPTY_STRING_ARRAY;
-        //}
         if (separators == null) {
             separators = DEFAULT_WORD_SEPARATORS;
         }
-        //return split(str, separators);
-        
         return splitBySeparators(str, separators, false);
     }
 
     public static String[] splitLines(String str) {
-        if (str == null || str.isEmpty()) {
+        if (isEmpty(str)) {
             return EMPTY_STRING_ARRAY;
         }
         return str.split("[\\r]?\\n");
