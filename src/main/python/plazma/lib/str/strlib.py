@@ -19,16 +19,11 @@ DEFAULT_KEBAB_CASE_SEPARATOR = '-' # KEBAB
 # caseOp =  3: 'myName': LOWER_CHAR
 # caseOp =  4: 'MyName': UPPER_CHAR    
 
-#CO_lowercase  =  1
-#CO_UPPERCASE  =  2
-#CO_camelCase  =  3
-#CO_PascalCase =  4
-
-CO_NONE       =  0
-CO_LOWER      =  1
-CO_UPPER      =  2
-CO_LOWER_CHAR =  3
-CO_UPPER_CHAR =  4
+CO_NONE       = 0
+CO_LOWER      = 1
+CO_UPPER      = 2
+CO_LOWER_CHAR = 3
+CO_UPPER_CHAR = 4
 #
 CO_COUNT      = 4
 
@@ -46,15 +41,15 @@ CO_COUNT      = 4
 # -  9. KEBAB-CASE, DASH-CASE, TRAIN-CASE, COBOL-CASE
 # - 10. Kebab-Case, Dash-Case, Train-Case, HTTP-Header-Case
 
-CT_lowercase  =  1
-CT_UPPERCASE  =  2
-CT_camelCase  =  3
-CT_PascalCase =  4
-CT_snake_case =  5
-CT_SNAKE_CASE =  6
-CT_Snake_Case =  7
-CT_kebab_case =  8
-CT_KEBAB_CASE =  9
+CT_lowercase  = 1
+CT_UPPERCASE  = 2
+CT_camelCase  = 3
+CT_PascalCase = 4
+CT_snake_case = 5
+CT_SNAKE_CASE = 6
+CT_Snake_Case = 7
+CT_kebab_case = 8
+CT_KEBAB_CASE = 9
 CT_Kebab_Case = 10
 #
 CT_COUNT      = 10
@@ -592,8 +587,23 @@ def right(str, len):
 
 # 3.1
 
-# - capitalize(str)
-# - decapitalize(str
+def capitalize(str, forceRest = False):
+    if isEmpty(str):
+        return str
+    
+    # return str.capitalize()
+    # str[0:1].upper() + str[1:].lower()
+    # return ''.join([str[:1].lower(), (str[1:].upper() if upper_rest else str[1:])])
+
+    # if 'forceRest' then lower rest
+    return ''.join([str[0].upper(), (str[1:].lower() if forceRest else str[1:])])
+    
+def decapitalize(str, forceRest = False):
+    if isEmpty(str):
+        return str
+
+    # if 'forceRest' then upper rest
+    return ''.join([str[0].lower(), (str[1:].upper() if forceRest else str[1:])])
 
 def upper(str):
     return toUpperCase(str)
@@ -618,81 +628,22 @@ def toCase(str, upper):
         return str.upper()
     else:
         return str.lower()
-    
-def capitalize(str, forceRest = False):
-    if str is None:
-        return None
-    
-    # return str.capitalize()
-    # str[0:1].upper() + str[1:].lower()
-    # return ''.join([str[:1].lower(), (str[1:].upper() if upper_rest else str[1:])])
 
-    if len(str) == 0:
-        return str
+def toCamelCase(str, separators = None, capitalize = True):
+    type = 'Camel' if capitalize else 'camel'
+    return _toTypeCase(str, type, separators, None)
 
-    # if 'forceRest' then lower rest
-    return ''.join([str[0].upper(), (str[1:].lower() if forceRest else str[1:])])
-    
-def decapitalize(str, forceRest = False):
-    if str is None:
-        return None
-        
-    if len(str) == 0:
-        return str
+def toSnakeCase(str, separators = None, upper = False):
+    type = 'SNAKE' if upper else 'snake'
+    return _toTypeCase(str, type, separators, SNAKE_CONNECTOR)
 
-    # if 'forceRest' then upper rest
-    return ''.join([str[0].lower(), (str[1:].upper() if forceRest else str[1:])])
-    
-# -  1. lowercase, [lower]~
-# -  2. UPPERCASE, [upper]~
-# -  3. camelCase, [camel]~
-# -  4. CamelCase, PascalCase, [pascal]~
-# -  5. snake_case, [snake]
-# -  6. SNAKE_CASE, MACRO_CASE, CONSTANT_CASE, [SNAKE], [macro]~
-# -  7. Snake_Case, [Snake]
-# -  8. kebab-case, dash-case, train-case, lisp-case, [kebab]
-# -  9. KEBAB-CASE, DASH-CASE, TRAIN-CASE, COBOL-CASE, [KEBAB], [cobol]~
-# - 10. Kebab-Case, Dash-Case, Train-Case, HTTP-Header-Case, [Kebab], [http]~
+def toKebabCase(str, separators = None, upper = False):
+    type = 'KEBAB' if upper else 'kebab'
+    return _toTypeCase(str, type, separators, KEBAB_CONNECTOR)
 
-# Return case code by case type
-def toCaseCode(type):
-
-    if type is None:
-        return None
-
-    if type == 'lower':
-        return CT_lowercase         # lowercase
-    
-    elif type == 'upper':
-        return CT_UPPERCASE         # UPPERCASE
-
-    elif type == 'camel':
-        return CT_camelCase         # camelCase
-
-    elif type == 'Camel' or type == 'Pascal' or type == 'pascal':
-        return CT_PascalCase        # PascalCase
-
-    elif type == 'snake':
-        return CT_snake_case        # snake_case
-    
-    elif type == 'SNAKE' or type == 'MACRO' or type == 'macro':
-        return CT_SNAKE_CASE        # SNAKE_CASE
-
-    elif type == 'Snake':
-        return CT_Snake_Case        # Snake_Case
-
-    elif type == 'kebab' or type == 'dash' or type == 'train' or type == 'lisp':
-        return CT_kebab_case        # kebab-case
-
-    elif type == 'KEBAB' or type == 'DASH' or type == 'TRAIN' or type == 'COBOL' or type == 'cobol':
-        return CT_KEBAB_CASE        # KEBAB-CASE
-
-    elif type == 'Kebab' or type == 'Dash' or type == 'Train':
-        return CT_Kebab_Case        # Kebab_Case
-
-    return 0
-
-####
+##################################################################
+# Internal
+##################################################################
 
 def _splitOp(str, separators):
     result = []
@@ -717,9 +668,9 @@ def _splitOp(str, separators):
 
         ch = str[i]
         find = False
+        j = 0
 
         # Find a separator
-        j = 0
         while j < sepLen:
             separator = separators[j]
             if separator == 'A': # TODO: 'A' is special marker for check 'Upper Char'
@@ -727,7 +678,7 @@ def _splitOp(str, separators):
                     find = True
                     break
                     
-            elif ch == separators[j]:
+            elif ch == separator:
                 find = True
                 break
             j += 1
@@ -752,10 +703,7 @@ def _splitOp(str, separators):
 
 # Transform token
 def _transformToken(token, caseOp, first):
-    if token is None:
-        return token
-    
-    if len(token) == 0:
+    if isEmpty(token):
         return token
     
     if caseOp == CO_LOWER_CHAR:                 # camelCase
@@ -783,7 +731,7 @@ def _transformOp(tokens, caseOp):
     if len(tokens) == 0:
         return
 
-    # No tarnsformation
+    # No transformation
     if caseOp == CO_NONE:
         return
         
@@ -836,8 +784,8 @@ def _toTypeCase(str, type, separators, connector):
     if isEmpty(str):
         return str
 
-    code = toCaseCode(type)
-    if code < 1 or code > CT_COUNT:
+    code = getCaseCode(type)
+    if code == 0:
         # Invalid case code
         return str        
 
@@ -856,62 +804,94 @@ def _toTypeCase(str, type, separators, connector):
     elif code == CT_snake_case or code  == CT_SNAKE_CASE or code == CT_Snake_Case:
         _connector = (SNAKE_CONNECTOR if isEmpty(connector) else connector)
 
-    _caseOp = 0
-
-    if code == CT_camelCase:
-        # camelCase
-        _caseOp = CO_LOWER_CHAR # lower first char
-
-    elif code == CT_PascalCase:
-        # CamelCase
-        _caseOp = CO_UPPER_CHAR # upper first char
-
-    elif code == CT_kebab_case:
-        # kebab-case
-        _caseOp = CO_LOWER
-
-    elif code == CT_KEBAB_CASE:
-        # KEBAB-CASE
-        _caseOp = CO_UPPER
-
-    elif code == CT_Kebab_Case:
-        # Kebab_Case
-        _caseOp = CO_UPPER_CHAR
-
-    elif code == CT_snake_case:
-        # snake_case
-        _caseOp = CO_LOWER
-
-    elif code  == CT_SNAKE_CASE:
-        # SNAKE_CASE
-        _caseOp = CO_UPPER
-
-    elif code  == CT_Snake_Case:
-        # Snake_Case
-        _caseOp = CO_UPPER_CHAR
+    _caseOp = getCaseOp(code)
     
     return _toCaseOp(str, _separators, _connector, _caseOp)
 
     # UNKNOWN CASE: use 'separators', 'connector'
     #_toCaseOp(str, separators, connector, CO_NONE)
 
-def toCamelCase(str, separators = None, capitalize = True):
-    if isEmpty(str):
-        return str
+# -  1. lowercase, [lower]~
+# -  2. UPPERCASE, [upper]~
+# -  3. camelCase, [camel]~
+# -  4. CamelCase, PascalCase, [pascal]~
+# -  5. snake_case, [snake]
+# -  6. SNAKE_CASE, MACRO_CASE, CONSTANT_CASE, [SNAKE], [macro]~
+# -  7. Snake_Case, [Snake]
+# -  8. kebab-case, dash-case, train-case, lisp-case, [kebab]
+# -  9. KEBAB-CASE, DASH-CASE, TRAIN-CASE, COBOL-CASE, [KEBAB], [cobol]~
+# - 10. Kebab-Case, Dash-Case, Train-Case, HTTP-Header-Case, [Kebab], [http]~
 
-    type = 'Camel' if capitalize else 'camel'
-    return _toTypeCase(str, type, separators, None)
+# Return case code by case type
+def getCaseCode(type):
 
-def toSnakeCase(str, separators = None, upper = False):
-    if isEmpty(str):
-        return str
+    if type is None:
+        return None
 
-    type = 'SNAKE' if upper else 'snake'
-    return _toTypeCase(str, type, separators, SNAKE_CONNECTOR)
+    if type == 'lower':
+        return CT_lowercase         # lowercase
+    
+    elif type == 'upper':
+        return CT_UPPERCASE         # UPPERCASE
 
-def toKebabCase(str, separators = None, upper = False):
-    if isEmpty(str):
-        return str
+    elif type == 'camel':
+        return CT_camelCase         # camelCase
 
-    type = 'KEBAB' if upper else 'kebab'
-    return _toTypeCase(str, type, separators, KEBAB_CONNECTOR)
+    elif type == 'Camel' or type == 'Pascal' or type == 'pascal':
+        return CT_PascalCase        # PascalCase
+
+    elif type == 'snake':
+        return CT_snake_case        # snake_case
+    
+    elif type == 'SNAKE' or type == 'MACRO' or type == 'macro':
+        return CT_SNAKE_CASE        # SNAKE_CASE
+
+    elif type == 'Snake':
+        return CT_Snake_Case        # Snake_Case
+
+    elif type == 'kebab' or type == 'dash' or type == 'train' or type == 'lisp':
+        return CT_kebab_case        # kebab-case
+
+    elif type == 'KEBAB' or type == 'DASH' or type == 'TRAIN' or type == 'COBOL' or type == 'cobol':
+        return CT_KEBAB_CASE        # KEBAB-CASE
+
+    elif type == 'Kebab' or type == 'Dash' or type == 'Train':
+        return CT_Kebab_Case        # Kebab_Case
+
+    return 0
+
+# Return case op by case code
+def getCaseOp(code):
+    if code == CT_camelCase:
+        # camelCase
+        return CO_LOWER_CHAR # lower first char
+
+    elif code == CT_PascalCase:
+        # CamelCase
+        return  CO_UPPER_CHAR # upper first char
+
+    elif code == CT_kebab_case:
+        # kebab-case
+        return  CO_LOWER
+
+    elif code == CT_KEBAB_CASE:
+        # KEBAB-CASE
+        return  CO_UPPER
+
+    elif code == CT_Kebab_Case:
+        # Kebab_Case
+        return  CO_UPPER_CHAR
+
+    elif code == CT_snake_case:
+        # snake_case
+        return  CO_LOWER
+
+    elif code  == CT_SNAKE_CASE:
+        # SNAKE_CASE
+        return  CO_UPPER
+
+    elif code  == CT_Snake_Case:
+        # Snake_Case
+        return  CO_UPPER_CHAR
+    
+##################################################################

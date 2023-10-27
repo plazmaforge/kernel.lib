@@ -1062,57 +1062,57 @@ class StrlibTest(unittest.TestCase):
 
     ###
 
-    def test_toCaseCode(self):
+    def test_getCaseCode(self):
 
-        # toCaseCode(None), toCaseCode(empty)
-        self.assertIsNone(strlib.toCaseCode(None))
-        self.assertEqual(0, strlib.toCaseCode(''))
-        self.assertEqual(0, strlib.toCaseCode(' '))
-        self.assertEqual(0, strlib.toCaseCode(' '))
+        # getCaseCode(None), getCaseCode(empty)
+        self.assertIsNone(strlib.getCaseCode(None))
+        self.assertEqual(0, strlib.getCaseCode(''))
+        self.assertEqual(0, strlib.getCaseCode(' '))
+        self.assertEqual(0, strlib.getCaseCode(' '))
 
-        # toCaseCode(unknown)
-        self.assertEqual(0, strlib.toCaseCode('blahblahblah'))
-        self.assertEqual(0, strlib.toCaseCode('0123456789'))
+        # getCaseCode(unknown)
+        self.assertEqual(0, strlib.getCaseCode('blahblahblah'))
+        self.assertEqual(0, strlib.getCaseCode('0123456789'))
 
         # lowercase
-        self.assertEqual(strlib.CT_lowercase, strlib.toCaseCode('lower'))
+        self.assertEqual(strlib.CT_lowercase, strlib.getCaseCode('lower'))
 
         # UPPERCASE
-        self.assertEqual(strlib.CT_UPPERCASE, strlib.toCaseCode('upper'))
+        self.assertEqual(strlib.CT_UPPERCASE, strlib.getCaseCode('upper'))
 
         # camelCase
-        self.assertEqual(strlib.CT_camelCase, strlib.toCaseCode('camel'))
+        self.assertEqual(strlib.CT_camelCase, strlib.getCaseCode('camel'))
 
         # PascalCase
-        self.assertEqual(strlib.CT_PascalCase, strlib.toCaseCode('Camel'))
-        self.assertEqual(strlib.CT_PascalCase, strlib.toCaseCode('Pascal'))
-        self.assertEqual(strlib.CT_PascalCase, strlib.toCaseCode('pascal'))
+        self.assertEqual(strlib.CT_PascalCase, strlib.getCaseCode('Camel'))
+        self.assertEqual(strlib.CT_PascalCase, strlib.getCaseCode('Pascal'))
+        self.assertEqual(strlib.CT_PascalCase, strlib.getCaseCode('pascal'))
 
         # snake_case
-        self.assertEqual(strlib.CT_snake_case, strlib.toCaseCode('snake'))
+        self.assertEqual(strlib.CT_snake_case, strlib.getCaseCode('snake'))
 
         # SNAKE_CASE
-        self.assertEqual(strlib.CT_SNAKE_CASE, strlib.toCaseCode('SNAKE'))
-        self.assertEqual(strlib.CT_SNAKE_CASE, strlib.toCaseCode('MACRO'))
-        self.assertEqual(strlib.CT_SNAKE_CASE, strlib.toCaseCode('macro'))
+        self.assertEqual(strlib.CT_SNAKE_CASE, strlib.getCaseCode('SNAKE'))
+        self.assertEqual(strlib.CT_SNAKE_CASE, strlib.getCaseCode('MACRO'))
+        self.assertEqual(strlib.CT_SNAKE_CASE, strlib.getCaseCode('macro'))
 
         # kebab-case
-        self.assertEqual(strlib.CT_kebab_case, strlib.toCaseCode('kebab'))
-        self.assertEqual(strlib.CT_kebab_case, strlib.toCaseCode('dash'))
-        self.assertEqual(strlib.CT_kebab_case, strlib.toCaseCode('train'))
-        self.assertEqual(strlib.CT_kebab_case, strlib.toCaseCode('lisp'))
+        self.assertEqual(strlib.CT_kebab_case, strlib.getCaseCode('kebab'))
+        self.assertEqual(strlib.CT_kebab_case, strlib.getCaseCode('dash'))
+        self.assertEqual(strlib.CT_kebab_case, strlib.getCaseCode('train'))
+        self.assertEqual(strlib.CT_kebab_case, strlib.getCaseCode('lisp'))
 
         # KEBAB-CASE
-        self.assertEqual(strlib.CT_KEBAB_CASE, strlib.toCaseCode('KEBAB'))
-        self.assertEqual(strlib.CT_KEBAB_CASE, strlib.toCaseCode('DASH'))
-        self.assertEqual(strlib.CT_KEBAB_CASE, strlib.toCaseCode('TRAIN'))
-        self.assertEqual(strlib.CT_KEBAB_CASE, strlib.toCaseCode('COBOL'))
-        self.assertEqual(strlib.CT_KEBAB_CASE, strlib.toCaseCode('cobol'))
+        self.assertEqual(strlib.CT_KEBAB_CASE, strlib.getCaseCode('KEBAB'))
+        self.assertEqual(strlib.CT_KEBAB_CASE, strlib.getCaseCode('DASH'))
+        self.assertEqual(strlib.CT_KEBAB_CASE, strlib.getCaseCode('TRAIN'))
+        self.assertEqual(strlib.CT_KEBAB_CASE, strlib.getCaseCode('COBOL'))
+        self.assertEqual(strlib.CT_KEBAB_CASE, strlib.getCaseCode('cobol'))
 
         # CT_Kebab_Case
-        self.assertEqual(strlib.CT_Kebab_Case, strlib.toCaseCode('Kebab'))
-        self.assertEqual(strlib.CT_Kebab_Case, strlib.toCaseCode('Dash'))
-        self.assertEqual(strlib.CT_Kebab_Case, strlib.toCaseCode('Train'))
+        self.assertEqual(strlib.CT_Kebab_Case, strlib.getCaseCode('Kebab'))
+        self.assertEqual(strlib.CT_Kebab_Case, strlib.getCaseCode('Dash'))
+        self.assertEqual(strlib.CT_Kebab_Case, strlib.getCaseCode('Train'))
 
     def test_toCamelCase(self):
         
