@@ -146,14 +146,14 @@ public class StrLib {
     // 3.1
     //
     // - capitalize(String str)                                            - capitalize("abc") = "Abc"
-    // - capitalize(String str, boolean force)                             - capitalize("abC") = "Abc"
+    // - capitalize(String str, boolean forceRest)                         - capitalize("abC") = "Abc"
     // - capitalize(String str, Locale Locale locale)
-    // - capitalize(String str, boolean force, Locale locale)
+    // - capitalize(String str, boolean forceRest, Locale locale)
     //
     // - decapitalize(String str)                                          - decapitalize("Abc") = "abc"
-    // - decapitalize(String str, boolean force)                           - decapitalize("AbC") = "abc"
+    // - decapitalize(String str, boolean forceRest)                       - decapitalize("AbC") = "abc"
     // - decapitalize(String str, Locale locale)
-    // - decapitalize(String str, boolean force, Locale locale)
+    // - decapitalize(String str, boolean forceRest, Locale locale)
     //
     // - upper(String str)                                                 - upper("aBc") = "ABC" 
     // - upper(String str, Locale locale)
@@ -350,9 +350,9 @@ public class StrLib {
 
     public static final String DEFAULT_CASE_SEPARATOR = "_";
 
-    public static final String DEFAULT_CASE_SEPARATORS_ = "-_";
+    public static final String DEFAULT_CASE_SEPARATORS_ = " -_";
 
-    public static final String DEFAULT_CASE_SEPARATORS_A = "-_A";
+    public static final String DEFAULT_CASE_SEPARATORS_A = " -_A";
 
     public static final String DEFAULT_ALTER_CASE_SEPARATOR = "-"; // XML
 
@@ -1331,75 +1331,41 @@ public class StrLib {
 
     //// 3.1
 
-    // TODO: What about: inverse, toInverseCase(): 'aBcdE' -> 'AbCDe'
-
     /**
-     * Capitalize string: capitalize("name") = "Name" capitalize("n") = "N"
+     * Capitalize string: 
+     * 
+     * capitalize("name") = "Name" 
+     * capitalize("n")    = "N"
      * capitalize("NAME") = "NAME"
      * 
      * @param str
      * @return
      */
     public static String capitalize(String str) {
-        return _toCapitalize(str, true, DEFAULT_FORCE_CAPITALIZE, null);
+        return capitalize(str, DEFAULT_FORCE_CAPITALIZE, null);
     }
 
     /**
-     * Capitalize string: capitalize("name", true) = "Name" capitalize("name",
-     * false) = "Name" capitalize("nAmE", false) = "nAmE" capitalize("nAmE", true) =
-     * "Name"
+     * Capitalize string: 
+     * 
+     * capitalize("name", true)  = "Name" 
+     * capitalize("name", false) = "Name"
+     * capitalize("nAmE", false) = "nAmE" 
+     * capitalize("nAmE", true)  = "Name"
      * 
      * @param str
-     * @param force - if true force update last characters (lower case)
+     * @param forceRest - if forceRest is true then update last characters (lower case)
      * @return
      */
-    public static String capitalize(String str, boolean force) {
-        return _toCapitalize(str, true, force, null);
+    public static String capitalize(String str, boolean forceRest) {
+        return capitalize(str, forceRest, null);
     }
 
     public static String capitalize(String str, Locale locale) {
-        return _toCapitalize(str, true, DEFAULT_FORCE_CAPITALIZE, locale);
+        return capitalize(str, DEFAULT_FORCE_CAPITALIZE, locale);
     }
 
-    public static String capitalize(String str, boolean force, Locale locale) {
-        return _toCapitalize(str, true, force, locale);
-    }
-
-    /**
-     * Decapitalize string: capitalize("Name") = "name" capitalize("N") = "n"
-     * capitalize("NAME") = "nNAME"
-     * 
-     * @param str
-     * @return
-     */
-    public static String decapitalize(String str) {
-        return _toCapitalize(str, false, DEFAULT_FORCE_CAPITALIZE, null);
-    }
-
-    /**
-     * Decapitalize string: capitalize("Name", false) = "name" capitalize("Name",
-     * true) = "name" capitalize("NaMe", false) = "naMe" capitalize("NaMe", true) =
-     * "name"
-     * 
-     * @param str
-     * @param force - if true force update last characters (lower case)
-     * @return
-     */
-    public static String decapitalize(String str, boolean force) {
-        return _toCapitalize(str, false, force, null);
-    }
-
-    public static String decapitalize(String str, Locale locale) {
-        return _toCapitalize(str, false, DEFAULT_FORCE_CAPITALIZE, locale);
-    }
-
-    public static String decapitalize(String str, boolean force, Locale locale) {
-        return _toCapitalize(str, false, force, locale);
-    }
-
-    //
-
-    static String _toCapitalize(String str, boolean upper, boolean force, Locale locale) {
+    public static String capitalize(String str, boolean forceRest, Locale locale) {
         if (isEmpty(str)) {
             return str;
         }
@@ -1407,13 +1373,59 @@ public class StrLib {
             locale = Locale.getDefault();
         }
         if (str.length() == 1) {
-            return __toFirstCharCase(str, upper, locale);
+            return str.substring(0, 1).toUpperCase(locale);
         }
-        String rest = str.substring(1);
-        return __toFirstCharCase(str, upper, locale) + (force ? __toCase(rest, false, locale) : rest);
+        return str.substring(0, 1).toUpperCase(locale) + (forceRest ? str.substring(1).toLowerCase(locale) : str.substring(1)); 
     }
 
-    ////
+    /**
+     * Decapitalize string:
+     *  
+     * decapitalize("Name") = "name" 
+     * decapitalize("N")    = "n"
+     * decapitalize("NAME") = "nNAME"
+     * 
+     * @param str
+     * @return
+     */
+    public static String decapitalize(String str) {
+        return decapitalize(str, DEFAULT_FORCE_CAPITALIZE, null);
+    }
+
+    /**
+     * Decapitalize string: 
+     * 
+     * capitalize("Name", false) = "name" 
+     * capitalize("Name", true)  = "nAME"
+     * capitalize("NaMe", false) = "naMe" 
+     * capitalize("NaMe", true)  = "nAME"
+     * 
+     * @param str
+     * @param forceRest - if forceRest is true then update last characters (upper case)
+     * @return
+     */
+    public static String decapitalize(String str, boolean forceRest) {
+        return decapitalize(str, forceRest, null);
+    }
+
+    public static String decapitalize(String str, Locale locale) {
+        return decapitalize(str, DEFAULT_FORCE_CAPITALIZE, locale);
+    }
+
+    public static String decapitalize(String str, boolean forceRest, Locale locale) {
+        if (isEmpty(str)) {
+            return str;
+        }
+        if (locale == null) {
+            locale = Locale.getDefault();
+        }
+        if (str.length() == 1) {
+            return str.substring(0, 1).toLowerCase(locale);
+        }
+        return str.substring(0, 1).toLowerCase(locale) + (forceRest ? str.substring(1).toUpperCase(locale) : str.substring(1)); 
+    }
+
+    //
 
     public static String upper(String str) {
         return toUpperCase(str);
@@ -1468,21 +1480,7 @@ public class StrLib {
         if (locale == null) {
             locale = Locale.getDefault();
         }
-        return __toCase(str, upper, locale);
-    }
-
-    //
-
-    // toFirstCharCase
-    // internal
-    private static String __toFirstCharCase(String str, boolean upper, Locale locale) {
-        return __toCase(str.substring(0, 1), upper, locale);
-    }
-
-    // toCase(String)
-    // internal
-    private static String __toCase(String str, boolean upper, Locale locale) {
-        return upper ? str.toUpperCase() : str.toLowerCase();
+        return upper ? str.toUpperCase(locale) : str.toLowerCase(locale);
     }
 
     ////
@@ -1794,8 +1792,8 @@ public class StrLib {
             return str;
         }
 
-        int code = toCaseCode(type);
-        if (code < 1 || code > CT_COUNT) {
+        int code = getCaseCode(type);
+        if (code == 0) {
             // Invalid case code
             return str;
         }
@@ -1817,32 +1815,7 @@ public class StrLib {
             _connector = (isEmpty(connector) ? SNAKE_CONNECTOR : connector);
         }
             
-        int _caseOp = 0;
-
-        if (code == CT_camelCase) {            
-            _caseOp = CO_LOWER_CHAR;
-            
-        } else if (code == CT_PascalCase) {            
-            _caseOp = CO_UPPER_CHAR;
-            
-        } else if (code == CT_kebab_case) {            
-            _caseOp = CO_LOWER;
-            
-        } else if (code == CT_KEBAB_CASE) {
-            _caseOp = CO_UPPER;
-            
-        } else if (code == CT_Kebab_Case) {
-            _caseOp = CO_UPPER_CHAR;
-            
-        } else if (code == CT_snake_case) {
-            _caseOp = CO_LOWER;
-            
-        } else if (code == CT_SNAKE_CASE) {
-            _caseOp = CO_UPPER;
-            
-        } else if (code  == CT_Snake_Case) {
-            _caseOp = CO_UPPER_CHAR;
-        }
+        int _caseOp = getCaseOp(code);
         
         return _toCaseOp(str, _separators, _connector, _caseOp);
 
@@ -1851,6 +1824,38 @@ public class StrLib {
 
     }
 
+    // Return case op by case code
+    public static int getCaseOp(int code) {
+        
+        if (code == CT_camelCase) {            
+            return CO_LOWER_CHAR;
+            
+        } else if (code == CT_PascalCase) {            
+            return CO_UPPER_CHAR;
+            
+        } else if (code == CT_kebab_case) {            
+            return CO_LOWER;
+            
+        } else if (code == CT_KEBAB_CASE) {
+            return CO_UPPER;
+            
+        } else if (code == CT_Kebab_Case) {
+            return CO_UPPER_CHAR;
+            
+        } else if (code == CT_snake_case) {
+            return CO_LOWER;
+            
+        } else if (code == CT_SNAKE_CASE) {
+            return CO_UPPER;
+            
+        } else if (code == CT_Snake_Case) {
+            return CO_UPPER_CHAR;
+        }
+        
+        return 0;
+        
+    }
+    
     // -  1. lowercase, [lower]~
     // -  2. UPPERCASE, [upper]~
     // -  3. camelCase, [camel]~
@@ -1863,7 +1868,7 @@ public class StrLib {
     // - 10. Kebab-Case, Dash-Case, Train-Case, HTTP-Header-Case, [Kebab], [http]~
 
     // Return case code by case type
-    public static int toCaseCode(String type) {
+    public static int getCaseCode(String type) {
 
         if (type == null) {
             return 0;

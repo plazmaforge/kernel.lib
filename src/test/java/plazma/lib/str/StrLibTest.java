@@ -1068,7 +1068,7 @@ public class StrLibTest extends AbstractTestCase {
 
         // decapitalize: value
         assertEquals("aBcdE", StrLib.decapitalize("ABcdE"));
-        assertEquals("abcde", StrLib.decapitalize("ABcdE", true));
+        assertEquals("aBCDE", StrLib.decapitalize("ABcdE", true));
 
     }
 
