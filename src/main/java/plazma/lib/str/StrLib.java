@@ -369,16 +369,19 @@ public class StrLib {
     ///////////////////////////////////
     // Case Operations
     ///////////////////////////////////
-    // caseOp =  1: 'myname': lowercase
-    // caseOp =  2: 'MYNAME': UPPERCASE
-    // caseOp =  3: 'myName': camelCase
-    // caseOp =  4: 'MyName': PascalCase
+    // caseOp =  1: 'myname': LOWER
+    // caseOp =  2: 'MYNAME': UPPER
+    // caseOp =  3: 'myName': LOWER_CHAR
+    // caseOp =  4: 'MyName': UPPER_CHAR
 
     public static final int CO_NONE       = 0;
-    public static final int CO_lowercase  = 1;
-    public static final int CO_UPPERCASE  = 2;
-    public static final int CO_camelCase  = 3;
-    public static final int CO_PascalCase = 4;
+    public static final int CO_LOWER      = 1;
+    public static final int CO_UPPER      = 2;
+    public static final int CO_LOWER_CHAR = 3;
+    public static final int CO_UPPER_CHAR = 4;
+    //
+    public static final int CO_COUNT = 4;
+    
 
     ////////////////////////////////////
     // Case Types
@@ -405,6 +408,8 @@ public class StrLib {
     public static final int CT_kebab_case = 8;
     public static final int CT_KEBAB_CASE = 9;
     public static final int CT_Kebab_Case = 10;
+    //
+    public static final int CT_COUNT      = 10;
 
     public static final String SNAKE_CONNECTOR = "_"; // shake_case
     public static final String KEBAB_CONNECTOR = "-"; // kebab-case
@@ -1627,66 +1632,13 @@ public class StrLib {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Normalize Case Operation by Token position
-    private static int _normalizeCaseOpByToken(int caseOp, boolean first) {
-        int _caseOp = caseOp;
-        if (caseOp == CO_camelCase) {
-            // camelCase: [0] -> 'lowercase', [1..n] -> 'PascalCase'
-            _caseOp = (first ? CO_lowercase : CO_PascalCase);
-        }
-        return _caseOp;
-    }
-
-    //
-    // caseOp =  1: 'myname': lowercase    
-    // caseOp =  2: 'MYNAME': UPPERCASE
-    // caseOp =  3: 'myName': camelCase
-    // caseOp =  4: 'MyName': PascalCase
-
-    private static void _flushOp(List<String> result, StringBuilder buf, int caseOp) {
-        int _caseOp = caseOp;
-        char ch = 0;
-
-        // StringBuilder str = new StringBuilder();
-        // char[] bufArr = buf.toString().toCharArray();
-
-        for (int i = 0; i < buf.length(); i++) {
-            _caseOp = caseOp;
-            ch = buf.charAt(i);
-
-            if (caseOp == CO_PascalCase) {
-                if (i == 0) {
-                    _caseOp = CO_UPPERCASE; // upper char
-                }
-                // else {
-                // _caseOp = CO_lowercase; // lower char
-                // }
-            }
-
-            // WARNING: We don't use 'caseOp' in this code because it is lower case always
-            if (_caseOp == CO_lowercase) {
-                ch = Character.toLowerCase(ch);
-                buf.setCharAt(i, ch);
-            } else if (_caseOp == CO_UPPERCASE) {
-                ch = Character.toUpperCase(ch);
-                buf.setCharAt(i, ch);
-            }
-
-            // str.append(1, ch);
-            // str += ch; // Add char to string
-        }
-
-        result.add(buf.toString()); // Add buffer to result
-        buf.setLength(0); // Clear buffer
-
-    }
-
+    
     // splitOp: separators and A (Upper Char)
-    // caseOp =  1: 'myname': lowercase
-    // caseOp =  2: 'MYNAME': UPPERCASE
-    // caseOp =  3: 'myName': camelCase
-    // caseOp =  4: 'MyName': PascalCase
-    private static List<String> _splitOp(String str, String separators, int caseOp) {
+    // caseOp =  1: 'myname': LOWER
+    // caseOp =  2: 'MYNAME': UPPER
+    // caseOp =  3: 'myName': LOWER_CHAR
+    // caseOp =  4: 'MyName': UPPER_CHAR
+    private static List<String> _splitOp(String str, String separators) {
         if (str == null) {
             return null;
         }
@@ -1697,83 +1649,117 @@ public class StrLib {
             return result;
         }
 
-        char[] strArr = str.toCharArray();
-        char[] delArr = separators.toCharArray();
-
         int strLen = str.length();
-        int delLen = separators.length();
+        int sepLen = separators.length();
 
         char ch = 0;
-        char del = 0;
+        char separator = 0;
         boolean find = false;
-        StringBuilder buf = new StringBuilder(); // c++: vector<char> ?
-        int _caseOp = caseOp;
-        boolean first = true;
+        
+        int pos = 0;
+        int end = 0;
+        int i = 0;
+        int j = 0;
 
-        for (int i = 0; i < strLen; i++) {
+        while (i < strLen) {
 
-            ch = strArr[i]; // c++: str[i] ?
+            ch = str.charAt(i);
             find = false;
+            j = 0;
 
             // Find a separator
-            for (int j = 0; j < delLen; j++) {
-                del = delArr[j];
-                if (del == 'A') { // TODO: 'A' is special marker for check 'Upper Char'
+            while (j < sepLen) {
+                separator = separators.charAt(j);
+                if (separator == 'A') { // TODO: 'A' is special marker for check 'Upper Char'
                     if (Character.isUpperCase(ch)) {
                         find = true;
                         break;
                     }
-                } else if (ch == delArr[j]) {
+                } else if (ch == separator) {
                     find = true;
                     break;
                 }
+                j++;
             }
 
             if (find) {
+                
+                end = i;
+                
+                if (pos < end) {
+                    result.add(str.substring(pos, end));
+                }                    
 
-                // flush
-                if (buf.length() > 0) {
-                    _caseOp = _normalizeCaseOpByToken(caseOp, first);
-                    _flushOp(result, buf, _caseOp);
-                    first = false;
+                if (separator == 'A') { // TODO: 'A' is special marker for check 'Upper Char'
+                    pos = end;          // include 'Upper Char'
+                } else {
+                    pos = end + 1;      // skip separator
                 }
 
-                // Add separator: optinal
-                boolean include = false;
-                if (include || del == 'A') { // TODO: 'A' is special marker for check 'Upper Char'
-                    buf.append(ch);
-                }
-
-            } else {
-
-                // Add char
-                buf.append(ch);
             }
+            
+            i++;
 
         }
-
-        // flush
-        if (buf.length() > 0) {
-            _caseOp = _normalizeCaseOpByToken(caseOp, first);
-            _flushOp(result, buf, _caseOp);
-        }
+        
+        if (pos < strLen) {
+            result.add(str.substring(pos));            
+        }           
 
         return result;
+    }
+    
+    private static String _transformToken(String token, int caseOp, boolean first) {
+        if (isEmpty(token)) {
+            return token;            
+        }
+        
+        if (caseOp == CO_LOWER_CHAR) {                                           // camelCase
+            if (first) {
+                return token.substring(0, 1).toLowerCase() + token.substring(1); // lower char (first)
+            } else {
+                return token.substring(0, 1).toUpperCase() + token.substring(1); // UPPER char (first)
+            }
+        } else if (caseOp == CO_UPPER_CHAR) {                                    // CamelCase, PascalCase
+            return token.substring(0, 1).toUpperCase() + token.substring(1);     // UPPER char (first)
+        } else if (caseOp == CO_LOWER) {  
+            return token.toLowerCase();                                          // lower case
+        } else if (caseOp == CO_UPPER) {
+            return token.toUpperCase();                                          // UPPER case
+        }
 
+        return token;
+    }
+    
+    
+    private static void _transformOp(List<String> tokens, int caseOp) {
+        if (tokens == null || tokens.isEmpty()) {
+            return;            
+        }
+        
+        // No transformation
+        if (caseOp == CO_NONE) {
+            return;
+        }
+        
+        for (int i = 0; i < tokens.size(); i++) {
+            tokens.set(i, _transformToken(tokens.get(i), caseOp, i == 0));
+        }
     }
 
-    // caseOp =  1: 'myname': lowercase
-    // caseOp =  2: 'MYNAME': UPPERCASE
-    // caseOp =  3: 'myName': camelCase
-    // caseOp =  4: 'MyName': PascalCase
+    // caseOp =  1: 'myname': LOWER
+    // caseOp =  2: 'MYNAME': UPPER
+    // caseOp =  3: 'myName': LOWER_CHAR
+    // caseOp =  4: 'MyName': UPPER_CHAR
     private static String _toCaseOp(String str, String separators, String connector, int caseOp) {
 
-        if (isEmpty(str)) {
+        if (isBlank(str)) {
             return str;
         }
 
         StringBuilder result = new StringBuilder();
-        List<String> tokens = _splitOp(str, separators, caseOp);
+        List<String> tokens = _splitOp(str, separators);
+        _transformOp(tokens, caseOp);
 
         boolean hasConnector = !isEmpty(connector);
 
@@ -1798,10 +1784,10 @@ public class StrLib {
     // -  9. KEBAB-CASE, DASH-CASE, TRAIN-CASE, COBOL-CASE, [KEBAB], [cobol]~
     // - 10. Kebab-Case, Dash-Case, Train-Case, HTTP-Header-Case, [Kebab], [http]~
 
-    // caseOp =  1: 'myname': lowercase
-    // caseOp =  2: 'MYNAME': UPPERCASE
-    // caseOp =  3: 'myName': camelCase
-    // caseOp =  4: 'MyName': PascalCase
+    // caseOp =  1: 'myname': LOWER
+    // caseOp =  2: 'MYNAME': UPPER
+    // caseOp =  3: 'myName': LOWER_CHAR
+    // caseOp =  4: 'MyName': UPPER_CHAR
     private static String _toTypeCase(String str, String type, String separators, String connector) {
 
         if (isEmpty(str)) {
@@ -1809,7 +1795,7 @@ public class StrLib {
         }
 
         int code = toCaseCode(type);
-        if (code <= 0) {
+        if (code < 1 || code > CT_COUNT) {
             // Invalid case code
             return str;
         }
@@ -1818,42 +1804,50 @@ public class StrLib {
         if (code == CT_lowercase) {
             return toCase(str, false); // lower case
         } else if (code == CT_UPPERCASE) {
-            return toCase(str, true); // UPPER case
+            return toCase(str, true);  // UPPER case
         }
 
         // COMPLEX CASE
         String _separators = (isEmpty(separators) ? DEFAULT_CASE_SEPARATORS_A : separators);
-
-        if (code == CT_camelCase) {
-            return _toCaseOp(str, _separators, connector, CO_camelCase); // lower first char
+        
+        String _connector = connector;
+        if (code == CT_kebab_case || code == CT_KEBAB_CASE || code == CT_Kebab_Case) {
+            _connector = (isEmpty(connector) ? KEBAB_CONNECTOR :connector);
+        } else if (code == CT_snake_case || code  == CT_SNAKE_CASE || code == CT_Snake_Case) {
+            _connector = (isEmpty(connector) ? SNAKE_CONNECTOR : connector);
+        }
             
-        } else if (code == CT_PascalCase) {
-            return _toCaseOp(str, _separators, connector, CO_PascalCase); // upper first char
+        int _caseOp = 0;
 
-        } else if (code == CT_kebab_case) {
-            return _toCaseOp(str, _separators, (isEmpty(connector) ? KEBAB_CONNECTOR : connector), CO_lowercase);
+        if (code == CT_camelCase) {            
+            _caseOp = CO_LOWER_CHAR;
+            
+        } else if (code == CT_PascalCase) {            
+            _caseOp = CO_UPPER_CHAR;
+            
+        } else if (code == CT_kebab_case) {            
+            _caseOp = CO_LOWER;
             
         } else if (code == CT_KEBAB_CASE) {
-            return _toCaseOp(str, _separators, (isEmpty(connector) ? KEBAB_CONNECTOR : connector), CO_UPPERCASE);
+            _caseOp = CO_UPPER;
             
         } else if (code == CT_Kebab_Case) {
-            return _toCaseOp(str, _separators, (isEmpty(connector) ? KEBAB_CONNECTOR : connector), CO_PascalCase);
+            _caseOp = CO_UPPER_CHAR;
             
         } else if (code == CT_snake_case) {
-            return _toCaseOp(str, _separators, (isEmpty(connector) ? SNAKE_CONNECTOR : connector), CO_lowercase);
+            _caseOp = CO_LOWER;
             
         } else if (code == CT_SNAKE_CASE) {
-            return _toCaseOp(str, _separators, (isEmpty(connector) ? SNAKE_CONNECTOR : connector), CO_UPPERCASE);
+            _caseOp = CO_UPPER;
             
         } else if (code  == CT_Snake_Case) {
-            return _toCaseOp(str, _separators, (isEmpty(connector) ? SNAKE_CONNECTOR : connector), CO_PascalCase);
+            _caseOp = CO_UPPER_CHAR;
         }
-
+        
+        return _toCaseOp(str, _separators, _connector, _caseOp);
 
         // UNKNOWN CASE: use 'separators', 'connector'
         // _toCaseOp(str, separators, connector, CO_NONE);
-
-        return str;
 
     }
 
@@ -1932,8 +1926,6 @@ public class StrLib {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-
-    ////
 
     public static String reverse(String str) {
         if (isEmpty(str)) {
