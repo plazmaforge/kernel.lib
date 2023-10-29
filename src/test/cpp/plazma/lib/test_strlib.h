@@ -623,7 +623,7 @@ TEST(decapitalize) {
   ASSERT_EQ(" ", strlib::decapitalize(" "));
   ASSERT_EQ("abcd", strlib::decapitalize("Abcd"));
   ASSERT_EQ("abCd", strlib::decapitalize("AbCd"));
-  ASSERT_EQ("abcd", strlib::decapitalize("AbCd", true));
+  ASSERT_EQ("aBCD", strlib::decapitalize("AbCd", true));
 
 }
 

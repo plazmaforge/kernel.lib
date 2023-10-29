@@ -107,21 +107,19 @@
 // - toCase(char ch, bool upper);
 //
 // - toCamelCase(const string& str)		                                       - toCamelCase("property_name") = "PropertyName"
-// - toCamelCase(const string& str, const string& separator)                   - 
+// - toCamelCase(const string& str, const string& separators)                  - 
 // - toCamelCase(const string& str, bool capitalize)                           - 
-// - toCamelCase(const string& str, const string& separator, bool capitalize)  - 
+// - toCamelCase(const string& str, const string& separators, bool capitalize) - 
 //
 // - toSnakeCase(const string& str)		                                       - toSnakeCase("PropertyName") = "property_name"
-// - toSnakeCase(const string& str, const string& separator)                   - 
+// - toSnakeCase(const string& str, const string& separators)                  - 
 // - toSnakeCase(const string& str, bool upper)                                -  
-// - toSnakeCase(const string& str, const string& separator, bool upper)       -  
-// - toSnakeCase(const string& str, const string& separator, bool upper, bool trim) -  
+// - toSnakeCase(const string& str, const string& separators, bool upper)      -  
 //
 // - toKebabCase(const string& str)		                                       - toKebabCase("PropertyName") = "property-name"
-// - toKebabCase(const string& str, const string& separator)                   - 
+// - toKebabCase(const string& str, const string& separators)                  - 
 // - toKebabCase(const string& str, bool upper)                                -  
-// - toKebabCase(const string& str, const string& separator, bool upper)       -  
-// - toKebabCase(const string& str, const string& separator, bool upper, bool trim) -  
+// - toKebabCase(const string& str, const string& separators, bool upper)      -  
 //
 // - toTypeCase(const string& str, const string& type)
 // - toTypeCase(const string& str, const string& type, const string& separators, const string& connector)
@@ -199,7 +197,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 // 8.1
 //      
-// - toString(const char[] array)
+// - toString(const char* array)
 // - toString(const vector<string > values)
 // - toString(const vector<string > values, const string& separator)
 //
@@ -257,6 +255,8 @@ namespace strlib {
 
     const char SPACE_CHAR = ' ';
 
+    const char* const TRIM_CHARS = " \t\n\r\f\v";
+
     CONST_STRING  ELLIPSIS = "...";
 
     const int ELLIPSIS_LEN = 3;
@@ -265,15 +265,15 @@ namespace strlib {
 
     CONST_STRING DEFAULT_SEPARATORS = " \t\n\r\f\v";
 
-    CONST_STRING DEFAULT_TRIM = " \t\n\r\f\v";
+    //CONST_STRING DEFAULT_TRIM = " \t\n\r\f\v";
 
     CONST_STRING DEFAULT_WORD_SEPARATORS = DEFAULT_SEPARATORS + ".,;'(){}[]!?+/=<>*&^%$#@`~|\\";
 
     CONST_STRING DEFAULT_CASE_SEPARATOR = "_";
 
-    CONST_STRING DEFAULT_CASE_SEPARATORS_ = "-_";
+    CONST_STRING DEFAULT_CASE_SEPARATORS_ = " -_";
 
-    CONST_STRING DEFAULT_CASE_SEPARATORS_A = "-_A";
+    CONST_STRING DEFAULT_CASE_SEPARATORS_A = " -_A";
 
     CONST_STRING DEFAULT_ALTER_CASE_SEPARATOR = "-"; // XML    
 
@@ -291,16 +291,16 @@ namespace strlib {
     ///////////////////////////////////
     // Case Operations
     ///////////////////////////////////
-    // caseOp =  1: 'myname': lowercase 
-    // caseOp =  2: 'MYNAME': UPPERCASE 
-    // caseOp =  3: 'myName': camelCase
-    // caseOp =  4: 'MyName': CamelCase
+    // caseOp =  1: 'myname': LOWER
+    // caseOp =  2: 'MYNAME': UPPER
+    // caseOp =  3: 'myName': LOWER_CHAR
+    // caseOp =  4: 'MyName': UPPER_CHAR
     
     const int CO_NONE       =  0;
-    const int CO_lowercase  =  1;
-    const int CO_UPPERCASE  =  2;
-    const int CO_camelCase  =  3;
-    const int CO_PascalCase =  4;
+    const int CO_LOWER      =  1;
+    const int CO_UPPER      =  2;
+    const int CO_LOWER_CHAR =  3;
+    const int CO_UPPER_CHAR =  4;
 
 
     ////////////////////////////////////
@@ -384,6 +384,12 @@ namespace strlib {
     void _trim(std::string& str, char ch);
 
     void _trim(std::string& str, const char* ch);
+
+    // trimSpace
+
+    std::string trimSpace(const std::string& str);
+
+    void _trimSpace(std::string& str);
 
     // trimAll
 
@@ -511,25 +517,25 @@ namespace strlib {
 
     std::string capitalize(const std::string& str);
 
-    std::string capitalize(const std::string& str, bool force);
+    std::string capitalize(const std::string& str, bool forceRest);
 
     void _capitalize(std::string& str);
 
-    void _capitalize(std::string& str, bool force);
+    void _capitalize(std::string& str, bool forceRest);
 
     // decapitalze
 
     std::string decapitalize(const std::string& str);
 
-    std::string decapitalize(const std::string& str, bool force);
+    std::string decapitalize(const std::string& str, bool forceRest);
 
     void _decapitalize(std::string& str);
 
-    void _decapitalize(std::string& str, bool force);
+    void _decapitalize(std::string& str, bool forceRest);
 
     // capitalze/decapitalze
 
-    void _toCapitalize(std::string& str, bool upper, bool force);
+    void _toCapitalize(std::string& str, bool upper, bool forceRest);
 
     ////
 
@@ -575,29 +581,30 @@ namespace strlib {
 
     std::string toSnakeCase(const std::string& str);
 
-    std::string toSnakeCase(const std::string& str, const std::string& separator);
+    std::string toSnakeCase(const std::string& str, const std::string& separators);
 
     std::string toSnakeCase(const std::string& str, bool upper);
 
-    std::string toSnakeCase(const std::string& str, const std::string& separator, bool upper, bool trim);
+    std::string toSnakeCase(const std::string& str, const std::string& separators, bool upper);
 
-    void _toSnakeCase(std::string& str, const std::string& separator, bool upper, bool trim);
+    void _toSnakeCase(std::string& str, const std::string& separators, bool upper);
 
     // toKebabCase: kebab-case
 
     std::string toKebabCase(const std::string& str);
 
-    std::string toKebabCase(const std::string& str, const std::string& separator);
+    std::string toKebabCase(const std::string& str, const std::string& separators);
 
     std::string toKebabCase(const std::string& str, bool upper);
 
-    std::string toKebabCase(const std::string& str, const std::string& separator, bool upper);
+    std::string toKebabCase(const std::string& str, const std::string& separators, bool upper);
 
-    std::string toKebabCase(const std::string& str, const std::string& separator, bool upper, bool trim);
-
-    void _toKebabCase(std::string& str, const std::string& separator, bool upper, bool trim);
+    void _toKebabCase(std::string& str, const std::string& separators, bool upper);
 
     //
+
+    // Return case op by case code
+    int getCaseOp(int code);
 
     // -  1. lowercase, [lower]~
     // -  2. UPPERCASE, [upper]~
@@ -611,7 +618,7 @@ namespace strlib {
     // - 10. Kebab-Case, Dash-Case, Train-Case, HTTP-Header-Case, [Kebab], [http]~
 
     // Return case code by case type
-    int toCaseCode(const std::string& type);
+    int getCaseCode(const std::string& type);
 
     std::string toTypeCase(const std::string& str, const std::string& type);
 

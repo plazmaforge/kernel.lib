@@ -111,21 +111,19 @@
 // - toCase(char ch, bool upper);
 //
 // - toCamelCase(const string& str)		                                       - toCamelCase("property_name") = "PropertyName"
-// - toCamelCase(const string& str, const string& separator)                   - 
+// - toCamelCase(const string& str, const string& separators)                  - 
 // - toCamelCase(const string& str, bool capitalize)                           - 
-// - toCamelCase(const string& str, const string& separator, bool capitalize)  - 
+// - toCamelCase(const string& str, const string& separators, bool capitalize) - 
 //
 // - toSnakeCase(const string& str)		                                       - toSnakeCase("PropertyName") = "property_name"
-// - toSnakeCase(const string& str, const string& separator)                   - 
+// - toSnakeCase(const string& str, const string& separators)                  - 
 // - toSnakeCase(const string& str, bool upper)                                -  
-// - toSnakeCase(const string& str, const string& separator, bool upper)       -  
-// - toSnakeCase(const string& str, const string& separator, bool upper, bool trim) -  
+// - toSnakeCase(const string& str, const string& separators, bool upper)      -  
 //
 // - toKebabCase(const string& str)		                                       - toKebabCase("PropertyName") = "property-name"
-// - toKebabCase(const string& str, const string& separator)                   - 
-// - toKebabCase(const string& str, const string& separator, bool upper)       -  
-// - toKebabCase(const string& str, bool upper)                                -  
-// - toKebabCase(const string& str, const string& separator, bool upper, bool trim) -  
+// - toKebabCase(const string& str, const string& separators)                  - 
+// - toKebabCase(const string& str, bool upper)                                - 
+// - toKebabCase(const string& str, const string& separators, bool upper)      -  
 //
 // - toTypeCase(const string& str, const string& type)
 // - toTypeCase(const string& str, const string& type, const string& separators, const string& connector)
@@ -203,7 +201,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 // 8.1
 //      
-// - toString(const char[] array)
+// - toString(const char* array)
 // - toString(const vector<string> values)
 // - toString(const vector<string> values, const string& separator)
 //
@@ -296,6 +294,7 @@
 
 namespace strlib {
 
+
     //// 1.1
 
     /*
@@ -350,7 +349,7 @@ namespace strlib {
         if (str.empty()) {
             return true;
         }
-        return str.find_first_not_of(DEFAULT_TRIM) == -1;
+        return str.find_first_not_of(TRIM_CHARS) == -1; // " \t\n\r\f\v"
     }
 
     //
@@ -412,11 +411,11 @@ namespace strlib {
      normalize("")          = ""
     */
     std::string normalize(const std::string& str) {
-        return trimAll(str);
+        return trim(str);
     }
 
     void _normalize(std::string& str) {
-        _trimAll(str);
+        _trim(str);
     }
 
     /*
@@ -528,7 +527,7 @@ namespace strlib {
     */
     std::string trim(const std::string& str) {
         std::string strn = str;
-        _trim(strn, SPACE_CHAR);
+        _trim(strn);
         return strn;
     }
 
@@ -554,7 +553,7 @@ namespace strlib {
     }
 
     void _trim(std::string& str) {
-        _trim(str, SPACE_CHAR);
+        _trim(str, TRIM_CHARS); // // " \t\n\r\f\v"
     }
 
     void _trim(std::string& str, char ch) {
@@ -570,6 +569,20 @@ namespace strlib {
         _rtrim(str, terms);
     }
 
+    // trimSpace
+
+    std::string trimSpace(const std::string& str) {
+        std::string strn = str;
+        _trimSpace(strn);
+        return strn;
+    }
+
+    void _trimSpace(std::string& str) {
+        _trim(str, SPACE_CHAR); // ' '
+    }
+
+    // trimAll
+
     std::string trimAll(const std::string& str) {
         std::string strn = str;
         _trimAll(strn);
@@ -577,14 +590,14 @@ namespace strlib {
     }
 
     void _trimAll(std::string& str) {
-        _trim(str, DEFAULT_TRIM.c_str()); //" \t\n\r\f\v"
+        _trim(str, TRIM_CHARS); // " \t\n\r\f\v"
     }
 
     // ltrim
 
     std::string ltrim(const std::string& str) {
         std::string strn = str;
-        _ltrim(strn, SPACE_CHAR);
+        _ltrim(strn);
         return strn;
     }
 
@@ -604,7 +617,7 @@ namespace strlib {
     }
 
     void _ltrim(std::string& str) {
-        _ltrim(str, SPACE_CHAR);
+        _ltrim(str, TRIM_CHARS); // " \t\n\r\f\v"
     }
 
     void _ltrim(std::string& str, char ch) {
@@ -623,7 +636,7 @@ namespace strlib {
 
     std::string rtrim(const std::string& str) {
         std::string strn = str;
-        _rtrim(strn, SPACE_CHAR);
+        _rtrim(strn);
         return strn;
     }
 
@@ -643,7 +656,7 @@ namespace strlib {
     }
 
     void _rtrim(std::string& str) {
-        _rtrim(str, SPACE_CHAR);
+        _rtrim(str, TRIM_CHARS); // " \t\n\r\f\v"
     }
 
     void _rtrim(std::string& str, char ch) {
@@ -986,9 +999,9 @@ namespace strlib {
         return strn;
     }
 
-    std::string capitalize(const std::string& str, bool force) {
+    std::string capitalize(const std::string& str, bool forceRest) {
         std::string strn = str;
-        _toCapitalize(strn, true, force); // upper = true
+        _toCapitalize(strn, true, forceRest); // upper = true
         return strn;
     }
 
@@ -996,8 +1009,8 @@ namespace strlib {
         _toCapitalize(str, true, DEFAULT_FORCE_CAPITALIZE);  // upper = true
     }
 
-    void _capitalize(std::string& str, bool force) {
-        _toCapitalize(str, true, force);  // upper = true
+    void _capitalize(std::string& str, bool forceRest) {
+        _toCapitalize(str, true, forceRest);  // upper = true
     }
 
     // decapitalze
@@ -1008,9 +1021,9 @@ namespace strlib {
         return strn;
     }
 
-    std::string decapitalize(const std::string& str, bool force) {
+    std::string decapitalize(const std::string& str, bool forceRest) {
         std::string strn = str;
-        _toCapitalize(strn, false, force); // upper = false
+        _toCapitalize(strn, false, forceRest); // upper = false
         return strn;
     }
 
@@ -1018,18 +1031,18 @@ namespace strlib {
         _toCapitalize(str, false, DEFAULT_FORCE_CAPITALIZE); // upper = false
     }
 
-    void _decapitalize(std::string& str, bool force) {
-        _toCapitalize(str, false, force); // upper = false
+    void _decapitalize(std::string& str, bool forceRest) {
+        _toCapitalize(str, false, forceRest); // upper = false
     }
 
     // General capitalize/decapitalize: _toCapitalize
     // internal
-    void _toCapitalize(std::string& str, bool upper, bool force) {
+    void _toCapitalize(std::string& str, bool upper, bool forceRest) {
         if (str.empty()) {
             return;
         }
-        if (str.length() > 1 && force) {
-            _toCase(str, false);
+        if (str.length() > 1 && forceRest) {
+            _toCase(str, !upper);
         }
         str[0] = upper ? toupper(str[0]) : tolower(str[0]);
     }
@@ -1085,20 +1098,7 @@ namespace strlib {
     
     // toUpper/LowerCase: std::string 
     void _toCase(std::string& str, bool upper) {
-        // TODO: WIN: #include <algorithm>      
         std::transform(str.begin(), str.end(), str.begin(), upper ? ::toupper : ::tolower);
-
-        //int len = str.length();
-        //if (len == 0) {
-        //  return;
-        //}
-
-        //if (upper) {
-        //  for (int i = 0; i < len; i++) str[i] = toupper(str[i]);
-        //} else {
-        //  for (int i = 0; i < len; i++) str[i] = tolower(str[i]);
-        //} 
-
     }
     
     // toUpper/LowerCase: char
@@ -1107,16 +1107,15 @@ namespace strlib {
     }
 
     // toCamelCase
-
     std::string toCamelCase(const std::string& str) {
         std::string strn = str;
         _toCamelCase(strn, "", DEFAULT_CAMEL_CASE_CAPITALIZE);
         return strn;
     }
 
-    std::string toCamelCase(const std::string& str, const std::string& separator) {
+    std::string toCamelCase(const std::string& str, const std::string& separators) {
         std::string strn = str;
-        _toCamelCase(strn, separator, DEFAULT_CAMEL_CASE_CAPITALIZE);
+        _toCamelCase(strn, separators, DEFAULT_CAMEL_CASE_CAPITALIZE);
         return strn;
     }
 
@@ -1126,22 +1125,14 @@ namespace strlib {
         return strn;
     }
 
-    std::string toCamelCase(const std::string& str, const std::string& separator, bool capitalize) {
+    std::string toCamelCase(const std::string& str, const std::string& separators, bool capitalize) {
         std::string strn = str;
-        _toCamelCase(strn, separator, capitalize);
+        _toCamelCase(strn, separators, capitalize);
         return strn;
     }
 
-    void _toCamelCase(std::string& str, const std::string& separator, bool capitalize) {
-        if (str.empty()) {
-            return;
-        }
-
-        const std::string type = (capitalize ? "Camel" : "camel");
-        const std::string separators = separator;
-        const std::string connector = "";
-
-        _toTypeCase(str, type, separators, connector);
+    void _toCamelCase(std::string& str, const std::string& separators, bool capitalize) {
+        _toTypeCase(str, (capitalize ? "Camel" : "camel"), separators, "");
     }
 
     ////
@@ -1149,56 +1140,34 @@ namespace strlib {
     // toSnakeCase: snake_case
     std::string toSnakeCase(const std::string& str) {
         std::string strn = str;
-        _toSnakeCase(strn, "", false, false);
+        _toSnakeCase(strn, "", false);
         return strn;
     }
 
     // toSnakeCase: snake_case
-    std::string toSnakeCase(const std::string& str, const std::string& separator) {
+    std::string toSnakeCase(const std::string& str, const std::string& separators) {
         std::string strn = str;
-        _toSnakeCase(strn, separator, false, false);
+        _toSnakeCase(strn, separators, false);
         return strn;
     }
 
     // toSnakeCase: snake_case
     std::string toSnakeCase(const std::string& str, bool upper) {
         std::string strn = str;
-        _toSnakeCase(strn, "", upper, false);
+        _toSnakeCase(strn, "", upper);
         return strn;
     }
 
     // toSnakeCase: snake_case
-    std::string toSnakeCase(const std::string& str, const std::string& separator, bool upper) {
+    std::string toSnakeCase(const std::string& str, const std::string& separators, bool upper) {
         std::string strn = str;
-        _toSnakeCase(strn, separator, upper, false);
+        _toSnakeCase(strn, separators, upper);
         return strn;
     }
 
     // toSnakeCase: snake_case
-    std::string toSnakeCase(const std::string& str, const std::string& separator, bool upper, bool trim) {
-        std::string strn = str;
-        _toSnakeCase(strn, separator, upper, trim);
-        return strn;
-    }
-
-    // toSnakeCase: snake_case
-    void _toSnakeCase(std::string& str, const std::string& separator, bool upper, bool trim) {
-        if (str.empty()) {
-            return;
-        }
-        if (trim) {
-            _trim(str);
-            if (str.empty()) {
-                return;
-            }
-        }
-        // TODO: We use separator as connector!
-        // Add 'connector' parameter
-        const std::string type = (upper ? "SNAKE" : "snake");
-        const std::string separators = "";
-        const std::string connector = separator;
-
-        _toTypeCase(str, type, separators, connector);
+    void _toSnakeCase(std::string& str, const std::string& separators, bool upper) {
+        _toTypeCase(str, (upper ? "SNAKE" : "snake"), separators, SNAKE_CONNECTOR);
     }
 
     ////
@@ -1206,122 +1175,82 @@ namespace strlib {
     // toKebabCase: kebab-case
     std::string toKebabCase(const std::string& str) {
         std::string strn = str;
-        _toKebabCase(strn, "", false, false);
+        _toKebabCase(strn, "", false);
         return strn;
     }
 
     // toKebabCase: kebab-case
-    std::string toKebabCase(const std::string& str, const std::string& separator) {
+    std::string toKebabCase(const std::string& str, const std::string& separators) {
         std::string strn = str;
-        _toKebabCase(strn, separator, false, false);
+        _toKebabCase(strn, separators, false);
         return strn;
     }
 
     // toKebabCase: kebab-case
     std::string toKebabCase(const std::string& str, bool upper) {
         std::string strn = str;
-        _toKebabCase(strn, "", upper, false);
+        _toKebabCase(strn, "", upper);
         return strn;
     }
 
     // toKebabCase: kebab-case
-    std::string toKebabCase(const std::string& str, const std::string& separator, bool upper) {
+    std::string toKebabCase(const std::string& str, const std::string& separators, bool upper) {
         std::string strn = str;
-        _toKebabCase(strn, separator, upper, false);
+        _toKebabCase(strn, separators, upper);
         return strn;
     }
 
     // toKebabCase: kebab-case
-    std::string toKebabCase(const std::string& str, const std::string& separator, bool upper, bool trim) {
-        std::string strn = str;
-        _toKebabCase(strn, separator, upper, trim);
-        return strn;
+    void _toKebabCase(std::string& str, const std::string& separators, bool upper) {
+        _toTypeCase(str, (upper ? "KEBAB" : "kebab"), separators, KEBAB_CONNECTOR);
     }
 
-    // toKebabCase: kebab-case
-    void _toKebabCase(std::string& str, const std::string& separator, bool upper, bool trim) {
-        if (str.empty()) {
+    //////////////////////////////////////////////////////////////////
+    // Internal
+    //////////////////////////////////////////////////////////////////
+
+    // Transform token
+    void _transformToken(std::string& token, int caseOp, bool first) {
+        if (isEmpty(token)) {
             return;
         }
-        if (trim) {
-            _trim(str);
-            if (str.empty()) {
-                return;
+        if (caseOp == CO_LOWER_CHAR) {          // camelCase
+            if (first) {
+                token[0] = tolower(token[0]);   // lower char (first)
+            } else {
+                token[0] = toupper(token[0]);   // upper char (first)
             }
+        } else if (caseOp == CO_UPPER_CHAR) {   // CamelCase, PascalCase
+            token[0] = toupper(token[0]);       // UPPER char (first)
+        } else if (caseOp == CO_LOWER) {  
+            std::transform(token.begin(), token.end(), token.begin(), ::tolower); // lower case
+        } else if (caseOp == CO_UPPER) {
+            std::transform(token.begin(), token.end(), token.begin(), ::tolower); // UPPER case
         }
-        // TODO: We use separator as connector!
-        // Add 'connector' parameter
-        const std::string type = (upper ? "KEBAB" : "kebab");
-        const std::string separators = "";
-        const std::string connector = separator;
+    }    
 
-        _toTypeCase(str, type, separators, connector);
-    }
-
-    ////
-
-    // Normalize Case Operation by Token position
-    int _normalizeCaseOpByToken(int caseOp, bool first) {
-        int _caseOp = caseOp;
-        if (caseOp == CO_camelCase) {
-            // camelCase: [0] -> 'lowercase', [1..n] -> 'PascalCase'
-            _caseOp = (first ? CO_lowercase : CO_PascalCase);
-        }
-        return _caseOp;
-    }
-
-    // Normalize Case Operation by Char position
-    int _normalizeCaseOpByChar(int caseOp, bool first) {
-        // TODO
-        return caseOp;
-    }
-
-    // https://www.techiedelight.com/append-char-end-string-cpp/
-    //
-    // caseOp =  1: 'myname': lowercase 
-    // caseOp =  2: 'MYNAME': UPPERCASE 
-    // caseOp =  3: 'myName': camelCase
-    // caseOp =  4: 'MyName': PascalCase
-    void _flushOp(std::vector<std::string>& result, std::vector<char>& buf, const int caseOp) {
-        int _caseOp = caseOp;
-        char ch = 0;
-        std::string str;
-
-        for (int i = 0; i < buf.size(); i++) {
-            _caseOp = caseOp;
-            ch = buf.at(i);
-
-            if (caseOp == CO_PascalCase) {
-                if (i == 0) {
-                    _caseOp = CO_UPPERCASE; // upper char
-                }
-                // else {
-                //    _caseOp = CO_lowercase; // lower char 
-                //}
-            }
-
-            // WARNING: We don't use 'caseOp' in this code because it is lower case always
-            if (_caseOp == CO_lowercase) {
-                ch = tolower(ch);
-            } else if (_caseOp == CO_UPPERCASE) {
-                ch = toupper(ch);
-            }
-
-            //str.append(1, ch);
-            str += ch;          // Add char to std::string 
+    // Transformation tokens by caseOp
+    void _transformOp(std::vector<std::string>& tokens, int caseOp) {
+        if (tokens.empty()) {
+            return;
         }
 
-        result.push_back(str); // Add buffer to result
-        buf.clear();           // Clear buffer
+        // No transformation
+        if (caseOp == CO_NONE){
+            return;
+        }
 
-    }
+        for (int i = 0; i < tokens.size(); i++) {
+            _transformToken(tokens[i], caseOp, i == 0);
+        }
 
+    }        
 
     // splitOp: separators and A (Upper Char)
-    // caseOp =  1: 'myname': lowercase 
-    // caseOp =  2: 'MYNAME': UPPERCASE 
-    // caseOp =  3: 'myName': camelCase
-    // caseOp =  4: 'MyName': PascalCase
+    // caseOp =  1: 'myname': LOWER
+    // caseOp =  2: 'MYNAME': UPPER
+    // caseOp =  3: 'myName': LOWER_CHAR
+    // caseOp =  4: 'MyName': UPPER_CHAR
     std::vector<std::string> _splitOp(const std::string& str, const std::string& separators, const int caseOp) {
 
         std::vector<std::string> result;
@@ -1330,83 +1259,78 @@ namespace strlib {
             return result;
         }
 
-        //const char* strArr = str.c_str();
-        const char* delArr = separators.c_str();
-
         int strLen = str.length();
-        int delLen = separators.length();
+        int sepLen = separators.length();
 
         char ch = 0;
-        char del = 0;
-        bool find = false;
-        std::vector<char> buf;
-        int _caseOp = caseOp;
-        bool first = true;
+        char separator = 0;
+        bool found = false;
 
-        for (int i = 0; i < strLen; i++) {
+        int pos = 0;
+        int end = 0;
+        int i = 0;
+        int j = 0;
+
+        while (i < strLen) {
 
             ch = str[i];
-            find = false;
+            found = false;
+            j = 0;
 
             // Find a separator
-            for (int j = 0; j < delLen; j++) {
-                del = delArr[j];
-                if (del == 'A') { // TODO: 'A' is special marker for check 'Upper Char'
+            while (j < sepLen) {
+                separator = separators[j];
+                if (separator == 'A') { // TODO: 'A' is special marker for check 'Upper Char'
                     if (isupper(ch)) {
-                        find = true;
+                        found = true;
                         break;
                     }
-                } else if (ch == delArr[j]) {
-                    find = true;
+                } else if (ch == separator) {
+                    found = true;
                     break;
                 }
-            }            
-
-            if (find) {
-
-                // flush
-                if (buf.size() > 0) {
-                    _caseOp = _normalizeCaseOpByToken(caseOp, first);
-                    _flushOp(result, buf, _caseOp);
-                    first = false;
-                }
-
-                // Add separator: optinal
-                bool include = false;
-                if (include || del == 'A') { // TODO: 'A' is special marker for check 'Upper Char'
-                    buf.push_back(ch);
-                }
-
-            } else {
-
-                // Add char
-                buf.push_back(ch);
+                j++;
             }
 
+            if (found) {
+
+                end = i;
+
+                if (pos < end) {
+                    result.push_back(str.substr(pos, end - pos));
+                }
+
+                if (separator == 'A') { // TODO: 'A' is special marker for check 'Upper Char'
+                    pos = end;          // include 'Upper Char'
+                } else {
+                    pos = end + 1;      // skip separator
+                }
+
+            }
+
+            i++;
         }
 
-        // flush
-        if (buf.size() > 0) {
-            _caseOp = _normalizeCaseOpByToken(caseOp, first);
-            _flushOp(result, buf, _caseOp);
-        }
+        if (pos < strLen) {
+            result.push_back(str.substr(pos));
+        }           
 
         return result;
 
     }
 
-    // caseOp =  1: 'myname': lowercase 
-    // caseOp =  2: 'MYNAME': UPPERCASE 
-    // caseOp =  3: 'myName': camelCase
-    // caseOp =  4: 'MyName': PascalCase
+    // caseOp =  1: 'myname': LOWER
+    // caseOp =  2: 'MYNAME': UPPER
+    // caseOp =  3: 'myName': LOWER_CHAR
+    // caseOp =  4: 'MyName': UPPER_CHAR
     void _toCaseOp(std::string& str, const std::string& separators, const std::string& connector, const int caseOp) {
-        if (str.empty()) {
+        if (isBlank(str)) {
             return;
         }
-        std::string strn = str; // copy std::string 
+        std::string strn = str;
         std::vector<std::string> tokens = _splitOp(strn, separators, caseOp);
+        _transformOp(tokens, caseOp);
 
-        //vector<std::string> result;
         bool hasConnector = !connector.empty();
         str.clear();
         for (int i = 0; i < tokens.size(); i++) {
@@ -1432,18 +1356,18 @@ namespace strlib {
     // -  9. KEBAB-CASE, DASH-CASE, TRAIN-CASE, COBOL-CASE, [KEBAB], [cobol]~
     // - 10. Kebab-Case, Dash-Case, Train-Case, HTTP-Header-Case, [Kebab], [http]~
 
-    // caseOp =  1: 'myname': lowercase 
-    // caseOp =  2: 'MYNAME': UPPERCASE 
-    // caseOp =  3: 'myName': camelCase
-    // caseOp =  4: 'MyName': PascalCase
+    // caseOp =  1: 'myname': LOWER
+    // caseOp =  2: 'MYNAME': UPPER
+    // caseOp =  3: 'myName': LOWER_CHAR
+    // caseOp =  4: 'MyName': UPPER_CHAR
     void _toTypeCase(std::string& str, const std::string& type, const std::string& separators, const std::string& connector) {
 
         if (str.empty()) {
             return;
         }
 
-        int code = toCaseCode(type); 
-        if (code <= 0) {
+        int code = getCaseCode(type); 
+        if (code == 0) {
             // Invalid case code
             return;
         }
@@ -1462,44 +1386,56 @@ namespace strlib {
 
         // COMPLEX CASE
         std::string _separators = (separators.empty() ? DEFAULT_CASE_SEPARATORS_A : separators);
-
-        if (code == CT_camelCase) {
-            _toCaseOp(str, _separators, connector, CO_camelCase); // lower first char
-            return; // camelCase
-
-        } else if (code == CT_PascalCase) {
-            _toCaseOp(str, _separators, connector, CO_PascalCase); // upper first char
-            return; // CamelCase
-
-        } else if (code == CT_kebab_case) {
-            _toCaseOp(str, _separators, (connector.empty() ? KEBAB_CONNECTOR : connector), CO_lowercase);
-            return; // kebab-case
-
-        } else if (code == CT_KEBAB_CASE) {
-            _toCaseOp(str, _separators, (connector.empty() ? KEBAB_CONNECTOR : connector), CO_UPPERCASE);
-            return; // KEBAB-CASE
-
-        } else if (code == CT_Kebab_Case) {
-            _toCaseOp(str, _separators, (connector.empty() ? KEBAB_CONNECTOR : connector), CO_PascalCase);
-            return; // Kebab_Case
-
-        } else if (code == CT_snake_case) {
-            _toCaseOp(str, _separators, (connector.empty() ? SNAKE_CONNECTOR : connector), CO_lowercase);
-            return; // snake_case
-
-        } else if (code  == CT_SNAKE_CASE) {
-            _toCaseOp(str, _separators, (connector.empty() ? SNAKE_CONNECTOR : connector), CO_UPPERCASE);
-            return; // SNAKE_CASE
-
-        } else if (code  == CT_Snake_Case) {
-            _toCaseOp(str, _separators, (connector.empty() ? SNAKE_CONNECTOR : connector), CO_PascalCase);
-            return; // Snake_Case
+        std::string _connector = connector;
+        if (code == CT_kebab_case || code == CT_KEBAB_CASE || code == CT_Kebab_Case) {
+            _connector = (connector.empty() ? KEBAB_CONNECTOR :connector);
+        } else if (code == CT_snake_case || code  == CT_SNAKE_CASE || code == CT_Snake_Case) {
+            _connector = (connector.empty() ? SNAKE_CONNECTOR : connector);
         }
+            
+        int _caseOp = getCaseOp(code);
+
+        return _toCaseOp(str, _separators, _connector, _caseOp);
 
         // UNKNOWN CASE: use 'separators', 'connector'
         //_toCaseOp(str, separators, connector, CO_NONE);
 
     }
+
+    //
+
+    // Return case op by case code
+    int getCaseOp(int code) {
+        
+        if (code == CT_camelCase) {            
+            return CO_LOWER_CHAR;
+            
+        } else if (code == CT_PascalCase) {            
+            return CO_UPPER_CHAR;
+            
+        } else if (code == CT_kebab_case) {            
+            return CO_LOWER;
+            
+        } else if (code == CT_KEBAB_CASE) {
+            return CO_UPPER;
+            
+        } else if (code == CT_Kebab_Case) {
+            return CO_UPPER_CHAR;
+            
+        } else if (code == CT_snake_case) {
+            return CO_LOWER;
+            
+        } else if (code == CT_SNAKE_CASE) {
+            return CO_UPPER;
+            
+        } else if (code == CT_Snake_Case) {
+            return CO_UPPER_CHAR;
+        }
+        
+        return 0;
+        
+    }
+
 
     // -  1. lowercase, [lower]~
     // -  2. UPPERCASE, [upper]~
@@ -1513,7 +1449,7 @@ namespace strlib {
     // - 10. Kebab-Case, Dash-Case, Train-Case, HTTP-Header-Case, [Kebab], [http]~
 
     // Return case code by case type
-    int toCaseCode(const std::string& type) {
+    int getCaseCode(const std::string& type) {
 
         if (type == "lower") {               
             return CT_lowercase;         // lowercase
@@ -1553,7 +1489,7 @@ namespace strlib {
             || type == "cobol") {
             return CT_KEBAB_CASE;        // KEBAB-CASE
 
-        } else if ("Kebab"
+        } else if (type == "Kebab"
             || type == "Dash"
             || type == "Train") {
             return CT_Kebab_Case;        // Kebab_Case
