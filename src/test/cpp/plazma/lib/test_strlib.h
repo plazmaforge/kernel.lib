@@ -281,10 +281,56 @@ TEST(trim) {
   ASSERT_EQ("abc", strlib::trim(" abc "));
 
   // trim(" \t\n\r\f\v")
-  //ASSERT_EQ("", strlib::trim(" \t\n\r\f\v"));
-  //ASSERT_EQ("abc", strlib::trim(" \t\n\r\f\vabc"));
-  //ASSERT_EQ("abc", strlib::trim("abc \t\n\r\f\v"))
-  //ASSERT_EQ("abc", strlib::trim(" \t\n\r\f\vabc \t\n\r\f\v"));
+  ASSERT_EQ("", strlib::trim(" \t\n\r\f\v"));
+  ASSERT_EQ("abc", strlib::trim(" \t\n\r\f\vabc"));
+  ASSERT_EQ("abc", strlib::trim("abc \t\n\r\f\v"))
+  ASSERT_EQ("abc", strlib::trim(" \t\n\r\f\vabc \t\n\r\f\v"));
+
+}
+
+TEST(trimAll) { // alias: trim(str)
+
+  // trimAll(empty)
+  ASSERT_EQ("", strlib::trimAll(""));
+
+  // trimAll(blank)
+  ASSERT_EQ("", strlib::trimAll(" "));
+  ASSERT_EQ("", strlib::trimAll("  "));
+
+  // trimAll(value)
+  ASSERT_EQ("abc", strlib::trimAll("abc"));
+  ASSERT_EQ("abc", strlib::trimAll(" abc"));
+  ASSERT_EQ("abc", strlib::trimAll("abc "));
+  ASSERT_EQ("abc", strlib::trimAll(" abc "));
+
+  // trimAll(" \t\n\r\f\v")
+  ASSERT_EQ("", strlib::trimAll(" \t\n\r\f\v"));
+  ASSERT_EQ("abc", strlib::trimAll(" \t\n\r\f\vabc"));
+  ASSERT_EQ("abc", strlib::trimAll("abc \t\n\r\f\v"))
+  ASSERT_EQ("abc", strlib::trimAll(" \t\n\r\f\vabc \t\n\r\f\v"));
+
+}
+
+TEST(trimSpace) {
+
+  // trimSpace(empty)
+  ASSERT_EQ("", strlib::trimSpace(""));
+
+  // trimSpace(blank)
+  ASSERT_EQ("", strlib::trimSpace(" "));
+  ASSERT_EQ("", strlib::trimSpace("  "));
+
+  // trimSpace(value)
+  ASSERT_EQ("abc", strlib::trimSpace("abc"));
+  ASSERT_EQ("abc", strlib::trimSpace(" abc"));
+  ASSERT_EQ("abc", strlib::trimSpace("abc "));
+  ASSERT_EQ("abc", strlib::trimSpace(" abc "));
+
+  // trimSpace(" \t\n\r\f\v")
+  ASSERT_EQ("\t\n\r\f\v", strlib::trimSpace(" \t\n\r\f\v"));
+  ASSERT_EQ("\t\n\r\f\vabc", strlib::trimSpace(" \t\n\r\f\vabc"));
+  ASSERT_EQ("abc \t\n\r\f\v", strlib::trimSpace("abc \t\n\r\f\v"))
+  ASSERT_EQ("\t\n\r\f\vabc \t\n\r\f\v", strlib::trimSpace(" \t\n\r\f\vabc \t\n\r\f\v"));
 
 }
 
@@ -304,10 +350,10 @@ TEST(ltrim) {
   ASSERT_EQ("abc ", strlib::ltrim(" abc "));
 
   // ltrim(" \t\n\r\f\v")
-  //ASSERT_EQ("", strlib::ltrim(" \t\n\r\f\v"));
-  //ASSERT_EQ("abc", strlib::ltrim(" \t\n\r\f\vabc"));
-  //ASSERT_EQ("abc", strlib::ltrim("abc \t\n\r\f\v"))
-  //ASSERT_EQ("abc", strlib::ltrim(" \t\n\r\f\vabc \t\n\r\f\v"));
+  ASSERT_EQ("", strlib::ltrim(" \t\n\r\f\v"));
+  ASSERT_EQ("abc", strlib::ltrim(" \t\n\r\f\vabc"));
+  ASSERT_EQ("abc \t\n\r\f\v", strlib::ltrim("abc \t\n\r\f\v"))
+  ASSERT_EQ("abc \t\n\r\f\v", strlib::ltrim(" \t\n\r\f\vabc \t\n\r\f\v"));
   
 }
 
@@ -327,10 +373,10 @@ TEST(rtrim) {
   ASSERT_EQ(" abc", strlib::rtrim(" abc "));
 
   // rtrim(" \t\n\r\f\v")
-  //ASSERT_EQ("", strlib::rtrim(" \t\n\r\f\v"));
-  //ASSERT_EQ(" \t\n\r\f\vabc", strlib::rtrim(" \t\n\r\f\vabc"));
-  //ASSERT_EQ("abc", strlib::rtrim("abc \t\n\r\f\v"))
-  //ASSERT_EQ(" \t\n\r\f\vabc", strlib::rtrim(" \t\n\r\f\vabc \t\n\r\f\v"));
+  ASSERT_EQ("", strlib::rtrim(" \t\n\r\f\v"));
+  ASSERT_EQ(" \t\n\r\f\vabc", strlib::rtrim(" \t\n\r\f\vabc"));
+  ASSERT_EQ("abc", strlib::rtrim("abc \t\n\r\f\v"))
+  ASSERT_EQ(" \t\n\r\f\vabc", strlib::rtrim(" \t\n\r\f\vabc \t\n\r\f\v"));
   
 }
 
@@ -565,7 +611,7 @@ TEST(findLastNotOf) {
 
 }
 
-// 2.1
+// 2.1 replicate
 
 // 2.2
 
@@ -925,6 +971,8 @@ INIT(strlib) {
   SET_TEST(normalizeBlank)
   SET_TEST(defautIfEmpty)
   SET_TEST(trim)
+  SET_TEST(trimAll)
+  SET_TEST(trimSpace)
   SET_TEST(ltrim)
   SET_TEST(rtrim)
 

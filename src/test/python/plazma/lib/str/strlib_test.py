@@ -324,7 +324,6 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('abc \t\n\r\f\v', strlib.trimSpace('abc \t\n\r\f\v'))
         self.assertEqual('\t\n\r\f\vabc \t\n\r\f\v', strlib.trimSpace(' \t\n\r\f\vabc \t\n\r\f\v'))
 
-
     def test_ltrim(self):
 
         # ltrim(None), ltrim(empty)
@@ -335,13 +334,13 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('', strlib.ltrim(' '))
         self.assertEqual('', strlib.ltrim('  '))
 
-        # trim(value)
+        # ltrim(value)
         self.assertEqual('abc', strlib.ltrim('abc'))
         self.assertEqual('abc', strlib.ltrim(' abc'))
         self.assertEqual('abc ', strlib.ltrim('abc '))
         self.assertEqual('abc ', strlib.ltrim(' abc '))
 
-        # trim(' \t\n\r\f\v')
+        # ltrim(' \t\n\r\f\v')
         self.assertEqual('', strlib.ltrim(' \t\n\r\f\v'))
         self.assertEqual('abc', strlib.ltrim(' \t\n\r\f\vabc'))
         self.assertEqual('abc \t\n\r\f\v', strlib.ltrim('abc \t\n\r\f\v'))
@@ -357,17 +356,19 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('', strlib.rtrim(' '))
         self.assertEqual('', strlib.rtrim('  '))
 
-        # trim(value)
+        # rtrim(value)
         self.assertEqual('abc', strlib.rtrim('abc'))
         self.assertEqual(' abc', strlib.rtrim(' abc'))
         self.assertEqual('abc', strlib.rtrim('abc '))
         self.assertEqual(' abc', strlib.rtrim(' abc '))
         
-        # trim(' \t\n\r\f\v')
+        # rtrim(' \t\n\r\f\v')
         self.assertEqual('', strlib.rtrim(' \t\n\r\f\v'))
         self.assertEqual(' \t\n\r\f\vabc', strlib.rtrim(' \t\n\r\f\vabc'))
         self.assertEqual('abc', strlib.rtrim('abc \t\n\r\f\v'))
         self.assertEqual(' \t\n\r\f\vabc', strlib.rtrim(' \t\n\r\f\vabc \t\n\r\f\v'))
+
+    # 1.4
 
     def test_contains(self):
 
@@ -830,6 +831,10 @@ class StrlibTest(unittest.TestCase):
         # NotFound: value, pos, max range
         self.assertEqual(-1, strlib.findLastNotOf('..**..**', '*', 8))
         self.assertEqual(-1, strlib.findLastNotOf('..**..**', '*', 9))
+
+    # 2.1 replicate
+    # 2.2 lpad/rpad
+    # 2.3 fill, ellipsis, trunk, left/right
 
     # 3.1
 

@@ -323,6 +323,8 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("abc", StrLib.trim(" \t\n\r\f\u000Babc"));                 // \v -> \u000B
         assertEquals("abc", StrLib.trim("abc \t\n\r\f\u000B"));                 // \v -> \u000B
         assertEquals("abc", StrLib.trim(" \t\n\r\f\u000Babc \t\n\r\f\u000B"));  // \v -> \u000B
+        
+        // chars //////////////////////////////////////////////
 
         // trim(value, char)
         assertEquals("abc", StrLib.trim("**abc***", '*'));
@@ -365,6 +367,30 @@ public class StrLibTest extends AbstractTestCase {
 
     }
 
+    public void testTrimSpace() {
+
+        // trimSpace(null), trimSpace(empty)
+        assertNull(StrLib.trimSpace(null));
+        assertEquals("", StrLib.trimSpace(""));
+
+        // trimSpace(blank)
+        assertEquals("", StrLib.trimSpace(" "));
+        assertEquals("", StrLib.trimSpace("  "));
+
+        // trimSpace(value)
+        assertEquals("abc", StrLib.trimSpace("abc"));
+        assertEquals("abc", StrLib.trimSpace(" abc"));
+        assertEquals("abc", StrLib.trimSpace("abc "));
+        assertEquals("abc", StrLib.trimSpace(" abc "));
+        
+        // trimSpace(" \t\n\r\f\v")
+        assertEquals("\t\n\r\f\u000B", StrLib.trimSpace(" \t\n\r\f\u000B"));                                      // \v -> \u000B
+        assertEquals("\t\n\r\f\u000Babc", StrLib.trimSpace(" \t\n\r\f\u000Babc"));                                // \v -> \u000B
+        assertEquals("abc \t\n\r\f\u000B", StrLib.trimSpace("abc \t\n\r\f\u000B"));                               // \v -> \u000B
+        assertEquals("\t\n\r\f\u000Babc \t\n\r\f\u000B", StrLib.trimSpace(" \t\n\r\f\u000Babc \t\n\r\f\u000B"));  // \v -> \u000B
+
+    }
+
     public void testLtrim() {
 
         // ltrim(null), ltrim(empty)
@@ -381,6 +407,14 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("abc ", StrLib.ltrim("abc "));
         assertEquals("abc ", StrLib.ltrim(" abc "));                        
         //assertEquals("a b c ", StrLib.ltrim(" a b c "));
+        
+        // ltrim(" \t\n\r\f\v")
+        assertEquals("", StrLib.ltrim(" \t\n\r\f\u000B"));                                      // \v -> \u000B
+        assertEquals("abc", StrLib.ltrim(" \t\n\r\f\u000Babc"));                                // \v -> \u000B
+        assertEquals("abc \t\n\r\f\u000B", StrLib.ltrim("abc \t\n\r\f\u000B"));                 // \v -> \u000B
+        assertEquals("abc \t\n\r\f\u000B", StrLib.ltrim(" \t\n\r\f\u000Babc \t\n\r\f\u000B"));  // \v -> \u000B
+
+        // chars //////////////////////////////////////////////
 
         // ltrim(value, char)
         assertEquals("abc", StrLib.ltrim("...abc", '.'));
@@ -416,6 +450,14 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("abc", StrLib.rtrim("abc "));
         assertEquals(" abc", StrLib.rtrim(" abc "));
         //assertEquals(" a b c", StrLib.rtrim(" a b c "));
+                
+        // rtrim(" \t\n\r\f\v")
+        assertEquals("", StrLib.rtrim(" \t\n\r\f\u000B"));                                      // \v -> \u000B
+        assertEquals(" \t\n\r\f\u000Babc", StrLib.rtrim(" \t\n\r\f\u000Babc"));                 // \v -> \u000B
+        assertEquals("abc", StrLib.rtrim("abc \t\n\r\f\u000B"));                                // \v -> \u000B
+        assertEquals(" \t\n\r\f\u000Babc", StrLib.rtrim(" \t\n\r\f\u000Babc \t\n\r\f\u000B"));  // \v -> \u000B
+                
+        // chars //////////////////////////////////////////////
 
         // rtrim(value, char)
         assertEquals("abc", StrLib.rtrim("abc...", '.'));
