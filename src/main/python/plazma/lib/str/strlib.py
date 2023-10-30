@@ -117,7 +117,7 @@ KEBAB_CONNECTOR = '-' # kebab-case
 
 #################################################################################
 #
-#  2.1
+# 2.1
 #
 # - replicate(str, n)                                          - replicate("abc", 3) = "abcabcabc" : repeat (?)
 # - replicate(ch, n)                                           - replicate('a', 3) = "aaa"
