@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "test.h"
+
 TEST(type_size) {
     std::cout << "bool:\t\t" << sizeof(bool) << " bytes" << std::endl;
     std::cout << "char:\t\t" << sizeof(char) << " bytes" << std::endl;

@@ -1,30 +1,42 @@
 #include <string>
+#include <map>
+#include <vector>
 #include <iostream>
+
+#include "plazma/lib/sys/syslib.h"
+#include "plazma/lib/io/iolib.h"
+
+#include "test.h"
+#include "test_helper.h"
 
 //#include <locale>
 //#include <codecvt>
 
-#include "test_helper.h"
+//#include "test_type.h"
+//#include "test_mathlib.h"
+//#include "test_strlib.h"
+//#include "test_datelib.h"
+//#include "test_calendarlib.h"
+//#include "test_node.h"
+//#include "test_textlib.h"
+//#include "test_csvlib.h"
+//#include "test_xmllib.h"
+//#include "test_jsonlib.h"
+//#include "test_stdstr.h"
 
-#include "test_type.h"
-#include "test_mathlib.h"
-#include "test_strlib.h"
-#include "test_datelib.h"
-#include "test_calendarlib.h"
-#include "test_node.h"
-#include "test_textlib.h"
-#include "test_csvlib.h"
-#include "test_xmllib.h"
-#include "test_jsonlib.h"
+//#include <cmath>
 
-#include "test_stdstr.h"
+////////////////////////////////////////////////////////////////////////
+#define SET_ALL(name)                                                  \
+set_##name##_all();  
 
-// TODO
-#include <cmath>
+#define DEC_ALL(name)                                                  \
+void set_##name##_all();  
 
-using namespace syslib;
-using namespace ext;
+DEC_ALL(type)
+DEC_ALL(strlib)
 
+///////////////////////////////////////////////////////////////////////
 
 // ============================================================================================
 // TESTS
@@ -130,7 +142,7 @@ int main(int argc, char* argv[]) {
   iolib::init_utf8_console();
   
   // Parse command line arguments
-  std::map<std::string, std::string> parameters = parseArguments(argc, argv);
+  std::map<std::string, std::string> parameters = syslib::parseArguments(argc, argv);
 
   run(parameters);
 

@@ -1,8 +1,11 @@
+//#ifndef PLAZMA_LIB_TEST_STRLIB_H
+//#define PLAZMA_LIB_TEST_STRLIB_H
+
 #include <string>
 #include <iostream>
 
 #include "plazma/lib/str/strlib.h" 
-#include "test_helper.h"
+#include "test.h"
 
 // 1.1
 
@@ -1038,3 +1041,5 @@ TEST_ALL(strlib) {
     
  }
  */
+
+//#endif // PLAZMA_LIB_TEST_STRLIB_H
