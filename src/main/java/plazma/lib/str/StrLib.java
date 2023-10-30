@@ -337,6 +337,8 @@ public class StrLib {
     public static final String[] EMPTY_STRING_ARRAY = new String[0];
     
     public static final char SPACE_CHAR = ' ';
+    
+    public static final String TRIM_CHARS = " \t\n\r\f\u000B"; // \v -> \u000B
 
     public static final String ELLIPSIS = "...";
 
@@ -344,7 +346,7 @@ public class StrLib {
 
     public static final String DEFAULT_PAD = " ";
 
-    public static final String DEFAULT_SEPARATORS = " \t\n\r\f";
+    public static final String DEFAULT_SEPARATORS = " \t\n\r\f\u000B"; // \v -> \u000B
 
     public static final String DEFAULT_WORD_SEPARATORS = DEFAULT_SEPARATORS + ".,;'(){}[]!?+/=<>*&^%$#@`~|\\";
 
@@ -647,16 +649,19 @@ public class StrLib {
         if (isEmpty(str)) {
             return str;
         }
-        return str.trim();
+        return str.trim(); // ch <= ' '        
     }
 
     public static String trimAll(String str) {
         if (isEmpty(str)) {
             return str;
         }
+        return str.trim(); // ch <= ' '        
+        //return trim(str, TRIM_CHARS); // " \t\n\r\f\u000B":  \v -> \u000B 
+    }
 
-        return trim(str, " \t\n\r\f\u000B"); // \v -> \u000B
-        // return str.trim();
+    public static String trimSpace(String str) {
+        return trim(str, SPACE_CHAR); // ' ' - space only
     }
 
     public static String trim(String str, char ch) {
@@ -664,12 +669,12 @@ public class StrLib {
             return str;
         }
         
-        int posFirst = findFirstNotOf(str, ch); // TODO: ch <= ' ' (?): See String.trim()
+        int posFirst = findFirstNotOf(str, ch);
         if (posFirst == INDEX_NOT_FOUND) {
             return EMPTY_STRING;
         }
 
-        int posLast = findLastNotOf(str, ch); // TODO: ch <= ' ' (?): See String.trim()        
+        int posLast = findLastNotOf(str, ch);        
         if (posLast == INDEX_NOT_FOUND) {
             return EMPTY_STRING; // ???
         }
@@ -682,12 +687,12 @@ public class StrLib {
             return str;
         }
         
-        int posFirst = findFirstNotOf(str, terms); // TODO: ch <= ' ' (?): See String.trim()
+        int posFirst = findFirstNotOf(str, terms);
         if (posFirst == INDEX_NOT_FOUND) {
             return EMPTY_STRING;
         }
 
-        int posLast = findLastNotOf(str, terms); // TODO: ch <= ' ' (?): See String.trim()
+        int posLast = findLastNotOf(str, terms);
         if (posLast == INDEX_NOT_FOUND) {
             return EMPTY_STRING; // ???
         }
@@ -697,7 +702,20 @@ public class StrLib {
 
     // left trim
     public static String ltrim(String str) {
-        return ltrim(str, SPACE_CHAR);
+        if (isEmpty(str)) {
+            return str;
+        }
+        
+        // See String.trim(): ch <= ' '
+        
+        int len = str.length();
+        int index = 0;
+
+        while ((index < len) && (str.charAt(index) <= ' ')) {
+            index++;
+        }        
+        return index > 0 ? str.substring(index) : str;
+        //return ltrim(str, SPACE_CHAR);
     }
 
     // left trim
@@ -730,7 +748,20 @@ public class StrLib {
 
     // right trim
     public static String rtrim(String str) {
-        return rtrim(str, SPACE_CHAR);
+        if (isEmpty(str)) {
+            return str;
+        }
+        
+        // See String.trim(): ch <= ' '
+        
+        int len = str.length();
+        int index = len - 1;
+
+        while ((index >= 0) && (str.charAt(index) <= ' ')) {
+            index--;
+        }
+        return index < len ? str.substring(0, index + 1) : str;
+        //return rtrim(str, SPACE_CHAR);
     }
 
     // right trim
