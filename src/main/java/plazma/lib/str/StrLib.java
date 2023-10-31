@@ -500,11 +500,16 @@ public class StrLib {
             return true;
         }
         for (int i = 0; i < len; i++) {
-            if (!Character.isWhitespace(str.charAt(i))) {
+            if (!_isWhitespace(str.charAt(i))) {
                 return false;
             }
         }
         return true;
+    }
+    
+    // Internal
+    private static boolean _isWhitespace(char ch) {
+        return ch <= ' ';        
     }
 
     public static int length(String str) {
@@ -560,12 +565,12 @@ public class StrLib {
     //// 1.2
 
     public static String normalize(String str) {
-        str = trimAll(str);
+        str = trim(str);
         return isEmpty(str) ? null : str;
     }
 
     public static String normalizeSafe(String str) {
-        str = trimAll(str);
+        str = trim(str);
         return isEmpty(str) ? EMPTY_STRING : str;
     }
 
@@ -711,7 +716,7 @@ public class StrLib {
         int len = str.length();
         int index = 0;
 
-        while ((index < len) && (str.charAt(index) <= ' ')) {
+        while (index < len && _isWhitespace(str.charAt(index))) {
             index++;
         }        
         return index > 0 ? str.substring(index) : str;
@@ -724,7 +729,7 @@ public class StrLib {
             return str;
         }
 
-        int pos = findFirstNotOf(str, ch); // TODO: ch <= ' ' (?): See String.trim()
+        int pos = findFirstNotOf(str, ch);
         if (pos == INDEX_NOT_FOUND) {
             return EMPTY_STRING;
         }
@@ -738,7 +743,7 @@ public class StrLib {
             return str;
         }
 
-        int pos = findFirstNotOf(str, terms); // TODO: ch <= ' ' (?): See String.trim()
+        int pos = findFirstNotOf(str, terms);
         if (pos == INDEX_NOT_FOUND) {
             return EMPTY_STRING;
         }
@@ -757,7 +762,7 @@ public class StrLib {
         int len = str.length();
         int index = len - 1;
 
-        while ((index >= 0) && (str.charAt(index) <= ' ')) {
+        while (index >= 0 && _isWhitespace(str.charAt(index))) {
             index--;
         }
         return index < len ? str.substring(0, index + 1) : str;
@@ -770,7 +775,7 @@ public class StrLib {
             return str;
         }
 
-        int pos = findLastNotOf(str, ch); // TODO: ch <= ' ' (?): See String.trim()
+        int pos = findLastNotOf(str, ch);
         if (pos == INDEX_NOT_FOUND) {
             return EMPTY_STRING;
         }
@@ -784,7 +789,7 @@ public class StrLib {
             return str;
         }
 
-        int pos = findLastNotOf(str, terms); // TODO: ch <= ' ' (?): See String.trim()
+        int pos = findLastNotOf(str, terms);
         if (pos == INDEX_NOT_FOUND) {
             return EMPTY_STRING;
         }
