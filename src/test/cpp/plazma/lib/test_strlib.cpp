@@ -385,6 +385,61 @@ TEST(rtrim) {
 
 // 1.4
 
+TEST(contains) {
+
+  // char
+
+  // False: contains(empty, empty)
+  ASSERT_FALSE(strlib::contains("", '\0'));
+
+  // False: contains(blank, blank)
+  ASSERT_TRUE(strlib::contains(" ", ' '));
+  ASSERT_TRUE(strlib::contains("  ", ' '));
+  ASSERT_TRUE(strlib::contains(".", '.'));
+
+  // True: contains(value, value)
+  ASSERT_TRUE(strlib::contains("a", 'a'));
+  ASSERT_TRUE(strlib::contains("abc", 'a'));
+  ASSERT_TRUE(strlib::contains("abc", 'b'));
+  ASSERT_TRUE(strlib::contains("abc", 'c'));
+
+  // False: contains(value, value)
+  ASSERT_FALSE(strlib::contains("abc", '.'));
+  ASSERT_FALSE(strlib::contains("abc", 'x'));
+  ASSERT_FALSE(strlib::contains("abc", 'y'));
+  ASSERT_FALSE(strlib::contains("abc", 'z'));
+
+  // string
+
+  // False: contains(empty, empty)
+  ASSERT_FALSE(strlib::contains("", ""));
+
+  // False: contains(blank, blank)
+  ASSERT_TRUE(strlib::contains(" ", " "));
+  ASSERT_TRUE(strlib::contains("  ", " "));
+  ASSERT_TRUE(strlib::contains(".", "."));
+
+  // True: contains(value, value)
+  ASSERT_TRUE(strlib::contains("a", "a"));
+  ASSERT_TRUE(strlib::contains("abc", "a"));
+  ASSERT_TRUE(strlib::contains("abc", "b"));
+  ASSERT_TRUE(strlib::contains("abc", "c"));
+
+  ASSERT_TRUE(strlib::contains("abc", "ab"));
+  ASSERT_TRUE(strlib::contains("abc", "bc"));
+  ASSERT_TRUE(strlib::contains("abc", "abc"));
+
+  // False: contains(value, value)
+  ASSERT_FALSE(strlib::contains("abc", "."));
+  ASSERT_FALSE(strlib::contains("abc", "x"));
+  ASSERT_FALSE(strlib::contains("abc", "y"));
+  ASSERT_FALSE(strlib::contains("abc", "z"));
+
+  ASSERT_FALSE(strlib::contains("abc", "def"));
+  ASSERT_FALSE(strlib::contains("abc", "xyz"));
+
+}
+
 TEST(findFirstOf) {
 
   // NotFound: empty
@@ -979,6 +1034,7 @@ INIT(strlib) {
   SET_TEST(ltrim)
   SET_TEST(rtrim)
 
+  SET_TEST(contains)
   SET_TEST(findFirstOf);
   SET_TEST(findLastOf);
   SET_TEST(findFirstNotOf);

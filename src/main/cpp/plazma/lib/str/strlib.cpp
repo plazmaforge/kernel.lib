@@ -349,7 +349,7 @@ namespace strlib {
         if (str.empty()) {
             return true;
         }
-        return str.find_first_not_of(TRIM_CHARS) == -1; // " \t\n\r\f\v"
+        return str.find_first_not_of(TRIM_CHARS) == std::string::npos; // " \t\n\r\f\v"
     }
 
     //
@@ -673,6 +673,22 @@ namespace strlib {
 
     //// 1.4 
 
+    // contains
+
+    bool contains(const std::string& str, char ch) {
+        if (str.empty()) {
+            return false;
+        }
+        return str.find(ch) != std::string::npos;
+    }
+
+    bool contains(const std::string& str, const std::string& substr) {
+        if (str.empty()) {
+            return false;
+        }
+        return (str.find(substr) != std::string::npos);
+    }
+
     // find
 
     int find(const std::string& str, char ch) {
@@ -706,11 +722,14 @@ namespace strlib {
     // findFirstOf
 
     int findFirstOf(const std::string& str, char ch) {
+        if (str.empty()) {
+            return -1;
+        }
         return str.find_first_of(ch);
     }
 
     int findFirstOf(const std::string& str, char ch, int pos) {
-        if (pos < 0 || pos >= str.length()) { // find_first_of - OK
+        if (str.empty() || pos < 0 || pos >= str.length()) { // find_first_of - OK
             return -1;
         }
         return str.find_first_of(ch, pos);
@@ -719,11 +738,14 @@ namespace strlib {
     // findLastOf
 
     int findLastOf(const std::string& str, char ch) {
+        if (str.empty()) {
+            return -1;
+        }
         return str.find_last_of(ch);
     }
 
     int findLastOf(const std::string& str, char ch, int pos) {
-        if (pos < 0 || pos >= str.length()) { // find_last_of - FAIL
+        if (str.empty() || pos < 0 || pos >= str.length()) { // find_last_of - FAIL
             return -1;
         }
         return str.find_last_of(ch, pos);
@@ -732,11 +754,14 @@ namespace strlib {
     // findFirstNotOf
 
     int findFirstNotOf(const std::string& str, char ch) {
+        if (str.empty()) {
+            return -1;
+        }
         return str.find_first_not_of(ch);
     }
 
     int findFirstNotOf(const std::string& str, char ch, int pos) {
-        if (pos < 0 || pos >= str.length()) { // find_first_not_of - OK
+        if (str.empty() || pos < 0 || pos >= str.length()) { // find_first_not_of - OK
             return -1;
         }
         return str.find_first_not_of(ch, pos);
@@ -745,11 +770,14 @@ namespace strlib {
     // findLastNotOf
 
     int findLastNotOf(const std::string& str, char ch) {
+        if (str.empty()) {
+            return -1;
+        }
         return str.find_last_not_of(ch);
     }
 
     int findLastNotOf(const std::string& str, char ch, int pos) {
-        if (pos < 0 || pos >= str.length()) { // find_last_not_of - FAIL
+        if (str.empty() || pos < 0 || pos >= str.length()) { // find_last_not_of - FAIL
             return -1;
         }
         return str.find_last_not_of(ch, pos);
@@ -758,7 +786,7 @@ namespace strlib {
     //// 2.1
 
     std::string replicate(const std::string& str, int n) {
-        if (isEmpty(str) || n < 1) {
+        if (str.empty() || n < 1) {
             return EMPTY_STRING;
         }
 
@@ -787,11 +815,11 @@ namespace strlib {
     }
 
     std::string lpad(const std::string& str, int len, const std::string& pad) {        
-        if (isEmpty(str)) {
+        if (str.empty()) {
             return EMPTY_STRING;
         }
 
-        if (len < 1 || isEmpty(pad)) { // isEmpty(pad): no padding
+        if (len < 1 || pad.empty()) { // isEmpty(pad): no padding
             return str;
         }
 
@@ -818,7 +846,7 @@ namespace strlib {
     //
 
     std::string lpad(const std::string& str, int len, char pad) {
-        if (isEmpty(str)) {
+        if (str.empty()) {
             return EMPTY_STRING;
         }
 
@@ -842,11 +870,11 @@ namespace strlib {
     }
 
     std::string rpad(const std::string& str, int len, const std::string& pad) {
-        if (isEmpty(str)) {
+        if (str.empty()) {
             return EMPTY_STRING;
         }
 
-        if (len < 1 || isEmpty(pad)) {
+        if (len < 1 || pad.empty()) {
             return str;
         }
 
@@ -873,7 +901,7 @@ namespace strlib {
     //
 
     std::string rpad(const std::string& str, int len, char pad) {
-        if (isEmpty(str)) {
+        if (str.empty()) {
             return EMPTY_STRING;
         }
 
@@ -1211,7 +1239,7 @@ namespace strlib {
 
     // Transform token
     void _transformToken(std::string& token, int caseOp, bool first) {
-        if (isEmpty(token)) {
+        if (token.empty()) {
             return;
         }
         if (caseOp == CO_LOWER_CHAR) {          // camelCase
@@ -2194,7 +2222,7 @@ namespace strlib {
         return toString(values, EMPTY_STRING);
     }
 
-    std::string  toString(const std::vector<std::string>& values, const std::string& separator) {
+    std::string toString(const std::vector<std::string>& values, const std::string& separator) {
         std::string result;
         if (values.empty()) {
             return result;

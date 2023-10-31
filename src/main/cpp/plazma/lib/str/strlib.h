@@ -425,7 +425,13 @@ namespace strlib {
 
     void _rtrim(std::string& str, const char* terms);
 
-// find
+    // contains
+
+    bool contains(const std::string& str, char ch);
+
+    bool contains(const std::string& str, const std::string& substr);
+
+    // find
 
     int find(const std::string& str, char ch);
 
