@@ -41,6 +41,7 @@ CO_COUNT      = 4
 # -  9. KEBAB-CASE, DASH-CASE, TRAIN-CASE, COBOL-CASE
 # - 10. Kebab-Case, Dash-Case, Train-Case, HTTP-Header-Case
 
+CT_NONE       = 0
 CT_lowercase  = 1
 CT_UPPERCASE  = 2
 CT_camelCase  = 3
@@ -142,6 +143,23 @@ KEBAB_CONNECTOR = '-' # kebab-case
 #
 # - left(str, len)
 # - right(str, len)
+#
+# 3.1
+#
+# - capitalize(str, forceRest)  
+# - decapitalize(str, forceRest)
+#
+# - upper(str)
+# - lower(str)
+#
+# - toUpperCase(str)
+# - toLowerCase(str)
+#
+# - toCase(str, upper)
+#
+# - toCamelCase(str, separators, capitalize)
+# - toSnakeCase(str, separators, upper)
+# - toKebabCase(str, separators, upper)
 
 # 1.1
 
@@ -464,7 +482,7 @@ def replicate(str, n):
         return None
     
     if n < 1:
-        return str
+        return EMPTY_STRING
 
     return str * n
 
