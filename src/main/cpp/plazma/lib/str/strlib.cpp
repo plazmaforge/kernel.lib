@@ -814,11 +814,7 @@ namespace strlib {
         return lpad(str, len, DEFAULT_PAD);
     }
 
-    std::string lpad(const std::string& str, int len, const std::string& pad) {        
-        if (str.empty()) {
-            return EMPTY_STRING;
-        }
-
+    std::string lpad(const std::string& str, int len, const std::string& pad) {
         if (len < 1 || pad.empty()) { // isEmpty(pad): no padding
             return str;
         }
@@ -846,10 +842,6 @@ namespace strlib {
     //
 
     std::string lpad(const std::string& str, int len, char pad) {
-        if (str.empty()) {
-            return EMPTY_STRING;
-        }
-
         if (len < 1 || pad == 0) { // isEmpty(pad): no padding
             return str;
         }
@@ -866,14 +858,10 @@ namespace strlib {
     // rpad
 
     std::string rpad(const std::string& str, int len) {
-        return lpad(str, len, DEFAULT_PAD);
+        return rpad(str, len, DEFAULT_PAD);
     }
 
     std::string rpad(const std::string& str, int len, const std::string& pad) {
-        if (str.empty()) {
-            return EMPTY_STRING;
-        }
-
         if (len < 1 || pad.empty()) {
             return str;
         }
@@ -901,10 +889,6 @@ namespace strlib {
     //
 
     std::string rpad(const std::string& str, int len, char pad) {
-        if (str.empty()) {
-            return EMPTY_STRING;
-        }
-
         if (len < 1 || pad == 0) {
             return str;
         }
