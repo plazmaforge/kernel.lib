@@ -669,17 +669,200 @@ TEST(findLastNotOf) {
 
 }
 
-// 2.1 replicate
+// 2.1
+
+TEST(replicate) {
+
+  // replicate(empty, -n), replicate(empty, 0), replicate(empty, n)
+  ASSERT_EQ("", strlib::replicate("", -2));
+  ASSERT_EQ("", strlib::replicate("", -1));
+  ASSERT_EQ("", strlib::replicate("", 0));
+  ASSERT_EQ("", strlib::replicate("", 1));
+  ASSERT_EQ("", strlib::replicate("", 2));
+
+  // char
+
+  // replicate(char, -n), replicate(char, 0), replicate(char, n)
+  ASSERT_EQ("", strlib::replicate('.', -2));
+  ASSERT_EQ("", strlib::replicate('.', -1));
+  ASSERT_EQ("", strlib::replicate('.', 0));
+  ASSERT_EQ(".", strlib::replicate('.', 1));
+  ASSERT_EQ("..", strlib::replicate('.', 2));
+
+  // replicate(char, n)
+  ASSERT_EQ("*", strlib::replicate('*', 1));
+  ASSERT_EQ("**", strlib::replicate('*', 2));
+  ASSERT_EQ("***", strlib::replicate('*', 3));
+
+  ASSERT_EQ("a", strlib::replicate('a', 1));
+  ASSERT_EQ("aa", strlib::replicate('a', 2));
+  ASSERT_EQ("aaa", strlib::replicate('a', 3));
+
+  // string
+
+  // replicate(str, -n), replicate(str, 0), replicate(str, n)
+  ASSERT_EQ("", strlib::replicate("abc", -2));
+  ASSERT_EQ("", strlib::replicate("abc", -1));
+  ASSERT_EQ("", strlib::replicate("abc", 0));
+  ASSERT_EQ("abc", strlib::replicate("abc", 1));
+  ASSERT_EQ("abcabc", strlib::replicate("abc", 2));
+  ASSERT_EQ("abcabcabc", strlib::replicate("abc", 3));
+
+}
 
 // 2.2
 
 TEST(lpad) {
 
-  ASSERT_EQ("****Volume", strlib::lpad("Volume", 10, '*'));
+  // empty
+
+  // lpad(empty, -n), lpad(empty, 0), lpad(empty, n)
+  ASSERT_EQ("", strlib::lpad("", -2));
+  ASSERT_EQ("", strlib::lpad("", -1));
+  ASSERT_EQ("", strlib::lpad("", 0));
+  ASSERT_EQ(" ", strlib::lpad("", 1));
+  ASSERT_EQ("  ", strlib::lpad("", 2));
+  ASSERT_EQ("   ", strlib::lpad("", 3));
+
+  ASSERT_EQ("", strlib::lpad("", -2, '*'));
+  ASSERT_EQ("", strlib::lpad("", -1, '*'));
+  ASSERT_EQ("", strlib::lpad("", 0, '*'));
+  ASSERT_EQ("*", strlib::lpad("", 1, '*'));
+  ASSERT_EQ("**", strlib::lpad("", 2, '*'));
+  ASSERT_EQ("***", strlib::lpad("", 3, '*'));
+
+  // char
+
+  // lpad(char, -n), lpad(char, 0), lpad(char, n)
+  ASSERT_EQ("a", strlib::lpad("a", -2));
+  ASSERT_EQ("a", strlib::lpad("a", -1));
+  ASSERT_EQ("a", strlib::lpad("a", 0));
+  ASSERT_EQ("a", strlib::lpad("a", 1));
+  ASSERT_EQ(" a", strlib::lpad("a", 2));
+  ASSERT_EQ("  a", strlib::lpad("a", 3));
+
+  ASSERT_EQ("a", strlib::lpad("a", -2, '*'));
+  ASSERT_EQ("a", strlib::lpad("a", -1, '*'));
+  ASSERT_EQ("a", strlib::lpad("a", 0, '*'));
+  ASSERT_EQ("a", strlib::lpad("a", 1, '*'));
+  ASSERT_EQ("*a", strlib::lpad("a", 2, '*'));
+  ASSERT_EQ("**a", strlib::lpad("a", 3, '*'));
+
+  // string
+
+  // lpad(str, -n), lpad(str, 0), lpad(str, n)
+  ASSERT_EQ("abc", strlib::lpad("abc", -2));
+  ASSERT_EQ("abc", strlib::lpad("abc", -1));
+  ASSERT_EQ("abc", strlib::lpad("abc", 0));
+  ASSERT_EQ("abc", strlib::lpad("abc", 1));
+  ASSERT_EQ("abc", strlib::lpad("abc", 2));
+  ASSERT_EQ("abc", strlib::lpad("abc", 3));
+  ASSERT_EQ(" abc", strlib::lpad("abc", 4));
+  ASSERT_EQ("  abc", strlib::lpad("abc", 5));
+
+  ASSERT_EQ("abc", strlib::lpad("abc", -2, '*'));
+  ASSERT_EQ("abc", strlib::lpad("abc", -1, '*'));
+  ASSERT_EQ("abc", strlib::lpad("abc", 0, '*'));
+  ASSERT_EQ("abc", strlib::lpad("abc", 1, '*'));
+  ASSERT_EQ("abc", strlib::lpad("abc", 2, '*'));
+  ASSERT_EQ("abc", strlib::lpad("abc", 3, '*'));
+  ASSERT_EQ("*abc", strlib::lpad("abc", 4, '*'));
+  ASSERT_EQ("**abc", strlib::lpad("abc", 5, '*'));
+
+  ASSERT_EQ("abc", strlib::lpad("abc", -2, "yz"));
+  ASSERT_EQ("abc", strlib::lpad("abc", -1, "yz"));
+  ASSERT_EQ("abc", strlib::lpad("abc", 0, "yz"));
+  ASSERT_EQ("abc", strlib::lpad("abc", 1, "yz"));
+  ASSERT_EQ("abc", strlib::lpad("abc", 2, "yz"));
+  ASSERT_EQ("abc", strlib::lpad("abc", 3, "yz"));
+  ASSERT_EQ("yabc", strlib::lpad("abc", 4, "yz"));
+  ASSERT_EQ("yzabc", strlib::lpad("abc", 5, "yz"));
+  ASSERT_EQ("yzyabc", strlib::lpad("abc", 6, "yz"));
+  ASSERT_EQ("yzyzabc", strlib::lpad("abc", 7, "yz"));
+  ASSERT_EQ("yzyzyabc", strlib::lpad("abc", 8, "yz"));
+        
+  // 12345678
+  // yzyzyz**
+  // *****abc
+  //---------
+  // yzyzyabc
 
 }
 
 TEST(rpad) {
+
+  // empty
+
+  // rpad(empty, -n), rpad(empty, 0), rpad(empty, n)
+  ASSERT_EQ("", strlib::rpad("", -2));
+  ASSERT_EQ("", strlib::rpad("", -1));
+  ASSERT_EQ("", strlib::rpad("", 0));
+  ASSERT_EQ(" ", strlib::rpad("", 1));
+  ASSERT_EQ("  ", strlib::rpad("", 2));
+  ASSERT_EQ("   ", strlib::rpad("", 3));
+
+  ASSERT_EQ("", strlib::rpad("", -2, '*'));
+  ASSERT_EQ("", strlib::rpad("", -1, '*'));
+  ASSERT_EQ("", strlib::rpad("", 0, '*'));
+  ASSERT_EQ("*", strlib::rpad("", 1, '*'));
+  ASSERT_EQ("**", strlib::rpad("", 2, '*'));
+  ASSERT_EQ("***", strlib::rpad("", 3, '*'));
+
+  // char
+
+  // rpad(char, -n), rpad(char, 0), rpad(char, n)
+  ASSERT_EQ("a", strlib::rpad("a", -2));
+  ASSERT_EQ("a", strlib::rpad("a", -1));
+  ASSERT_EQ("a", strlib::rpad("a", 0));
+  ASSERT_EQ("a", strlib::rpad("a", 1));
+  ASSERT_EQ("a ", strlib::rpad("a", 2));
+  ASSERT_EQ("a  ", strlib::rpad("a", 3));
+
+  ASSERT_EQ("a", strlib::rpad("a", -2, '*'));
+  ASSERT_EQ("a", strlib::rpad("a", -1, '*'));
+  ASSERT_EQ("a", strlib::rpad("a", 0, '*'));
+  ASSERT_EQ("a", strlib::rpad("a", 1, '*'));
+  ASSERT_EQ("a*", strlib::rpad("a", 2, '*'));
+  ASSERT_EQ("a**", strlib::rpad("a", 3, '*'));
+
+  // string
+
+  // rpad(str, -n), rpad(str, 0), rpad(str, n)
+  ASSERT_EQ("abc", strlib::rpad("abc", -2));
+  ASSERT_EQ("abc", strlib::rpad("abc", -1));
+  ASSERT_EQ("abc", strlib::rpad("abc", 0));
+  ASSERT_EQ("abc", strlib::rpad("abc", 1));
+  ASSERT_EQ("abc", strlib::rpad("abc", 2));
+  ASSERT_EQ("abc", strlib::rpad("abc", 3));
+  ASSERT_EQ("abc ", strlib::rpad("abc", 4));
+  ASSERT_EQ("abc  ", strlib::rpad("abc", 5));
+
+  ASSERT_EQ("abc", strlib::rpad("abc", -2, '*'));
+  ASSERT_EQ("abc", strlib::rpad("abc", -1, '*'));
+  ASSERT_EQ("abc", strlib::rpad("abc", 0, '*'));
+  ASSERT_EQ("abc", strlib::rpad("abc", 1, '*'));
+  ASSERT_EQ("abc", strlib::rpad("abc", 2, '*'));
+  ASSERT_EQ("abc", strlib::rpad("abc", 3, '*'));
+  ASSERT_EQ("abc*", strlib::rpad("abc", 4, '*'));
+  ASSERT_EQ("abc**", strlib::rpad("abc", 5, '*'));
+
+  ASSERT_EQ("abc", strlib::rpad("abc", -2, "yz"));
+  ASSERT_EQ("abc", strlib::rpad("abc", -1, "yz"));
+  ASSERT_EQ("abc", strlib::rpad("abc", 0, "yz"));
+  ASSERT_EQ("abc", strlib::rpad("abc", 1, "yz"));
+  ASSERT_EQ("abc", strlib::rpad("abc", 2, "yz"));
+  ASSERT_EQ("abc", strlib::rpad("abc", 3, "yz"));
+  ASSERT_EQ("abcy", strlib::rpad("abc", 4, "yz"));
+  ASSERT_EQ("abcyz", strlib::rpad("abc", 5, "yz"));
+  ASSERT_EQ("abcyzy", strlib::rpad("abc", 6, "yz"));
+  ASSERT_EQ("abcyzyz", strlib::rpad("abc", 7, "yz"));
+  ASSERT_EQ("abcyzyzy", strlib::rpad("abc", 8, "yz"));
+        
+  // 12345678
+  // abc*****
+  // ***yzyzyz
+  // --------
+  // abcyzyzy
 
   ASSERT_EQ("Volume****", strlib::rpad("Volume", 10, '*'));
 
@@ -1039,7 +1222,7 @@ INIT(strlib) {
   SET_TEST(findLastOf);
   SET_TEST(findFirstNotOf);
   SET_TEST(findLastNotOf);
-
+  SET_TEST(replicate);
   SET_TEST(lpad);
   SET_TEST(rpad);
   SET_TEST(fill);
