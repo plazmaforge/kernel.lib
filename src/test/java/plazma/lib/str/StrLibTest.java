@@ -989,56 +989,262 @@ public class StrLibTest extends AbstractTestCase {
 
     }
 
+    // 2.1
+    
+    public void testReplicate() {
+        
+        // replicate(null, -n), replicate(null, 0), replicate(null, n)
+        assertNull(StrLib.replicate(null, -2));
+        assertNull(StrLib.replicate(null, -1));
+        assertNull(StrLib.replicate(null, 0));
+        assertNull(StrLib.replicate(null, 1));
+        assertNull(StrLib.replicate(null, 2));
+
+        // replicate(empty, -n), replicate(empty, 0), replicate(empty, n)
+        assertEquals("", StrLib.replicate("", -2));
+        assertEquals("", StrLib.replicate("", -1));
+        assertEquals("", StrLib.replicate("", 0));
+        assertEquals("", StrLib.replicate("", 1));
+        assertEquals("", StrLib.replicate("", 2));
+
+        // char
+
+        // replicate(char, -n), replicate(char, 0), replicate(char, n)
+        assertEquals("", StrLib.replicate('.', -2));
+        assertEquals("", StrLib.replicate('.', -1));
+        assertEquals("", StrLib.replicate('.', 0));
+        assertEquals(".", StrLib.replicate('.', 1));
+        assertEquals("..", StrLib.replicate('.', 2));
+
+        // replicate(char, n)
+        assertEquals("*", StrLib.replicate('*', 1));
+        assertEquals("**", StrLib.replicate('*', 2));
+        assertEquals("***", StrLib.replicate('*', 3));
+
+        assertEquals("a", StrLib.replicate('a', 1));
+        assertEquals("aa", StrLib.replicate('a', 2));
+        assertEquals("aaa", StrLib.replicate('a', 3));
+
+        // string
+
+        // replicate(str, -n), replicate(str, 0), replicate(str, n)
+        assertEquals("", StrLib.replicate("abc", -2));
+        assertEquals("", StrLib.replicate("abc", -1));
+        assertEquals("", StrLib.replicate("abc", 0));
+        assertEquals("abc", StrLib.replicate("abc", 1));
+        assertEquals("abcabc", StrLib.replicate("abc", 2));
+        assertEquals("abcabcabc", StrLib.replicate("abc", 3));        
+    
+    }
+
     // 2.2
 
     public void testLpad() {
+        
+        // null
 
-        // lpad: null
-        assertNull(StrLib.lpad(null, 3));
+        // lpad(null, -n), lpad(null, 0), lpad(null, n)
+        assertNull(StrLib.lpad(null, -2));
+        assertNull(StrLib.lpad(null, -1));
+        assertNull(StrLib.lpad(null, 0));
+        assertNull(StrLib.lpad(null, 1));
+        assertNull(StrLib.lpad(null, 2));
 
-        // lpad: empty
+        // lpad(null, -n, ''), lpad(null, 0, ''), lpad(null, n, '')
+        assertNull(StrLib.lpad(null, -2, '\0'));
+        assertNull(StrLib.lpad(null, -1, '\0'));
+        assertNull(StrLib.lpad(null, 0, '\0'));
+        assertNull(StrLib.lpad(null, 1, '\0'));
+        assertNull(StrLib.lpad(null, 2, '\0'));
+
+        // lpad(null, -n, ' '), lpad(null, 0, ' '), lpad(null, n, ' ')
+        assertNull(StrLib.lpad(null, -2, ' '));
+        assertNull(StrLib.lpad(null, -1, ' '));
+        assertNull(StrLib.lpad(null, 0, ' '));
+        assertNull(StrLib.lpad(null, 1, ' '));
+        assertNull(StrLib.lpad(null, 2, ' '));
+
+        // lpad(null, -n, '*'), lpad(null, 0, '*'), lpad(null, n, '*')
+        assertNull(StrLib.lpad(null, -2, '*'));
+        assertNull(StrLib.lpad(null, -1, '*'));
+        assertNull(StrLib.lpad(null, 0, '*'));
+        assertNull(StrLib.lpad(null, 1, '*'));
+        assertNull(StrLib.lpad(null, 2, '*'));
+
+        // empty
+
+        // lpad(empty, -n), lpad(empty, 0), lpad(empty, n)
+        assertEquals("", StrLib.lpad("", -2));
+        assertEquals("", StrLib.lpad("", -1));
+        assertEquals("", StrLib.lpad("", 0));
+        assertEquals(" ", StrLib.lpad("", 1));
+        assertEquals("  ", StrLib.lpad("", 2));
         assertEquals("   ", StrLib.lpad("", 3));
 
-        // lpad: value
+        assertEquals("", StrLib.lpad("", -2, '*'));
+        assertEquals("", StrLib.lpad("", -1, '*'));
+        assertEquals("", StrLib.lpad("", 0, '*'));
+        assertEquals("*", StrLib.lpad("", 1, '*'));
+        assertEquals("**", StrLib.lpad("", 2, '*'));
+        assertEquals("***", StrLib.lpad("", 3, '*'));
+
+        // char
+
+        // lpad(char, -n), lpad(char, 0), lpad(char, n)
+        assertEquals("a", StrLib.lpad("a", -2));
+        assertEquals("a", StrLib.lpad("a", -1));
+        assertEquals("a", StrLib.lpad("a", 0));
+        assertEquals("a", StrLib.lpad("a", 1));
+        assertEquals(" a", StrLib.lpad("a", 2));
         assertEquals("  a", StrLib.lpad("a", 3));
-        assertEquals(" a ", StrLib.lpad(" a ", 3));
-        assertEquals(" abcd ", StrLib.lpad(" abcd ", 3));
-        
+
+        assertEquals("a", StrLib.lpad("a", -2, '*'));
+        assertEquals("a", StrLib.lpad("a", -1, '*'));
+        assertEquals("a", StrLib.lpad("a", 0, '*'));
+        assertEquals("a", StrLib.lpad("a", 1, '*'));
+        assertEquals("*a", StrLib.lpad("a", 2, '*'));
+        assertEquals("**a", StrLib.lpad("a", 3, '*'));
+
+        // string
+
+        // lpad(str, -n), lpad(str, 0), lpad(str, n)
+        assertEquals("abc", StrLib.lpad("abc", -2));
+        assertEquals("abc", StrLib.lpad("abc", -1));
+        assertEquals("abc", StrLib.lpad("abc", 0));
+        assertEquals("abc", StrLib.lpad("abc", 1));
+        assertEquals("abc", StrLib.lpad("abc", 2));
+        assertEquals("abc", StrLib.lpad("abc", 3));
+        assertEquals(" abc", StrLib.lpad("abc", 4));
+        assertEquals("  abc", StrLib.lpad("abc", 5));
+
+        assertEquals("abc", StrLib.lpad("abc", -2, '*'));
         assertEquals("abc", StrLib.lpad("abc", -1, '*'));
         assertEquals("abc", StrLib.lpad("abc", 0, '*'));
         assertEquals("abc", StrLib.lpad("abc", 1, '*'));
+        assertEquals("abc", StrLib.lpad("abc", 2, '*'));
         assertEquals("abc", StrLib.lpad("abc", 3, '*'));
         assertEquals("*abc", StrLib.lpad("abc", 4, '*'));
-        
+        assertEquals("**abc", StrLib.lpad("abc", 5, '*'));
+
+        assertEquals("abc", StrLib.lpad("abc", -2, "yz"));
+        assertEquals("abc", StrLib.lpad("abc", -1, "yz"));
+        assertEquals("abc", StrLib.lpad("abc", 0, "yz"));
+        assertEquals("abc", StrLib.lpad("abc", 1, "yz"));
+        assertEquals("abc", StrLib.lpad("abc", 2, "yz"));
+        assertEquals("abc", StrLib.lpad("abc", 3, "yz"));
+        assertEquals("yabc", StrLib.lpad("abc", 4, "yz"));
+        assertEquals("yzabc", StrLib.lpad("abc", 5, "yz"));
+        assertEquals("yzyabc", StrLib.lpad("abc", 6, "yz"));
+        assertEquals("yzyzabc", StrLib.lpad("abc", 7, "yz"));
         assertEquals("yzyzyabc", StrLib.lpad("abc", 8, "yz"));
+        
         // 12345678
         // yzyzyz**
         // *****abc
         //---------
         // yzyzyabc
-        
+                
     }
 
     public void testRpad() {
         
-        // rpad: null
-        assertNull(StrLib.rpad(null, 3));
+        // null
 
-        // rpad: empty
+        // rpad(null, -n), rpad(null, 0), rpad(null, n)
+        assertNull(StrLib.rpad(null, -2));
+        assertNull(StrLib.rpad(null, -1));
+        assertNull(StrLib.rpad(null, 0));
+        assertNull(StrLib.rpad(null, 1));
+        assertNull(StrLib.rpad(null, 2));
+
+        // rpad(null, -n, ''), rpad(null, 0, ''), rpad(null, n, '')
+        assertNull(StrLib.rpad(null, -2, '\0'));
+        assertNull(StrLib.rpad(null, -1, '\0'));
+        assertNull(StrLib.rpad(null, 0, '\0'));
+        assertNull(StrLib.rpad(null, 1, '\0'));
+        assertNull(StrLib.rpad(null, 2, '\0'));
+
+        // rpad(null, -n, ' '), rpad(null, 0, ' '), rpad(null, n, ' ')
+        assertNull(StrLib.rpad(null, -2, ' '));
+        assertNull(StrLib.rpad(null, -1, ' '));
+        assertNull(StrLib.rpad(null, 0, ' '));
+        assertNull(StrLib.rpad(null, 1, ' '));
+        assertNull(StrLib.rpad(null, 2, ' '));
+
+        // rpad(null, -n, '*'), rpad(null, 0, '*'), rpad(null, n, '*')
+        assertNull(StrLib.rpad(null, -2, '*'));
+        assertNull(StrLib.rpad(null, -1, '*'));
+        assertNull(StrLib.rpad(null, 0, '*'));
+        assertNull(StrLib.rpad(null, 1, '*'));
+        assertNull(StrLib.rpad(null, 2, '*'));
+
+        // empty
+
+        // rpad(empty, -n), rpad(empty, 0), rpad(empty, n)
+        assertEquals("", StrLib.rpad("", -2));
+        assertEquals("", StrLib.rpad("", -1));
+        assertEquals("", StrLib.rpad("", 0));
+        assertEquals(" ", StrLib.rpad("", 1));
+        assertEquals("  ", StrLib.rpad("", 2));
         assertEquals("   ", StrLib.rpad("", 3));
 
-        // lpad: value
-        assertEquals("a  ", StrLib.rpad("a", 3));
-        assertEquals(" a ", StrLib.rpad(" a ", 3));
-        assertEquals(" abcd ", StrLib.rpad(" abcd ", 3));
+        assertEquals("", StrLib.rpad("", -2, '*'));
+        assertEquals("", StrLib.rpad("", -1, '*'));
+        assertEquals("", StrLib.rpad("", 0, '*'));
+        assertEquals("*", StrLib.rpad("", 1, '*'));
+        assertEquals("**", StrLib.rpad("", 2, '*'));
+        assertEquals("***", StrLib.rpad("", 3, '*'));
 
+        // char
+
+        // rpad(char, -n), rpad(char, 0), rpad(char, n)
+        assertEquals("a", StrLib.rpad("a", -2));
+        assertEquals("a", StrLib.rpad("a", -1));
+        assertEquals("a", StrLib.rpad("a", 0));
+        assertEquals("a", StrLib.rpad("a", 1));
+        assertEquals("a ", StrLib.rpad("a", 2));
+        assertEquals("a  ", StrLib.rpad("a", 3));
+
+        assertEquals("a", StrLib.rpad("a", -2, '*'));
+        assertEquals("a", StrLib.rpad("a", -1, '*'));
+        assertEquals("a", StrLib.rpad("a", 0, '*'));
+        assertEquals("a", StrLib.rpad("a", 1, '*'));
+        assertEquals("a*", StrLib.rpad("a", 2, '*'));
+        assertEquals("a**", StrLib.rpad("a", 3, '*'));
+
+        // string
+
+        // rpad(str, -n), rpad(str, 0), rpad(str, n)
+        assertEquals("abc", StrLib.rpad("abc", -2));
+        assertEquals("abc", StrLib.rpad("abc", -1));
+        assertEquals("abc", StrLib.rpad("abc", 0));
+        assertEquals("abc", StrLib.rpad("abc", 1));
+        assertEquals("abc", StrLib.rpad("abc", 2));
+        assertEquals("abc", StrLib.rpad("abc", 3));
+        assertEquals("abc ", StrLib.rpad("abc", 4));
+        assertEquals("abc  ", StrLib.rpad("abc", 5));
+
+        assertEquals("abc", StrLib.rpad("abc", -2, '*'));
         assertEquals("abc", StrLib.rpad("abc", -1, '*'));
         assertEquals("abc", StrLib.rpad("abc", 0, '*'));
         assertEquals("abc", StrLib.rpad("abc", 1, '*'));
+        assertEquals("abc", StrLib.rpad("abc", 2, '*'));
         assertEquals("abc", StrLib.rpad("abc", 3, '*'));
         assertEquals("abc*", StrLib.rpad("abc", 4, '*'));
+        assertEquals("abc**", StrLib.rpad("abc", 5, '*'));
 
+        assertEquals("abc", StrLib.rpad("abc", -2, "yz"));
+        assertEquals("abc", StrLib.rpad("abc", -1, "yz"));
+        assertEquals("abc", StrLib.rpad("abc", 0, "yz"));
+        assertEquals("abc", StrLib.rpad("abc", 1, "yz"));
+        assertEquals("abc", StrLib.rpad("abc", 2, "yz"));
+        assertEquals("abc", StrLib.rpad("abc", 3, "yz"));
+        assertEquals("abcy", StrLib.rpad("abc", 4, "yz"));
+        assertEquals("abcyz", StrLib.rpad("abc", 5, "yz"));
+        assertEquals("abcyzy", StrLib.rpad("abc", 6, "yz"));
+        assertEquals("abcyzyz", StrLib.rpad("abc", 7, "yz"));
         assertEquals("abcyzyzy", StrLib.rpad("abc", 8, "yz"));
+        
         // 12345678
         // abc*****
         // ***yzyzyz
