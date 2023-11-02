@@ -832,11 +832,331 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(-1, strlib.findLastNotOf('..**..**', '*', 8))
         self.assertEqual(-1, strlib.findLastNotOf('..**..**', '*', 9))
 
-    # 2.1 replicate
-    # 2.2 lpad/rpad
+    # 2.1
+
+    def test_replicate(self):
+
+        # replicate(None, -n), replicate(None, 0), replicate(None, n)
+        self.assertIsNone(strlib.replicate(None, -2))
+        self.assertIsNone(strlib.replicate(None, -1))
+        self.assertIsNone(strlib.replicate(None, 0))
+        self.assertIsNone(strlib.replicate(None, 1))
+        self.assertIsNone(strlib.replicate(None, 2))
+
+        # replicate(empty, -n), replicate(empty, 0), replicate(empty, n)
+        self.assertEqual('', strlib.replicate('', -2))
+        self.assertEqual('', strlib.replicate('', -1))
+        self.assertEqual('', strlib.replicate('', 0))
+        self.assertEqual('', strlib.replicate('', 1))
+        self.assertEqual('', strlib.replicate('', 2))
+
+        # char
+
+        # replicate(char, -n), replicate(char, 0), replicate(char, n)
+        self.assertEqual('', strlib.replicate('.', -2))
+        self.assertEqual('', strlib.replicate('.', -1))
+        self.assertEqual('', strlib.replicate('.', 0))
+        self.assertEqual('.', strlib.replicate('.', 1))
+        self.assertEqual('..', strlib.replicate('.', 2))
+
+        # replicate(char, n)
+        self.assertEqual('*', strlib.replicate('*', 1))
+        self.assertEqual('**', strlib.replicate('*', 2))
+        self.assertEqual('***', strlib.replicate('*', 3))
+
+        self.assertEqual('a', strlib.replicate('a', 1))
+        self.assertEqual('aa', strlib.replicate('a', 2))
+        self.assertEqual('aaa', strlib.replicate('a', 3))
+
+        # string
+
+        # replicate(str, -n), replicate(str, 0), replicate(str, n)
+        self.assertEqual('', strlib.replicate('abc', -2))
+        self.assertEqual('', strlib.replicate('abc', -1))
+        self.assertEqual('', strlib.replicate('abc', 0))
+        self.assertEqual('abc', strlib.replicate('abc', 1))
+        self.assertEqual('abcabc', strlib.replicate('abc', 2))
+        self.assertEqual('abcabcabc', strlib.replicate('abc', 3))
+
+    # 2.2
+
+    def test_lpad(self):
+
+        # None
+
+        # lpad(None, -n), lpad(None, 0), lpad(None, n)
+        self.assertIsNone(strlib.lpad(None, -2))
+        self.assertIsNone(strlib.lpad(None, -1))
+        self.assertIsNone(strlib.lpad(None, 0))
+        self.assertIsNone(strlib.lpad(None, 1))
+        self.assertIsNone(strlib.lpad(None, 2))
+
+        # lpad(None, -n, ''), lpad(None, 0, ''), lpad(None, n, '')
+        self.assertIsNone(strlib.lpad(None, -2, ''))
+        self.assertIsNone(strlib.lpad(None, -1, ''))
+        self.assertIsNone(strlib.lpad(None, 0, ''))
+        self.assertIsNone(strlib.lpad(None, 1, ''))
+        self.assertIsNone(strlib.lpad(None, 2, ''))
+
+        # lpad(None, -n, ' '), lpad(None, 0, ' '), lpad(None, n, ' ')
+        self.assertIsNone(strlib.lpad(None, -2, ' '))
+        self.assertIsNone(strlib.lpad(None, -1, ' '))
+        self.assertIsNone(strlib.lpad(None, 0, ' '))
+        self.assertIsNone(strlib.lpad(None, 1, ' '))
+        self.assertIsNone(strlib.lpad(None, 2, ' '))
+
+        # lpad(None, -n, '*'), lpad(None, 0, '*'), lpad(None, n, '*')
+        self.assertIsNone(strlib.lpad(None, -2, '*'))
+        self.assertIsNone(strlib.lpad(None, -1, '*'))
+        self.assertIsNone(strlib.lpad(None, 0, '*'))
+        self.assertIsNone(strlib.lpad(None, 1, '*'))
+        self.assertIsNone(strlib.lpad(None, 2, '*'))
+
+        # empty
+
+        # lpad(empty, -n), lpad(empty, 0), lpad(empty, n)
+        self.assertEqual('', strlib.lpad('', -2))
+        self.assertEqual('', strlib.lpad('', -1))
+        self.assertEqual('', strlib.lpad('', 0))
+        self.assertEqual(' ', strlib.lpad('', 1))
+        self.assertEqual('  ', strlib.lpad('', 2))
+        self.assertEqual('   ', strlib.lpad('', 3))
+
+        self.assertEqual('', strlib.lpad('', -2, '*'))
+        self.assertEqual('', strlib.lpad('', -1, '*'))
+        self.assertEqual('', strlib.lpad('', 0, '*'))
+        self.assertEqual('*', strlib.lpad('', 1, '*'))
+        self.assertEqual('**', strlib.lpad('', 2, '*'))
+        self.assertEqual('***', strlib.lpad('', 3, '*'))
+
+        # char
+
+        # lpad(char, -n), lpad(char, 0), lpad(char, n)
+        self.assertEqual('a', strlib.lpad('a', -2))
+        self.assertEqual('a', strlib.lpad('a', -1))
+        self.assertEqual('a', strlib.lpad('a', 0))
+        self.assertEqual('a', strlib.lpad('a', 1))
+        self.assertEqual(' a', strlib.lpad('a', 2))
+        self.assertEqual('  a', strlib.lpad('a', 3))
+
+        self.assertEqual('a', strlib.lpad('a', -2, '*'))
+        self.assertEqual('a', strlib.lpad('a', -1, '*'))
+        self.assertEqual('a', strlib.lpad('a', 0, '*'))
+        self.assertEqual('a', strlib.lpad('a', 1, '*'))
+        self.assertEqual('*a', strlib.lpad('a', 2, '*'))
+        self.assertEqual('**a', strlib.lpad('a', 3, '*'))
+
+        # string
+
+        # lpad(str, -n), lpad(str, 0), lpad(str, n)
+        self.assertEqual('abc', strlib.lpad('abc', -2))
+        self.assertEqual('abc', strlib.lpad('abc', -1))
+        self.assertEqual('abc', strlib.lpad('abc', 0))
+        self.assertEqual('abc', strlib.lpad('abc', 1))
+        self.assertEqual('abc', strlib.lpad('abc', 2))
+        self.assertEqual('abc', strlib.lpad('abc', 3))
+        self.assertEqual(' abc', strlib.lpad('abc', 4))
+        self.assertEqual('  abc', strlib.lpad('abc', 5))
+
+        self.assertEqual('abc', strlib.lpad('abc', -2, '*'))
+        self.assertEqual('abc', strlib.lpad('abc', -1, '*'))
+        self.assertEqual('abc', strlib.lpad('abc', 0, '*'))
+        self.assertEqual('abc', strlib.lpad('abc', 1, '*'))
+        self.assertEqual('abc', strlib.lpad('abc', 2, '*'))
+        self.assertEqual('abc', strlib.lpad('abc', 3, '*'))
+        self.assertEqual('*abc', strlib.lpad('abc', 4, '*'))
+        self.assertEqual('**abc', strlib.lpad('abc', 5, '*'))
+
+        self.assertEqual('abc', strlib.lpad('abc', -2, 'yz'))
+        self.assertEqual('abc', strlib.lpad('abc', -1, 'yz'))
+        self.assertEqual('abc', strlib.lpad('abc', 0, 'yz'))
+        self.assertEqual('abc', strlib.lpad('abc', 1, 'yz'))
+        self.assertEqual('abc', strlib.lpad('abc', 2, 'yz'))
+        self.assertEqual('abc', strlib.lpad('abc', 3, 'yz'))
+        self.assertEqual('yabc', strlib.lpad('abc', 4, 'yz'))
+        self.assertEqual('yzabc', strlib.lpad('abc', 5, 'yz'))
+        self.assertEqual('yzyabc', strlib.lpad('abc', 6, 'yz'))
+        self.assertEqual('yzyzabc', strlib.lpad('abc', 7, 'yz'))
+        self.assertEqual('yzyzyabc', strlib.lpad('abc', 8, 'yz'))
+
+        # 12345678
+        # yzyzyz**
+        # *****abc
+        #---------
+        # yzyzyabc
+
+
+    def test_rpad(self):
+
+        # None
+
+        # rpad(None, -n), rpad(None, 0), rpad(None, n)
+        self.assertIsNone(strlib.rpad(None, -2))
+        self.assertIsNone(strlib.rpad(None, -1))
+        self.assertIsNone(strlib.rpad(None, 0))
+        self.assertIsNone(strlib.rpad(None, 1))
+        self.assertIsNone(strlib.rpad(None, 2))
+
+        # rpad(None, -n, ''), rpad(None, 0, ''), rpad(None, n, '')
+        self.assertIsNone(strlib.rpad(None, -2, ''))
+        self.assertIsNone(strlib.rpad(None, -1, ''))
+        self.assertIsNone(strlib.rpad(None, 0, ''))
+        self.assertIsNone(strlib.rpad(None, 1, ''))
+        self.assertIsNone(strlib.rpad(None, 2, ''))
+
+        # rpad(None, -n, ' '), rpad(None, 0, ' '), rpad(None, n, ' ')
+        self.assertIsNone(strlib.rpad(None, -2, ' '))
+        self.assertIsNone(strlib.rpad(None, -1, ' '))
+        self.assertIsNone(strlib.rpad(None, 0, ' '))
+        self.assertIsNone(strlib.rpad(None, 1, ' '))
+        self.assertIsNone(strlib.rpad(None, 2, ' '))
+
+        # rpad(None, -n, '*'), rpad(None, 0, '*'), rpad(None, n, '*')
+        self.assertIsNone(strlib.rpad(None, -2, '*'))
+        self.assertIsNone(strlib.rpad(None, -1, '*'))
+        self.assertIsNone(strlib.rpad(None, 0, '*'))
+        self.assertIsNone(strlib.rpad(None, 1, '*'))
+        self.assertIsNone(strlib.rpad(None, 2, '*'))
+
+        # empty
+
+        # rpad(empty, -n), rpad(empty, 0), rpad(empty, n)
+        self.assertEqual('', strlib.rpad('', -2))
+        self.assertEqual('', strlib.rpad('', -1))
+        self.assertEqual('', strlib.rpad('', 0))
+        self.assertEqual(' ', strlib.rpad('', 1))
+        self.assertEqual('  ', strlib.rpad('', 2))
+        self.assertEqual('   ', strlib.rpad('', 3))
+
+        self.assertEqual('', strlib.rpad('', -2, '*'))
+        self.assertEqual('', strlib.rpad('', -1, '*'))
+        self.assertEqual('', strlib.rpad('', 0, '*'))
+        self.assertEqual('*', strlib.rpad('', 1, '*'))
+        self.assertEqual('**', strlib.rpad('', 2, '*'))
+        self.assertEqual('***', strlib.rpad('', 3, '*'))
+
+        # char
+
+        # rpad(char, -n), rpad(char, 0), rpad(char, n)
+        self.assertEqual('a', strlib.rpad('a', -2))
+        self.assertEqual('a', strlib.rpad('a', -1))
+        self.assertEqual('a', strlib.rpad('a', 0))
+        self.assertEqual('a', strlib.rpad('a', 1))
+        self.assertEqual('a ', strlib.rpad('a', 2))
+        self.assertEqual('a  ', strlib.rpad('a', 3))
+
+        self.assertEqual('a', strlib.rpad('a', -2, '*'))
+        self.assertEqual('a', strlib.rpad('a', -1, '*'))
+        self.assertEqual('a', strlib.rpad('a', 0, '*'))
+        self.assertEqual('a', strlib.rpad('a', 1, '*'))
+        self.assertEqual('a*', strlib.rpad('a', 2, '*'))
+        self.assertEqual('a**', strlib.rpad('a', 3, '*'))
+
+        # string
+
+        # rpad(str, -n), rpad(str, 0), rpad(str, n)
+        self.assertEqual('abc', strlib.rpad('abc', -2))
+        self.assertEqual('abc', strlib.rpad('abc', -1))
+        self.assertEqual('abc', strlib.rpad('abc', 0))
+        self.assertEqual('abc', strlib.rpad('abc', 1))
+        self.assertEqual('abc', strlib.rpad('abc', 2))
+        self.assertEqual('abc', strlib.rpad('abc', 3))
+        self.assertEqual('abc ', strlib.rpad('abc', 4))
+        self.assertEqual('abc  ', strlib.rpad('abc', 5))
+
+        self.assertEqual('abc', strlib.rpad('abc', -2, '*'))
+        self.assertEqual('abc', strlib.rpad('abc', -1, '*'))
+        self.assertEqual('abc', strlib.rpad('abc', 0, '*'))
+        self.assertEqual('abc', strlib.rpad('abc', 1, '*'))
+        self.assertEqual('abc', strlib.rpad('abc', 2, '*'))
+        self.assertEqual('abc', strlib.rpad('abc', 3, '*'))
+        self.assertEqual('abc*', strlib.rpad('abc', 4, '*'))
+        self.assertEqual('abc**', strlib.rpad('abc', 5, '*'))
+
+        self.assertEqual('abc', strlib.rpad('abc', -2, 'yz'))
+        self.assertEqual('abc', strlib.rpad('abc', -1, 'yz'))
+        self.assertEqual('abc', strlib.rpad('abc', 0, 'yz'))
+        self.assertEqual('abc', strlib.rpad('abc', 1, 'yz'))
+        self.assertEqual('abc', strlib.rpad('abc', 2, 'yz'))
+        self.assertEqual('abc', strlib.rpad('abc', 3, 'yz'))
+        self.assertEqual('abcy', strlib.rpad('abc', 4, 'yz'))
+        self.assertEqual('abcyz', strlib.rpad('abc', 5, 'yz'))
+        self.assertEqual('abcyzy', strlib.rpad('abc', 6, 'yz'))
+        self.assertEqual('abcyzyz', strlib.rpad('abc', 7, 'yz'))
+        self.assertEqual('abcyzyzy', strlib.rpad('abc', 8, 'yz'))
+
+        # 12345678
+        # abc*****
+        # ***yzyzyz
+        # --------
+        # abcyzyzy
+
     # 2.3 fill, ellipsis, trunk, left/right
 
     # 3.1
+
+    def test_capitalize(self):
+
+        # capitalize(None), capitalize(empty)
+        self.assertIsNone(strlib.capitalize(None))
+        self.assertEqual('', strlib.capitalize(''))
+
+        self.assertEqual(' ', strlib.capitalize(' '))
+        self.assertEqual('  ', strlib.capitalize('  '))
+
+        self.assertEqual('A', strlib.capitalize('a'))
+        self.assertEqual('Ab', strlib.capitalize('ab'))
+        self.assertEqual('Abc', strlib.capitalize('abc'))
+        self.assertEqual('Abcd', strlib.capitalize('abcd'))
+
+        self.assertEqual('AB', strlib.capitalize('aB'))
+        self.assertEqual('ABc', strlib.capitalize('aBc'))
+        self.assertEqual('ABcd', strlib.capitalize('aBcd'))
+
+        self.assertEqual('Hello world!', strlib.capitalize('Hello world!'))
+        self.assertEqual('Hello world!', strlib.capitalize('hello world!'))
+
+        # Force
+        self.assertEqual('Ab', strlib.capitalize('aB', True))
+        self.assertEqual('Abc', strlib.capitalize('aBc', True))
+        self.assertEqual('Abcd', strlib.capitalize('aBcd', True))
+
+        self.assertEqual('Hello world!', strlib.capitalize('Hello world!', True))
+        self.assertEqual('Hello world!', strlib.capitalize('hello world!', True))
+
+        self.assertEqual('Hello world!', strlib.capitalize('Hello World!', True))
+        self.assertEqual('Hello world!', strlib.capitalize('hello World!', True))
+
+    def test_decapitalize(self):
+
+        # decapitalize(None), decapitalize(empty)
+        self.assertIsNone(strlib.decapitalize(None))
+        self.assertEqual('', strlib.decapitalize(''))
+
+        self.assertEqual(' ', strlib.decapitalize(' '))
+        self.assertEqual('  ', strlib.decapitalize('  '))
+
+        self.assertEqual('a', strlib.decapitalize('A'))
+        self.assertEqual('ab', strlib.decapitalize('Ab'))
+        self.assertEqual('abc', strlib.decapitalize('Abc'))
+        self.assertEqual('abcd', strlib.decapitalize('Abcd'))
+
+        self.assertEqual('ab', strlib.decapitalize('Ab'))
+        self.assertEqual('abC', strlib.decapitalize('AbC'))
+        self.assertEqual('abCd', strlib.decapitalize('AbCd'))
+
+        self.assertEqual('hello world!', strlib.decapitalize('hello world!'))
+        self.assertEqual('hello world!', strlib.decapitalize('Hello world!'))        
+
+        # Force
+        self.assertEqual('aB', strlib.decapitalize('Ab', True))
+        self.assertEqual('aBC', strlib.decapitalize('AbC', True))
+        self.assertEqual('aBCD', strlib.decapitalize('AbCd', True))
+
+        self.assertEqual('hELLO WORLD!', strlib.decapitalize('hello world!', True))
+        self.assertEqual('hELLO WORLD!', strlib.decapitalize('Hello world!', True))        
+
+    ####
 
     def test_upper(self): # alias: toUpperCase(str)
 
@@ -1002,82 +1322,19 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('abc', strlib.toCase('AbC', False))
         self.assertEqual('abcd', strlib.toCase('AbCd', False))
 
-    def test_capitalize(self):
-
-        # capitalize(None), capitalize(empty)
-        self.assertIsNone(strlib.capitalize(None))
-        self.assertEqual('', strlib.capitalize(''))
-
-        self.assertEqual(' ', strlib.capitalize(' '))
-        self.assertEqual('  ', strlib.capitalize('  '))
-
-        self.assertEqual('A', strlib.capitalize('a'))
-        self.assertEqual('Ab', strlib.capitalize('ab'))
-        self.assertEqual('Abc', strlib.capitalize('abc'))
-        self.assertEqual('Abcd', strlib.capitalize('abcd'))
-
-        self.assertEqual('AB', strlib.capitalize('aB'))
-        self.assertEqual('ABc', strlib.capitalize('aBc'))
-        self.assertEqual('ABcd', strlib.capitalize('aBcd'))
-
-        self.assertEqual('Hello world!', strlib.capitalize('Hello world!'))
-        self.assertEqual('Hello world!', strlib.capitalize('hello world!'))
-
-        # Force
-        self.assertEqual('Ab', strlib.capitalize('aB', True))
-        self.assertEqual('Abc', strlib.capitalize('aBc', True))
-        self.assertEqual('Abcd', strlib.capitalize('aBcd', True))
-
-        self.assertEqual('Hello world!', strlib.capitalize('Hello world!', True))
-        self.assertEqual('Hello world!', strlib.capitalize('hello world!', True))
-
-        self.assertEqual('Hello world!', strlib.capitalize('Hello World!', True))
-        self.assertEqual('Hello world!', strlib.capitalize('hello World!', True))
-
-
-    def test_decapitalize(self):
-
-        # decapitalize(None), decapitalize(empty)
-        self.assertIsNone(strlib.decapitalize(None))
-        self.assertEqual('', strlib.decapitalize(''))
-
-        self.assertEqual(' ', strlib.decapitalize(' '))
-        self.assertEqual('  ', strlib.decapitalize('  '))
-
-        self.assertEqual('a', strlib.decapitalize('A'))
-        self.assertEqual('ab', strlib.decapitalize('Ab'))
-        self.assertEqual('abc', strlib.decapitalize('Abc'))
-        self.assertEqual('abcd', strlib.decapitalize('Abcd'))
-
-        self.assertEqual('ab', strlib.decapitalize('Ab'))
-        self.assertEqual('abC', strlib.decapitalize('AbC'))
-        self.assertEqual('abCd', strlib.decapitalize('AbCd'))
-
-        self.assertEqual('hello world!', strlib.decapitalize('hello world!'))
-        self.assertEqual('hello world!', strlib.decapitalize('Hello world!'))        
-
-        # Force
-        self.assertEqual('aB', strlib.decapitalize('Ab', True))
-        self.assertEqual('aBC', strlib.decapitalize('AbC', True))
-        self.assertEqual('aBCD', strlib.decapitalize('AbCd', True))
-
-        self.assertEqual('hELLO WORLD!', strlib.decapitalize('hello world!', True))
-        self.assertEqual('hELLO WORLD!', strlib.decapitalize('Hello world!', True))        
-
-
-    ###
+    ####
 
     def test_getCaseCode(self):
 
         # getCaseCode(None), getCaseCode(empty)
         self.assertIsNone(strlib.getCaseCode(None))
-        self.assertEqual(0, strlib.getCaseCode(''))
-        self.assertEqual(0, strlib.getCaseCode(' '))
-        self.assertEqual(0, strlib.getCaseCode(' '))
+        self.assertEqual(strlib.CT_NONE, strlib.getCaseCode(''))
+        self.assertEqual(strlib.CT_NONE, strlib.getCaseCode(' '))
+        self.assertEqual(strlib.CT_NONE, strlib.getCaseCode(' '))
 
         # getCaseCode(unknown)
-        self.assertEqual(0, strlib.getCaseCode('blahblahblah'))
-        self.assertEqual(0, strlib.getCaseCode('0123456789'))
+        self.assertEqual(strlib.CT_NONE, strlib.getCaseCode('blahblahblah'))
+        self.assertEqual(strlib.CT_NONE, strlib.getCaseCode('0123456789'))
 
         # lowercase
         self.assertEqual(strlib.CT_lowercase, strlib.getCaseCode('lower'))
