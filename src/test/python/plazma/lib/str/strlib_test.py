@@ -202,7 +202,6 @@ class StrlibTest(unittest.TestCase):
     
     # - emptyIfNone(str)                                           - None -> ''
     # - noneIfEmpty(str)                                           - '' -> None
-    # - noneIfEmpty(str, trim)                                     - trim, '' -> None
 
     def test_defaultIfNone(self):
 
@@ -1092,6 +1091,339 @@ class StrlibTest(unittest.TestCase):
         # abcyzyzy
 
     # 2.3 fill, ellipsis, trunk, left/right
+
+    def test_fill(self):
+
+        # fill(None, -n), fill(None, 0), fill(None, n)
+        self.assertIsNone(strlib.fill(None, -2))
+        self.assertIsNone(strlib.fill(None, -1))
+        self.assertIsNone(strlib.fill(None, 0))
+        self.assertIsNone(strlib.fill(None, 1))
+        self.assertIsNone(strlib.fill(None, 2))
+
+        self.assertIsNone(strlib.fill(None, -2, ''))
+        self.assertIsNone(strlib.fill(None, -1, ''))
+        self.assertIsNone(strlib.fill(None, 0, ''))
+        self.assertIsNone(strlib.fill(None, 1, ''))
+        self.assertIsNone(strlib.fill(None, 2, ''))
+
+        self.assertIsNone(strlib.fill(None, -2, ' '))
+        self.assertIsNone(strlib.fill(None, -1, ' '))
+        self.assertIsNone(strlib.fill(None, 0, ' '))
+        self.assertIsNone(strlib.fill(None, 1, ' '))
+        self.assertIsNone(strlib.fill(None, 2, ' '))
+
+        self.assertIsNone(strlib.fill(None, -2, '*'))
+        self.assertIsNone(strlib.fill(None, -1, '*'))
+        self.assertIsNone(strlib.fill(None, 0, '*'))
+        self.assertIsNone(strlib.fill(None, 1, '*'))
+        self.assertIsNone(strlib.fill(None, 2, '*'))
+
+        # fill(empty, -n), fill(empty, 0), fill(empty, n)
+        self.assertEqual('', strlib.fill('', -2))
+        self.assertEqual('', strlib.fill('', -1))
+        self.assertEqual('', strlib.fill('', 0))
+        self.assertEqual(' ', strlib.fill('', 1))
+        self.assertEqual('  ', strlib.fill('', 2))
+
+        # fill(empty, -n, ''), fill(empty, 0, ''), fill(empty, n, '')
+        self.assertEqual('', strlib.fill('', -2, ''))
+        self.assertEqual('', strlib.fill('', -1, ''))
+        self.assertEqual('', strlib.fill('', 0, ''))
+        self.assertEqual('', strlib.fill('', 1, ''))
+        self.assertEqual('', strlib.fill('', 2, ''))
+
+        # fill(empty, -n, ' '), fill(empty, 0, ' '), fill(empty, n, ' ')
+        self.assertEqual('', strlib.fill('', -2, ' '))
+        self.assertEqual('', strlib.fill('', -1, ' '))
+        self.assertEqual('', strlib.fill('', 0, ' '))
+        self.assertEqual(' ', strlib.fill('', 1, ' '))
+        self.assertEqual('  ', strlib.fill('', 2, ' '))
+
+        # fill(empty, -n, '*'), fill(empty, 0, '*'), fill(empty, n, '*')
+        self.assertEqual('', strlib.fill('', -2, '*'))
+        self.assertEqual('', strlib.fill('', -1, '*'))
+        self.assertEqual('', strlib.fill('', 0, '*'))
+        self.assertEqual('*', strlib.fill('', 1, '*'))
+        self.assertEqual('**', strlib.fill('', 2, '*'))
+
+        # char
+
+        # fill(char, -n), fill(char, 0), fill(char, n)
+        self.assertEqual('', strlib.fill('a', -2))
+        self.assertEqual('', strlib.fill('a', -1))
+        self.assertEqual('', strlib.fill('a', 0))
+        self.assertEqual('a', strlib.fill('a', 1))
+        self.assertEqual('a ', strlib.fill('a', 2))
+        self.assertEqual('a  ', strlib.fill('a', 3))
+        self.assertEqual('a   ', strlib.fill('a', 4))
+        self.assertEqual('a    ', strlib.fill('a', 5))
+
+        self.assertEqual('', strlib.fill('a', -2, '*'))
+        self.assertEqual('', strlib.fill('a', -1, '*'))
+        self.assertEqual('', strlib.fill('a', 0, '*'))
+        self.assertEqual('a', strlib.fill('a', 1, '*'))
+        self.assertEqual('a*', strlib.fill('a', 2, '*'))
+        self.assertEqual('a**', strlib.fill('a', 3, '*'))
+        self.assertEqual('a***', strlib.fill('a', 4, '*'))
+        self.assertEqual('a****', strlib.fill('a', 5, '*'))
+
+        # string
+
+        # fill(str, -n), fill(str, 0), fill(str, n)
+        self.assertEqual('', strlib.fill('abcxyz', -2))
+        self.assertEqual('', strlib.fill('abcxyz', -1))
+        self.assertEqual('', strlib.fill('abcxyz', 0))
+        self.assertEqual('a', strlib.fill('abcxyz', 1))
+        self.assertEqual('ab', strlib.fill('abcxyz', 2))
+        self.assertEqual('abc', strlib.fill('abcxyz', 3))
+        self.assertEqual('a...', strlib.fill('abcxyz', 4))   # ellipsis
+        self.assertEqual('ab...', strlib.fill('abcxyz', 5))  # ellipsis
+        self.assertEqual('abcxyz', strlib.fill('abcxyz', 6))
+        self.assertEqual('abcxyz ', strlib.fill('abcxyz', 7))
+        self.assertEqual('abcxyz  ', strlib.fill('abcxyz', 8))
+
+        # fill(str, -n, '*'), fill(str, 0, '*'), fill(str, n, '*')
+        self.assertEqual('', strlib.fill('abcxyz', -2, '*'))
+        self.assertEqual('', strlib.fill('abcxyz', -1, '*'))
+        self.assertEqual('', strlib.fill('abcxyz', 0, '*'))
+        self.assertEqual('a', strlib.fill('abcxyz', 1, '*'))
+        self.assertEqual('ab', strlib.fill('abcxyz', 2, '*'))
+        self.assertEqual('abc', strlib.fill('abcxyz', 3, '*'))
+        self.assertEqual('a...', strlib.fill('abcxyz', 4, '*'))   # ellipsis
+        self.assertEqual('ab...', strlib.fill('abcxyz', 5, '*'))  # ellipsis
+        self.assertEqual('abcxyz', strlib.fill('abcxyz', 6, '*'))
+        self.assertEqual('abcxyz*', strlib.fill('abcxyz', 7, '*'))
+        self.assertEqual('abcxyz**', strlib.fill('abcxyz', 8, '*'))
+
+
+    def test_ellipsis(self):
+
+        # ellipsis(None)
+        self.assertIsNone(strlib.ellipsis(None, -2))
+        self.assertIsNone(strlib.ellipsis(None, -1))
+        self.assertIsNone(strlib.ellipsis(None, 0))
+        self.assertIsNone(strlib.ellipsis(None, 1))
+        self.assertIsNone(strlib.ellipsis(None, 2))
+
+        # ellipsis(empty, -n), ellipsis(empty, 0), ellipsis(empty, n)
+        self.assertEqual('', strlib.ellipsis('', -2))
+        self.assertEqual('', strlib.ellipsis('', -1))
+        self.assertEqual('', strlib.ellipsis('', 0))
+        self.assertEqual('', strlib.ellipsis('', 1))
+        self.assertEqual('', strlib.ellipsis('', 2))
+
+        # char
+
+        # ellipsis(char, -n), ellipsis(char, 0), ellipsis(char, n)
+        self.assertEqual('a', strlib.ellipsis('a', -2))
+        self.assertEqual('a', strlib.ellipsis('a', -1))
+        self.assertEqual('a', strlib.ellipsis('a', 0))
+        self.assertEqual('a', strlib.ellipsis('a', 1))
+        self.assertEqual('a', strlib.ellipsis('a', 2))
+
+        # string
+
+        # ellipsis(str, -n), ellipsis(str, 0), ellipsis(str, n)
+        self.assertEqual('abcxyz', strlib.ellipsis('abcxyz', -2))
+        self.assertEqual('abcxyz', strlib.ellipsis('abcxyz', -1))
+        self.assertEqual('abcxyz', strlib.ellipsis('abcxyz', 0))
+        self.assertEqual('a', strlib.ellipsis('abcxyz', 1))
+        self.assertEqual('ab', strlib.ellipsis('abcxyz', 2))
+        self.assertEqual('abc', strlib.ellipsis('abcxyz', 3))
+        self.assertEqual('a...', strlib.ellipsis('abcxyz', 4))   # ellipsis
+        self.assertEqual('ab...', strlib.ellipsis('abcxyz', 5))  # ellipsis
+        self.assertEqual('abcxyz', strlib.ellipsis('abcxyz', 6))
+        self.assertEqual('abcxyz', strlib.ellipsis('abcxyz', 7))
+        self.assertEqual('abcxyz', strlib.ellipsis('abcxyz', 8))
+
+    def test_trunc(self):
+
+        # trunc(None)
+        self.assertIsNone(strlib.trunc(None, -2))
+        self.assertIsNone(strlib.trunc(None, -1))
+        self.assertIsNone(strlib.trunc(None, 0))
+        self.assertIsNone(strlib.trunc(None, 1))
+        self.assertIsNone(strlib.trunc(None, 2))
+
+        # ellipsis=False
+        self.assertIsNone(strlib.trunc(None, -2, False))
+        self.assertIsNone(strlib.trunc(None, -1, False))
+        self.assertIsNone(strlib.trunc(None, 0, False))
+        self.assertIsNone(strlib.trunc(None, 1, False))
+        self.assertIsNone(strlib.trunc(None, 2, False))
+
+        # ellipsis=True
+        self.assertIsNone(strlib.trunc(None, -2, True))
+        self.assertIsNone(strlib.trunc(None, -1, True))
+        self.assertIsNone(strlib.trunc(None, 0, True))
+        self.assertIsNone(strlib.trunc(None, 1, True))
+        self.assertIsNone(strlib.trunc(None, 2, True))
+
+        # trunc(empty, -n), trunc(empty, 0), trunc(empty, n)
+        self.assertEqual('', strlib.trunc('', -2))
+        self.assertEqual('', strlib.trunc('', -1))
+        self.assertEqual('', strlib.trunc('', 0))
+        self.assertEqual('', strlib.trunc('', 1))
+        self.assertEqual('', strlib.trunc('', 2))
+
+        # ellipsis=False
+        self.assertEqual('', strlib.trunc('', -2, False))
+        self.assertEqual('', strlib.trunc('', -1, False))
+        self.assertEqual('', strlib.trunc('', 0, False))
+        self.assertEqual('', strlib.trunc('', 1, False))
+        self.assertEqual('', strlib.trunc('', 2, False))
+
+        # ellipsis=True
+        self.assertEqual('', strlib.trunc('', -2, True))
+        self.assertEqual('', strlib.trunc('', -1, True))
+        self.assertEqual('', strlib.trunc('', 0, True))
+        self.assertEqual('', strlib.trunc('', 1, True))
+        self.assertEqual('', strlib.trunc('', 2, True))
+
+        # char
+
+        # trunc(char, -n), trunc(char, 0), trunc(char, n)
+        self.assertEqual('a', strlib.trunc('a', -2))
+        self.assertEqual('a', strlib.trunc('a', -1))
+        self.assertEqual('a', strlib.trunc('a', 0))
+        self.assertEqual('a', strlib.trunc('a', 1))
+        self.assertEqual('a', strlib.trunc('a', 2))
+
+        # ellipsis=False
+        self.assertEqual('a', strlib.trunc('a', -2, False))
+        self.assertEqual('a', strlib.trunc('a', -1, False))
+        self.assertEqual('a', strlib.trunc('a', 0, False))
+        self.assertEqual('a', strlib.trunc('a', 1, False))
+        self.assertEqual('a', strlib.trunc('a', 2, False))
+
+        # ellipsis=True
+        self.assertEqual('a', strlib.trunc('a', -2, True))
+        self.assertEqual('a', strlib.trunc('a', -1, True))
+        self.assertEqual('a', strlib.trunc('a', 0, True))
+        self.assertEqual('a', strlib.trunc('a', 1, True))
+        self.assertEqual('a', strlib.trunc('a', 2, True))
+
+        # string
+
+        # trunc(str, -n), trunc(str, 0), trunc(str, n)
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', -2))
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', -1))
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', 0))
+        self.assertEqual('a', strlib.trunc('abcxyz', 1))
+        self.assertEqual('ab', strlib.trunc('abcxyz', 2))
+        self.assertEqual('abc', strlib.trunc('abcxyz', 3))        
+        self.assertEqual('abcx', strlib.trunc('abcxyz', 4))   # non ellipsis
+        self.assertEqual('abcxy', strlib.trunc('abcxyz', 5))  # non ellipsis
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', 6))
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', 7))
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', 8))
+
+        # ellipsis=False
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', -2, False))
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', -1, False))
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', 0, False))
+        self.assertEqual('a', strlib.trunc('abcxyz', 1, False))
+        self.assertEqual('ab', strlib.trunc('abcxyz', 2, False))
+        self.assertEqual('abc', strlib.trunc('abcxyz', 3, False))
+        self.assertEqual('abcx', strlib.trunc('abcxyz', 4, False))   # non ellipsis
+        self.assertEqual('abcxy', strlib.trunc('abcxyz', 5, False))  # non ellipsis
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', 6, False))
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', 7, False))
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', 8, False))
+
+        # ellipsis=True
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', -2, True))
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', -1, True))
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', 0, True))
+        self.assertEqual('a', strlib.trunc('abcxyz', 1, True))
+        self.assertEqual('ab', strlib.trunc('abcxyz', 2, True))
+        self.assertEqual('abc', strlib.trunc('abcxyz', 3, True))        
+        self.assertEqual('a...', strlib.trunc('abcxyz', 4, True))   # ellipsis
+        self.assertEqual('ab...', strlib.trunc('abcxyz', 5, True))  # ellipsis
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', 6, True))
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', 7, True))
+        self.assertEqual('abcxyz', strlib.trunc('abcxyz', 8, True))
+
+    def test_left(self):
+
+        # left(None)
+        self.assertIsNone(strlib.left(None, -2))
+        self.assertIsNone(strlib.left(None, -1))
+        self.assertIsNone(strlib.left(None, 0))
+        self.assertIsNone(strlib.left(None, 1))
+        self.assertIsNone(strlib.left(None, 2))
+
+        # left(empty, -n), left(empty, 0), left(empty, n)
+        self.assertEqual('', strlib.left('', -2))
+        self.assertEqual('', strlib.left('', -1))
+        self.assertEqual('', strlib.left('', 0))
+        self.assertEqual('', strlib.left('', 1))
+        self.assertEqual('', strlib.left('', 2))
+
+        # char
+
+        # left(char, -n), left(char, 0), left(char, n)
+        self.assertEqual('', strlib.left('a', -2))
+        self.assertEqual('', strlib.left('a', -1))
+        self.assertEqual('', strlib.left('a', 0))
+        self.assertEqual('a', strlib.left('a', 1))
+        self.assertEqual('a', strlib.left('a', 2))
+
+        # string
+
+        # left(str, -n), left(str, 0), left(str, n)
+        self.assertEqual('', strlib.left('abcxyz', -2))
+        self.assertEqual('', strlib.left('abcxyz', -1))
+        self.assertEqual('', strlib.left('abcxyz', 0))
+        self.assertEqual('a', strlib.left('abcxyz', 1))
+        self.assertEqual('ab', strlib.left('abcxyz', 2))
+        self.assertEqual('abc', strlib.left('abcxyz', 3))        
+        self.assertEqual('abcx', strlib.left('abcxyz', 4))
+        self.assertEqual('abcxy', strlib.left('abcxyz', 5))
+        self.assertEqual('abcxyz', strlib.left('abcxyz', 6))
+        self.assertEqual('abcxyz', strlib.left('abcxyz', 7))
+        self.assertEqual('abcxyz', strlib.left('abcxyz', 8))
+
+    def test_right(self):
+
+        # right(None)
+        self.assertIsNone(strlib.right(None, -2))
+        self.assertIsNone(strlib.right(None, -1))
+        self.assertIsNone(strlib.right(None, 0))
+        self.assertIsNone(strlib.right(None, 1))
+        self.assertIsNone(strlib.right(None, 2))
+
+        # right(empty, -n), right(empty, 0), right(empty, n)
+        self.assertEqual('', strlib.right('', -2))
+        self.assertEqual('', strlib.right('', -1))
+        self.assertEqual('', strlib.right('', 0))
+        self.assertEqual('', strlib.right('', 1))
+        self.assertEqual('', strlib.right('', 2))
+
+        # char
+
+        # right(char, -n), right(char, 0), right(char, n)
+        self.assertEqual('', strlib.right('a', -2))
+        self.assertEqual('', strlib.right('a', -1))
+        self.assertEqual('', strlib.right('a', 0))
+        self.assertEqual('a', strlib.right('a', 1))
+        self.assertEqual('a', strlib.right('a', 2))
+
+        # string
+
+        # right(str, -n), right(str, 0), right(str, n)
+        self.assertEqual('', strlib.right('abcxyz', -2))
+        self.assertEqual('', strlib.right('abcxyz', -1))
+        self.assertEqual('', strlib.right('abcxyz', 0))
+        self.assertEqual('z', strlib.right('abcxyz', 1))
+        self.assertEqual('yz', strlib.right('abcxyz', 2))
+        self.assertEqual('xyz', strlib.right('abcxyz', 3))        
+        self.assertEqual('cxyz', strlib.right('abcxyz', 4))
+        self.assertEqual('bcxyz', strlib.right('abcxyz', 5))
+        self.assertEqual('abcxyz', strlib.right('abcxyz', 6))
+        self.assertEqual('abcxyz', strlib.right('abcxyz', 7))
+        self.assertEqual('abcxyz', strlib.right('abcxyz', 8))
 
     # 3.1
 
