@@ -77,7 +77,6 @@ KEBAB_CONNECTOR = '-' # kebab-case
 # - emptyIfNone(str)                                           - None -> ''
 #
 # - noneIfEmpty(str)                                           - '' -> None
-# - noneIfEmpty(str, trim)                                     - trim, '' -> None
 #
 # - defaultIfNone(str, defaultStr)                             - str is None ? defaultStr : str
 # - defaultIfEmpty(str, defaultStr)                            - isEmpty(str) ? defaultStr : str
@@ -139,7 +138,7 @@ KEBAB_CONNECTOR = '-' # kebab-case
 # - ellipsis(str, len)
 #
 # - trunc(str, len)
-# - trunc(str, len, trim, ellipsis)
+# - trunc(str, len, ellipsis)
 #
 # - left(str, len)
 # - right(str, len)
@@ -225,14 +224,10 @@ def emptyIfNone(str):
     else:
         return str
 
-def noneIfEmpty(str, trim = False):
+def noneIfEmpty(str):
     if isEmpty(str):
         return None
-    else:
-        if trim:
-            return str.strip() # trim
-        else:
-            return str
+    return str
 
 def defaultIfNone(str, defaultStr):
     if str is None:
@@ -545,33 +540,36 @@ def rpad(str, len, pad = ' '):
         return str + fillStr
 
 def fill(str, len, pad = ' '):
-    if str is None or len < 1:
+    if str is None:
+        return None
+    
+    # hard format: <=len or empty
+    if len < 1:
         return EMPTY_STRING
     
     strLen = size(str)
     if strLen == len:
         return str
     
+    # hard format: pad or trunc    
     if strLen < len:
         # add <pad> to right side
         return rpad(str, len, pad)
     else:
         # remove chars from right side
-        return trunc(str, len, False, True)
+        return trunc(str, len, True) # ellipsis
 
 def ellipsis(str, len):
-    return trunc(str, len, False, True)
+    return trunc(str, len, True) # ellipsis
 
-def trunc(str, len, trim = False, ellipsis = False):
+def trunc(str, len, ellipsis = False):
     if str is None:
         return None
-    
+
+    # soft format    
     if len < 1:
         return str
     
-    if trim:
-        str = str.strip() # trim
-
     if size(str) <= len:
         return str
     
@@ -586,7 +584,11 @@ def trunc(str, len, trim = False, ellipsis = False):
 def left(str, len):
     if str is None:
         return None
-        
+    
+    # hard format: <=len or empty
+    if len < 1:
+        return EMPTY_STRING
+
     strLen = size(str)
     if strLen <= len:
         return str
@@ -596,7 +598,11 @@ def left(str, len):
 def right(str, len):
     if str is None:
         return None
-        
+
+    # hard format: <=len or empty
+    if len < 1:
+        return EMPTY_STRING
+
     strLen = size(str)
     if strLen <= len:
         return str
