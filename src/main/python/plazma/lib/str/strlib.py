@@ -852,7 +852,7 @@ def _toTypeCase(str, type, separators, connector):
 def getCaseCode(type):
 
     if type is None:
-        return None
+        return CT_NONE
 
     if type == 'lower':
         return CT_lowercase         # lowercase
@@ -884,7 +884,7 @@ def getCaseCode(type):
     elif type == 'Kebab' or type == 'Dash' or type == 'Train':
         return CT_Kebab_Case        # Kebab_Case
 
-    return 0
+    return CT_NONE
 
 # Return case op by case code
 def getCaseOp(code):
@@ -919,5 +919,7 @@ def getCaseOp(code):
     elif code  == CT_Snake_Case:
         # Snake_Case
         return  CO_UPPER_CHAR
+    
+    return CO_NONE
     
 ##################################################################

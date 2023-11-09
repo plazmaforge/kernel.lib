@@ -1601,162 +1601,456 @@ public class StrLibTest extends AbstractTestCase {
     // 3.1
 
     public void testCapitalize() {
-
-        // capitalize: null
+        
+        // capitalize(null), capitalize(empty)
         assertNull(StrLib.capitalize(null));
-
-        // capitalize: empty
         assertEquals("", StrLib.capitalize(""));
+
         assertEquals(" ", StrLib.capitalize(" "));
+        assertEquals("  ", StrLib.capitalize("  "));
 
-        // capitalize: value
-        assertEquals("ABcdE", StrLib.capitalize("aBcdE"));
-        assertEquals("Abcde", StrLib.capitalize("aBcdE", true));
+        assertEquals("A", StrLib.capitalize("a"));
+        assertEquals("Ab", StrLib.capitalize("ab"));
+        assertEquals("Abc", StrLib.capitalize("abc"));
+        assertEquals("Abcd", StrLib.capitalize("abcd"));
+        
+        // ForceRest=default
+        assertEquals("AB", StrLib.capitalize("aB"));
+        assertEquals("ABc", StrLib.capitalize("aBc"));
+        assertEquals("ABcd", StrLib.capitalize("aBcd"));
 
+        assertEquals("Hello world!", StrLib.capitalize("Hello world!"));
+        assertEquals("Hello world!", StrLib.capitalize("hello world!"));
+                
+        // ForceRest=false        
+        assertEquals("AB", StrLib.capitalize("aB", false));
+        assertEquals("ABc", StrLib.capitalize("aBc", false));
+        assertEquals("ABcd", StrLib.capitalize("aBcd", false));
+
+        assertEquals("Hello world!", StrLib.capitalize("Hello world!", false));
+        assertEquals("Hello world!", StrLib.capitalize("hello world!", false));
+        
+        // ForceRest=true
+        assertEquals("Ab", StrLib.capitalize("aB", true));
+        assertEquals("Abc", StrLib.capitalize("aBc", true));
+        assertEquals("Abcd", StrLib.capitalize("aBcd", true));
+
+        assertEquals("Hello world!", StrLib.capitalize("Hello world!", true));
+        assertEquals("Hello world!", StrLib.capitalize("hello world!", true));
+        
+        //
+        assertEquals("Hello world!", StrLib.capitalize("Hello World!", true));
+        assertEquals("Hello world!", StrLib.capitalize("hello World!", true));
+        
     }
 
     public void testDecapitalize() {
 
-        // decapitalize: null
+        // decapitalize(null), decapitalize(empty)
         assertNull(StrLib.decapitalize(null));
-
-        // decapitalize: empty
         assertEquals("", StrLib.decapitalize(""));
-        assertEquals(" ", StrLib.decapitalize(" "));
 
-        // decapitalize: value
-        assertEquals("aBcdE", StrLib.decapitalize("ABcdE"));
-        assertEquals("aBCDE", StrLib.decapitalize("ABcdE", true));
+        assertEquals(" ", StrLib.decapitalize(" "));
+        assertEquals("  ", StrLib.decapitalize("  "));
+
+        assertEquals("a", StrLib.decapitalize("A"));
+        assertEquals("ab", StrLib.decapitalize("Ab"));
+        assertEquals("abc", StrLib.decapitalize("Abc"));
+        assertEquals("abcd", StrLib.decapitalize("Abcd"));
+
+        // ForceRest=default
+        assertEquals("ab", StrLib.decapitalize("Ab"));
+        assertEquals("abC", StrLib.decapitalize("AbC"));
+        assertEquals("abCd", StrLib.decapitalize("AbCd"));
+
+        assertEquals("hello world!", StrLib.decapitalize("hello world!"));
+        assertEquals("hello world!", StrLib.decapitalize("Hello world!"));
+
+        // ForceRest=false
+        assertEquals("ab", StrLib.decapitalize("Ab", false));
+        assertEquals("abC", StrLib.decapitalize("AbC", false));
+        assertEquals("abCd", StrLib.decapitalize("AbCd", false));
+
+        assertEquals("hello world!", StrLib.decapitalize("hello world!", false));
+        assertEquals("hello world!", StrLib.decapitalize("Hello world!", false));
+
+        // ForceRest=true
+        assertEquals("aB", StrLib.decapitalize("Ab", true));
+        assertEquals("aBC", StrLib.decapitalize("AbC", true));
+        assertEquals("aBCD", StrLib.decapitalize("AbCd", true));
+
+        //
+        assertEquals("hELLO WORLD!", StrLib.decapitalize("hello world!", true));
+        assertEquals("hELLO WORLD!", StrLib.decapitalize("Hello world!", true));        
 
     }
 
     public void testUpper() {
 
-        // upper: null
+        // upper(null), upper(empty)
         assertNull(StrLib.upper(null));
-
-        // upper: empty
         assertEquals("", StrLib.upper(""));
-        assertEquals(" ", StrLib.upper(" "));
 
-        // upper: value
-        assertEquals("ABCDE", StrLib.upper("aBcdE"));
+        // upper(blank)
+        assertEquals(" ", StrLib.upper(" "));
+        assertEquals("  ", StrLib.upper("  "));
+
+        assertEquals("0123456789.,:!?", StrLib.upper("0123456789.,:!?"));
+
+        // upper(value)
+        assertEquals("A", StrLib.upper("A"));
+        assertEquals("AB", StrLib.upper("AB"));
+        assertEquals("ABC", StrLib.upper("ABC"));
+        assertEquals("ABCD", StrLib.upper("ABCD"));
+
+        assertEquals("A", StrLib.upper("a"));
+        assertEquals("AB", StrLib.upper("ab"));
+        assertEquals("ABC", StrLib.upper("abc"));
+        assertEquals("ABCD", StrLib.upper("abcd"));
+
+        assertEquals("AB", StrLib.upper("aB"));
+        assertEquals("ABC", StrLib.upper("aBc"));
+        assertEquals("ABCD", StrLib.upper("aBcD"));
 
     }
 
     public void testLower() {
 
-        // lower: null
+        // lower(null), lower(empty)
         assertNull(StrLib.lower(null));
-
-        // lower: empty
         assertEquals("", StrLib.lower(""));
-        assertEquals(" ", StrLib.lower(" "));
 
-        // lower: value
-        assertEquals("abcde", StrLib.lower("aBcdE"));
+        // lower(blank)
+        assertEquals(" ", StrLib.lower(" "));
+        assertEquals("  ", StrLib.lower("  "));
+
+        assertEquals("0123456789.,:!?", StrLib.lower("0123456789.,:!?"));
+
+        // lower(value)
+        assertEquals("a", StrLib.lower("a"));
+        assertEquals("ab", StrLib.lower("ab"));
+        assertEquals("abc", StrLib.lower("abc"));
+        assertEquals("abcd", StrLib.lower("abcd"));
+
+        assertEquals("a", StrLib.lower("A"));
+        assertEquals("ab", StrLib.lower("AB"));
+        assertEquals("abc", StrLib.lower("ABC"));
+        assertEquals("abcd", StrLib.lower("ABCD"));
+
+        assertEquals("ab", StrLib.lower("Ab"));
+        assertEquals("abc", StrLib.lower("AbC"));
+        assertEquals("abcd", StrLib.lower("AbCd"));
 
     }
 
     public void testToUpperCase() {
 
-        // toUpperCase: null
+        // toUpperCase(null), toUpperCase(empty)
         assertNull(StrLib.toUpperCase(null));
-
-        // toUpperCase: empty
         assertEquals("", StrLib.toUpperCase(""));
-        assertEquals(" ", StrLib.toUpperCase(" "));
 
-        // toUpperCase: value
-        assertEquals("ABCDE", StrLib.toUpperCase("aBcdE"));
+        // toUpperCase(blank)
+        assertEquals(" ", StrLib.toUpperCase(" "));
+        assertEquals("  ", StrLib.toUpperCase("  "));
+
+        assertEquals("0123456789.,:!?", StrLib.toUpperCase("0123456789.,:!?"));
+
+        // toUpperCase(value)
+        assertEquals("A", StrLib.toUpperCase("A"));
+        assertEquals("AB", StrLib.toUpperCase("AB"));
+        assertEquals("ABC", StrLib.toUpperCase("ABC"));
+        assertEquals("ABCD", StrLib.toUpperCase("ABCD"));
+
+        assertEquals("A", StrLib.toUpperCase("a"));
+        assertEquals("AB", StrLib.toUpperCase("ab"));
+        assertEquals("ABC", StrLib.toUpperCase("abc"));
+        assertEquals("ABCD", StrLib.toUpperCase("abcd"));
+
+        assertEquals("AB", StrLib.toUpperCase("aB"));
+        assertEquals("ABC", StrLib.toUpperCase("aBc"));
+        assertEquals("ABCD", StrLib.toUpperCase("aBcD"));
 
     }
 
     public void testToLowerCase() {
 
-        // toLowerCase: null
+        // toLowerCase(null), toLowerCase(empty)
         assertNull(StrLib.toLowerCase(null));
-
-        // toLowerCase: empty
         assertEquals("", StrLib.toLowerCase(""));
-        assertEquals(" ", StrLib.toLowerCase(" "));
 
-        // toLowerCase: value
-        assertEquals("abcde", StrLib.toLowerCase("aBcdE"));
+        // toLowerCase(blank)
+        assertEquals(" ", StrLib.toLowerCase(" "));
+        assertEquals("  ", StrLib.toLowerCase("  "));
+
+        assertEquals("0123456789.,:!?", StrLib.toLowerCase("0123456789.,:!?"));
+
+        // toLowerCase(value)
+        assertEquals("a", StrLib.toLowerCase("a"));
+        assertEquals("ab", StrLib.toLowerCase("ab"));
+        assertEquals("abc", StrLib.toLowerCase("abc"));
+        assertEquals("abcd", StrLib.toLowerCase("abcd"));
+
+        assertEquals("a", StrLib.toLowerCase("A"));
+        assertEquals("ab", StrLib.toLowerCase("AB"));
+        assertEquals("abc", StrLib.toLowerCase("ABC"));
+        assertEquals("abcd", StrLib.toLowerCase("ABCD"));
+
+        assertEquals("ab", StrLib.toLowerCase("Ab"));
+        assertEquals("abc", StrLib.toLowerCase("AbC"));
+        assertEquals("abcd", StrLib.toLowerCase("AbCd"));
 
     }
 
     public void testToCase() {
 
-        // toCase: null
-        assertNull(StrLib.toCase(null, false));
+        //// Upper ////
+
+        // toCase(null), toCase(empty, true)
         assertNull(StrLib.toCase(null, true));
-
-        // toCase: empty
         assertEquals("", StrLib.toCase("", true));
+
+        // toCase(blank, true)
         assertEquals(" ", StrLib.toCase(" ", true));
+        assertEquals("  ", StrLib.toCase("  ", true));
 
-        // toCase: value
-        assertEquals("ABCDE", StrLib.toCase("aBcdE", true));
+        assertEquals("0123456789.,:!?", StrLib.toCase("0123456789.,:!?", true));
 
-        // toCase: null
+        // toCase(value, true)
+        assertEquals("A", StrLib.toCase("A", true));
+        assertEquals("AB", StrLib.toCase("AB", true));
+        assertEquals("ABC", StrLib.toCase("ABC", true));
+        assertEquals("ABCD", StrLib.toCase("ABCD", true));
+
+        assertEquals("A", StrLib.toCase("a", true));
+        assertEquals("AB", StrLib.toCase("ab", true));
+        assertEquals("ABC", StrLib.toCase("abc", true));
+        assertEquals("ABCD", StrLib.toCase("abcd", true));
+
+        assertEquals("AB", StrLib.toCase("aB", true));
+        assertEquals("ABC", StrLib.toCase("aBc", true));
+        assertEquals("ABCD", StrLib.toCase("aBcD", true));
+
+        //// Lower ////
+
+        // toCase(null, false), toCase(empty, false)
         assertNull(StrLib.toCase(null, false));
-
-        // toCase: empty
         assertEquals("", StrLib.toCase("", false));
-        assertEquals(" ", StrLib.toCase(" ", false));
 
-        // toCase: value
-        assertEquals("abcde", StrLib.toCase("aBcdE", false));
+        // toCase(blank, false)
+        assertEquals(" ", StrLib.toCase(" ", false));
+        assertEquals("  ", StrLib.toCase("  ", false));
+
+        assertEquals("0123456789.,:!?", StrLib.toCase("0123456789.,:!?", false));
+
+        // toCase(value, false)
+        assertEquals("a", StrLib.toCase("a", false));
+        assertEquals("ab", StrLib.toCase("ab", false));
+        assertEquals("abc", StrLib.toCase("abc", false));
+        assertEquals("abcd", StrLib.toCase("abcd", false));
+
+        assertEquals("a", StrLib.toCase("A", false));
+        assertEquals("ab", StrLib.toCase("AB", false));
+        assertEquals("abc", StrLib.toCase("ABC", false));
+        assertEquals("abcd", StrLib.toCase("ABCD", false));
+
+        assertEquals("ab", StrLib.toCase("Ab", false));
+        assertEquals("abc", StrLib.toCase("AbC", false));
+        assertEquals("abcd", StrLib.toCase("AbCd", false));
+
 
     }
+    
+    ////
+    
+    public void testGetCaseCode() {
+        
+        // getCaseCode(null), getCaseCode(empty)
+        assertEquals(StrLib.CT_NONE, StrLib.getCaseCode(null));
+        assertEquals(StrLib.CT_NONE, StrLib.getCaseCode(""));
+        assertEquals(StrLib.CT_NONE, StrLib.getCaseCode(" "));
+        assertEquals(StrLib.CT_NONE, StrLib.getCaseCode(" "));
+
+        // getCaseCode(unknown)
+        assertEquals(StrLib.CT_NONE, StrLib.getCaseCode("blahblahblah"));
+        assertEquals(StrLib.CT_NONE, StrLib.getCaseCode("0123456789"));
+
+        // lowercase
+        assertEquals(StrLib.CT_lowercase, StrLib.getCaseCode("lower"));
+
+        // UPPERCASE
+        assertEquals(StrLib.CT_UPPERCASE, StrLib.getCaseCode("upper"));
+
+        // camelCase
+        assertEquals(StrLib.CT_camelCase, StrLib.getCaseCode("camel"));
+
+        // PascalCase
+        assertEquals(StrLib.CT_PascalCase, StrLib.getCaseCode("Camel"));
+        assertEquals(StrLib.CT_PascalCase, StrLib.getCaseCode("Pascal"));
+        assertEquals(StrLib.CT_PascalCase, StrLib.getCaseCode("pascal"));
+
+        // snake_case
+        assertEquals(StrLib.CT_snake_case, StrLib.getCaseCode("snake"));
+
+        // SNAKE_CASE
+        assertEquals(StrLib.CT_SNAKE_CASE, StrLib.getCaseCode("SNAKE"));
+        assertEquals(StrLib.CT_SNAKE_CASE, StrLib.getCaseCode("MACRO"));
+        assertEquals(StrLib.CT_SNAKE_CASE, StrLib.getCaseCode("macro"));
+
+        // kebab-case
+        assertEquals(StrLib.CT_kebab_case, StrLib.getCaseCode("kebab"));
+        assertEquals(StrLib.CT_kebab_case, StrLib.getCaseCode("dash"));
+        assertEquals(StrLib.CT_kebab_case, StrLib.getCaseCode("train"));
+        assertEquals(StrLib.CT_kebab_case, StrLib.getCaseCode("lisp"));
+
+        // KEBAB-CASE
+        assertEquals(StrLib.CT_KEBAB_CASE, StrLib.getCaseCode("KEBAB"));
+        assertEquals(StrLib.CT_KEBAB_CASE, StrLib.getCaseCode("DASH"));
+        assertEquals(StrLib.CT_KEBAB_CASE, StrLib.getCaseCode("TRAIN"));
+        assertEquals(StrLib.CT_KEBAB_CASE, StrLib.getCaseCode("COBOL"));
+        assertEquals(StrLib.CT_KEBAB_CASE, StrLib.getCaseCode("cobol"));
+
+        // CT_Kebab_Case
+        assertEquals(StrLib.CT_Kebab_Case, StrLib.getCaseCode("Kebab"));
+        assertEquals(StrLib.CT_Kebab_Case, StrLib.getCaseCode("Dash"));
+        assertEquals(StrLib.CT_Kebab_Case, StrLib.getCaseCode("Train"));
+        
+    }
+    
+    ////
 
     public void testToCamelCase() {
-
-        // toCamelCase: null
+        
+        // toCamelCase(null), toCamelCase(empty)
         assertNull(StrLib.toCamelCase(null));
-
-        // toCamelCase: empty
         assertEquals("", StrLib.toCamelCase(""));
         assertEquals(" ", StrLib.toCamelCase(" "));
+        assertEquals("  ", StrLib.toCamelCase("  "));
 
-        // toCamelCase: value
-        assertEquals("FirstName", StrLib.toCamelCase("first_name"));
-        assertEquals("FirstName", StrLib.toCamelCase("first_name", true));
-        assertEquals("firstName", StrLib.toCamelCase("first_name", false));
+        // capitalize = default
+        assertEquals("ProductName", StrLib.toCamelCase("product name"));
+        assertEquals("ProductName", StrLib.toCamelCase("product-name"));
+        assertEquals("ProductName", StrLib.toCamelCase("product_name"));
+        assertEquals("ProductName", StrLib.toCamelCase("productName"));
+        
+        assertEquals("ProductName", StrLib.toCamelCase("Product Name"));
+        assertEquals("ProductName", StrLib.toCamelCase("Product-Name"));
+        assertEquals("ProductName", StrLib.toCamelCase("Product_Name"));
+        assertEquals("ProductName", StrLib.toCamelCase("ProductName"));
+        
+        assertEquals("ProductFullName", StrLib.toCamelCase("product full name"));
+        assertEquals("ProductFullName", StrLib.toCamelCase("product-full-name"));
+        assertEquals("ProductFullName", StrLib.toCamelCase("product_full_name"));
+        
+        assertEquals("ProductFullName", StrLib.toCamelCase("product Full name"));
+        assertEquals("ProductFullName", StrLib.toCamelCase("product-Full-name"));
+        assertEquals("ProductFullName", StrLib.toCamelCase("product_Full_name"));
+        
+        assertEquals("ProductFullName", StrLib.toCamelCase("product-_ full -_name"));
+        assertEquals("ProductFullName", StrLib.toCamelCase("product-_ Full -_name"));
+        assertEquals("ProductFullName", StrLib.toCamelCase("product-_ FullName"));
 
+        // capitalize = true
+        assertEquals("ProductName", StrLib.toCamelCase("product name", true));
+        assertEquals("ProductName", StrLib.toCamelCase("product-name", true));
+        assertEquals("ProductName", StrLib.toCamelCase("product_name", true));
+        assertEquals("ProductName", StrLib.toCamelCase("productName", true));
+        
+        assertEquals("ProductName", StrLib.toCamelCase("Product Name", true));
+        assertEquals("ProductName", StrLib.toCamelCase("Product-Name", true));
+        assertEquals("ProductName", StrLib.toCamelCase("Product_Name", true));
+        assertEquals("ProductName", StrLib.toCamelCase("ProductName", true));
+        
+        assertEquals("ProductFullName", StrLib.toCamelCase("product full name", true));
+        assertEquals("ProductFullName", StrLib.toCamelCase("product-full-name", true));
+        assertEquals("ProductFullName", StrLib.toCamelCase("product_full_name", true));
+        
+        assertEquals("ProductFullName", StrLib.toCamelCase("product Full name", true));
+        assertEquals("ProductFullName", StrLib.toCamelCase("product-Full-name", true));
+        assertEquals("ProductFullName", StrLib.toCamelCase("product_Full_name", true));
+        
+        assertEquals("ProductFullName", StrLib.toCamelCase("product-_ full -_name", true));
+        assertEquals("ProductFullName", StrLib.toCamelCase("product-_ Full -_name", true));
+        assertEquals("ProductFullName", StrLib.toCamelCase("product-_ FullName", true));
+
+        // capitalize = false
+        assertEquals("productName", StrLib.toCamelCase("product name", false));
+        assertEquals("productName", StrLib.toCamelCase("product-name", false));
+        assertEquals("productName", StrLib.toCamelCase("product_name", false));
+        assertEquals("productName", StrLib.toCamelCase("productName", false));
+        
+        assertEquals("productName", StrLib.toCamelCase("Product Name", false));
+        assertEquals("productName", StrLib.toCamelCase("Product-Name", false));
+        assertEquals("productName", StrLib.toCamelCase("Product_Name", false));
+        assertEquals("productName", StrLib.toCamelCase("ProductName", false));
+        
+        assertEquals("productFullName", StrLib.toCamelCase("product full name", false));
+        assertEquals("productFullName", StrLib.toCamelCase("product-full-name", false));
+        assertEquals("productFullName", StrLib.toCamelCase("product_full_name", false));
+        
+        assertEquals("productFullName", StrLib.toCamelCase("product Full name", false));
+        assertEquals("productFullName", StrLib.toCamelCase("product-Full-name", false));
+        assertEquals("productFullName", StrLib.toCamelCase("product_Full_name", false));
+        
+        assertEquals("productFullName", StrLib.toCamelCase("product-_ full -_name", false));
+        assertEquals("productFullName", StrLib.toCamelCase("product-_ Full -_name", false));
+        assertEquals("productFullName", StrLib.toCamelCase("product-_ FullName", false));
+        
     }
 
     public void testToSnakeCase() {
-
-        // toSnakeCase: null
+        
+        // toSnakeCase(None), toSnakeCase(empty)
         assertNull(StrLib.toSnakeCase(null));
-
-        // toSnakeCase: empty
         assertEquals("", StrLib.toSnakeCase(""));
         assertEquals(" ", StrLib.toSnakeCase(" "));
+        assertEquals("  ", StrLib.toSnakeCase("  "));
 
-        // toSnakeCase: value
-        assertEquals("first_name", StrLib.toSnakeCase("FirstName"));
-        assertEquals("first_name", StrLib.toSnakeCase("FirstName", false));
-        assertEquals("FIRST_NAME", StrLib.toSnakeCase("FirstName", true));
+        // toSnakeCase(value)        
+        assertEquals("product_name", StrLib.toSnakeCase("product name"));
+        assertEquals("product_name", StrLib.toSnakeCase("product-name"));
+        assertEquals("product_name", StrLib.toSnakeCase("product_name"));        
+        assertEquals("product_name", StrLib.toSnakeCase("ProductName"));
+
+        // upper = false
+        assertEquals("product_name", StrLib.toSnakeCase("product name", false));
+        assertEquals("product_name", StrLib.toSnakeCase("product-name", false));
+        assertEquals("product_name", StrLib.toSnakeCase("product_name", false));        
+        assertEquals("product_name", StrLib.toSnakeCase("ProductName", false));
+
+        // upper = true
+        assertEquals("PRODUCT_NAME", StrLib.toSnakeCase("product name", true));
+        assertEquals("PRODUCT_NAME", StrLib.toSnakeCase("product-name", true));
+        assertEquals("PRODUCT_NAME", StrLib.toSnakeCase("product_name", true));        
+        assertEquals("PRODUCT_NAME", StrLib.toSnakeCase("ProductName", true));
 
     }
 
     public void testToKebabCase() {
-
-        // toKebabCase: null
+        
+        // toKebabCase(None), toKebabCase(empty)
         assertNull(StrLib.toKebabCase(null));
-
-        // toKebabCase: empty
         assertEquals("", StrLib.toKebabCase(""));
         assertEquals(" ", StrLib.toKebabCase(" "));
+        assertEquals("  ", StrLib.toKebabCase("  "));
 
-        // toKebabCase: value
-        assertEquals("first-name", StrLib.toKebabCase("FirstName"));
-        assertEquals("first-name", StrLib.toKebabCase("FirstName", false));
-        assertEquals("FIRST-NAME", StrLib.toKebabCase("FirstName", true));
+        // toKebabCase(value)        
+        assertEquals("product-name", StrLib.toKebabCase("product name"));
+        assertEquals("product-name", StrLib.toKebabCase("product-name"));
+        assertEquals("product-name", StrLib.toKebabCase("product_name"));        
+        assertEquals("product-name", StrLib.toKebabCase("ProductName"));
+        
+        // upper = false
+        assertEquals("product-name", StrLib.toKebabCase("product name", false));
+        assertEquals("product-name", StrLib.toKebabCase("product-name", false));
+        assertEquals("product-name", StrLib.toKebabCase("product_name", false));        
+        assertEquals("product-name", StrLib.toKebabCase("ProductName", false));
 
+        // upper = true
+        assertEquals("PRODUCT-NAME", StrLib.toKebabCase("product name", true));
+        assertEquals("PRODUCT-NAME", StrLib.toKebabCase("product-name", true));
+        assertEquals("PRODUCT-NAME", StrLib.toKebabCase("product_name", true));        
+        assertEquals("PRODUCT-NAME", StrLib.toKebabCase("ProductName", true));
+        
     }
     
     // 4.1

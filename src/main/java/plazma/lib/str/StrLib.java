@@ -398,7 +398,8 @@ public class StrLib {
     // -  9. KEBAB-CASE, DASH-CASE, TRAIN-CASE, COBOL-CASE
     // - 10. Kebab-Case, Dash-Case, Train-Case, HTTP-Header-Case
     ////////////////////////////////////
-
+    
+    public static final int CT_NONE       = 0;
     public static final int CT_lowercase  = 1;
     public static final int CT_UPPERCASE  = 2;
     public static final int CT_camelCase  = 3;
@@ -1925,7 +1926,7 @@ public class StrLib {
             return CO_UPPER_CHAR;
         }
         
-        return 0;
+        return CO_NONE;
         
     }
     
@@ -1944,7 +1945,7 @@ public class StrLib {
     public static int getCaseCode(String type) {
 
         if (type == null) {
-            return 0;
+            return CT_NONE;
         }
 
         if (type.equals("lower")) {
@@ -1991,7 +1992,7 @@ public class StrLib {
             return CT_Kebab_Case;       // Kebab_Case
         }
 
-        return 0;
+        return CT_NONE;
 
     }
 

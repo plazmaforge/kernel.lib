@@ -1441,6 +1441,7 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('Abc', strlib.capitalize('abc'))
         self.assertEqual('Abcd', strlib.capitalize('abcd'))
 
+        # ForceRest=default
         self.assertEqual('AB', strlib.capitalize('aB'))
         self.assertEqual('ABc', strlib.capitalize('aBc'))
         self.assertEqual('ABcd', strlib.capitalize('aBcd'))
@@ -1448,7 +1449,15 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('Hello world!', strlib.capitalize('Hello world!'))
         self.assertEqual('Hello world!', strlib.capitalize('hello world!'))
 
-        # Force
+        # ForceRest=False
+        self.assertEqual('AB', strlib.capitalize('aB', False))
+        self.assertEqual('ABc', strlib.capitalize('aBc', False))
+        self.assertEqual('ABcd', strlib.capitalize('aBcd', False))
+
+        self.assertEqual('Hello world!', strlib.capitalize('Hello world!', False))
+        self.assertEqual('Hello world!', strlib.capitalize('hello world!', False))
+
+        # ForceRest=True
         self.assertEqual('Ab', strlib.capitalize('aB', True))
         self.assertEqual('Abc', strlib.capitalize('aBc', True))
         self.assertEqual('Abcd', strlib.capitalize('aBcd', True))
@@ -1456,6 +1465,7 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('Hello world!', strlib.capitalize('Hello world!', True))
         self.assertEqual('Hello world!', strlib.capitalize('hello world!', True))
 
+        ##
         self.assertEqual('Hello world!', strlib.capitalize('Hello World!', True))
         self.assertEqual('Hello world!', strlib.capitalize('hello World!', True))
 
@@ -1473,18 +1483,28 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('abc', strlib.decapitalize('Abc'))
         self.assertEqual('abcd', strlib.decapitalize('Abcd'))
 
+        # ForceRest=default
         self.assertEqual('ab', strlib.decapitalize('Ab'))
         self.assertEqual('abC', strlib.decapitalize('AbC'))
         self.assertEqual('abCd', strlib.decapitalize('AbCd'))
 
         self.assertEqual('hello world!', strlib.decapitalize('hello world!'))
-        self.assertEqual('hello world!', strlib.decapitalize('Hello world!'))        
+        self.assertEqual('hello world!', strlib.decapitalize('Hello world!'))
 
-        # Force
+        # ForceRest=False
+        self.assertEqual('ab', strlib.decapitalize('Ab', False))
+        self.assertEqual('abC', strlib.decapitalize('AbC', False))
+        self.assertEqual('abCd', strlib.decapitalize('AbCd', False))
+
+        self.assertEqual('hello world!', strlib.decapitalize('hello world!', False))
+        self.assertEqual('hello world!', strlib.decapitalize('Hello world!', False))
+
+        # ForceRest=True
         self.assertEqual('aB', strlib.decapitalize('Ab', True))
         self.assertEqual('aBC', strlib.decapitalize('AbC', True))
         self.assertEqual('aBCD', strlib.decapitalize('AbCd', True))
 
+        ##
         self.assertEqual('hELLO WORLD!', strlib.decapitalize('hello world!', True))
         self.assertEqual('hELLO WORLD!', strlib.decapitalize('Hello world!', True))        
 
@@ -1659,7 +1679,7 @@ class StrlibTest(unittest.TestCase):
     def test_getCaseCode(self):
 
         # getCaseCode(None), getCaseCode(empty)
-        self.assertIsNone(strlib.getCaseCode(None))
+        self.assertEqual(strlib.CT_NONE, strlib.getCaseCode(None))
         self.assertEqual(strlib.CT_NONE, strlib.getCaseCode(''))
         self.assertEqual(strlib.CT_NONE, strlib.getCaseCode(' '))
         self.assertEqual(strlib.CT_NONE, strlib.getCaseCode(' '))
@@ -1716,65 +1736,74 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(' ', strlib.toCamelCase(' '))
         self.assertEqual('  ', strlib.toCamelCase('  '))
 
-        # capitalize by default
+        # capitalize = default
+        self.assertEqual('ProductName', strlib.toCamelCase('product name'))
         self.assertEqual('ProductName', strlib.toCamelCase('product-name'))
         self.assertEqual('ProductName', strlib.toCamelCase('product_name'))
-        self.assertEqual('ProductName', strlib.toCamelCase('product name'))
-
+        self.assertEqual('ProductName', strlib.toCamelCase('productName'))
+        
+        self.assertEqual('ProductName', strlib.toCamelCase('Product Name'))
         self.assertEqual('ProductName', strlib.toCamelCase('Product-Name'))
         self.assertEqual('ProductName', strlib.toCamelCase('Product_Name'))
-        self.assertEqual('ProductName', strlib.toCamelCase('Product Name'))
-
+        self.assertEqual('ProductName', strlib.toCamelCase('ProductName'))
+        
+        self.assertEqual('ProductFullName', strlib.toCamelCase('product full name'))
         self.assertEqual('ProductFullName', strlib.toCamelCase('product-full-name'))
         self.assertEqual('ProductFullName', strlib.toCamelCase('product_full_name'))
-        self.assertEqual('ProductFullName', strlib.toCamelCase('product full name'))
-
+        
+        self.assertEqual('ProductFullName', strlib.toCamelCase('product Full name'))
         self.assertEqual('ProductFullName', strlib.toCamelCase('product-Full-name'))
         self.assertEqual('ProductFullName', strlib.toCamelCase('product_Full_name'))
-        self.assertEqual('ProductFullName', strlib.toCamelCase('product Full name'))
-
+        
         self.assertEqual('ProductFullName', strlib.toCamelCase('product-_ full -_name'))
         self.assertEqual('ProductFullName', strlib.toCamelCase('product-_ Full -_name'))
+        self.assertEqual('ProductFullName', strlib.toCamelCase('product-_ FullName'))
 
         # capitalize = True
+        self.assertEqual('ProductName', strlib.toCamelCase('product name', capitalize = True))
         self.assertEqual('ProductName', strlib.toCamelCase('product-name', capitalize = True))
         self.assertEqual('ProductName', strlib.toCamelCase('product_name', capitalize = True))
-        self.assertEqual('ProductName', strlib.toCamelCase('product name', capitalize = True))
-
+        self.assertEqual('ProductName', strlib.toCamelCase('productName', capitalize = True))
+        
+        self.assertEqual('ProductName', strlib.toCamelCase('Product Name', capitalize = True))
         self.assertEqual('ProductName', strlib.toCamelCase('Product-Name', capitalize = True))
         self.assertEqual('ProductName', strlib.toCamelCase('Product_Name', capitalize = True))
-        self.assertEqual('ProductName', strlib.toCamelCase('Product Name', capitalize = True))
-
+        self.assertEqual('ProductName', strlib.toCamelCase('ProductName', capitalize = True))
+        
+        self.assertEqual('ProductFullName', strlib.toCamelCase('product full name', capitalize = True))
         self.assertEqual('ProductFullName', strlib.toCamelCase('product-full-name', capitalize = True))
         self.assertEqual('ProductFullName', strlib.toCamelCase('product_full_name', capitalize = True))
-        self.assertEqual('ProductFullName', strlib.toCamelCase('product full name', capitalize = True))
-
+        
+        self.assertEqual('ProductFullName', strlib.toCamelCase('product Full name', capitalize = True))
         self.assertEqual('ProductFullName', strlib.toCamelCase('product-Full-name', capitalize = True))
         self.assertEqual('ProductFullName', strlib.toCamelCase('product_Full_name', capitalize = True))
-        self.assertEqual('ProductFullName', strlib.toCamelCase('product Full name', capitalize = True))
-
+        
         self.assertEqual('ProductFullName', strlib.toCamelCase('product-_ full -_name', capitalize = True))
         self.assertEqual('ProductFullName', strlib.toCamelCase('product-_ Full -_name', capitalize = True))
+        self.assertEqual('ProductFullName', strlib.toCamelCase('product-_ FullName', capitalize = True))
 
         # capitalize = False
+        self.assertEqual('productName', strlib.toCamelCase('product name', capitalize = False))
         self.assertEqual('productName', strlib.toCamelCase('product-name', capitalize = False))
         self.assertEqual('productName', strlib.toCamelCase('product_name', capitalize = False))
-        self.assertEqual('productName', strlib.toCamelCase('product name', capitalize = False))
-
+        self.assertEqual('productName', strlib.toCamelCase('productName', capitalize = False))
+        
+        self.assertEqual('productName', strlib.toCamelCase('Product Name', capitalize = False))
         self.assertEqual('productName', strlib.toCamelCase('Product-Name', capitalize = False))
         self.assertEqual('productName', strlib.toCamelCase('Product_Name', capitalize = False))
-        self.assertEqual('productName', strlib.toCamelCase('Product Name', capitalize = False))
-
+        self.assertEqual('productName', strlib.toCamelCase('ProductName', capitalize = False))
+        
+        self.assertEqual('productFullName', strlib.toCamelCase('product full name', capitalize = False))
         self.assertEqual('productFullName', strlib.toCamelCase('product-full-name', capitalize = False))
         self.assertEqual('productFullName', strlib.toCamelCase('product_full_name', capitalize = False))
-        self.assertEqual('productFullName', strlib.toCamelCase('product full name', capitalize = False))
-
+        
+        self.assertEqual('productFullName', strlib.toCamelCase('product Full name', capitalize = False))
         self.assertEqual('productFullName', strlib.toCamelCase('product-Full-name', capitalize = False))
         self.assertEqual('productFullName', strlib.toCamelCase('product_Full_name', capitalize = False))
-        self.assertEqual('productFullName', strlib.toCamelCase('product Full name', capitalize = False))
-
+        
         self.assertEqual('productFullName', strlib.toCamelCase('product-_ full -_name', capitalize = False))
         self.assertEqual('productFullName', strlib.toCamelCase('product-_ Full -_name', capitalize = False))
+        self.assertEqual('productFullName', strlib.toCamelCase('product-_ FullName', capitalize = False))
 
     def test_toSnakeCase(self):
         
@@ -1790,6 +1819,19 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('product_name', strlib.toSnakeCase('product_name'))        
         self.assertEqual('product_name', strlib.toSnakeCase('ProductName'))
 
+        # upper = False
+        self.assertEqual('product_name', strlib.toSnakeCase('product name', upper = False))
+        self.assertEqual('product_name', strlib.toSnakeCase('product-name', upper = False))
+        self.assertEqual('product_name', strlib.toSnakeCase('product_name', upper = False))        
+        self.assertEqual('product_name', strlib.toSnakeCase('ProductName', upper = False))
+
+        # upper = True
+        self.assertEqual('PRODUCT_NAME', strlib.toSnakeCase('product name', upper = True))
+        self.assertEqual('PRODUCT_NAME', strlib.toSnakeCase('product-name', upper = True))
+        self.assertEqual('PRODUCT_NAME', strlib.toSnakeCase('product_name', upper = True))        
+        self.assertEqual('PRODUCT_NAME', strlib.toSnakeCase('ProductName', upper = True))
+
+
     def test_toKebabCase(self):
         
         # toKebabCase(None), toKebabCase(empty)
@@ -1804,6 +1846,17 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('product-name', strlib.toKebabCase('product_name'))        
         self.assertEqual('product-name', strlib.toKebabCase('ProductName'))
 
+        # upper = False
+        self.assertEqual('product-name', strlib.toKebabCase('product name', upper = False))
+        self.assertEqual('product-name', strlib.toKebabCase('product-name', upper = False))
+        self.assertEqual('product-name', strlib.toKebabCase('product_name', upper = False))        
+        self.assertEqual('product-name', strlib.toKebabCase('ProductName', upper = False))
+
+        # upper = True
+        self.assertEqual('PRODUCT-NAME', strlib.toKebabCase('product name', upper = True))
+        self.assertEqual('PRODUCT-NAME', strlib.toKebabCase('product-name', upper = True))
+        self.assertEqual('PRODUCT-NAME', strlib.toKebabCase('product_name', upper = True))        
+        self.assertEqual('PRODUCT-NAME', strlib.toKebabCase('ProductName', upper = True))
 
 if __name__ == '__main__':
     unittest.main()
