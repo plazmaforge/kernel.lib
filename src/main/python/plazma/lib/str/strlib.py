@@ -159,6 +159,8 @@ KEBAB_CONNECTOR = '-' # kebab-case
 # - toCamelCase(str, separators, capitalize)
 # - toSnakeCase(str, separators, upper)
 # - toKebabCase(str, separators, upper)
+#
+#  - reverse(String str)                                               - reverse("abc") = "cba"
 
 # 1.1
 
@@ -923,3 +925,8 @@ def getCaseOp(code):
     return CO_NONE
     
 ##################################################################
+
+def reverse(str):
+    if str is None:
+        return None
+    return str[::-1]
