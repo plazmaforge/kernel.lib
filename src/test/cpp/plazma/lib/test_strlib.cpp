@@ -1586,12 +1586,26 @@ TEST(toKebabCase) {
 
 TEST(reverse) {
 
+  // reverse(empty)
   ASSERT_EQ("", strlib::reverse(""));
+
+  // reverse(blank)
   ASSERT_EQ(" ", strlib::reverse(" "));
+  ASSERT_EQ("  ", strlib::reverse("  "));
+
+  // reverse(value)
   ASSERT_EQ("*", strlib::reverse("*"));
   ASSERT_EQ("**", strlib::reverse("**"));
   ASSERT_EQ("***", strlib::reverse("***"));
   ASSERT_EQ("****", strlib::reverse("****"));
+  ASSERT_EQ("*****", strlib::reverse("*****"));
+  ASSERT_EQ("******", strlib::reverse("******"));
+
+  ASSERT_EQ("a", strlib::reverse("a"));
+  ASSERT_EQ("ba", strlib::reverse("ab"));
+  ASSERT_EQ("cba", strlib::reverse("abc"));
+  ASSERT_EQ("dcba", strlib::reverse("abcd"));
+  ASSERT_EQ("edcba", strlib::reverse("abcde"));
   ASSERT_EQ("fedcba", strlib::reverse("abcdef"));
 
 }

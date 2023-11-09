@@ -1858,5 +1858,30 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('PRODUCT-NAME', strlib.toKebabCase('product_name', upper = True))        
         self.assertEqual('PRODUCT-NAME', strlib.toKebabCase('ProductName', upper = True))
 
+    def test_reverse(self):
+        
+        # reverse(None), reverse(empty)
+        self.assertIsNone(strlib.reverse(None))
+        self.assertEqual('', strlib.reverse(''))
+
+        # reverse(blank)
+        self.assertEqual(' ', strlib.reverse(' '))
+        self.assertEqual('  ', strlib.reverse('  '))
+
+        # reverse(value)
+        self.assertEqual('*', strlib.reverse('*'))
+        self.assertEqual('**', strlib.reverse('**'))
+        self.assertEqual('***', strlib.reverse('***'))
+        self.assertEqual('****', strlib.reverse('****'))
+        self.assertEqual('*****', strlib.reverse('*****'))
+        self.assertEqual('******', strlib.reverse('******'))
+
+        self.assertEqual('a', strlib.reverse('a'))
+        self.assertEqual('ba', strlib.reverse('ab'))
+        self.assertEqual('cba', strlib.reverse('abc'))
+        self.assertEqual('dcba', strlib.reverse('abcd'))
+        self.assertEqual('edcba', strlib.reverse('abcde'))
+        self.assertEqual('fedcba', strlib.reverse('abcdef'))
+
 if __name__ == '__main__':
     unittest.main()

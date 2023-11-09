@@ -2053,6 +2053,33 @@ public class StrLibTest extends AbstractTestCase {
         
     }
     
+    public void testReverse() {
+        
+        // reverse(null), reverse(empty)
+        assertNull(StrLib.reverse(null));
+        assertEquals("", StrLib.reverse(""));
+
+        // reverse(blank)
+        assertEquals(" ", StrLib.reverse(" "));
+        assertEquals("  ", StrLib.reverse("  "));
+
+        // reverse(value)
+        assertEquals("*", StrLib.reverse("*"));
+        assertEquals("**", StrLib.reverse("**"));
+        assertEquals("***", StrLib.reverse("***"));
+        assertEquals("****", StrLib.reverse("****"));
+        assertEquals("*****", StrLib.reverse("*****"));
+        assertEquals("******", StrLib.reverse("******"));
+
+        assertEquals("a", StrLib.reverse("a"));
+        assertEquals("ba", StrLib.reverse("ab"));
+        assertEquals("cba", StrLib.reverse("abc"));
+        assertEquals("dcba", StrLib.reverse("abcd"));
+        assertEquals("edcba", StrLib.reverse("abcde"));
+        assertEquals("fedcba", StrLib.reverse("abcdef"));
+                
+    }
+    
     // 4.1
     
     public void testHasPrefix() {
