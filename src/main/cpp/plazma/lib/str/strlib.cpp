@@ -1255,7 +1255,7 @@ namespace strlib {
         } else if (caseOp == CO_LOWER) {  
             std::transform(token.begin(), token.end(), token.begin(), ::tolower); // lower case
         } else if (caseOp == CO_UPPER) {
-            std::transform(token.begin(), token.end(), token.begin(), ::tolower); // UPPER case
+            std::transform(token.begin(), token.end(), token.begin(), ::toupper); // UPPER case
         }
     }    
 
@@ -1462,8 +1462,7 @@ namespace strlib {
             return CO_UPPER_CHAR;
         }
         
-        return 0;
-        
+        return CO_NONE;        
     }
 
 
@@ -1525,8 +1524,7 @@ namespace strlib {
             return CT_Kebab_Case;        // Kebab_Case
         }
 
-        return 0;
-        
+        return CT_NONE;        
     }
 
     std::string toTypeCase(const std::string& str, const std::string& type) {

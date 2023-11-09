@@ -317,6 +317,7 @@ namespace strlib {
     // -  9. KEBAB-CASE, DASH-CASE, TRAIN-CASE, COBOL-CASE
     // - 10. Kebab-Case, Dash-Case, Train-Case, HTTP-Header-Case
 
+    const int CT_NONE       =  0;
     const int CT_lowercase  =  1;
     const int CT_UPPERCASE  =  2;
     const int CT_camelCase  =  3;

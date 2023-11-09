@@ -1147,80 +1147,440 @@ TEST(right) {
 
 TEST(capitalize) {
 
+  // capitalize(empty)
   ASSERT_EQ("", strlib::capitalize(""));
-  ASSERT_EQ(" ", strlib::capitalize(" "));
-  ASSERT_EQ("Abcd", strlib::capitalize("abcd"));
-  ASSERT_EQ("AbCd", strlib::capitalize("abCd"));
-  ASSERT_EQ("Abcd", strlib::capitalize("abCd", true));
 
+  ASSERT_EQ(" ", strlib::capitalize(" "));
+  ASSERT_EQ("  ", strlib::capitalize("  "));
+
+  ASSERT_EQ("A", strlib::capitalize("a"));
+  ASSERT_EQ("Ab", strlib::capitalize("ab"));
+  ASSERT_EQ("Abc", strlib::capitalize("abc"));
+  ASSERT_EQ("Abcd", strlib::capitalize("abcd"));
+  
+  // ForceRest=default
+  ASSERT_EQ("AB", strlib::capitalize("aB"));
+  ASSERT_EQ("ABc", strlib::capitalize("aBc"));
+  ASSERT_EQ("ABcd", strlib::capitalize("aBcd"));
+
+  ASSERT_EQ("Hello world!", strlib::capitalize("Hello world!"));
+  ASSERT_EQ("Hello world!", strlib::capitalize("hello world!"));
+    
+  // ForceRest=false  
+  ASSERT_EQ("AB", strlib::capitalize("aB", false));
+  ASSERT_EQ("ABc", strlib::capitalize("aBc", false));
+  ASSERT_EQ("ABcd", strlib::capitalize("aBcd", false));
+
+  ASSERT_EQ("Hello world!", strlib::capitalize("Hello world!", false));
+  ASSERT_EQ("Hello world!", strlib::capitalize("hello world!", false));
+  
+  // ForceRest=true
+  ASSERT_EQ("Ab", strlib::capitalize("aB", true));
+  ASSERT_EQ("Abc", strlib::capitalize("aBc", true));
+  ASSERT_EQ("Abcd", strlib::capitalize("aBcd", true));
+
+  ASSERT_EQ("Hello world!", strlib::capitalize("Hello world!", true));
+  ASSERT_EQ("Hello world!", strlib::capitalize("hello world!", true));
+  
+  //
+  ASSERT_EQ("Hello world!", strlib::capitalize("Hello World!", true));
+  ASSERT_EQ("Hello world!", strlib::capitalize("hello World!", true));
+  
 }
 
 TEST(decapitalize) {
 
+  // decapitalize(empty)
   ASSERT_EQ("", strlib::decapitalize(""));
+
   ASSERT_EQ(" ", strlib::decapitalize(" "));
+  ASSERT_EQ("  ", strlib::decapitalize("  "));
+
+  ASSERT_EQ("a", strlib::decapitalize("A"));
+  ASSERT_EQ("ab", strlib::decapitalize("Ab"));
+  ASSERT_EQ("abc", strlib::decapitalize("Abc"));
   ASSERT_EQ("abcd", strlib::decapitalize("Abcd"));
+
+  // ForceRest=default
+  ASSERT_EQ("ab", strlib::decapitalize("Ab"));
+  ASSERT_EQ("abC", strlib::decapitalize("AbC"));
   ASSERT_EQ("abCd", strlib::decapitalize("AbCd"));
+
+  ASSERT_EQ("hello world!", strlib::decapitalize("hello world!"));
+  ASSERT_EQ("hello world!", strlib::decapitalize("Hello world!"));
+
+  // ForceRest=false
+  ASSERT_EQ("ab", strlib::decapitalize("Ab", false));
+  ASSERT_EQ("abC", strlib::decapitalize("AbC", false));
+  ASSERT_EQ("abCd", strlib::decapitalize("AbCd", false));
+
+  ASSERT_EQ("hello world!", strlib::decapitalize("hello world!", false));
+  ASSERT_EQ("hello world!", strlib::decapitalize("Hello world!", false));
+
+  // ForceRest=true
+  ASSERT_EQ("aB", strlib::decapitalize("Ab", true));
+  ASSERT_EQ("aBC", strlib::decapitalize("AbC", true));
   ASSERT_EQ("aBCD", strlib::decapitalize("AbCd", true));
+
+  //
+  ASSERT_EQ("hELLO WORLD!", strlib::decapitalize("hello world!", true));
+  ASSERT_EQ("hELLO WORLD!", strlib::decapitalize("Hello world!", true));  
 
 }
 
-// upper
-// lower
+TEST(upper) {
+  // upper(empty)
+  ASSERT_EQ("", strlib::upper(""));
+
+  // upper(blank)
+  ASSERT_EQ(" ", strlib::upper(" "));
+  ASSERT_EQ("  ", strlib::upper("  "));
+
+  ASSERT_EQ("0123456789.,:!?", strlib::upper("0123456789.,:!?"));
+
+  // upper(value)
+  ASSERT_EQ("A", strlib::upper("A"));
+  ASSERT_EQ("AB", strlib::upper("AB"));
+  ASSERT_EQ("ABC", strlib::upper("ABC"));
+  ASSERT_EQ("ABCD", strlib::upper("ABCD"));
+
+  ASSERT_EQ("A", strlib::upper("a"));
+  ASSERT_EQ("AB", strlib::upper("ab"));
+  ASSERT_EQ("ABC", strlib::upper("abc"));
+  ASSERT_EQ("ABCD", strlib::upper("abcd"));
+
+  ASSERT_EQ("AB", strlib::upper("aB"));
+  ASSERT_EQ("ABC", strlib::upper("aBc"));
+  ASSERT_EQ("ABCD", strlib::upper("aBcD"));
+
+}
+
+TEST(lower) {
+
+  // lower(empty)
+  ASSERT_EQ("", strlib::lower(""));
+
+  // lower(blank)
+  ASSERT_EQ(" ", strlib::lower(" "));
+  ASSERT_EQ("  ", strlib::lower("  "));
+
+  ASSERT_EQ("0123456789.,:!?", strlib::lower("0123456789.,:!?"));
+
+  // lower(value)
+  ASSERT_EQ("a", strlib::lower("a"));
+  ASSERT_EQ("ab", strlib::lower("ab"));
+  ASSERT_EQ("abc", strlib::lower("abc"));
+  ASSERT_EQ("abcd", strlib::lower("abcd"));
+
+  ASSERT_EQ("a", strlib::lower("A"));
+  ASSERT_EQ("ab", strlib::lower("AB"));
+  ASSERT_EQ("abc", strlib::lower("ABC"));
+  ASSERT_EQ("abcd", strlib::lower("ABCD"));
+
+  ASSERT_EQ("ab", strlib::lower("Ab"));
+  ASSERT_EQ("abc", strlib::lower("AbC"));
+  ASSERT_EQ("abcd", strlib::lower("AbCd"));
+
+}
 
 TEST(toUpperCase) {
 
+  // toUpperCase(empty)
   ASSERT_EQ("", strlib::toUpperCase(""));
+
+  // toUpperCase(blank)
   ASSERT_EQ(" ", strlib::toUpperCase(" "));
+  ASSERT_EQ("  ", strlib::toUpperCase("  "));
+
+  ASSERT_EQ("0123456789.,:!?", strlib::toUpperCase("0123456789.,:!?"));
+
+  // toUpperCase(value)
+  ASSERT_EQ("A", strlib::toUpperCase("A"));
+  ASSERT_EQ("AB", strlib::toUpperCase("AB"));
+  ASSERT_EQ("ABC", strlib::toUpperCase("ABC"));
+  ASSERT_EQ("ABCD", strlib::toUpperCase("ABCD"));
+
+  ASSERT_EQ("A", strlib::toUpperCase("a"));
+  ASSERT_EQ("AB", strlib::toUpperCase("ab"));
+  ASSERT_EQ("ABC", strlib::toUpperCase("abc"));
   ASSERT_EQ("ABCD", strlib::toUpperCase("abcd"));
-  ASSERT_EQ("ABCD", strlib::toUpperCase("AbCd"));
+
+  ASSERT_EQ("AB", strlib::toUpperCase("aB"));
+  ASSERT_EQ("ABC", strlib::toUpperCase("aBc"));
+  ASSERT_EQ("ABCD", strlib::toUpperCase("aBcD"));
 
 }
 
 TEST(toLowerCase) {
 
+  // toLowerCase(empty)
   ASSERT_EQ("", strlib::toLowerCase(""));
+
+  // toLowerCase(blank)
   ASSERT_EQ(" ", strlib::toLowerCase(" "));
+  ASSERT_EQ("  ", strlib::toLowerCase("  "));
+
+  ASSERT_EQ("0123456789.,:!?", strlib::toLowerCase("0123456789.,:!?"));
+
+  // toLowerCase(value)
+  ASSERT_EQ("a", strlib::toLowerCase("a"));
+  ASSERT_EQ("ab", strlib::toLowerCase("ab"));
+  ASSERT_EQ("abc", strlib::toLowerCase("abc"));
+  ASSERT_EQ("abcd", strlib::toLowerCase("abcd"));
+
+  ASSERT_EQ("a", strlib::toLowerCase("A"));
+  ASSERT_EQ("ab", strlib::toLowerCase("AB"));
+  ASSERT_EQ("abc", strlib::toLowerCase("ABC"));
   ASSERT_EQ("abcd", strlib::toLowerCase("ABCD"));
+
+  ASSERT_EQ("ab", strlib::toLowerCase("Ab"));
+  ASSERT_EQ("abc", strlib::toLowerCase("AbC"));
   ASSERT_EQ("abcd", strlib::toLowerCase("AbCd"));
 
 }
 
 TEST(toCase) {
-
-  ASSERT_EQ("", strlib::toCase("", true));
-  ASSERT_EQ(" ", strlib::toCase(" ", true));
-  ASSERT_EQ("ABCD", strlib::toCase("abcd", true));
-  ASSERT_EQ("ABCD", strlib::toCase("AbCd", true));
-
-  ASSERT_EQ("", strlib::toCase("", false));
-  ASSERT_EQ(" ", strlib::toCase(" ", false));
-  ASSERT_EQ("abcd", strlib::toCase("ABCD", false));
-  ASSERT_EQ("abcd", strlib::toCase("AbCd", false));
   
+  //// Upper ////
+
+  // toCase(empty, true)
+  ASSERT_EQ("", strlib::toCase("", true));
+
+  // toCase(blank, true)
+  ASSERT_EQ(" ", strlib::toCase(" ", true));
+  ASSERT_EQ("  ", strlib::toCase("  ", true));
+
+  ASSERT_EQ("0123456789.,:!?", strlib::toCase("0123456789.,:!?", true));
+
+  // toCase(value, true)
+  ASSERT_EQ("A", strlib::toCase("A", true));
+  ASSERT_EQ("AB", strlib::toCase("AB", true));
+  ASSERT_EQ("ABC", strlib::toCase("ABC", true));
+  ASSERT_EQ("ABCD", strlib::toCase("ABCD", true));
+
+  ASSERT_EQ("A", strlib::toCase("a", true));
+  ASSERT_EQ("AB", strlib::toCase("ab", true));
+  ASSERT_EQ("ABC", strlib::toCase("abc", true));
+  ASSERT_EQ("ABCD", strlib::toCase("abcd", true));
+
+  ASSERT_EQ("AB", strlib::toCase("aB", true));
+  ASSERT_EQ("ABC", strlib::toCase("aBc", true));
+  ASSERT_EQ("ABCD", strlib::toCase("aBcD", true));
+
+  //// Lower ////
+
+  // toCase(empty, false)
+  ASSERT_EQ("", strlib::toCase("", false));
+
+  // toCase(blank, false)
+  ASSERT_EQ(" ", strlib::toCase(" ", false));
+  ASSERT_EQ("  ", strlib::toCase("  ", false));
+
+  ASSERT_EQ("0123456789.,:!?", strlib::toCase("0123456789.,:!?", false));
+
+  // toCase(value, false)
+  ASSERT_EQ("a", strlib::toCase("a", false));
+  ASSERT_EQ("ab", strlib::toCase("ab", false));
+  ASSERT_EQ("abc", strlib::toCase("abc", false));
+  ASSERT_EQ("abcd", strlib::toCase("abcd", false));
+
+  ASSERT_EQ("a", strlib::toCase("A", false));
+  ASSERT_EQ("ab", strlib::toCase("AB", false));
+  ASSERT_EQ("abc", strlib::toCase("ABC", false));
+  ASSERT_EQ("abcd", strlib::toCase("ABCD", false));
+
+  ASSERT_EQ("ab", strlib::toCase("Ab", false));
+  ASSERT_EQ("abc", strlib::toCase("AbC", false));
+  ASSERT_EQ("abcd", strlib::toCase("AbCd", false));
+
 }
+
+////
+
+TEST(getCaseCode) {
+
+  // getCaseCode(empty)
+  ASSERT_EQ(strlib::CT_NONE, strlib::getCaseCode(""));
+  ASSERT_EQ(strlib::CT_NONE, strlib::getCaseCode(" "));
+  ASSERT_EQ(strlib::CT_NONE, strlib::getCaseCode(" "));
+
+  // getCaseCode(unknown)
+  ASSERT_EQ(strlib::CT_NONE, strlib::getCaseCode("blahblahblah"));
+  ASSERT_EQ(strlib::CT_NONE, strlib::getCaseCode("0123456789"));
+
+  // lowercase
+  ASSERT_EQ(strlib::CT_lowercase, strlib::getCaseCode("lower"));
+
+  // UPPERCASE
+  ASSERT_EQ(strlib::CT_UPPERCASE, strlib::getCaseCode("upper"));
+
+  // camelCase
+  ASSERT_EQ(strlib::CT_camelCase, strlib::getCaseCode("camel"));
+
+  // PascalCase
+  ASSERT_EQ(strlib::CT_PascalCase, strlib::getCaseCode("Camel"));
+  ASSERT_EQ(strlib::CT_PascalCase, strlib::getCaseCode("Pascal"));
+  ASSERT_EQ(strlib::CT_PascalCase, strlib::getCaseCode("pascal"));
+
+  // snake_case
+  ASSERT_EQ(strlib::CT_snake_case, strlib::getCaseCode("snake"));
+
+  // SNAKE_CASE
+  ASSERT_EQ(strlib::CT_SNAKE_CASE, strlib::getCaseCode("SNAKE"));
+  ASSERT_EQ(strlib::CT_SNAKE_CASE, strlib::getCaseCode("MACRO"));
+  ASSERT_EQ(strlib::CT_SNAKE_CASE, strlib::getCaseCode("macro"));
+
+  // kebab-case
+  ASSERT_EQ(strlib::CT_kebab_case, strlib::getCaseCode("kebab"));
+  ASSERT_EQ(strlib::CT_kebab_case, strlib::getCaseCode("dash"));
+  ASSERT_EQ(strlib::CT_kebab_case, strlib::getCaseCode("train"));
+  ASSERT_EQ(strlib::CT_kebab_case, strlib::getCaseCode("lisp"));
+
+  // KEBAB-CASE
+  ASSERT_EQ(strlib::CT_KEBAB_CASE, strlib::getCaseCode("KEBAB"));
+  ASSERT_EQ(strlib::CT_KEBAB_CASE, strlib::getCaseCode("DASH"));
+  ASSERT_EQ(strlib::CT_KEBAB_CASE, strlib::getCaseCode("TRAIN"));
+  ASSERT_EQ(strlib::CT_KEBAB_CASE, strlib::getCaseCode("COBOL"));
+  ASSERT_EQ(strlib::CT_KEBAB_CASE, strlib::getCaseCode("cobol"));
+
+  // CT_Kebab_Case
+  ASSERT_EQ(strlib::CT_Kebab_Case, strlib::getCaseCode("Kebab"));
+  ASSERT_EQ(strlib::CT_Kebab_Case, strlib::getCaseCode("Dash"));
+  ASSERT_EQ(strlib::CT_Kebab_Case, strlib::getCaseCode("Train"));
+
+}
+
+////
 
 TEST(toCamelCase) {
 
+  // toCamelCase(empty)
   ASSERT_EQ("", strlib::toCamelCase(""));
   ASSERT_EQ(" ", strlib::toCamelCase(" "));
-  ASSERT_EQ("FirstName", strlib::toCamelCase("first_name"));
+  ASSERT_EQ("  ", strlib::toCamelCase("  "));
+
+  // capitalize = default
+  ASSERT_EQ("ProductName", strlib::toCamelCase("product name"));
+  ASSERT_EQ("ProductName", strlib::toCamelCase("product-name"));
+  ASSERT_EQ("ProductName", strlib::toCamelCase("product_name"));
+  ASSERT_EQ("ProductName", strlib::toCamelCase("productName"));
+  
+  ASSERT_EQ("ProductName", strlib::toCamelCase("Product Name"));
+  ASSERT_EQ("ProductName", strlib::toCamelCase("Product-Name"));
+  ASSERT_EQ("ProductName", strlib::toCamelCase("Product_Name"));
+  ASSERT_EQ("ProductName", strlib::toCamelCase("ProductName"));
+  
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product full name"));
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product-full-name"));
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product_full_name"));
+  
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product Full name"));
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product-Full-name"));
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product_Full_name"));
+  
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product-_ full -_name"));
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product-_ Full -_name"));
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product-_ FullName"));
+
+  // capitalize = true
+  ASSERT_EQ("ProductName", strlib::toCamelCase("product name", true));
+  ASSERT_EQ("ProductName", strlib::toCamelCase("product-name", true));
+  ASSERT_EQ("ProductName", strlib::toCamelCase("product_name", true));
+  ASSERT_EQ("ProductName", strlib::toCamelCase("productName", true));
+  
+  ASSERT_EQ("ProductName", strlib::toCamelCase("Product Name", true));
+  ASSERT_EQ("ProductName", strlib::toCamelCase("Product-Name", true));
+  ASSERT_EQ("ProductName", strlib::toCamelCase("Product_Name", true));
+  ASSERT_EQ("ProductName", strlib::toCamelCase("ProductName", true));
+  
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product full name", true));
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product-full-name", true));
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product_full_name", true));
+  
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product Full name", true));
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product-Full-name", true));
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product_Full_name", true));
+  
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product-_ full -_name", true));
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product-_ Full -_name", true));
+  ASSERT_EQ("ProductFullName", strlib::toCamelCase("product-_ FullName", true));
+
+  // capitalize = false
+  ASSERT_EQ("productName", strlib::toCamelCase("product name", false));
+  ASSERT_EQ("productName", strlib::toCamelCase("product-name", false));
+  ASSERT_EQ("productName", strlib::toCamelCase("product_name", false));
+  ASSERT_EQ("productName", strlib::toCamelCase("productName", false));
+  
+  ASSERT_EQ("productName", strlib::toCamelCase("Product Name", false));
+  ASSERT_EQ("productName", strlib::toCamelCase("Product-Name", false));
+  ASSERT_EQ("productName", strlib::toCamelCase("Product_Name", false));
+  ASSERT_EQ("productName", strlib::toCamelCase("ProductName", false));
+  
+  ASSERT_EQ("productFullName", strlib::toCamelCase("product full name", false));
+  ASSERT_EQ("productFullName", strlib::toCamelCase("product-full-name", false));
+  ASSERT_EQ("productFullName", strlib::toCamelCase("product_full_name", false));
+  
+  ASSERT_EQ("productFullName", strlib::toCamelCase("product Full name", false));
+  ASSERT_EQ("productFullName", strlib::toCamelCase("product-Full-name", false));
+  ASSERT_EQ("productFullName", strlib::toCamelCase("product_Full_name", false));
+  
+  ASSERT_EQ("productFullName", strlib::toCamelCase("product-_ full -_name", false));
+  ASSERT_EQ("productFullName", strlib::toCamelCase("product-_ Full -_name", false));
+  ASSERT_EQ("productFullName", strlib::toCamelCase("product-_ FullName", false));
 
 }
 
 TEST(toSnakeCase) {
 
+  // toSnakeCase(empty)
   ASSERT_EQ("", strlib::toSnakeCase(""));
   ASSERT_EQ(" ", strlib::toSnakeCase(" "));
-  ASSERT_EQ("first_name", strlib::toSnakeCase("FirstName"));
+  ASSERT_EQ("  ", strlib::toSnakeCase("  "));
+
+  // toSnakeCase(value)  
+  ASSERT_EQ("product_name", strlib::toSnakeCase("product name"));
+  ASSERT_EQ("product_name", strlib::toSnakeCase("product-name"));
+  ASSERT_EQ("product_name", strlib::toSnakeCase("product_name"));  
+  ASSERT_EQ("product_name", strlib::toSnakeCase("ProductName"));
+
+  // upper = false
+  ASSERT_EQ("product_name", strlib::toSnakeCase("product name", false));
+  ASSERT_EQ("product_name", strlib::toSnakeCase("product-name", false));
+  ASSERT_EQ("product_name", strlib::toSnakeCase("product_name", false));  
+  ASSERT_EQ("product_name", strlib::toSnakeCase("ProductName", false));
+
+  // upper = true
+  ASSERT_EQ("PRODUCT_NAME", strlib::toSnakeCase("product name", true));
+  ASSERT_EQ("PRODUCT_NAME", strlib::toSnakeCase("product-name", true));
+  ASSERT_EQ("PRODUCT_NAME", strlib::toSnakeCase("product_name", true));  
+  ASSERT_EQ("PRODUCT_NAME", strlib::toSnakeCase("ProductName", true));
 
 }
 
 TEST(toKebabCase) {
 
+  // toKebabCase(empty)
   ASSERT_EQ("", strlib::toKebabCase(""));
   ASSERT_EQ(" ", strlib::toKebabCase(" "));
-  ASSERT_EQ("first-name", strlib::toKebabCase("FirstName"));
+  ASSERT_EQ("  ", strlib::toKebabCase("  "));
+
+  // toKebabCase(value)  
+  ASSERT_EQ("product-name", strlib::toKebabCase("product name"));
+  ASSERT_EQ("product-name", strlib::toKebabCase("product-name"));
+  ASSERT_EQ("product-name", strlib::toKebabCase("product_name"));  
+  ASSERT_EQ("product-name", strlib::toKebabCase("ProductName"));
+  
+  // upper = false
+  ASSERT_EQ("product-name", strlib::toKebabCase("product name", false));
+  ASSERT_EQ("product-name", strlib::toKebabCase("product-name", false));
+  ASSERT_EQ("product-name", strlib::toKebabCase("product_name", false));  
+  ASSERT_EQ("product-name", strlib::toKebabCase("ProductName", false));
+
+  // upper = true
+  ASSERT_EQ("PRODUCT-NAME", strlib::toKebabCase("product name", true));
+  ASSERT_EQ("PRODUCT-NAME", strlib::toKebabCase("product-name", true));
+  ASSERT_EQ("PRODUCT-NAME", strlib::toKebabCase("product_name", true));  
+  ASSERT_EQ("PRODUCT-NAME", strlib::toKebabCase("ProductName", true));
 
 }
 
@@ -1484,9 +1844,14 @@ INIT(strlib) {
 
   SET_TEST(capitalize);
   SET_TEST(decapitalize);  
+  SET_TEST(upper);
+  SET_TEST(lower);
   SET_TEST(toUpperCase);
   SET_TEST(toLowerCase);
   SET_TEST(toCase);
+
+  SET_TEST(getCaseCode);
+
   SET_TEST(toCamelCase);
   SET_TEST(toSnakeCase);
   SET_TEST(toKebabCase);
