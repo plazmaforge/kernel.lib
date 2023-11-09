@@ -539,6 +539,8 @@ def rpad(str, len, pad = ' '):
     else:
         return str + fillStr
 
+# 2.3
+
 def fill(str, len, pad = ' '):
     if str is None:
         return None

@@ -1322,7 +1322,7 @@ public class StrLib {
             return str;
         }
         
-        // strong format: pad or trunc
+        // hard format: pad or trunc
         if (strLen < len) {
             // add <pad> to right side
             return rpad(str, len, pad);
@@ -1348,7 +1348,7 @@ public class StrLib {
             return null;
         }
         
-        // soft format        
+        // soft format
         if (len < 1) {
             return str;
         }
@@ -1356,6 +1356,7 @@ public class StrLib {
         if (str.length() <= len) {
             return str;
         }
+        
         if (ellipsis) {
             if (len <= ELLIPSIS_LEN) {
                 return str.substring(0, len);

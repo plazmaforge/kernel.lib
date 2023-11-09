@@ -864,33 +864,284 @@ TEST(rpad) {
   // --------
   // abcyzyzy
 
-  ASSERT_EQ("Volume****", strlib::rpad("Volume", 10, '*'));
-
 }
 
 // 2.3
 
 TEST(fill) {
 
-  ASSERT_EQ("Volume****", strlib::fill("Volume", 10, '*'));
-  ASSERT_EQ("Volume**", strlib::fill("Volume", 8, '*'));
+  // fill(empty, -n), fill(empty, 0), fill(empty, n)
+  ASSERT_EQ("", strlib::fill("", -2));
+  ASSERT_EQ("", strlib::fill("", -1));
+  ASSERT_EQ("", strlib::fill("", 0));
+  ASSERT_EQ(" ", strlib::fill("", 1));
+  ASSERT_EQ("  ", strlib::fill("", 2));
+
+  // fill(empty, -n, ''), fill(empty, 0, ''), fill(empty, n, '')
+  ASSERT_EQ("", strlib::fill("", -2, ""));
+  ASSERT_EQ("", strlib::fill("", -1, ""));
+  ASSERT_EQ("", strlib::fill("", 0, ""));
+  ASSERT_EQ("", strlib::fill("", 1, ""));
+  ASSERT_EQ("", strlib::fill("", 2, ""));
+
+  // fill(empty, -n, ' '), fill(empty, 0, ' '), fill(empty, n, ' ')
+  ASSERT_EQ("", strlib::fill("", -2, ' '));
+  ASSERT_EQ("", strlib::fill("", -1, ' '));
+  ASSERT_EQ("", strlib::fill("", 0, ' '));
+  ASSERT_EQ(" ", strlib::fill("", 1, ' '));
+  ASSERT_EQ("  ", strlib::fill("", 2, ' '));
+
+  // fill(empty, -n, '*'), fill(empty, 0, '*'), fill(empty, n, '*')
+  ASSERT_EQ("", strlib::fill("", -2, '*'));
+  ASSERT_EQ("", strlib::fill("", -1, '*'));
+  ASSERT_EQ("", strlib::fill("", 0, '*'));
+  ASSERT_EQ("*", strlib::fill("", 1, '*'));
+  ASSERT_EQ("**", strlib::fill("", 2, '*'));
+
+  // char
+
+  // fill(char, -n), fill(char, 0), fill(char, n)
+  ASSERT_EQ("", strlib::fill("a", -2));
+  ASSERT_EQ("", strlib::fill("a", -1));
+  ASSERT_EQ("", strlib::fill("a", 0));
+  ASSERT_EQ("a", strlib::fill("a", 1));
+  ASSERT_EQ("a ", strlib::fill("a", 2));
+  ASSERT_EQ("a  ", strlib::fill("a", 3));
+  ASSERT_EQ("a   ", strlib::fill("a", 4));
+  ASSERT_EQ("a    ", strlib::fill("a", 5));
+
+  ASSERT_EQ("", strlib::fill("a", -2, '*'));
+  ASSERT_EQ("", strlib::fill("a", -1, '*'));
+  ASSERT_EQ("", strlib::fill("a", 0, '*'));
+  ASSERT_EQ("a", strlib::fill("a", 1, '*'));
+  ASSERT_EQ("a*", strlib::fill("a", 2, '*'));
+  ASSERT_EQ("a**", strlib::fill("a", 3, '*'));
+  ASSERT_EQ("a***", strlib::fill("a", 4, '*'));
+  ASSERT_EQ("a****", strlib::fill("a", 5, '*'));
+
+  // string
+
+  // fill(str, -n), fill(str, 0), fill(str, n)
+  ASSERT_EQ("", strlib::fill("abcxyz", -2));
+  ASSERT_EQ("", strlib::fill("abcxyz", -1));
+  ASSERT_EQ("", strlib::fill("abcxyz", 0));
+  ASSERT_EQ("a", strlib::fill("abcxyz", 1));
+  ASSERT_EQ("ab", strlib::fill("abcxyz", 2));
+  ASSERT_EQ("abc", strlib::fill("abcxyz", 3));
+  ASSERT_EQ("a...", strlib::fill("abcxyz", 4));   // ellipsis
+  ASSERT_EQ("ab...", strlib::fill("abcxyz", 5));  // ellipsis
+  ASSERT_EQ("abcxyz", strlib::fill("abcxyz", 6));
+  ASSERT_EQ("abcxyz ", strlib::fill("abcxyz", 7));
+  ASSERT_EQ("abcxyz  ", strlib::fill("abcxyz", 8));
+
+  // fill(str, -n, '*'), fill(str, 0, '*'), fill(str, n, '*')
+  ASSERT_EQ("", strlib::fill("abcxyz", -2, '*'));
+  ASSERT_EQ("", strlib::fill("abcxyz", -1, '*'));
+  ASSERT_EQ("", strlib::fill("abcxyz", 0, '*'));
+  ASSERT_EQ("a", strlib::fill("abcxyz", 1, '*'));
+  ASSERT_EQ("ab", strlib::fill("abcxyz", 2, '*'));
+  ASSERT_EQ("abc", strlib::fill("abcxyz", 3, '*'));
+  ASSERT_EQ("a...", strlib::fill("abcxyz", 4, '*'));   // ellipsis
+  ASSERT_EQ("ab...", strlib::fill("abcxyz", 5, '*'));  // ellipsis
+  ASSERT_EQ("abcxyz", strlib::fill("abcxyz", 6, '*'));
+  ASSERT_EQ("abcxyz*", strlib::fill("abcxyz", 7, '*'));
+  ASSERT_EQ("abcxyz**", strlib::fill("abcxyz", 8, '*'));
 
 }
 
 TEST(ellipsis) {
 
-  ASSERT_EQ("Transla...", strlib::ellipsis("Translation", 10));
+  // ellipsis(empty, -n), ellipsis(empty, 0), ellipsis(empty, n)
+  ASSERT_EQ("", strlib::ellipsis("", -2));
+  ASSERT_EQ("", strlib::ellipsis("", -1));
+  ASSERT_EQ("", strlib::ellipsis("", 0));
+  ASSERT_EQ("", strlib::ellipsis("", 1));
+  ASSERT_EQ("", strlib::ellipsis("", 2));
+
+  // char
+
+  // ellipsis(char, -n), ellipsis(char, 0), ellipsis(char, n)
+  ASSERT_EQ("a", strlib::ellipsis("a", -2));
+  ASSERT_EQ("a", strlib::ellipsis("a", -1));
+  ASSERT_EQ("a", strlib::ellipsis("a", 0));
+  ASSERT_EQ("a", strlib::ellipsis("a", 1));
+  ASSERT_EQ("a", strlib::ellipsis("a", 2));
+
+  // string
+
+  // ellipsis(str, -n), ellipsis(str, 0), ellipsis(str, n)
+  ASSERT_EQ("abcxyz", strlib::ellipsis("abcxyz", -2));
+  ASSERT_EQ("abcxyz", strlib::ellipsis("abcxyz", -1));
+  ASSERT_EQ("abcxyz", strlib::ellipsis("abcxyz", 0));
+  ASSERT_EQ("a", strlib::ellipsis("abcxyz", 1));
+  ASSERT_EQ("ab", strlib::ellipsis("abcxyz", 2));
+  ASSERT_EQ("abc", strlib::ellipsis("abcxyz", 3));
+  ASSERT_EQ("a...", strlib::ellipsis("abcxyz", 4));   // ellipsis
+  ASSERT_EQ("ab...", strlib::ellipsis("abcxyz", 5));  // ellipsis
+  ASSERT_EQ("abcxyz", strlib::ellipsis("abcxyz", 6));
+  ASSERT_EQ("abcxyz", strlib::ellipsis("abcxyz", 7));
+  ASSERT_EQ("abcxyz", strlib::ellipsis("abcxyz", 8));
 
 }
 
 TEST(trunc) {
 
-  ASSERT_EQ("Abcdef", strlib::trunc("Abcdef123456789", 6));
+  // trunc(empty, -n), trunc(empty, 0), trunc(empty, n)
+  ASSERT_EQ("", strlib::trunc("", -2));
+  ASSERT_EQ("", strlib::trunc("", -1));
+  ASSERT_EQ("", strlib::trunc("", 0));
+  ASSERT_EQ("", strlib::trunc("", 1));
+  ASSERT_EQ("", strlib::trunc("", 2));
+
+  // ellipsis=false
+  ASSERT_EQ("", strlib::trunc("", -2, false));
+  ASSERT_EQ("", strlib::trunc("", -1, false));
+  ASSERT_EQ("", strlib::trunc("", 0, false));
+  ASSERT_EQ("", strlib::trunc("", 1, false));
+  ASSERT_EQ("", strlib::trunc("", 2, false));
+
+  // ellipsis=true
+  ASSERT_EQ("", strlib::trunc("", -2, true));
+  ASSERT_EQ("", strlib::trunc("", -1, true));
+  ASSERT_EQ("", strlib::trunc("", 0, true));
+  ASSERT_EQ("", strlib::trunc("", 1, true));
+  ASSERT_EQ("", strlib::trunc("", 2, true));
+
+  // char
+
+  // trunc(char, -n), trunc(char, 0), trunc(char, n)
+  ASSERT_EQ("a", strlib::trunc("a", -2));
+  ASSERT_EQ("a", strlib::trunc("a", -1));
+  ASSERT_EQ("a", strlib::trunc("a", 0));
+  ASSERT_EQ("a", strlib::trunc("a", 1));
+  ASSERT_EQ("a", strlib::trunc("a", 2));
+
+  // ellipsis=false
+  ASSERT_EQ("a", strlib::trunc("a", -2, false));
+  ASSERT_EQ("a", strlib::trunc("a", -1, false));
+  ASSERT_EQ("a", strlib::trunc("a", 0, false));
+  ASSERT_EQ("a", strlib::trunc("a", 1, false));
+  ASSERT_EQ("a", strlib::trunc("a", 2, false));
+
+  // ellipsis=true
+  ASSERT_EQ("a", strlib::trunc("a", -2, true));
+  ASSERT_EQ("a", strlib::trunc("a", -1, true));
+  ASSERT_EQ("a", strlib::trunc("a", 0, true));
+  ASSERT_EQ("a", strlib::trunc("a", 1, true));
+  ASSERT_EQ("a", strlib::trunc("a", 2, true));
+
+  // string
+
+  // trunc(str, -n), trunc(str, 0), trunc(str, n)
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", -2));
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", -1));
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", 0));
+  ASSERT_EQ("a", strlib::trunc("abcxyz", 1));
+  ASSERT_EQ("ab", strlib::trunc("abcxyz", 2));
+  ASSERT_EQ("abc", strlib::trunc("abcxyz", 3));  
+  ASSERT_EQ("abcx", strlib::trunc("abcxyz", 4));   // non ellipsis
+  ASSERT_EQ("abcxy", strlib::trunc("abcxyz", 5));  // non ellipsis
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", 6));
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", 7));
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", 8));
+
+  // ellipsis=false
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", -2, false));
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", -1, false));
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", 0, false));
+  ASSERT_EQ("a", strlib::trunc("abcxyz", 1, false));
+  ASSERT_EQ("ab", strlib::trunc("abcxyz", 2, false));
+  ASSERT_EQ("abc", strlib::trunc("abcxyz", 3, false));
+  ASSERT_EQ("abcx", strlib::trunc("abcxyz", 4, false));   // non ellipsis
+  ASSERT_EQ("abcxy", strlib::trunc("abcxyz", 5, false));  // non ellipsis
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", 6, false));
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", 7, false));
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", 8, false));
+
+  // ellipsis=true
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", -2, true));
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", -1, true));
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", 0, true));
+  ASSERT_EQ("a", strlib::trunc("abcxyz", 1, true));
+  ASSERT_EQ("ab", strlib::trunc("abcxyz", 2, true));
+  ASSERT_EQ("abc", strlib::trunc("abcxyz", 3, true));  
+  ASSERT_EQ("a...", strlib::trunc("abcxyz", 4, true));   // ellipsis
+  ASSERT_EQ("ab...", strlib::trunc("abcxyz", 5, true));  // ellipsis
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", 6, true));
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", 7, true));
+  ASSERT_EQ("abcxyz", strlib::trunc("abcxyz", 8, true));
 
 }
 
-// left
-// right
+TEST(left) {
+
+  // left(empty, -n), left(empty, 0), left(empty, n)
+  ASSERT_EQ("", strlib::left("", -2));
+  ASSERT_EQ("", strlib::left("", -1));
+  ASSERT_EQ("", strlib::left("", 0));
+  ASSERT_EQ("", strlib::left("", 1));
+  ASSERT_EQ("", strlib::left("", 2));
+
+  // char
+
+  // left(char, -n), left(char, 0), left(char, n)
+  ASSERT_EQ("", strlib::left("a", -2));
+  ASSERT_EQ("", strlib::left("a", -1));
+  ASSERT_EQ("", strlib::left("a", 0));
+  ASSERT_EQ("a", strlib::left("a", 1));
+  ASSERT_EQ("a", strlib::left("a", 2));
+
+  // string
+
+  // left(str, -n), left(str, 0), left(str, n)
+  ASSERT_EQ("", strlib::left("abcxyz", -2));
+  ASSERT_EQ("", strlib::left("abcxyz", -1));
+  ASSERT_EQ("", strlib::left("abcxyz", 0));
+  ASSERT_EQ("a", strlib::left("abcxyz", 1));
+  ASSERT_EQ("ab", strlib::left("abcxyz", 2));
+  ASSERT_EQ("abc", strlib::left("abcxyz", 3));  
+  ASSERT_EQ("abcx", strlib::left("abcxyz", 4));
+  ASSERT_EQ("abcxy", strlib::left("abcxyz", 5));
+  ASSERT_EQ("abcxyz", strlib::left("abcxyz", 6));
+  ASSERT_EQ("abcxyz", strlib::left("abcxyz", 7));
+  ASSERT_EQ("abcxyz", strlib::left("abcxyz", 8));
+
+}
+
+TEST(right) {
+
+  // right(empty, -n), right(empty, 0), right(empty, n)
+  ASSERT_EQ("", strlib::right("", -2));
+  ASSERT_EQ("", strlib::right("", -1));
+  ASSERT_EQ("", strlib::right("", 0));
+  ASSERT_EQ("", strlib::right("", 1));
+  ASSERT_EQ("", strlib::right("", 2));
+
+  // char
+
+  // right(char, -n), right(char, 0), right(char, n)
+  ASSERT_EQ("", strlib::right("a", -2));
+  ASSERT_EQ("", strlib::right("a", -1));
+  ASSERT_EQ("", strlib::right("a", 0));
+  ASSERT_EQ("a", strlib::right("a", 1));
+  ASSERT_EQ("a", strlib::right("a", 2));
+
+  // string
+
+  // right(str, -n), right(str, 0), right(str, n)
+  ASSERT_EQ("", strlib::right("abcxyz", -2));
+  ASSERT_EQ("", strlib::right("abcxyz", -1));
+  ASSERT_EQ("", strlib::right("abcxyz", 0));
+  ASSERT_EQ("z", strlib::right("abcxyz", 1));
+  ASSERT_EQ("yz", strlib::right("abcxyz", 2));
+  ASSERT_EQ("xyz", strlib::right("abcxyz", 3));  
+  ASSERT_EQ("cxyz", strlib::right("abcxyz", 4));
+  ASSERT_EQ("bcxyz", strlib::right("abcxyz", 5));
+  ASSERT_EQ("abcxyz", strlib::right("abcxyz", 6));
+  ASSERT_EQ("abcxyz", strlib::right("abcxyz", 7));
+  ASSERT_EQ("abcxyz", strlib::right("abcxyz", 8));
+
+}
 
 // 3.1
 
@@ -1227,7 +1478,10 @@ INIT(strlib) {
   SET_TEST(rpad);
   SET_TEST(fill);
   SET_TEST(ellipsis);
-  SET_TEST(trunc);
+  SET_TEST(trunc);  
+  SET_TEST(left)
+  SET_TEST(right)
+
   SET_TEST(capitalize);
   SET_TEST(decapitalize);  
   SET_TEST(toUpperCase);

@@ -71,7 +71,7 @@
 // - ellipsis(const string& str, int len)                                      - 
 //
 // - trunc(const string& str, int len)                                         - 
-// - trunc(const string& str, int len, bool trim, bool ellipsis)               - 
+// - trunc(const string& str, int len, bool ellipsis)                          - 
 //
 // - left(const string& str, int len)                                          - 
 // - right(const string& str, int len)                                         - 
@@ -509,9 +509,9 @@ namespace strlib {
 
     std::string trunc(const std::string& str, int len);
 
-    std::string trunc(const std::string& str, int len, bool trim, bool ellipsis);
+    std::string trunc(const std::string& str, int len, bool ellipsis);
 
-    void _trunc(std::string& str, int len, bool trim, bool ellipsis);
+    void _trunc(std::string& str, int len, bool ellipsis);
     
     std::string left(const std::string& str, int len);
     

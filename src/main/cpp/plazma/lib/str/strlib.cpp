@@ -75,7 +75,7 @@
 // - ellipsis(const string& str, int len)                                      - 
 //
 // - trunc(const string& str, int len)                                         - 
-// - trunc(const string& str, int len, bool trim, bool ellipsis)               - 
+// - trunc(const string& str, int len, bool ellipsis)                          - 
 //
 // - left(const string& str, int len)                                          - 
 // - right(const string& str, int len)                                         - 
@@ -910,7 +910,9 @@ namespace strlib {
 
     std::string fill(const std::string& str, int len, const std::string& pad) {
         std::string strn;
-        if (str.empty() || len < 1) {
+
+        // hard format: <=len or empty
+        if (len < 1) {
             return strn;
         }
         int strLen = str.length();
@@ -918,13 +920,15 @@ namespace strlib {
             strn = str;
             return strn;
         }
+
+        // hard format: pad or trunc
         if (strLen < len) {
             // add <pad> to right side
             strn = rpad(str, len, pad);
             
         } else {
             // remove chars from right side
-            strn = trunc(str, len, false, true);
+            strn = trunc(str, len, true); // ellipsis
         }
         return strn;
     }
@@ -940,41 +944,43 @@ namespace strlib {
 
     std::string ellipsis(const std::string& str, int len) {
         std::string strn = str;
-        // trunc with ellipsis ('...') by default
-        _trunc(strn, len, false, true); 
+        _trunc(strn, len, true); // ellipsis
         return strn;
     }
 
     std::string trunc(const std::string& str, int len) {
         std::string strn = str;
-        _trunc(strn, len, false, false);
+        _trunc(strn, len, false);
         return strn;
     }
 
-    std::string trunc(const std::string& str, int len, bool trim, bool ellipsis) {
+    std::string trunc(const std::string& str, int len, bool ellipsis) {
         std::string strn = str;
-        _trunc(strn, len, trim, ellipsis);
+        _trunc(strn, len, ellipsis);
         return strn;
     }
 
-    void _trunc(std::string& str, int len, bool trim, bool ellipsis) {
+    void _trunc(std::string& str, int len, bool ellipsis) {
         if (str.empty()) {
             return;
         }
+
+        // soft format
         if (len < 1) {
             return;
         }
-        if (trim) {
-            _trim(str);
-        }
+
         if (str.length() <= len) {
             return;
         }
+
         if (ellipsis) {
             if (len <= ELLIPSIS_LEN) {
                 str = str.substr(0, len);                       // modify
+                return;
             }
             str = str.substr(0, len - ELLIPSIS_LEN) + ELLIPSIS; // modify
+            return;
         }
         str = str.substr(0, len);                               // modify
     }
@@ -983,6 +989,12 @@ namespace strlib {
         if (str.empty()) {
             return str;
         }
+
+        // hard format: <=len or empty
+        if (len < 1) {
+            return EMPTY_STRING;
+        }
+
         int strLen = str.length();
         if (strLen <= len) {
             return str;
@@ -994,6 +1006,12 @@ namespace strlib {
         if (str.empty()) {
             return str;
         }
+
+        // hard format: <=len or empty
+        if (len < 1) {
+            return EMPTY_STRING;
+        }
+
         int strLen = str.length();
         if (strLen <= len) {
             return str;

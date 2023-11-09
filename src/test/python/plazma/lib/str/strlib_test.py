@@ -1090,7 +1090,7 @@ class StrlibTest(unittest.TestCase):
         # --------
         # abcyzyzy
 
-    # 2.3 fill, ellipsis, trunk, left/right
+    # 2.3
 
     def test_fill(self):
 
