@@ -1255,36 +1255,346 @@ public class StrLibTest extends AbstractTestCase {
     
     
     // 2.3
+        
+    public void testFill() {
+        
+        // fill(null, -n), fill(null, 0), fill(null, n)
+        assertNull(StrLib.fill(null, -2));
+        assertNull(StrLib.fill(null, -1));
+        assertNull(StrLib.fill(null, 0));
+        assertNull(StrLib.fill(null, 1));
+        assertNull(StrLib.fill(null, 2));
+
+        assertNull(StrLib.fill(null, -2, '\0'));
+        assertNull(StrLib.fill(null, -1, '\0'));
+        assertNull(StrLib.fill(null, 0, '\0'));
+        assertNull(StrLib.fill(null, 1, '\0'));
+        assertNull(StrLib.fill(null, 2, '\0'));
+
+        assertNull(StrLib.fill(null, -2, ' '));
+        assertNull(StrLib.fill(null, -1, ' '));
+        assertNull(StrLib.fill(null, 0, ' '));
+        assertNull(StrLib.fill(null, 1, ' '));
+        assertNull(StrLib.fill(null, 2, ' '));
+
+        assertNull(StrLib.fill(null, -2, '*'));
+        assertNull(StrLib.fill(null, -1, '*'));
+        assertNull(StrLib.fill(null, 0, '*'));
+        assertNull(StrLib.fill(null, 1, '*'));
+        assertNull(StrLib.fill(null, 2, '*'));
+
+        // fill(empty, -n), fill(empty, 0), fill(empty, n)
+        assertEquals("", StrLib.fill("", -2));
+        assertEquals("", StrLib.fill("", -1));
+        assertEquals("", StrLib.fill("", 0));
+        assertEquals(" ", StrLib.fill("", 1));
+        assertEquals("  ", StrLib.fill("", 2));
+
+        // fill(empty, -n, ''), fill(empty, 0, ''), fill(empty, n, '')
+        assertEquals("", StrLib.fill("", -2, ""));
+        assertEquals("", StrLib.fill("", -1, ""));
+        assertEquals("", StrLib.fill("", 0, ""));
+        assertEquals("", StrLib.fill("", 1, ""));
+        assertEquals("", StrLib.fill("", 2, ""));
+
+        // fill(empty, -n, ' '), fill(empty, 0, ' '), fill(empty, n, ' ')
+        assertEquals("", StrLib.fill("", -2, ' '));
+        assertEquals("", StrLib.fill("", -1, ' '));
+        assertEquals("", StrLib.fill("", 0, ' '));
+        assertEquals(" ", StrLib.fill("", 1, ' '));
+        assertEquals("  ", StrLib.fill("", 2, ' '));
+
+        // fill(empty, -n, '*'), fill(empty, 0, '*'), fill(empty, n, '*')
+        assertEquals("", StrLib.fill("", -2, '*'));
+        assertEquals("", StrLib.fill("", -1, '*'));
+        assertEquals("", StrLib.fill("", 0, '*'));
+        assertEquals("*", StrLib.fill("", 1, '*'));
+        assertEquals("**", StrLib.fill("", 2, '*'));
+
+        // char
+
+        // fill(char, -n), fill(char, 0), fill(char, n)
+        assertEquals("", StrLib.fill("a", -2));
+        assertEquals("", StrLib.fill("a", -1));
+        assertEquals("", StrLib.fill("a", 0));
+        assertEquals("a", StrLib.fill("a", 1));
+        assertEquals("a ", StrLib.fill("a", 2));
+        assertEquals("a  ", StrLib.fill("a", 3));
+        assertEquals("a   ", StrLib.fill("a", 4));
+        assertEquals("a    ", StrLib.fill("a", 5));
+
+        assertEquals("", StrLib.fill("a", -2, '*'));
+        assertEquals("", StrLib.fill("a", -1, '*'));
+        assertEquals("", StrLib.fill("a", 0, '*'));
+        assertEquals("a", StrLib.fill("a", 1, '*'));
+        assertEquals("a*", StrLib.fill("a", 2, '*'));
+        assertEquals("a**", StrLib.fill("a", 3, '*'));
+        assertEquals("a***", StrLib.fill("a", 4, '*'));
+        assertEquals("a****", StrLib.fill("a", 5, '*'));
+
+        // string
+
+        // fill(str, -n), fill(str, 0), fill(str, n)
+        assertEquals("", StrLib.fill("abcxyz", -2));
+        assertEquals("", StrLib.fill("abcxyz", -1));
+        assertEquals("", StrLib.fill("abcxyz", 0));
+        assertEquals("a", StrLib.fill("abcxyz", 1));
+        assertEquals("ab", StrLib.fill("abcxyz", 2));
+        assertEquals("abc", StrLib.fill("abcxyz", 3));
+        assertEquals("a...", StrLib.fill("abcxyz", 4));   // ellipsis
+        assertEquals("ab...", StrLib.fill("abcxyz", 5));  // ellipsis
+        assertEquals("abcxyz", StrLib.fill("abcxyz", 6));
+        assertEquals("abcxyz ", StrLib.fill("abcxyz", 7));
+        assertEquals("abcxyz  ", StrLib.fill("abcxyz", 8));
+
+        // fill(str, -n, '*'), fill(str, 0, '*'), fill(str, n, '*')
+        assertEquals("", StrLib.fill("abcxyz", -2, '*'));
+        assertEquals("", StrLib.fill("abcxyz", -1, '*'));
+        assertEquals("", StrLib.fill("abcxyz", 0, '*'));
+        assertEquals("a", StrLib.fill("abcxyz", 1, '*'));
+        assertEquals("ab", StrLib.fill("abcxyz", 2, '*'));
+        assertEquals("abc", StrLib.fill("abcxyz", 3, '*'));
+        assertEquals("a...", StrLib.fill("abcxyz", 4, '*'));   // ellipsis
+        assertEquals("ab...", StrLib.fill("abcxyz", 5, '*'));  // ellipsis
+        assertEquals("abcxyz", StrLib.fill("abcxyz", 6, '*'));
+        assertEquals("abcxyz*", StrLib.fill("abcxyz", 7, '*'));
+        assertEquals("abcxyz**", StrLib.fill("abcxyz", 8, '*'));
+        
+    }
+    
+    public void testEllipsis() {
+        
+        // ellipsis(null)
+        assertNull(StrLib.ellipsis(null, -2));
+        assertNull(StrLib.ellipsis(null, -1));
+        assertNull(StrLib.ellipsis(null, 0));
+        assertNull(StrLib.ellipsis(null, 1));
+        assertNull(StrLib.ellipsis(null, 2));
+
+        // ellipsis(empty, -n), ellipsis(empty, 0), ellipsis(empty, n)
+        assertEquals("", StrLib.ellipsis("", -2));
+        assertEquals("", StrLib.ellipsis("", -1));
+        assertEquals("", StrLib.ellipsis("", 0));
+        assertEquals("", StrLib.ellipsis("", 1));
+        assertEquals("", StrLib.ellipsis("", 2));
+
+        // char
+
+        // ellipsis(char, -n), ellipsis(char, 0), ellipsis(char, n)
+        assertEquals("a", StrLib.ellipsis("a", -2));
+        assertEquals("a", StrLib.ellipsis("a", -1));
+        assertEquals("a", StrLib.ellipsis("a", 0));
+        assertEquals("a", StrLib.ellipsis("a", 1));
+        assertEquals("a", StrLib.ellipsis("a", 2));
+
+        // string
+
+        // ellipsis(str, -n), ellipsis(str, 0), ellipsis(str, n)
+        assertEquals("abcxyz", StrLib.ellipsis("abcxyz", -2));
+        assertEquals("abcxyz", StrLib.ellipsis("abcxyz", -1));
+        assertEquals("abcxyz", StrLib.ellipsis("abcxyz", 0));
+        assertEquals("a", StrLib.ellipsis("abcxyz", 1));
+        assertEquals("ab", StrLib.ellipsis("abcxyz", 2));
+        assertEquals("abc", StrLib.ellipsis("abcxyz", 3));
+        assertEquals("a...", StrLib.ellipsis("abcxyz", 4));   // ellipsis
+        assertEquals("ab...", StrLib.ellipsis("abcxyz", 5));  // ellipsis
+        assertEquals("abcxyz", StrLib.ellipsis("abcxyz", 6));
+        assertEquals("abcxyz", StrLib.ellipsis("abcxyz", 7));
+        assertEquals("abcxyz", StrLib.ellipsis("abcxyz", 8));
+        
+    }
+    
+    public void testTrunc() {
+        
+        // trunc(null)
+        assertNull(StrLib.trunc(null, -2));
+        assertNull(StrLib.trunc(null, -1));
+        assertNull(StrLib.trunc(null, 0));
+        assertNull(StrLib.trunc(null, 1));
+        assertNull(StrLib.trunc(null, 2));
+
+        // ellipsis=false
+        assertNull(StrLib.trunc(null, -2, false));
+        assertNull(StrLib.trunc(null, -1, false));
+        assertNull(StrLib.trunc(null, 0, false));
+        assertNull(StrLib.trunc(null, 1, false));
+        assertNull(StrLib.trunc(null, 2, false));
+
+        // ellipsis=true
+        assertNull(StrLib.trunc(null, -2, true));
+        assertNull(StrLib.trunc(null, -1, true));
+        assertNull(StrLib.trunc(null, 0, true));
+        assertNull(StrLib.trunc(null, 1, true));
+        assertNull(StrLib.trunc(null, 2, true));
+
+        // trunc(empty, -n), trunc(empty, 0), trunc(empty, n)
+        assertEquals("", StrLib.trunc("", -2));
+        assertEquals("", StrLib.trunc("", -1));
+        assertEquals("", StrLib.trunc("", 0));
+        assertEquals("", StrLib.trunc("", 1));
+        assertEquals("", StrLib.trunc("", 2));
+
+        // ellipsis=false
+        assertEquals("", StrLib.trunc("", -2, false));
+        assertEquals("", StrLib.trunc("", -1, false));
+        assertEquals("", StrLib.trunc("", 0, false));
+        assertEquals("", StrLib.trunc("", 1, false));
+        assertEquals("", StrLib.trunc("", 2, false));
+
+        // ellipsis=true
+        assertEquals("", StrLib.trunc("", -2, true));
+        assertEquals("", StrLib.trunc("", -1, true));
+        assertEquals("", StrLib.trunc("", 0, true));
+        assertEquals("", StrLib.trunc("", 1, true));
+        assertEquals("", StrLib.trunc("", 2, true));
+
+        // char
+
+        // trunc(char, -n), trunc(char, 0), trunc(char, n)
+        assertEquals("a", StrLib.trunc("a", -2));
+        assertEquals("a", StrLib.trunc("a", -1));
+        assertEquals("a", StrLib.trunc("a", 0));
+        assertEquals("a", StrLib.trunc("a", 1));
+        assertEquals("a", StrLib.trunc("a", 2));
+
+        // ellipsis=false
+        assertEquals("a", StrLib.trunc("a", -2, false));
+        assertEquals("a", StrLib.trunc("a", -1, false));
+        assertEquals("a", StrLib.trunc("a", 0, false));
+        assertEquals("a", StrLib.trunc("a", 1, false));
+        assertEquals("a", StrLib.trunc("a", 2, false));
+
+        // ellipsis=true
+        assertEquals("a", StrLib.trunc("a", -2, true));
+        assertEquals("a", StrLib.trunc("a", -1, true));
+        assertEquals("a", StrLib.trunc("a", 0, true));
+        assertEquals("a", StrLib.trunc("a", 1, true));
+        assertEquals("a", StrLib.trunc("a", 2, true));
+
+        // string
+
+        // trunc(str, -n), trunc(str, 0), trunc(str, n)
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", -2));
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", -1));
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", 0));
+        assertEquals("a", StrLib.trunc("abcxyz", 1));
+        assertEquals("ab", StrLib.trunc("abcxyz", 2));
+        assertEquals("abc", StrLib.trunc("abcxyz", 3));        
+        assertEquals("abcx", StrLib.trunc("abcxyz", 4));   // non ellipsis
+        assertEquals("abcxy", StrLib.trunc("abcxyz", 5));  // non ellipsis
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", 6));
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", 7));
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", 8));
+
+        // ellipsis=false
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", -2, false));
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", -1, false));
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", 0, false));
+        assertEquals("a", StrLib.trunc("abcxyz", 1, false));
+        assertEquals("ab", StrLib.trunc("abcxyz", 2, false));
+        assertEquals("abc", StrLib.trunc("abcxyz", 3, false));
+        assertEquals("abcx", StrLib.trunc("abcxyz", 4, false));   // non ellipsis
+        assertEquals("abcxy", StrLib.trunc("abcxyz", 5, false));  // non ellipsis
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", 6, false));
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", 7, false));
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", 8, false));
+
+        // ellipsis=true
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", -2, true));
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", -1, true));
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", 0, true));
+        assertEquals("a", StrLib.trunc("abcxyz", 1, true));
+        assertEquals("ab", StrLib.trunc("abcxyz", 2, true));
+        assertEquals("abc", StrLib.trunc("abcxyz", 3, true));        
+        assertEquals("a...", StrLib.trunc("abcxyz", 4, true));   // ellipsis
+        assertEquals("ab...", StrLib.trunc("abcxyz", 5, true));  // ellipsis
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", 6, true));
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", 7, true));
+        assertEquals("abcxyz", StrLib.trunc("abcxyz", 8, true));
+        
+    }
 
     public void testLeft() {
 
-        // left: null
-        assertNull(StrLib.left(null, 3));
+        // left(null)
+        assertNull(StrLib.left(null, -2));
+        assertNull(StrLib.left(null, -1));
+        assertNull(StrLib.left(null, 0));
+        assertNull(StrLib.left(null, 1));
+        assertNull(StrLib.left(null, 2));
 
-        // left: empty
-        assertEquals("", StrLib.left("", 3));
+        // left(empty, -n), left(empty, 0), left(empty, n)
+        assertEquals("", StrLib.left("", -2));
+        assertEquals("", StrLib.left("", -1));
+        assertEquals("", StrLib.left("", 0));
+        assertEquals("", StrLib.left("", 1));
+        assertEquals("", StrLib.left("", 2));
 
-        // left: value
-        assertEquals("a", StrLib.left("a", 3));
-        assertEquals("ab", StrLib.left("ab", 3));
-        assertEquals("abc", StrLib.left("abc", 3));
-        assertEquals("abc", StrLib.left("abcd", 3));
+        // char
+
+        // left(char, -n), left(char, 0), left(char, n)
+        assertEquals("", StrLib.left("a", -2));
+        assertEquals("", StrLib.left("a", -1));
+        assertEquals("", StrLib.left("a", 0));
+        assertEquals("a", StrLib.left("a", 1));
+        assertEquals("a", StrLib.left("a", 2));
+
+        // string
+
+        // left(str, -n), left(str, 0), left(str, n)
+        assertEquals("", StrLib.left("abcxyz", -2));
+        assertEquals("", StrLib.left("abcxyz", -1));
+        assertEquals("", StrLib.left("abcxyz", 0));
+        assertEquals("a", StrLib.left("abcxyz", 1));
+        assertEquals("ab", StrLib.left("abcxyz", 2));
+        assertEquals("abc", StrLib.left("abcxyz", 3));        
+        assertEquals("abcx", StrLib.left("abcxyz", 4));
+        assertEquals("abcxy", StrLib.left("abcxyz", 5));
+        assertEquals("abcxyz", StrLib.left("abcxyz", 6));
+        assertEquals("abcxyz", StrLib.left("abcxyz", 7));
+        assertEquals("abcxyz", StrLib.left("abcxyz", 8));
 
     }
 
     public void testRight() {
+        
+        // right(null)
+        assertNull(StrLib.right(null, -2));
+        assertNull(StrLib.right(null, -1));
+        assertNull(StrLib.right(null, 0));
+        assertNull(StrLib.right(null, 1));
+        assertNull(StrLib.right(null, 2));
 
-        // right: null
-        assertNull(StrLib.right(null, 3));
+        // right(empty, -n), right(empty, 0), right(empty, n)
+        assertEquals("", StrLib.right("", -2));
+        assertEquals("", StrLib.right("", -1));
+        assertEquals("", StrLib.right("", 0));
+        assertEquals("", StrLib.right("", 1));
+        assertEquals("", StrLib.right("", 2));
 
-        // right: empty
-        assertEquals("", StrLib.right("", 3));
+        // char
 
-        // right: value
-        assertEquals("a", StrLib.right("a", 3));
-        assertEquals("ab", StrLib.right("ab", 3));
-        assertEquals("abc", StrLib.right("abc", 3));
-        assertEquals("bcd", StrLib.right("abcd", 3));
+        // right(char, -n), right(char, 0), right(char, n)
+        assertEquals("", StrLib.right("a", -2));
+        assertEquals("", StrLib.right("a", -1));
+        assertEquals("", StrLib.right("a", 0));
+        assertEquals("a", StrLib.right("a", 1));
+        assertEquals("a", StrLib.right("a", 2));
+
+        // string
+
+        // right(str, -n), right(str, 0), right(str, n)
+        assertEquals("", StrLib.right("abcxyz", -2));
+        assertEquals("", StrLib.right("abcxyz", -1));
+        assertEquals("", StrLib.right("abcxyz", 0));
+        assertEquals("z", StrLib.right("abcxyz", 1));
+        assertEquals("yz", StrLib.right("abcxyz", 2));
+        assertEquals("xyz", StrLib.right("abcxyz", 3));        
+        assertEquals("cxyz", StrLib.right("abcxyz", 4));
+        assertEquals("bcxyz", StrLib.right("abcxyz", 5));
+        assertEquals("abcxyz", StrLib.right("abcxyz", 6));
+        assertEquals("abcxyz", StrLib.right("abcxyz", 7));
+        assertEquals("abcxyz", StrLib.right("abcxyz", 8));
 
     }
     
