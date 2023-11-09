@@ -56,7 +56,6 @@ public class StrLib {
     // - emptyIfNull(String str)                                           - null -> ''
     //
     // - nullIfEmpty(String str)                                           - '' -> null
-    // - nullIfEmpty(String str, boolean trim)                             - trim, '' -> null
     //
     // - defaultIfNull(String str, String defaultStr)                      - str == null ? defaultStr : str
     // - defaultIfEmpty(String str, String defaultStr)                     - isEmpty(str) ? defaultStr : str
@@ -137,7 +136,7 @@ public class StrLib {
     // - ellipsis(String str, int len)
     //
     // - trunc(String str, int len)
-    // - trunc(String str, int len, boolean trim, boolean ellipsis)
+    // - trunc(String str, int len, boolean ellipsis)
     //
     // - left(String str, int len)
     // - right(String str, int len)
@@ -344,7 +343,7 @@ public class StrLib {
 
     public static final int ELLIPSIS_LEN = ELLIPSIS.length();
 
-    public static final String DEFAULT_PAD = " ";
+    public static final char DEFAULT_PAD = ' ';
 
     public static final String DEFAULT_SEPARATORS = " \t\n\r\f\u000B"; // \v -> \u000B
 
@@ -628,14 +627,8 @@ public class StrLib {
         return str == null ? EMPTY_STRING : str;
     }
 
+    
     public static String nullIfEmpty(String str) {
-        return nullIfEmpty(str, false);
-    }
-
-    public static String nullIfEmpty(String str, boolean trim) {
-        if (trim) {
-            str = trim(str);
-        }
         return isEmpty(str) ? null : str;
     }
 
@@ -1122,6 +1115,10 @@ public class StrLib {
             return EMPTY_STRING;
         }
         
+        if (n == 1) {
+            return String.valueOf(ch);            
+        }
+        
         char[] chars = new char[n];
         Arrays.fill(chars, ch);
         return new String(chars);
@@ -1188,7 +1185,7 @@ public class StrLib {
         if (str == null) {
             return null;
         }
-        if (len < 1 || pad == 0) { // pad == 0: no padding
+        if (len < 1) {
             return str;
         }
         
@@ -1227,13 +1224,13 @@ public class StrLib {
             return null;
         }
 
-        if (len < 1 || pad == null) {      // pad == null: no padding
+        if (len < 1 || isEmpty(pad)) {      // isEmpty(pad): no padding
             return str;
         }
         
         int strLen = str.length();
         int padLen = pad.length();
-        if (len <= strLen || padLen == 0) { // padLen == 0: no padding
+        if (len <= strLen) {
             return str;
         }
         
@@ -1264,7 +1261,7 @@ public class StrLib {
             return null;
         }
 
-        if (len < 1 || pad == 0) { // pad == 0: no padding
+        if (len < 1) {
             return str;
         }
         
@@ -1286,49 +1283,76 @@ public class StrLib {
     }
 
     public static String fill(String str, int len, String pad) {
-
-        // format returns not null string always
-        if (str == null || len < 1) {
+        if (str == null) {
+            return null;
+        }
+        
+        // hard format: <=len or empty
+        if (len < 1) {
             return EMPTY_STRING;
         }
+        
         int strLen = str.length();
         if (strLen == len) {
             return str;
         }
+        
+        // strong format: pad or trunc
         if (strLen < len) {
             // add <pad> to right side
             return rpad(str, len, pad);
         } else {
             // remove chars from right side
-            return trunc(str, len, false, true);
+            return trunc(str, len, true); // ellipsis
         }
     }
 
     public static String fill(String str, int len, char pad) {
-        return fill(str, len, String.valueOf(pad));
+        if (str == null) {
+            return null;
+        }
+        
+        // hard format: <=len or empty
+        if (len < 1) {
+            return EMPTY_STRING;
+        }
+        
+        int strLen = str.length();
+        if (strLen == len) {
+            return str;
+        }
+        
+        // strong format: pad or trunc
+        if (strLen < len) {
+            // add <pad> to right side
+            return rpad(str, len, pad);
+        } else {
+            // remove chars from right side
+            return trunc(str, len, true); // ellipsis
+        }
     }
     
     // ellipsis
     public static String ellipsis(String str, int len) {
-        return trunc(str, len, false, true);
+        return trunc(str, len, true); // ellipsis
     }
 
     // trunc
     public static String trunc(String str, int len) {
-        return trunc(str, len, false, false);
+        return trunc(str, len, false);
     }
 
     // trunc
-    public static String trunc(String str, int len, boolean trim, boolean ellipsis) {
+    public static String trunc(String str, int len, boolean ellipsis) {
         if (str == null) {
             return null;
         }
+        
+        // soft format        
         if (len < 1) {
             return str;
         }
-        if (trim) {
-            str = str.trim();
-        }
+        
         if (str.length() <= len) {
             return str;
         }
@@ -1346,6 +1370,12 @@ public class StrLib {
         if (str == null) {
             return null;
         }
+        
+        // hard format: <=len or empty
+        if (len < 1) {
+            return EMPTY_STRING;
+        }
+                            
         int strLen = str.length();
         if (strLen <= len) {
             return str;
@@ -1358,6 +1388,12 @@ public class StrLib {
         if (str == null) {
             return null;
         }
+        
+        // hard format: <=len or empty
+        if (len < 1) {
+            return EMPTY_STRING;
+        }
+        
         int strLen = str.length();
         if (strLen <= len) {
             return str;
