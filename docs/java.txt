@@ -1,4 +1,4 @@
-Java problems: 
+Java problems:  
  
  - Math: exp(x) <> pow(E, x)
  
