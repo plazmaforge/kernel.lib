@@ -24,17 +24,20 @@ def __module_init():
           raise Exception("Unsupported platform '%s' for OS versioning" % PLATFORM)
 
 def initOS():
-     global PLATFORM
+     #global PLATFORM
+     global PLATFORM, PROCESSOR, OS_NAME, OS_VERSION, OS_MAJORVER, OS_MINORVER
      if (PLATFORM ==  'Linux'):
           # TODO: Linux
           #pass
           OS_NAME = os.name
-          OS_VERSION = os.version
+          OS_VERSION = os.version                              
      elif (PLATFORM == 'Windows'):
-          # TODO: Windows
-          #pass
-          OS_NAME = os.name
-          OS_VERSION = os.version
+          OS_NAME = platform.system()          #os.name
+          OS_NAME = OS_NAME + ' ' + platform.win32_ver()[0]
+          OS_MAJORVER = platform.win32_ver()[0]
+          OS_MINORVER = platform.win32_ver()[1]
+          OS_VERSION = platform.win32_ver()[1] #os.version
+
      elif (PLATFORM == 'Darwin'):
           initMacOS() 
 
@@ -56,11 +59,12 @@ def getOsArch():
 
 def getOsArchData():
      os_arch = platform.machine()
+     os_arch = os_arch.lower()
      is_64bit = (os_arch == "x86_64" or os_arch == "amd64")
      if is_64bit:
-          return "64"
+          return '64'
      else:
-          return None
+          return ''
 
 def getOsVersion():
      return OS_VERSION #os.version
