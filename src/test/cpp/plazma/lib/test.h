@@ -2,6 +2,7 @@
 #define PLAZMA_LIB_TEST_H
 
 #include <string>
+#include <cstring>
 #include <vector>
 #include <iostream>
 
