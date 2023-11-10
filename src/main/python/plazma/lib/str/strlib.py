@@ -930,3 +930,24 @@ def reverse(str):
     if str is None:
         return None
     return str[::-1]
+
+# 4.1
+
+def startsWith(str, substr):
+    if isEmpty(str) or isEmpty(substr):
+        return False
+    return str.startswith(substr)
+
+def endsWith(str, substr):
+    if isEmpty(str) or isEmpty(substr):
+        return False
+    return str.endswith(substr)
+
+##
+
+def hasPrefix(str, substr):
+    return startsWith(str, substr)
+
+def hasSuffix(str, substr):
+    return endsWith(str, substr)
+
