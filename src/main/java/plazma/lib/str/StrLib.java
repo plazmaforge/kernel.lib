@@ -2025,7 +2025,7 @@ public class StrLib {
      * @return
      */
     public static boolean startsWith(String str, String prefix) {
-        if (str == null || prefix == null) {
+        if (isEmpty(str) || isEmpty(prefix)) {
             return false;
         }
         return str.startsWith(prefix);
@@ -2039,7 +2039,7 @@ public class StrLib {
      * @return
      */
     public static boolean endsWith(String str, String suffix) {
-        if (str == null || suffix == null) {
+        if (isEmpty(str) || isEmpty(suffix)) {
             return false;
         }
         return str.endsWith(suffix);
