@@ -1883,5 +1883,94 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('edcba', strlib.reverse('abcde'))
         self.assertEqual('fedcba', strlib.reverse('abcdef'))
 
+    # 4.1
+
+    def test_startsWith(self):
+        
+        # startsWith(None/empty, None/empty)
+        self.assertFalse(strlib.startsWith(None, None))
+        self.assertFalse(strlib.startsWith(None, ''))
+        self.assertFalse(strlib.startsWith('', None))
+        self.assertFalse(strlib.startsWith('', ''))     # important
+
+        # startsWith(None/blank, None/blank)
+        self.assertFalse(strlib.startsWith(None, ' '))
+        self.assertFalse(strlib.startsWith(' ', None))
+
+        # startsWith(None/value, None/value)
+        self.assertFalse(strlib.startsWith(None, '.'))
+        self.assertFalse(strlib.startsWith('.', None))
+
+        # startsWith(value/value, value/value)
+
+        # False
+        self.assertFalse(strlib.startsWith('a', ''))    # important
+        self.assertFalse(strlib.startsWith('a', 'x'))
+        self.assertFalse(strlib.startsWith('a', 'xy'))
+        self.assertFalse(strlib.startsWith('a', 'xyz'))
+
+        self.assertFalse(strlib.startsWith('ab', ''))   # important
+        self.assertFalse(strlib.startsWith('ab', 'x'))
+        self.assertFalse(strlib.startsWith('ab', 'xy'))
+        self.assertFalse(strlib.startsWith('ab', 'xyz'))
+
+        # True
+        self.assertTrue(strlib.startsWith('a', 'a'))
+        self.assertTrue(strlib.startsWith('ab', 'a'))
+        self.assertTrue(strlib.startsWith('ab', 'ab'))
+
+        self.assertTrue(strlib.startsWith('abc', 'a'))
+        self.assertTrue(strlib.startsWith('abc', 'ab'))
+        self.assertTrue(strlib.startsWith('abc', 'abc'))
+
+        ##
+        self.assertTrue(strlib.startsWith('myfile.txt', 'my'))
+        self.assertTrue(strlib.startsWith('myfile.txt', 'myfile'))
+        self.assertTrue(strlib.startsWith('myfile.txt', 'myfile.txt'))
+
+    def test_endsWith(self):
+        
+        # endsWith(None/empty, None/empty)
+        self.assertFalse(strlib.endsWith(None, None))
+        self.assertFalse(strlib.endsWith(None, ''))
+        self.assertFalse(strlib.endsWith('', None))
+        self.assertFalse(strlib.endsWith('', ''))     # important
+
+        # endsWith(None/blank, None/blank)
+        self.assertFalse(strlib.endsWith(None, ' '))
+        self.assertFalse(strlib.endsWith(' ', None))
+
+        # endsWith(None/value, None/value)
+        self.assertFalse(strlib.endsWith(None, '.'))
+        self.assertFalse(strlib.endsWith('.', None))
+
+        # endsWith(value/value, value/value)
+
+        # False
+        self.assertFalse(strlib.endsWith('a', ''))    # imoprtant
+        self.assertFalse(strlib.endsWith('a', 'x'))
+        self.assertFalse(strlib.endsWith('a', 'xy'))
+        self.assertFalse(strlib.endsWith('a', 'xyz'))
+
+        self.assertFalse(strlib.endsWith('ab', ''))   # important
+        self.assertFalse(strlib.endsWith('ab', 'x'))
+        self.assertFalse(strlib.endsWith('ab', 'xy'))
+        self.assertFalse(strlib.endsWith('ab', 'xyz'))
+
+        # True
+        self.assertTrue(strlib.endsWith('a', 'a'))
+        self.assertTrue(strlib.endsWith('ab', 'b'))
+        self.assertTrue(strlib.endsWith('ab', 'ab'))
+
+        self.assertTrue(strlib.endsWith('abc', 'c'))
+        self.assertTrue(strlib.endsWith('abc', 'bc'))
+        self.assertTrue(strlib.endsWith('abc', 'abc'))
+
+        ##
+        self.assertTrue(strlib.endsWith('myfile.txt', 'txt'))
+        self.assertTrue(strlib.endsWith('myfile.txt', '.txt'))
+        self.assertTrue(strlib.endsWith('myfile.txt', 'myfile.txt'))
+
+
 if __name__ == '__main__':
     unittest.main()

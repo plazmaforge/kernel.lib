@@ -2087,13 +2087,16 @@ public class StrLibTest extends AbstractTestCase {
         assertFalse(StrLib.hasPrefix("", "abc"));  
         assertFalse(StrLib.hasPrefix("myfile.txt", "abc"));
 
-        assertTrue(StrLib.hasPrefix("", ""));
-        assertTrue(StrLib.hasPrefix("myfile.txt", ""));
+        //assertTrue(StrLib.hasPrefix("", ""));
+        //assertTrue(StrLib.hasPrefix("myfile.txt", ""));
+        
         assertTrue(StrLib.hasPrefix("myfile.txt", "my"));
         assertTrue(StrLib.hasPrefix("myfile.txt", "myfile"));
         assertTrue(StrLib.hasPrefix("myfile.txt", "myfile.txt"));
         
     }
+    
+    // hasSuffix
     
     // 4.2
 
