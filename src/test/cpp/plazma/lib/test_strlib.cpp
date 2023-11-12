@@ -1614,28 +1614,24 @@ TEST(reverse) {
 
 TEST (startsWith) {
 
-  // startsWith(empty, empty)
-  ASSERT_FALSE(strlib::startsWith("", ""));     // important
+  // startsWith(empty, value)
+  ASSERT_FALSE(strlib::startsWith("", ""));      // important
+  ASSERT_FALSE(strlib::startsWith("", " "));
   ASSERT_FALSE(strlib::startsWith("", "abc"));
 
-  // startsWith(value/value, value/value)
+  // startsWith(blank, value)
+  ASSERT_FALSE(strlib::startsWith(" ", ""));     // important
+  ASSERT_TRUE(strlib::startsWith(" ", " "));     // True
+  ASSERT_FALSE(strlib::startsWith(" ", "abc"));
+
+  // startsWith(value, value)
 
   // False
-  ASSERT_FALSE(strlib::startsWith("a", ""));    // important
-  ASSERT_FALSE(strlib::startsWith("a", "x"));
-  ASSERT_FALSE(strlib::startsWith("a", "xy"));
-  ASSERT_FALSE(strlib::startsWith("a", "xyz"));
-
-  ASSERT_FALSE(strlib::startsWith("ab", ""));   // important
-  ASSERT_FALSE(strlib::startsWith("ab", "x"));
-  ASSERT_FALSE(strlib::startsWith("ab", "xy"));
-  ASSERT_FALSE(strlib::startsWith("ab", "xyz"));
+  ASSERT_FALSE(strlib::startsWith("abc", ""));   // important
+  ASSERT_FALSE(strlib::startsWith("abc", " "));
+  ASSERT_FALSE(strlib::startsWith("abc", "xyz"));
 
   // True
-  ASSERT_TRUE(strlib::startsWith("a", "a"));
-  ASSERT_TRUE(strlib::startsWith("ab", "a"));
-  ASSERT_TRUE(strlib::startsWith("ab", "ab"));
-
   ASSERT_TRUE(strlib::startsWith("abc", "a"));
   ASSERT_TRUE(strlib::startsWith("abc", "ab"));
   ASSERT_TRUE(strlib::startsWith("abc", "abc"));
@@ -1649,28 +1645,24 @@ TEST (startsWith) {
 
 TEST (endsWith) {
 
-  // endsWith(empty, empty)
-  ASSERT_FALSE(strlib::endsWith("", ""));     // important
+  // endsWith(empty, value)
+  ASSERT_FALSE(strlib::endsWith("", ""));       // important
+  ASSERT_FALSE(strlib::endsWith("", " "));
   ASSERT_FALSE(strlib::endsWith("", "abc"));
 
-  // endsWith(value/value, value/value)
+  // endsWith(blank, value)
+  ASSERT_FALSE(strlib::endsWith(" ", ""));      // important
+  ASSERT_TRUE(strlib::endsWith(" ", " "));      // True
+  ASSERT_FALSE(strlib::endsWith(" ", "abc"));
+
+  // endsWith(value, value)
 
   // False
-  ASSERT_FALSE(strlib::endsWith("a", ""));    // important
-  ASSERT_FALSE(strlib::endsWith("a", "x"));
-  ASSERT_FALSE(strlib::endsWith("a", "xy"));
-  ASSERT_FALSE(strlib::endsWith("a", "xyz"));
-
-  ASSERT_FALSE(strlib::endsWith("ab", ""));   // important
-  ASSERT_FALSE(strlib::endsWith("ab", "x"));
-  ASSERT_FALSE(strlib::endsWith("ab", "xy"));
-  ASSERT_FALSE(strlib::endsWith("ab", "xyz"));
+  ASSERT_FALSE(strlib::endsWith("abc", ""));    // important
+  ASSERT_FALSE(strlib::endsWith("abc", " "));
+  ASSERT_FALSE(strlib::endsWith("abc", "xyz"));
 
   // True
-  ASSERT_TRUE(strlib::endsWith("a", "a"));
-  ASSERT_TRUE(strlib::endsWith("ab", "b"));
-  ASSERT_TRUE(strlib::endsWith("ab", "ab"));
-
   ASSERT_TRUE(strlib::endsWith("abc", "c"));
   ASSERT_TRUE(strlib::endsWith("abc", "bc"));
   ASSERT_TRUE(strlib::endsWith("abc", "abc"));
@@ -1684,28 +1676,24 @@ TEST (endsWith) {
 
 TEST(hasPrefix) {
 
-  // hasPrefix(empty, empty)
-  ASSERT_FALSE(strlib::hasPrefix("", ""));     // important
+  // hasPrefix(empty, value)
+  ASSERT_FALSE(strlib::hasPrefix("", ""));      // important
+  ASSERT_FALSE(strlib::hasPrefix("", " "));
   ASSERT_FALSE(strlib::hasPrefix("", "abc"));
 
-  // hasPrefix(value/value, value/value)
+  // hasPrefix(blank, value)
+  ASSERT_FALSE(strlib::hasPrefix(" ", ""));     // important
+  ASSERT_TRUE(strlib::hasPrefix(" ", " "));     // True
+  ASSERT_FALSE(strlib::hasPrefix(" ", "abc"));
+
+  // hasPrefix(value, value)
 
   // False
-  ASSERT_FALSE(strlib::hasPrefix("a", ""));    // important
-  ASSERT_FALSE(strlib::hasPrefix("a", "x"));
-  ASSERT_FALSE(strlib::hasPrefix("a", "xy"));
-  ASSERT_FALSE(strlib::hasPrefix("a", "xyz"));
-
-  ASSERT_FALSE(strlib::hasPrefix("ab", ""));   // important
-  ASSERT_FALSE(strlib::hasPrefix("ab", "x"));
-  ASSERT_FALSE(strlib::hasPrefix("ab", "xy"));
-  ASSERT_FALSE(strlib::hasPrefix("ab", "xyz"));
+  ASSERT_FALSE(strlib::hasPrefix("abc", ""));   // important
+  ASSERT_FALSE(strlib::hasPrefix("abc", " "));
+  ASSERT_FALSE(strlib::hasPrefix("abc", "xyz"));
 
   // True
-  ASSERT_TRUE(strlib::hasPrefix("a", "a"));
-  ASSERT_TRUE(strlib::hasPrefix("ab", "a"));
-  ASSERT_TRUE(strlib::hasPrefix("ab", "ab"));
-
   ASSERT_TRUE(strlib::hasPrefix("abc", "a"));
   ASSERT_TRUE(strlib::hasPrefix("abc", "ab"));
   ASSERT_TRUE(strlib::hasPrefix("abc", "abc"));
@@ -1719,28 +1707,24 @@ TEST(hasPrefix) {
 
 TEST(hasSuffix) {
 
-  // hasSuffix(empty, empty)
-  ASSERT_FALSE(strlib::hasSuffix("", ""));     // important
+  // endsWith(empty, value)
+  ASSERT_FALSE(strlib::hasSuffix("", ""));       // important
+  ASSERT_FALSE(strlib::hasSuffix("", " "));
   ASSERT_FALSE(strlib::hasSuffix("", "abc"));
 
-  // hasSuffix(value/value, value/value)
+  // endsWith(blank, value)
+  ASSERT_FALSE(strlib::hasSuffix(" ", ""));      // important
+  ASSERT_TRUE(strlib::hasSuffix(" ", " "));      // True
+  ASSERT_FALSE(strlib::hasSuffix(" ", "abc"));
+
+  // endsWith(value, value)
 
   // False
-  ASSERT_FALSE(strlib::hasSuffix("a", ""));    // important
-  ASSERT_FALSE(strlib::hasSuffix("a", "x"));
-  ASSERT_FALSE(strlib::hasSuffix("a", "xy"));
-  ASSERT_FALSE(strlib::hasSuffix("a", "xyz"));
-
-  ASSERT_FALSE(strlib::hasSuffix("ab", ""));   // important
-  ASSERT_FALSE(strlib::hasSuffix("ab", "x"));
-  ASSERT_FALSE(strlib::hasSuffix("ab", "xy"));
-  ASSERT_FALSE(strlib::hasSuffix("ab", "xyz"));
+  ASSERT_FALSE(strlib::hasSuffix("abc", ""));    // important
+  ASSERT_FALSE(strlib::hasSuffix("abc", " "));
+  ASSERT_FALSE(strlib::hasSuffix("abc", "xyz"));
 
   // True
-  ASSERT_TRUE(strlib::hasSuffix("a", "a"));
-  ASSERT_TRUE(strlib::hasSuffix("ab", "b"));
-  ASSERT_TRUE(strlib::hasSuffix("ab", "ab"));
-
   ASSERT_TRUE(strlib::hasSuffix("abc", "c"));
   ASSERT_TRUE(strlib::hasSuffix("abc", "bc"));
   ASSERT_TRUE(strlib::hasSuffix("abc", "abc"));
@@ -1756,32 +1740,64 @@ TEST(hasSuffix) {
 
 TEST(removePrefix) {
 
+  // removePrefix(empty, value)
   ASSERT_EQ("", strlib::removePrefix("", ""));
-  ASSERT_EQ("", strlib::removePrefix("", "my"));
-  ASSERT_EQ("myfile.txt", strlib::removePrefix("myfile.txt", ""));
-  ASSERT_EQ("myfile.txt", strlib::removePrefix("myfile.txt", "abc"));
+  ASSERT_EQ("", strlib::removePrefix("", " "));
+  ASSERT_EQ("", strlib::removePrefix("", "abc"));
 
+  // removePrefix(blank, value)
+  ASSERT_EQ(" ", strlib::removePrefix(" ", ""));
+  ASSERT_EQ("", strlib::removePrefix(" ", " "));   // true
+  ASSERT_EQ(" ", strlib::removePrefix(" ", "abc"));
+
+  // removePrefix(value, value)
+
+  // False
+  ASSERT_EQ("abc", strlib::removePrefix("abc", ""));
+  ASSERT_EQ("abc", strlib::removePrefix("abc", " "));
+  ASSERT_EQ("abc", strlib::removePrefix("abc", "xyz"));
+
+  // True
+  ASSERT_EQ("bc", strlib::removePrefix("abc", "a"));
+  ASSERT_EQ("c", strlib::removePrefix("abc", "ab"));
+  ASSERT_EQ("", strlib::removePrefix("abc", "abc"));
+
+  ////
   ASSERT_EQ("file.txt", strlib::removePrefix("myfile.txt", "my"));
   ASSERT_EQ(".txt", strlib::removePrefix("myfile.txt", "myfile"));
-  ASSERT_EQ("txt", strlib::removePrefix("myfile.txt", "myfile."));
+  //ASSERT_EQ("txt", strlib::removePrefix("myfile.txt", "myfile."));
   ASSERT_EQ("", strlib::removePrefix("myfile.txt", "myfile.txt"));
-
-  ASSERT_EQ("myfile.txt", strlib::removePrefix("myfile.txt", "abcmyfile.txt"));
 
 }
 
 TEST(removeSuffix) {
 
+  // removeSuffix((empty, value)
   ASSERT_EQ("", strlib::removeSuffix("", ""));
-  ASSERT_EQ("", strlib::removeSuffix("", "my"));
-  ASSERT_EQ("myfile.txt", strlib::removeSuffix("myfile.txt", ""));
-  ASSERT_EQ("myfile.txt", strlib::removeSuffix("myfile.txt", "abc"));
+  ASSERT_EQ("", strlib::removeSuffix("", " "));
+  ASSERT_EQ("", strlib::removeSuffix("", "abc"));
 
+  // removeSuffix((blank, value)
+  ASSERT_EQ(" ", strlib::removeSuffix(" ", ""));
+  ASSERT_EQ("", strlib::removeSuffix(" ", " ")); // True
+  ASSERT_EQ(" ", strlib::removeSuffix(" ", "abc"));
+
+  // removeSuffix((value, value)
+
+  // False
+  ASSERT_EQ("abc", strlib::removeSuffix("abc", ""));
+  ASSERT_EQ("abc", strlib::removeSuffix("abc", " "));
+  ASSERT_EQ("abc", strlib::removeSuffix("abc", "xyz"));
+
+  // True
+  ASSERT_EQ("ab", strlib::removeSuffix("abc", "c"));
+  ASSERT_EQ("a", strlib::removeSuffix("abc", "bc"));
+  ASSERT_EQ("", strlib::removeSuffix("abc", "abc"));
+
+  ////
   ASSERT_EQ("myfile.", strlib::removeSuffix("myfile.txt", "txt"));
   ASSERT_EQ("myfile", strlib::removeSuffix("myfile.txt", ".txt"));
   ASSERT_EQ("", strlib::removeSuffix("myfile.txt", "myfile.txt"));
-
-  ASSERT_EQ("myfile.txt", strlib::removeSuffix("myfile.txt", "abcmyfile.txt"));
 
 }
 

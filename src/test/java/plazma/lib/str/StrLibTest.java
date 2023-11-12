@@ -2084,39 +2084,33 @@ public class StrLibTest extends AbstractTestCase {
     
     public void testStartsWith() {
         
-        // startsWith(null/empty, null/empty)
+        // startsWith(null, value)
         assertFalse(StrLib.startsWith(null, null));
         assertFalse(StrLib.startsWith(null, ""));
+        assertFalse(StrLib.startsWith(null, " "));
+        assertFalse(StrLib.startsWith(null, "abc"));
+        
+        // startsWith(empty, value)        
         assertFalse(StrLib.startsWith("", null));
         assertFalse(StrLib.startsWith("", ""));     // important
+        assertFalse(StrLib.startsWith("", " "));
         assertFalse(StrLib.startsWith("", "abc"));
 
-        // startsWith(null/blank, null/blank)
-        assertFalse(StrLib.startsWith(null, " "));
+        // startsWith(blank, value)        
         assertFalse(StrLib.startsWith(" ", null));
+        assertFalse(StrLib.startsWith(" ", ""));   // important
+        assertTrue(StrLib.startsWith(" ", " "));   // True
+        assertFalse(StrLib.startsWith(" ", "abc"));
 
-        // startsWith(null/value, null/value)
-        assertFalse(StrLib.startsWith(null, "."));
-        assertFalse(StrLib.startsWith(".", null));
-
-        // startsWith(value/value, value/value)
-
+        // startsWith(value, value)
+        
         // False
-        assertFalse(StrLib.startsWith("a", ""));    // important
-        assertFalse(StrLib.startsWith("a", "x"));
-        assertFalse(StrLib.startsWith("a", "xy"));
-        assertFalse(StrLib.startsWith("a", "xyz"));
-
-        assertFalse(StrLib.startsWith("ab", ""));   // important
-        assertFalse(StrLib.startsWith("ab", "x"));
-        assertFalse(StrLib.startsWith("ab", "xy"));
-        assertFalse(StrLib.startsWith("ab", "xyz"));
-
+        assertFalse(StrLib.startsWith("abc", null));
+        assertFalse(StrLib.startsWith("abc", "")); // important
+        assertFalse(StrLib.startsWith("abc", " "));
+        assertFalse(StrLib.startsWith("abc", "xyz"));
+        
         // True
-        assertTrue(StrLib.startsWith("a", "a"));
-        assertTrue(StrLib.startsWith("ab", "a"));
-        assertTrue(StrLib.startsWith("ab", "ab"));
-
         assertTrue(StrLib.startsWith("abc", "a"));
         assertTrue(StrLib.startsWith("abc", "ab"));
         assertTrue(StrLib.startsWith("abc", "abc"));
@@ -2130,39 +2124,33 @@ public class StrLibTest extends AbstractTestCase {
     
     public void testEndsWith() {
 
-        // endsWith(null/empty, null/empty)
+        // endsWith(null, value)
         assertFalse(StrLib.endsWith(null, null));
         assertFalse(StrLib.endsWith(null, ""));
+        assertFalse(StrLib.endsWith(null, " "));
+        assertFalse(StrLib.endsWith(null, "abc"));
+        
+        // endsWith(empty, value)        
         assertFalse(StrLib.endsWith("", null));
         assertFalse(StrLib.endsWith("", ""));     // important
+        assertFalse(StrLib.endsWith("", " "));
         assertFalse(StrLib.endsWith("", "abc"));
 
-        // endsWith(null/blank, null/blank)
-        assertFalse(StrLib.endsWith(null, " "));
+        // endsWith(blank, value)        
         assertFalse(StrLib.endsWith(" ", null));
-
-        // endsWith(null/value, null/value)
-        assertFalse(StrLib.endsWith(null, "."));
-        assertFalse(StrLib.endsWith(".", null));
-
-        // endsWith(value/value, value/value)
+        assertFalse(StrLib.endsWith(" ", ""));   // important
+        assertTrue(StrLib.endsWith(" ", " "));   // True
+        assertFalse(StrLib.endsWith(" ", "abc"));
+                
+        // endsWith(value, value)
 
         // False
-        assertFalse(StrLib.endsWith("a", ""));    // important
-        assertFalse(StrLib.endsWith("a", "x"));
-        assertFalse(StrLib.endsWith("a", "xy"));
-        assertFalse(StrLib.endsWith("a", "xyz"));
-
-        assertFalse(StrLib.endsWith("ab", ""));   // important
-        assertFalse(StrLib.endsWith("ab", "x"));
-        assertFalse(StrLib.endsWith("ab", "xy"));
-        assertFalse(StrLib.endsWith("ab", "xyz"));
+        assertFalse(StrLib.endsWith("abc", null));
+        assertFalse(StrLib.endsWith("abc", "")); // important
+        assertFalse(StrLib.endsWith("abc", " "));
+        assertFalse(StrLib.endsWith("abc", "xyz"));
 
         // True
-        assertTrue(StrLib.endsWith("a", "a"));
-        assertTrue(StrLib.endsWith("ab", "b"));
-        assertTrue(StrLib.endsWith("ab", "ab"));
-
         assertTrue(StrLib.endsWith("abc", "c"));
         assertTrue(StrLib.endsWith("abc", "bc"));
         assertTrue(StrLib.endsWith("abc", "abc"));
@@ -2176,39 +2164,33 @@ public class StrLibTest extends AbstractTestCase {
     
     public void testHasPrefix() {
         
-        // hasPrefix(null/empty, null/empty)
+        // hasPrefix(null, value)
         assertFalse(StrLib.hasPrefix(null, null));
         assertFalse(StrLib.hasPrefix(null, ""));
+        assertFalse(StrLib.hasPrefix(null, " "));
+        assertFalse(StrLib.hasPrefix(null, "abc"));
+        
+        // hasPrefix(empty, value)        
         assertFalse(StrLib.hasPrefix("", null));
         assertFalse(StrLib.hasPrefix("", ""));     // important
+        assertFalse(StrLib.hasPrefix("", " "));
         assertFalse(StrLib.hasPrefix("", "abc"));
 
-        // hasPrefix(null/blank, null/blank)
-        assertFalse(StrLib.hasPrefix(null, " "));
+        // hasPrefix(blank, value)        
         assertFalse(StrLib.hasPrefix(" ", null));
+        assertFalse(StrLib.hasPrefix(" ", ""));   // important
+        assertTrue(StrLib.hasPrefix(" ", " "));   // True
+        assertFalse(StrLib.hasPrefix(" ", "abc"));
 
-        // hasPrefix(null/value, null/value)
-        assertFalse(StrLib.hasPrefix(null, "."));
-        assertFalse(StrLib.hasPrefix(".", null));
-
-        // hasPrefix(value/value, value/value)
-
+        // hasPrefix(value, value)
+        
         // False
-        assertFalse(StrLib.hasPrefix("a", ""));    // important
-        assertFalse(StrLib.hasPrefix("a", "x"));
-        assertFalse(StrLib.hasPrefix("a", "xy"));
-        assertFalse(StrLib.hasPrefix("a", "xyz"));
-
-        assertFalse(StrLib.hasPrefix("ab", ""));   // important
-        assertFalse(StrLib.hasPrefix("ab", "x"));
-        assertFalse(StrLib.hasPrefix("ab", "xy"));
-        assertFalse(StrLib.hasPrefix("ab", "xyz"));
-
+        assertFalse(StrLib.hasPrefix("abc", null));
+        assertFalse(StrLib.hasPrefix("abc", "")); // important
+        assertFalse(StrLib.hasPrefix("abc", " "));
+        assertFalse(StrLib.hasPrefix("abc", "xyz"));
+        
         // True
-        assertTrue(StrLib.hasPrefix("a", "a"));
-        assertTrue(StrLib.hasPrefix("ab", "a"));
-        assertTrue(StrLib.hasPrefix("ab", "ab"));
-
         assertTrue(StrLib.hasPrefix("abc", "a"));
         assertTrue(StrLib.hasPrefix("abc", "ab"));
         assertTrue(StrLib.hasPrefix("abc", "abc"));
@@ -2222,39 +2204,33 @@ public class StrLibTest extends AbstractTestCase {
     
     public void testHasSuffix() {
 
-        // hasSuffix(null/empty, null/empty)
+        // hasSuffix(null, value)
         assertFalse(StrLib.hasSuffix(null, null));
         assertFalse(StrLib.hasSuffix(null, ""));
+        assertFalse(StrLib.hasSuffix(null, " "));
+        assertFalse(StrLib.hasSuffix(null, "abc"));
+        
+        // hasSuffix(empty, value)        
         assertFalse(StrLib.hasSuffix("", null));
         assertFalse(StrLib.hasSuffix("", ""));     // important
+        assertFalse(StrLib.hasSuffix("", " "));
         assertFalse(StrLib.hasSuffix("", "abc"));
 
-        // hasSuffix(null/blank, null/blank)
-        assertFalse(StrLib.hasSuffix(null, " "));
+        // hasSuffix(blank, value)        
         assertFalse(StrLib.hasSuffix(" ", null));
-
-        // hasSuffix(null/value, null/value)
-        assertFalse(StrLib.hasSuffix(null, "."));
-        assertFalse(StrLib.hasSuffix(".", null));
-
-        // hasSuffix(value/value, value/value)
+        assertFalse(StrLib.hasSuffix(" ", ""));   // important
+        assertTrue(StrLib.hasSuffix(" ", " "));   // True
+        assertFalse(StrLib.hasSuffix(" ", "abc"));
+                
+        // hasSuffix(value, value)
 
         // False
-        assertFalse(StrLib.hasSuffix("a", ""));    // important
-        assertFalse(StrLib.hasSuffix("a", "x"));
-        assertFalse(StrLib.hasSuffix("a", "xy"));
-        assertFalse(StrLib.hasSuffix("a", "xyz"));
-
-        assertFalse(StrLib.hasSuffix("ab", ""));   // important
-        assertFalse(StrLib.hasSuffix("ab", "x"));
-        assertFalse(StrLib.hasSuffix("ab", "xy"));
-        assertFalse(StrLib.hasSuffix("ab", "xyz"));
+        assertFalse(StrLib.hasSuffix("abc", null));
+        assertFalse(StrLib.hasSuffix("abc", "")); // important
+        assertFalse(StrLib.hasSuffix("abc", " "));
+        assertFalse(StrLib.hasSuffix("abc", "xyz"));
 
         // True
-        assertTrue(StrLib.hasSuffix("a", "a"));
-        assertTrue(StrLib.hasSuffix("ab", "b"));
-        assertTrue(StrLib.hasSuffix("ab", "ab"));
-
         assertTrue(StrLib.hasSuffix("abc", "c"));
         assertTrue(StrLib.hasSuffix("abc", "bc"));
         assertTrue(StrLib.hasSuffix("abc", "abc"));
@@ -2270,49 +2246,82 @@ public class StrLibTest extends AbstractTestCase {
 
     public void testRemovePrefix() {
 
-        // removePrefix: null
+        // removePrefix(null, value)
         assertNull(StrLib.removePrefix(null, null));
         assertNull(StrLib.removePrefix(null, ""));
         assertNull(StrLib.removePrefix(null, " "));
-        assertNull(StrLib.removePrefix(null, "prefix"));
+        assertNull(StrLib.removePrefix(null, "abc"));
 
-        // removePrefix: empty
+        // removePrefix(empty, value)
         assertEquals("", StrLib.removePrefix("", null));
         assertEquals("", StrLib.removePrefix("", ""));
-        assertEquals("", StrLib.removePrefix("", "prefix"));
+        assertEquals("", StrLib.removePrefix("", " "));
+        assertEquals("", StrLib.removePrefix("", "abc"));
 
-        // removePrefix: value
-        assertEquals("abcde", StrLib.removePrefix("abcde", null));
-        assertEquals("abcde", StrLib.removePrefix("abcde", ""));
-        assertEquals("abcde", StrLib.removePrefix("abcde", " "));
-        assertEquals("abcde", StrLib.removePrefix("abcde", "xyz"));
+        // removePrefix(blank, value)
+        assertEquals(" ", StrLib.removePrefix(" ", null));
+        assertEquals(" ", StrLib.removePrefix(" ", ""));
+        assertEquals("", StrLib.removePrefix(" ", " "));     // True
+        assertEquals(" ", StrLib.removePrefix(" ", "abc"));
 
-        assertEquals("", StrLib.removePrefix("ab", "ab"));
-        assertEquals("cde", StrLib.removePrefix("abcde", "ab"));
+        // removePrefix(value, value)
+        
+        // False
+        assertEquals("abc", StrLib.removePrefix("abc", null));
+        assertEquals("abc", StrLib.removePrefix("abc", ""));
+        assertEquals("abc", StrLib.removePrefix("abc", " "));
+        assertEquals("abc", StrLib.removePrefix("abc", "xyz"));
 
+        // True
+        assertEquals("bc", StrLib.removePrefix("abc", "a"));
+        assertEquals("c", StrLib.removePrefix("abc", "ab"));
+        assertEquals("", StrLib.removePrefix("abc", "abc"));
+
+        ////
+        assertEquals("file.txt", StrLib.removePrefix("myfile.txt", "my"));
+        assertEquals(".txt", StrLib.removePrefix("myfile.txt", "myfile"));
+        assertEquals("", StrLib.removePrefix("myfile.txt", "myfile.txt"));
+        
     }
 
     public void testRemoveSuffix() {
 
-        // removeSuffix: null
+        // removeSuffix(null, value)
         assertNull(StrLib.removeSuffix(null, null));
         assertNull(StrLib.removeSuffix(null, ""));
         assertNull(StrLib.removeSuffix(null, " "));
-        assertNull(StrLib.removeSuffix(null, "suffix"));
+        assertNull(StrLib.removeSuffix(null, "abc"));
 
-        // removeSuffix: empty
+        // removeSuffix(empty, value)
         assertEquals("", StrLib.removeSuffix("", null));
         assertEquals("", StrLib.removeSuffix("", ""));
-        assertEquals("", StrLib.removeSuffix("", "suffix"));
+        assertEquals("", StrLib.removeSuffix("", " "));
+        assertEquals("", StrLib.removeSuffix("", "abc"));
 
-        // removeSuffix: value
-        assertEquals("abcde", StrLib.removeSuffix("abcde", null));
-        assertEquals("abcde", StrLib.removeSuffix("abcde", ""));
-        assertEquals("abcde", StrLib.removeSuffix("abcde", " "));
-        assertEquals("abcde", StrLib.removeSuffix("abcde", "xyz"));
+        // removeSuffix(blank, value)
+        assertEquals(" ", StrLib.removeSuffix(" ", null));
+        assertEquals(" ", StrLib.removeSuffix(" ", ""));
+        assertEquals("", StrLib.removeSuffix(" ", " "));    // True
+        assertEquals(" ", StrLib.removeSuffix(" ", "abc"));
 
-        assertEquals("", StrLib.removeSuffix("ab", "ab"));
-        assertEquals("abc", StrLib.removeSuffix("abcde", "de"));
+        // removeSuffix(value, value)
+        
+        // False
+        assertEquals("abc", StrLib.removeSuffix("abc", null));
+        assertEquals("abc", StrLib.removeSuffix("abc", ""));
+        assertEquals("abc", StrLib.removeSuffix("abc", " "));
+        assertEquals("abc", StrLib.removeSuffix("abc", "xyz"));
+        
+        // True
+        assertEquals("ab", StrLib.removeSuffix("abc", "c"));
+        assertEquals("a", StrLib.removeSuffix("abc", "bc"));
+        assertEquals("", StrLib.removeSuffix("abc", "abc"));
+        
+        ////
+        assertEquals("myfile.", StrLib.removeSuffix("myfile.txt", "txt"));
+        assertEquals("myfile", StrLib.removeSuffix("myfile.txt", ".txt"));
+        assertEquals("", StrLib.removeSuffix("myfile.txt", "myfile.txt"));
+                
     }
     
     

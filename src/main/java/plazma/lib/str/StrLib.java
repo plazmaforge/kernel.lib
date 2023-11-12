@@ -494,6 +494,16 @@ public class StrLib {
         return str == null || str.isEmpty();
     }
 
+    private static boolean isEmpty(String[] array) {
+        return array == null || array.length == 0;
+    }
+
+    private static boolean isEmpty(char[] array) {
+        return array == null || array.length == 0;
+    }
+    
+    ///
+
     public static boolean isBlank(String str) {
         int len = length(str);
         if (len == 0) {
@@ -2134,8 +2144,8 @@ public class StrLib {
      * @return
      */
     public static String removePrefix(String str, String prefix) {
-        if (str == null || prefix == null || str.isEmpty() || prefix.isEmpty() || (!str.startsWith(prefix))) {
-            return str;
+        if (!hasPrefix(str, prefix)) {
+            return str;            
         }
         if (str.length() == prefix.length()) {
             return EMPTY_STRING; // remove all - empty string
@@ -2151,15 +2161,15 @@ public class StrLib {
      * @return
      */
     public static String removePrefixes(String str, String[] prefixes) {
-        if (str == null || prefixes == null || prefixes.length == 0) {
+        if (isEmpty(str) || isEmpty(prefixes)) {
             return str;
         }
         for (String prefix : prefixes) {
-            if (prefix == null || prefix.isEmpty()) {
+            if (isEmpty(prefix)) {
                 continue;
             }
             // Remove first found prefix
-            if (startsWith(str, prefix)) { // TODO: double check in removePrefix. We cannot remove this check!
+            if (hasPrefix(str, prefix)) { // TODO: double check in removePrefix. We cannot remove this check!
                 return removePrefix(str, prefix);
             }
         }
@@ -2174,8 +2184,8 @@ public class StrLib {
      * @return
      */
     public static String removeSuffix(String str, String suffix) {
-        if (str == null || suffix == null || str.isEmpty() || suffix.isEmpty() || (!str.endsWith(suffix))) {
-            return str;
+        if (!hasSuffix(str, suffix)) {
+            return str;            
         }
         if (str.length() == suffix.length()) {
             return EMPTY_STRING; // remove all - empty string
@@ -2191,11 +2201,11 @@ public class StrLib {
      * @return
      */
     public static String removeSuffixes(String str, String[] suffixes) {
-        if (str == null || suffixes == null || suffixes.length == 0) {
+        if (isEmpty(str) || isEmpty(suffixes)) {
             return str;
         }
         for (String suffix : suffixes) {
-            if (suffix == null || suffix.isEmpty()) {
+            if (isEmpty(suffix)) {
                 continue;
             }
             // Remove first found suffix

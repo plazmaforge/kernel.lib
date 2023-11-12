@@ -1887,39 +1887,33 @@ class StrlibTest(unittest.TestCase):
 
     def test_startsWith(self):
         
-        # startsWith(None/empty, None/empty)
+        # startsWith(None, value)
         self.assertFalse(strlib.startsWith(None, None))
         self.assertFalse(strlib.startsWith(None, ''))
+        self.assertFalse(strlib.startsWith(None, ' '))
+        self.assertFalse(strlib.startsWith(None, 'abc'))
+
+        # startsWith(empty, value)
         self.assertFalse(strlib.startsWith('', None))
         self.assertFalse(strlib.startsWith('', ''))     # important
+        self.assertFalse(strlib.startsWith('', ' '))
         self.assertFalse(strlib.startsWith('', 'abc'))
 
-        # startsWith(None/blank, None/blank)
-        self.assertFalse(strlib.startsWith(None, ' '))
+        # startsWith(blank, value)
         self.assertFalse(strlib.startsWith(' ', None))
+        self.assertFalse(strlib.startsWith(' ', ''))    # important
+        self.assertTrue(strlib.startsWith(' ', ' '))    # True
+        self.assertFalse(strlib.startsWith(' ', 'abc'))
 
-        # startsWith(None/value, None/value)
-        self.assertFalse(strlib.startsWith(None, '.'))
-        self.assertFalse(strlib.startsWith('.', None))
-
-        # startsWith(value/value, value/value)
+        # startsWith(value, value)
 
         # False
-        self.assertFalse(strlib.startsWith('a', ''))    # important
-        self.assertFalse(strlib.startsWith('a', 'x'))
-        self.assertFalse(strlib.startsWith('a', 'xy'))
-        self.assertFalse(strlib.startsWith('a', 'xyz'))
-
-        self.assertFalse(strlib.startsWith('ab', ''))   # important
-        self.assertFalse(strlib.startsWith('ab', 'x'))
-        self.assertFalse(strlib.startsWith('ab', 'xy'))
-        self.assertFalse(strlib.startsWith('ab', 'xyz'))
+        self.assertFalse(strlib.startsWith('abc', None))
+        self.assertFalse(strlib.startsWith('abc', ''))  # important
+        self.assertFalse(strlib.startsWith('abc', ' '))
+        self.assertFalse(strlib.startsWith('abc', 'xyz'))
 
         # True
-        self.assertTrue(strlib.startsWith('a', 'a'))
-        self.assertTrue(strlib.startsWith('ab', 'a'))
-        self.assertTrue(strlib.startsWith('ab', 'ab'))
-
         self.assertTrue(strlib.startsWith('abc', 'a'))
         self.assertTrue(strlib.startsWith('abc', 'ab'))
         self.assertTrue(strlib.startsWith('abc', 'abc'))
@@ -1931,39 +1925,33 @@ class StrlibTest(unittest.TestCase):
 
     def test_endsWith(self):
         
-        # endsWith(None/empty, None/empty)
+        # endsWith(None, value)
         self.assertFalse(strlib.endsWith(None, None))
         self.assertFalse(strlib.endsWith(None, ''))
+        self.assertFalse(strlib.endsWith(None, ' '))
+        self.assertFalse(strlib.endsWith(None, 'abc'))
+
+        # endsWith(empty, value)
         self.assertFalse(strlib.endsWith('', None))
         self.assertFalse(strlib.endsWith('', ''))     # important
+        self.assertFalse(strlib.endsWith('', ' '))
         self.assertFalse(strlib.endsWith('', 'abc'))
 
-        # endsWith(None/blank, None/blank)
-        self.assertFalse(strlib.endsWith(None, ' '))
+        # endsWith(blank, value)
         self.assertFalse(strlib.endsWith(' ', None))
+        self.assertFalse(strlib.endsWith(' ', ''))    # important
+        self.assertTrue(strlib.endsWith(' ', ' '))    # True
+        self.assertFalse(strlib.endsWith(' ', 'abc'))
 
-        # endsWith(None/value, None/value)
-        self.assertFalse(strlib.endsWith(None, '.'))
-        self.assertFalse(strlib.endsWith('.', None))
-
-        # endsWith(value/value, value/value)
+        # endsWith(value, value)
 
         # False
-        self.assertFalse(strlib.endsWith('a', ''))    # important
-        self.assertFalse(strlib.endsWith('a', 'x'))
-        self.assertFalse(strlib.endsWith('a', 'xy'))
-        self.assertFalse(strlib.endsWith('a', 'xyz'))
-
-        self.assertFalse(strlib.endsWith('ab', ''))   # important
-        self.assertFalse(strlib.endsWith('ab', 'x'))
-        self.assertFalse(strlib.endsWith('ab', 'xy'))
-        self.assertFalse(strlib.endsWith('ab', 'xyz'))
+        self.assertFalse(strlib.endsWith('abc', None))
+        self.assertFalse(strlib.endsWith('abc', ''))  # important
+        self.assertFalse(strlib.endsWith('abc', ' '))
+        self.assertFalse(strlib.endsWith('abc', 'xyz'))
 
         # True
-        self.assertTrue(strlib.endsWith('a', 'a'))
-        self.assertTrue(strlib.endsWith('ab', 'b'))
-        self.assertTrue(strlib.endsWith('ab', 'ab'))
-
         self.assertTrue(strlib.endsWith('abc', 'c'))
         self.assertTrue(strlib.endsWith('abc', 'bc'))
         self.assertTrue(strlib.endsWith('abc', 'abc'))
@@ -1975,39 +1963,33 @@ class StrlibTest(unittest.TestCase):
 
     def test_hasPrefix(self):
 
-        # hasPrefix(None/empty, None/empty)
+        # hasPrefix(None, value)
         self.assertFalse(strlib.hasPrefix(None, None))
         self.assertFalse(strlib.hasPrefix(None, ''))
+        self.assertFalse(strlib.hasPrefix(None, ' '))
+        self.assertFalse(strlib.hasPrefix(None, 'abc'))
+
+        # hasPrefix(empty, value)
         self.assertFalse(strlib.hasPrefix('', None))
         self.assertFalse(strlib.hasPrefix('', ''))     # important
+        self.assertFalse(strlib.hasPrefix('', ' '))
         self.assertFalse(strlib.hasPrefix('', 'abc'))
 
-        # hasPrefix(None/blank, None/blank)
-        self.assertFalse(strlib.hasPrefix(None, ' '))
+        # hasPrefix(blank, value)
         self.assertFalse(strlib.hasPrefix(' ', None))
+        self.assertFalse(strlib.hasPrefix(' ', ''))    # important
+        self.assertTrue(strlib.hasPrefix(' ', ' '))    # True
+        self.assertFalse(strlib.hasPrefix(' ', 'abc'))
 
-        # hasPrefix(None/value, None/value)
-        self.assertFalse(strlib.hasPrefix(None, '.'))
-        self.assertFalse(strlib.hasPrefix('.', None))
-
-        # hasPrefix(value/value, value/value)
+        # hasPrefix(value, value)
 
         # False
-        self.assertFalse(strlib.hasPrefix('a', ''))    # important
-        self.assertFalse(strlib.hasPrefix('a', 'x'))
-        self.assertFalse(strlib.hasPrefix('a', 'xy'))
-        self.assertFalse(strlib.hasPrefix('a', 'xyz'))
-
-        self.assertFalse(strlib.hasPrefix('ab', ''))   # important
-        self.assertFalse(strlib.hasPrefix('ab', 'x'))
-        self.assertFalse(strlib.hasPrefix('ab', 'xy'))
-        self.assertFalse(strlib.hasPrefix('ab', 'xyz'))
+        self.assertFalse(strlib.hasPrefix('abc', None))
+        self.assertFalse(strlib.hasPrefix('abc', ''))  # important
+        self.assertFalse(strlib.hasPrefix('abc', ' '))
+        self.assertFalse(strlib.hasPrefix('abc', 'xyz'))
 
         # True
-        self.assertTrue(strlib.hasPrefix('a', 'a'))
-        self.assertTrue(strlib.hasPrefix('ab', 'a'))
-        self.assertTrue(strlib.hasPrefix('ab', 'ab'))
-
         self.assertTrue(strlib.hasPrefix('abc', 'a'))
         self.assertTrue(strlib.hasPrefix('abc', 'ab'))
         self.assertTrue(strlib.hasPrefix('abc', 'abc'))
@@ -2019,39 +2001,33 @@ class StrlibTest(unittest.TestCase):
 
     def test_hasSuffix(self):
         
-        # hasSuffix(None/empty, None/empty)
+        # hasSuffix(None, value)
         self.assertFalse(strlib.hasSuffix(None, None))
         self.assertFalse(strlib.hasSuffix(None, ''))
+        self.assertFalse(strlib.hasSuffix(None, ' '))
+        self.assertFalse(strlib.hasSuffix(None, 'abc'))
+
+        # hasSuffix(empty, value)
         self.assertFalse(strlib.hasSuffix('', None))
         self.assertFalse(strlib.hasSuffix('', ''))     # important
+        self.assertFalse(strlib.hasSuffix('', ' '))
         self.assertFalse(strlib.hasSuffix('', 'abc'))
 
-        # hasSuffix(None/blank, None/blank)
-        self.assertFalse(strlib.hasSuffix(None, ' '))
+        # hasSuffix(blank, value)
         self.assertFalse(strlib.hasSuffix(' ', None))
+        self.assertFalse(strlib.hasSuffix(' ', ''))    # important
+        self.assertTrue(strlib.hasSuffix(' ', ' '))    # True
+        self.assertFalse(strlib.hasSuffix(' ', 'abc'))
 
-        # hasSuffix(None/value, None/value)
-        self.assertFalse(strlib.hasSuffix(None, '.'))
-        self.assertFalse(strlib.hasSuffix('.', None))
-
-        # hasSuffix(value/value, value/value)
+        # hasSuffix(value, value)
 
         # False
-        self.assertFalse(strlib.hasSuffix('a', ''))    # important
-        self.assertFalse(strlib.hasSuffix('a', 'x'))
-        self.assertFalse(strlib.hasSuffix('a', 'xy'))
-        self.assertFalse(strlib.hasSuffix('a', 'xyz'))
-
-        self.assertFalse(strlib.hasSuffix('ab', ''))   # important
-        self.assertFalse(strlib.hasSuffix('ab', 'x'))
-        self.assertFalse(strlib.hasSuffix('ab', 'xy'))
-        self.assertFalse(strlib.hasSuffix('ab', 'xyz'))
+        self.assertFalse(strlib.hasSuffix('abc', None))
+        self.assertFalse(strlib.hasSuffix('abc', ''))  # important
+        self.assertFalse(strlib.hasSuffix('abc', ' '))
+        self.assertFalse(strlib.hasSuffix('abc', 'xyz'))
 
         # True
-        self.assertTrue(strlib.hasSuffix('a', 'a'))
-        self.assertTrue(strlib.hasSuffix('ab', 'b'))
-        self.assertTrue(strlib.hasSuffix('ab', 'ab'))
-
         self.assertTrue(strlib.hasSuffix('abc', 'c'))
         self.assertTrue(strlib.hasSuffix('abc', 'bc'))
         self.assertTrue(strlib.hasSuffix('abc', 'abc'))
@@ -2060,6 +2036,82 @@ class StrlibTest(unittest.TestCase):
         self.assertTrue(strlib.hasSuffix('myfile.txt', 'txt'))
         self.assertTrue(strlib.hasSuffix('myfile.txt', '.txt'))
         self.assertTrue(strlib.hasSuffix('myfile.txt', 'myfile.txt'))
+
+    def test_removePrefix(self):
+
+        # removePrefix(None, value)
+        self.assertIsNone(strlib.removePrefix(None, None))
+        self.assertIsNone(strlib.removePrefix(None, ''))
+        self.assertIsNone(strlib.removePrefix(None, ' '))
+        self.assertIsNone(strlib.removePrefix(None, 'abc'))
+
+        # removePrefix(empty, value)
+        self.assertEqual('', strlib.removePrefix('', None))
+        self.assertEqual('', strlib.removePrefix('', ''))
+        self.assertEqual('', strlib.removePrefix('', ' '))
+        self.assertEqual('', strlib.removePrefix('', 'abc'))
+
+        # removePrefix(blank, value)
+        self.assertEqual(' ', strlib.removePrefix(' ', None))
+        self.assertEqual(' ', strlib.removePrefix(' ', ''))
+        self.assertEqual('', strlib.removePrefix(' ', ' '))  # True
+        self.assertEqual(' ', strlib.removePrefix(' ', 'abc'))
+
+        # removePrefix(value, value)
+
+        # False
+        self.assertEqual('abc', strlib.removePrefix('abc', None))
+        self.assertEqual('abc', strlib.removePrefix('abc', ''))
+        self.assertEqual('abc', strlib.removePrefix('abc', ' '))
+        self.assertEqual('abc', strlib.removePrefix('abc', 'xyz'))
+
+        # True
+        self.assertEqual('bc', strlib.removePrefix('abc', 'a'))
+        self.assertEqual('c', strlib.removePrefix('abc', 'ab'))
+        self.assertEqual('', strlib.removePrefix('abc', 'abc'))
+
+        ##
+        self.assertEqual('file.txt', strlib.removePrefix('myfile.txt', 'my'))
+        self.assertEqual('.txt', strlib.removePrefix('myfile.txt', 'myfile'))
+        self.assertEqual('', strlib.removePrefix('myfile.txt', 'myfile.txt'))
+
+    def test_removeSuffix(self):
+
+        # removeSuffix(None, value)
+        self.assertIsNone(strlib.removeSuffix(None, None))
+        self.assertIsNone(strlib.removeSuffix(None, ''))
+        self.assertIsNone(strlib.removeSuffix(None, ' '))
+        self.assertIsNone(strlib.removeSuffix(None, 'abc'))
+
+        # removeSuffix(empty, value)
+        self.assertEqual('', strlib.removeSuffix('', None))
+        self.assertEqual('', strlib.removeSuffix('', ''))
+        self.assertEqual('', strlib.removeSuffix('', ' '))
+        self.assertEqual('', strlib.removeSuffix('', 'abc'))
+
+        # removeSuffix(blank, value)
+        self.assertEqual(' ', strlib.removeSuffix(' ', None))
+        self.assertEqual(' ', strlib.removeSuffix(' ', ''))
+        self.assertEqual('', strlib.removeSuffix(' ', ' '))  # True
+        self.assertEqual(' ', strlib.removeSuffix(' ', 'abc'))
+
+        # removeSuffix(value, value)
+
+        # False
+        self.assertEqual('abc', strlib.removeSuffix('abc', None))
+        self.assertEqual('abc', strlib.removeSuffix('abc', ''))
+        self.assertEqual('abc', strlib.removeSuffix('abc', ' '))
+        self.assertEqual('abc', strlib.removeSuffix('abc', 'xyz'))
+
+        # True
+        self.assertEqual('ab', strlib.removeSuffix('abc', 'c'))
+        self.assertEqual('a', strlib.removeSuffix('abc', 'bc'))
+        self.assertEqual('', strlib.removeSuffix('abc', 'abc'))
+
+        ##
+        self.assertEqual('myfile.', strlib.removeSuffix('myfile.txt', 'txt'))
+        self.assertEqual('myfile', strlib.removeSuffix('myfile.txt', '.txt'))
+        self.assertEqual('', strlib.removeSuffix('myfile.txt', 'myfile.txt'))
 
 if __name__ == '__main__':
     unittest.main()

@@ -945,9 +945,20 @@ def endsWith(str, substr):
 
 ##
 
-def hasPrefix(str, substr):
-    return startsWith(str, substr)
+def hasPrefix(str, prefix):
+    return startsWith(str, prefix)
 
-def hasSuffix(str, substr):
-    return endsWith(str, substr)
+def hasSuffix(str, suffix):
+    return endsWith(str, suffix)
 
+##
+
+def removePrefix(str, prefix):
+    if not hasPrefix(str, prefix):
+        return str
+    return str[len(prefix):]
+
+def removeSuffix(str, suffix):
+    if not hasSuffix(str, suffix):
+        return str
+    return str[0:len(str)-len(suffix)]
