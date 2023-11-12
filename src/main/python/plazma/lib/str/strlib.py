@@ -142,6 +142,8 @@ KEBAB_CONNECTOR = '-' # kebab-case
 #
 # - left(str, len)
 # - right(str, len)
+
+#################################################################################
 #
 # 3.1
 #
@@ -161,6 +163,31 @@ KEBAB_CONNECTOR = '-' # kebab-case
 # - toKebabCase(str, separators, upper)
 #
 #  - reverse(String str)                                               - reverse("abc") = "cba"
+
+#################################################################################
+#
+# 4.1
+#
+# - startsWith(str, prefix)                                           - startsWith("myfile.txt", "myfile") = True
+# - endsWith(str, suffix)                                             - endsWith("myfile.txt", ".txt") = True
+#
+# - hasPrefix(str, prefix)                                            - [alias]: hasPrefix("myfile.txt", "myfile") = True
+# - hasSuffix(str, suffix)                                            - [alias]: hasSuffix("myfile.txt", ".txt") = True
+#
+# - startsWithIgnoreCase(str, prefix)                                 - N/A: startsWithIgnoreCase("myfile.txt", "MyFile") = True
+# - endsWithIgnoreCase(str, suffix)                                   - N/A: endsWithIgnoreCase("myfile.txt", ".TxT") = True
+#
+# - hasPrefixIgnoreCase(str, prefix)                                  - N/A: hasPrefixIgnoreCase("myfile.txt", "MyFile") = True
+# - hasSuffixIgnoreCase(str, suffix)                                  - N/A: hasSuffixIgnoreCase("myfile.txt", ".TxT") = True
+#
+# 4.2
+#
+# - removePrefix(str, prefix)
+# - removePrefixes(str, prefixes)                                    - N/A
+#
+# - removeSuffix(str, suffix)
+# - removeSuffixes(str, suffixes)                                    - N/A
+
 
 # 1.1
 
