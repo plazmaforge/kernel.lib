@@ -2082,22 +2082,190 @@ public class StrLibTest extends AbstractTestCase {
     
     // 4.1
     
+    public void testStartsWith() {
+        
+        // startsWith(null/empty, null/empty)
+        assertFalse(StrLib.startsWith(null, null));
+        assertFalse(StrLib.startsWith(null, ""));
+        assertFalse(StrLib.startsWith("", null));
+        assertFalse(StrLib.startsWith("", ""));     // important
+        assertFalse(StrLib.startsWith("", "abc"));
+
+        // startsWith(null/blank, null/blank)
+        assertFalse(StrLib.startsWith(null, " "));
+        assertFalse(StrLib.startsWith(" ", null));
+
+        // startsWith(null/value, null/value)
+        assertFalse(StrLib.startsWith(null, "."));
+        assertFalse(StrLib.startsWith(".", null));
+
+        // startsWith(value/value, value/value)
+
+        // False
+        assertFalse(StrLib.startsWith("a", ""));    // important
+        assertFalse(StrLib.startsWith("a", "x"));
+        assertFalse(StrLib.startsWith("a", "xy"));
+        assertFalse(StrLib.startsWith("a", "xyz"));
+
+        assertFalse(StrLib.startsWith("ab", ""));   // important
+        assertFalse(StrLib.startsWith("ab", "x"));
+        assertFalse(StrLib.startsWith("ab", "xy"));
+        assertFalse(StrLib.startsWith("ab", "xyz"));
+
+        // True
+        assertTrue(StrLib.startsWith("a", "a"));
+        assertTrue(StrLib.startsWith("ab", "a"));
+        assertTrue(StrLib.startsWith("ab", "ab"));
+
+        assertTrue(StrLib.startsWith("abc", "a"));
+        assertTrue(StrLib.startsWith("abc", "ab"));
+        assertTrue(StrLib.startsWith("abc", "abc"));
+
+        ////
+        assertTrue(StrLib.startsWith("myfile.txt", "my"));
+        assertTrue(StrLib.startsWith("myfile.txt", "myfile"));
+        assertTrue(StrLib.startsWith("myfile.txt", "myfile.txt"));
+        
+    }
+    
+    public void testEndsWith() {
+
+        // endsWith(null/empty, null/empty)
+        assertFalse(StrLib.endsWith(null, null));
+        assertFalse(StrLib.endsWith(null, ""));
+        assertFalse(StrLib.endsWith("", null));
+        assertFalse(StrLib.endsWith("", ""));     // important
+        assertFalse(StrLib.endsWith("", "abc"));
+
+        // endsWith(null/blank, null/blank)
+        assertFalse(StrLib.endsWith(null, " "));
+        assertFalse(StrLib.endsWith(" ", null));
+
+        // endsWith(null/value, null/value)
+        assertFalse(StrLib.endsWith(null, "."));
+        assertFalse(StrLib.endsWith(".", null));
+
+        // endsWith(value/value, value/value)
+
+        // False
+        assertFalse(StrLib.endsWith("a", ""));    // important
+        assertFalse(StrLib.endsWith("a", "x"));
+        assertFalse(StrLib.endsWith("a", "xy"));
+        assertFalse(StrLib.endsWith("a", "xyz"));
+
+        assertFalse(StrLib.endsWith("ab", ""));   // important
+        assertFalse(StrLib.endsWith("ab", "x"));
+        assertFalse(StrLib.endsWith("ab", "xy"));
+        assertFalse(StrLib.endsWith("ab", "xyz"));
+
+        // True
+        assertTrue(StrLib.endsWith("a", "a"));
+        assertTrue(StrLib.endsWith("ab", "b"));
+        assertTrue(StrLib.endsWith("ab", "ab"));
+
+        assertTrue(StrLib.endsWith("abc", "c"));
+        assertTrue(StrLib.endsWith("abc", "bc"));
+        assertTrue(StrLib.endsWith("abc", "abc"));
+
+        ////
+        assertTrue(StrLib.endsWith("myfile.txt", "txt"));
+        assertTrue(StrLib.endsWith("myfile.txt", ".txt"));
+        assertTrue(StrLib.endsWith("myfile.txt", "myfile.txt"));
+        
+    }
+    
     public void testHasPrefix() {
         
-        assertFalse(StrLib.hasPrefix("", "abc"));  
-        assertFalse(StrLib.hasPrefix("myfile.txt", "abc"));
+        // hasPrefix(null/empty, null/empty)
+        assertFalse(StrLib.hasPrefix(null, null));
+        assertFalse(StrLib.hasPrefix(null, ""));
+        assertFalse(StrLib.hasPrefix("", null));
+        assertFalse(StrLib.hasPrefix("", ""));     // important
+        assertFalse(StrLib.hasPrefix("", "abc"));
 
-        //assertTrue(StrLib.hasPrefix("", ""));
-        //assertTrue(StrLib.hasPrefix("myfile.txt", ""));
-        
+        // hasPrefix(null/blank, null/blank)
+        assertFalse(StrLib.hasPrefix(null, " "));
+        assertFalse(StrLib.hasPrefix(" ", null));
+
+        // hasPrefix(null/value, null/value)
+        assertFalse(StrLib.hasPrefix(null, "."));
+        assertFalse(StrLib.hasPrefix(".", null));
+
+        // hasPrefix(value/value, value/value)
+
+        // False
+        assertFalse(StrLib.hasPrefix("a", ""));    // important
+        assertFalse(StrLib.hasPrefix("a", "x"));
+        assertFalse(StrLib.hasPrefix("a", "xy"));
+        assertFalse(StrLib.hasPrefix("a", "xyz"));
+
+        assertFalse(StrLib.hasPrefix("ab", ""));   // important
+        assertFalse(StrLib.hasPrefix("ab", "x"));
+        assertFalse(StrLib.hasPrefix("ab", "xy"));
+        assertFalse(StrLib.hasPrefix("ab", "xyz"));
+
+        // True
+        assertTrue(StrLib.hasPrefix("a", "a"));
+        assertTrue(StrLib.hasPrefix("ab", "a"));
+        assertTrue(StrLib.hasPrefix("ab", "ab"));
+
+        assertTrue(StrLib.hasPrefix("abc", "a"));
+        assertTrue(StrLib.hasPrefix("abc", "ab"));
+        assertTrue(StrLib.hasPrefix("abc", "abc"));
+
+        ////
         assertTrue(StrLib.hasPrefix("myfile.txt", "my"));
         assertTrue(StrLib.hasPrefix("myfile.txt", "myfile"));
         assertTrue(StrLib.hasPrefix("myfile.txt", "myfile.txt"));
         
     }
     
-    // hasSuffix
-    
+    public void testHasSuffix() {
+
+        // hasSuffix(null/empty, null/empty)
+        assertFalse(StrLib.hasSuffix(null, null));
+        assertFalse(StrLib.hasSuffix(null, ""));
+        assertFalse(StrLib.hasSuffix("", null));
+        assertFalse(StrLib.hasSuffix("", ""));     // important
+        assertFalse(StrLib.hasSuffix("", "abc"));
+
+        // hasSuffix(null/blank, null/blank)
+        assertFalse(StrLib.hasSuffix(null, " "));
+        assertFalse(StrLib.hasSuffix(" ", null));
+
+        // hasSuffix(null/value, null/value)
+        assertFalse(StrLib.hasSuffix(null, "."));
+        assertFalse(StrLib.hasSuffix(".", null));
+
+        // hasSuffix(value/value, value/value)
+
+        // False
+        assertFalse(StrLib.hasSuffix("a", ""));    // important
+        assertFalse(StrLib.hasSuffix("a", "x"));
+        assertFalse(StrLib.hasSuffix("a", "xy"));
+        assertFalse(StrLib.hasSuffix("a", "xyz"));
+
+        assertFalse(StrLib.hasSuffix("ab", ""));   // important
+        assertFalse(StrLib.hasSuffix("ab", "x"));
+        assertFalse(StrLib.hasSuffix("ab", "xy"));
+        assertFalse(StrLib.hasSuffix("ab", "xyz"));
+
+        // True
+        assertTrue(StrLib.hasSuffix("a", "a"));
+        assertTrue(StrLib.hasSuffix("ab", "b"));
+        assertTrue(StrLib.hasSuffix("ab", "ab"));
+
+        assertTrue(StrLib.hasSuffix("abc", "c"));
+        assertTrue(StrLib.hasSuffix("abc", "bc"));
+        assertTrue(StrLib.hasSuffix("abc", "abc"));
+
+        ////
+        assertTrue(StrLib.hasSuffix("myfile.txt", "txt"));
+        assertTrue(StrLib.hasSuffix("myfile.txt", ".txt"));
+        assertTrue(StrLib.hasSuffix("myfile.txt", "myfile.txt"));
+        
+    }
+        
     // 4.2
 
     public void testRemovePrefix() {

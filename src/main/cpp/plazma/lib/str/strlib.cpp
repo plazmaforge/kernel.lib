@@ -1557,14 +1557,23 @@ namespace strlib {
     // startsWith, endsWith
 
     bool startsWith(const std::string& str, const std::string& prefix) {
+        if (str.empty() || prefix.empty()) {
+            return false;
+        }
         return str.size() >= prefix.size() && str.compare(0, prefix.size(), prefix) == 0;
     }
 
     bool startsWith2(const std::string& str, const std::string& prefix) {
+        if (str.empty() || prefix.empty()) {
+            return false;
+        }
         return str.size() >= prefix.size() && str.substr(0, prefix.size()) == prefix; // Myabe 'compare()' is better
     }
 
     bool endsWith(const std::string& str, const std::string& suffix) {
+        if (str.empty() || suffix.empty()) {
+            return false;
+        }
         return str.size() >= suffix.size() && str.compare(str.size() - suffix.size(), str.size(), suffix) == 0;
     }
 

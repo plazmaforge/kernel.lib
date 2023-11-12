@@ -1612,29 +1612,140 @@ TEST(reverse) {
 
 // 4.1
 
-// startsWith
-// endsWith
+TEST (startsWith) {
+
+  // startsWith(empty, empty)
+  ASSERT_FALSE(strlib::startsWith("", ""));     // important
+  ASSERT_FALSE(strlib::startsWith("", "abc"));
+
+  // startsWith(value/value, value/value)
+
+  // False
+  ASSERT_FALSE(strlib::startsWith("a", ""));    // important
+  ASSERT_FALSE(strlib::startsWith("a", "x"));
+  ASSERT_FALSE(strlib::startsWith("a", "xy"));
+  ASSERT_FALSE(strlib::startsWith("a", "xyz"));
+
+  ASSERT_FALSE(strlib::startsWith("ab", ""));   // important
+  ASSERT_FALSE(strlib::startsWith("ab", "x"));
+  ASSERT_FALSE(strlib::startsWith("ab", "xy"));
+  ASSERT_FALSE(strlib::startsWith("ab", "xyz"));
+
+  // True
+  ASSERT_TRUE(strlib::startsWith("a", "a"));
+  ASSERT_TRUE(strlib::startsWith("ab", "a"));
+  ASSERT_TRUE(strlib::startsWith("ab", "ab"));
+
+  ASSERT_TRUE(strlib::startsWith("abc", "a"));
+  ASSERT_TRUE(strlib::startsWith("abc", "ab"));
+  ASSERT_TRUE(strlib::startsWith("abc", "abc"));
+
+  ////
+  ASSERT_TRUE(strlib::startsWith("myfile.txt", "my"));
+  ASSERT_TRUE(strlib::startsWith("myfile.txt", "myfile"));
+  ASSERT_TRUE(strlib::startsWith("myfile.txt", "myfile.txt"));
+  
+}
+
+TEST (endsWith) {
+
+  // endsWith(empty, empty)
+  ASSERT_FALSE(strlib::endsWith("", ""));     // important
+  ASSERT_FALSE(strlib::endsWith("", "abc"));
+
+  // endsWith(value/value, value/value)
+
+  // False
+  ASSERT_FALSE(strlib::endsWith("a", ""));    // important
+  ASSERT_FALSE(strlib::endsWith("a", "x"));
+  ASSERT_FALSE(strlib::endsWith("a", "xy"));
+  ASSERT_FALSE(strlib::endsWith("a", "xyz"));
+
+  ASSERT_FALSE(strlib::endsWith("ab", ""));   // important
+  ASSERT_FALSE(strlib::endsWith("ab", "x"));
+  ASSERT_FALSE(strlib::endsWith("ab", "xy"));
+  ASSERT_FALSE(strlib::endsWith("ab", "xyz"));
+
+  // True
+  ASSERT_TRUE(strlib::endsWith("a", "a"));
+  ASSERT_TRUE(strlib::endsWith("ab", "b"));
+  ASSERT_TRUE(strlib::endsWith("ab", "ab"));
+
+  ASSERT_TRUE(strlib::endsWith("abc", "c"));
+  ASSERT_TRUE(strlib::endsWith("abc", "bc"));
+  ASSERT_TRUE(strlib::endsWith("abc", "abc"));
+
+  ////
+  ASSERT_TRUE(strlib::endsWith("myfile.txt", "txt"));
+  ASSERT_TRUE(strlib::endsWith("myfile.txt", ".txt"));
+  ASSERT_TRUE(strlib::endsWith("myfile.txt", "myfile.txt"));
+
+}
 
 TEST(hasPrefix) {
 
-  ASSERT_FALSE(strlib::hasPrefix("", "abc"));  
-  ASSERT_FALSE(strlib::hasPrefix("myfile.txt", "abc"));
+  // hasPrefix(empty, empty)
+  ASSERT_FALSE(strlib::hasPrefix("", ""));     // important
+  ASSERT_FALSE(strlib::hasPrefix("", "abc"));
 
-  ASSERT_TRUE(strlib::hasPrefix("", ""));
-  ASSERT_TRUE(strlib::hasPrefix("myfile.txt", ""));
+  // hasPrefix(value/value, value/value)
+
+  // False
+  ASSERT_FALSE(strlib::hasPrefix("a", ""));    // important
+  ASSERT_FALSE(strlib::hasPrefix("a", "x"));
+  ASSERT_FALSE(strlib::hasPrefix("a", "xy"));
+  ASSERT_FALSE(strlib::hasPrefix("a", "xyz"));
+
+  ASSERT_FALSE(strlib::hasPrefix("ab", ""));   // important
+  ASSERT_FALSE(strlib::hasPrefix("ab", "x"));
+  ASSERT_FALSE(strlib::hasPrefix("ab", "xy"));
+  ASSERT_FALSE(strlib::hasPrefix("ab", "xyz"));
+
+  // True
+  ASSERT_TRUE(strlib::hasPrefix("a", "a"));
+  ASSERT_TRUE(strlib::hasPrefix("ab", "a"));
+  ASSERT_TRUE(strlib::hasPrefix("ab", "ab"));
+
+  ASSERT_TRUE(strlib::hasPrefix("abc", "a"));
+  ASSERT_TRUE(strlib::hasPrefix("abc", "ab"));
+  ASSERT_TRUE(strlib::hasPrefix("abc", "abc"));
+
+  ////
   ASSERT_TRUE(strlib::hasPrefix("myfile.txt", "my"));
   ASSERT_TRUE(strlib::hasPrefix("myfile.txt", "myfile"));
   ASSERT_TRUE(strlib::hasPrefix("myfile.txt", "myfile.txt"));
-
+  
 }
 
 TEST(hasSuffix) {
 
-  ASSERT_FALSE(strlib::hasSuffix("", "abc"));  
-  ASSERT_FALSE(strlib::hasSuffix("myfile.txt", "abc"));
+  // hasSuffix(empty, empty)
+  ASSERT_FALSE(strlib::hasSuffix("", ""));     // important
+  ASSERT_FALSE(strlib::hasSuffix("", "abc"));
 
-  ASSERT_TRUE(strlib::hasSuffix("", ""));
-  ASSERT_TRUE(strlib::hasSuffix("myfile.txt", ""));
+  // hasSuffix(value/value, value/value)
+
+  // False
+  ASSERT_FALSE(strlib::hasSuffix("a", ""));    // important
+  ASSERT_FALSE(strlib::hasSuffix("a", "x"));
+  ASSERT_FALSE(strlib::hasSuffix("a", "xy"));
+  ASSERT_FALSE(strlib::hasSuffix("a", "xyz"));
+
+  ASSERT_FALSE(strlib::hasSuffix("ab", ""));   // important
+  ASSERT_FALSE(strlib::hasSuffix("ab", "x"));
+  ASSERT_FALSE(strlib::hasSuffix("ab", "xy"));
+  ASSERT_FALSE(strlib::hasSuffix("ab", "xyz"));
+
+  // True
+  ASSERT_TRUE(strlib::hasSuffix("a", "a"));
+  ASSERT_TRUE(strlib::hasSuffix("ab", "b"));
+  ASSERT_TRUE(strlib::hasSuffix("ab", "ab"));
+
+  ASSERT_TRUE(strlib::hasSuffix("abc", "c"));
+  ASSERT_TRUE(strlib::hasSuffix("abc", "bc"));
+  ASSERT_TRUE(strlib::hasSuffix("abc", "abc"));
+
+  ////
   ASSERT_TRUE(strlib::hasSuffix("myfile.txt", "txt"));
   ASSERT_TRUE(strlib::hasSuffix("myfile.txt", ".txt"));
   ASSERT_TRUE(strlib::hasSuffix("myfile.txt", "myfile.txt"));
@@ -1870,10 +1981,14 @@ INIT(strlib) {
   SET_TEST(toSnakeCase);
   SET_TEST(toKebabCase);
   SET_TEST(reverse);
+
+  SET_TEST(startsWith);
+  SET_TEST(endsWith);
   SET_TEST(hasPrefix);
   SET_TEST(hasSuffix);
   SET_TEST(removePrefix);
   SET_TEST(removeSuffix);
+
   SET_TEST(countChars);
   SET_TEST(countStrings);
   SET_TEST(countWords);
