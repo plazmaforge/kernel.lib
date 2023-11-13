@@ -1643,6 +1643,46 @@ TEST (startsWith) {
   
 }
 
+TEST (startsWithIgnoreCase) {
+
+  // startsWithIgnoreCase(empty, value)
+  ASSERT_FALSE(strlib::startsWithIgnoreCase("", ""));      // important
+  ASSERT_FALSE(strlib::startsWithIgnoreCase("", " "));
+  ASSERT_FALSE(strlib::startsWithIgnoreCase("", "abc"));
+
+  // startsWithIgnoreCase(blank, value)
+  ASSERT_FALSE(strlib::startsWithIgnoreCase(" ", ""));     // important
+  ASSERT_TRUE(strlib::startsWithIgnoreCase(" ", " "));     // True
+  ASSERT_FALSE(strlib::startsWithIgnoreCase(" ", "abc"));
+
+  // startsWithIgnoreCase(value, value)
+
+  // False
+  ASSERT_FALSE(strlib::startsWithIgnoreCase("abc", ""));   // important
+  ASSERT_FALSE(strlib::startsWithIgnoreCase("abc", " "));
+  ASSERT_FALSE(strlib::startsWithIgnoreCase("abc", "xyz"));
+
+  // True
+  ASSERT_TRUE(strlib::startsWithIgnoreCase("abc", "a"));
+  ASSERT_TRUE(strlib::startsWithIgnoreCase("abc", "ab"));
+  ASSERT_TRUE(strlib::startsWithIgnoreCase("abc", "abc"));
+
+  // True - IgnoreCase
+  ASSERT_TRUE(strlib::startsWithIgnoreCase("abc", "A"));
+  ASSERT_TRUE(strlib::startsWithIgnoreCase("abc", "Ab"));
+  ASSERT_TRUE(strlib::startsWithIgnoreCase("abc", "AbC"));
+
+  ////
+  ASSERT_TRUE(strlib::startsWithIgnoreCase("myfile.txt", "my"));
+  ASSERT_TRUE(strlib::startsWithIgnoreCase("myfile.txt", "myfile"));
+  ASSERT_TRUE(strlib::startsWithIgnoreCase("myfile.txt", "myfile.txt"));
+
+  ASSERT_TRUE(strlib::startsWithIgnoreCase("myfile.txt", "My"));
+  ASSERT_TRUE(strlib::startsWithIgnoreCase("myfile.txt", "MyFile"));
+  ASSERT_TRUE(strlib::startsWithIgnoreCase("myfile.txt", "MyFile.TxT"));
+
+}
+
 TEST (endsWith) {
 
   // endsWith(empty, value)
@@ -1671,6 +1711,42 @@ TEST (endsWith) {
   ASSERT_TRUE(strlib::endsWith("myfile.txt", "txt"));
   ASSERT_TRUE(strlib::endsWith("myfile.txt", ".txt"));
   ASSERT_TRUE(strlib::endsWith("myfile.txt", "myfile.txt"));
+
+}
+
+TEST (endsWithIgnoreCase) {
+
+  // endsWithIgnoreCase(empty, value)
+  ASSERT_FALSE(strlib::endsWithIgnoreCase("", ""));       // important
+  ASSERT_FALSE(strlib::endsWithIgnoreCase("", " "));
+  ASSERT_FALSE(strlib::endsWithIgnoreCase("", "abc"));
+
+  // endsWithIgnoreCase(blank, value)
+  ASSERT_FALSE(strlib::endsWithIgnoreCase(" ", ""));      // important
+  ASSERT_TRUE(strlib::endsWithIgnoreCase(" ", " "));      // True
+  ASSERT_FALSE(strlib::endsWithIgnoreCase(" ", "abc"));
+
+  // endsWithIgnoreCase(value, value)
+
+  // False
+  ASSERT_FALSE(strlib::endsWithIgnoreCase("abc", ""));    // important
+  ASSERT_FALSE(strlib::endsWithIgnoreCase("abc", " "));
+  ASSERT_FALSE(strlib::endsWithIgnoreCase("abc", "xyz"));
+
+  // True
+  ASSERT_TRUE(strlib::endsWithIgnoreCase("abc", "c"));
+  ASSERT_TRUE(strlib::endsWithIgnoreCase("abc", "bc"));
+  ASSERT_TRUE(strlib::endsWithIgnoreCase("abc", "abc"));
+
+  // True - IgnoreCase
+  ASSERT_TRUE(strlib::endsWithIgnoreCase("abc", "C"));
+  ASSERT_TRUE(strlib::endsWithIgnoreCase("abc", "Bc"));
+  ASSERT_TRUE(strlib::endsWithIgnoreCase("abc", "aBc"));
+
+  ////
+  ASSERT_TRUE(strlib::endsWithIgnoreCase("myfile.txt", "TxT"));
+  ASSERT_TRUE(strlib::endsWithIgnoreCase("myfile.txt", ".TxT"));
+  ASSERT_TRUE(strlib::endsWithIgnoreCase("myfile.txt", "MyFile.TxT"));
 
 }
 
@@ -1770,6 +1846,48 @@ TEST(removePrefix) {
 
 }
 
+TEST(removePrefixes) {
+
+  // removePrefixes(empty, value)
+  ASSERT_EQ("", strlib::removePrefixes("", (std::vector<std::string>){}));
+  ASSERT_EQ("", strlib::removePrefixes("", (std::vector<std::string>){""}));
+  ASSERT_EQ("", strlib::removePrefixes("", (std::vector<std::string>){" "}));
+  ASSERT_EQ("", strlib::removePrefixes("", (std::vector<std::string>){"abc"}));
+
+  // removePrefixes(blank, value)
+  ASSERT_EQ(" ", strlib::removePrefixes(" ", (std::vector<std::string>){}));
+  ASSERT_EQ(" ", strlib::removePrefixes(" ", (std::vector<std::string>){""}));
+  ASSERT_EQ("", strlib::removePrefixes(" ", (std::vector<std::string>){" "}));   // true
+  ASSERT_EQ(" ", strlib::removePrefixes(" ", (std::vector<std::string>){"abc"}));
+
+  // removePrefixes(value, value)
+
+  // False
+  ASSERT_EQ("abc", strlib::removePrefixes("abc", (std::vector<std::string>){}));
+  ASSERT_EQ("abc", strlib::removePrefixes("abc", (std::vector<std::string>){""}));
+  ASSERT_EQ("abc", strlib::removePrefixes("abc", (std::vector<std::string>){" "}));
+  ASSERT_EQ("abc", strlib::removePrefixes("abc", (std::vector<std::string>){"xyz"}));
+  ASSERT_EQ("abc", strlib::removePrefixes("abc", (std::vector<std::string>){"xyz", "def"}));
+  ASSERT_EQ("abc", strlib::removePrefixes("abc", (std::vector<std::string>){"def", "xyz"}));
+
+  // True
+  ASSERT_EQ("bc", strlib::removePrefixes("abc", (std::vector<std::string>){"a"}));
+  ASSERT_EQ("c", strlib::removePrefixes("abc", (std::vector<std::string>){"ab"}));
+  ASSERT_EQ("", strlib::removePrefixes("abc", (std::vector<std::string>){"abc"}));
+  ASSERT_EQ("", strlib::removePrefixes("abc", (std::vector<std::string>){"abc", "xyz"}));
+  ASSERT_EQ("", strlib::removePrefixes("abc", (std::vector<std::string>){"xyz", "abc"}));
+
+  ASSERT_EQ("c", strlib::removePrefixes("abc", (std::vector<std::string>){"ab", "abc"})); // first 'ab'
+
+  ////
+  ASSERT_EQ("file.txt", strlib::removePrefixes("myfile.txt", (std::vector<std::string>){"my"}));
+  ASSERT_EQ(".txt", strlib::removePrefixes("myfile.txt", (std::vector<std::string>){"myfile"}));
+  ASSERT_EQ("", strlib::removePrefixes("myfile.txt", (std::vector<std::string>){"myfile.txt"}));
+
+  ASSERT_EQ(".txt", strlib::removePrefixes("myfile.txt", (std::vector<std::string>){"myfile", "yourfile"}));
+
+}
+
 TEST(removeSuffix) {
 
   // removeSuffix((empty, value)
@@ -1798,6 +1916,48 @@ TEST(removeSuffix) {
   ASSERT_EQ("myfile.", strlib::removeSuffix("myfile.txt", "txt"));
   ASSERT_EQ("myfile", strlib::removeSuffix("myfile.txt", ".txt"));
   ASSERT_EQ("", strlib::removeSuffix("myfile.txt", "myfile.txt"));
+
+}
+
+TEST(removeSuffixes) {
+
+  // removeSuffixes((empty, value)
+  ASSERT_EQ("", strlib::removeSuffixes("", (std::vector<std::string>){}));
+  ASSERT_EQ("", strlib::removeSuffixes("", (std::vector<std::string>){""}));
+  ASSERT_EQ("", strlib::removeSuffixes("", (std::vector<std::string>){" "}));
+  ASSERT_EQ("", strlib::removeSuffixes("", (std::vector<std::string>){"abc"}));
+
+  // removeSuffixes((blank, value)
+  ASSERT_EQ(" ", strlib::removeSuffixes(" ", (std::vector<std::string>){}));
+  ASSERT_EQ(" ", strlib::removeSuffixes(" ", (std::vector<std::string>){""}));
+  ASSERT_EQ("", strlib::removeSuffixes(" ", (std::vector<std::string>){" "})); // True
+  ASSERT_EQ(" ", strlib::removeSuffixes(" ", (std::vector<std::string>){"abc"}));
+
+  // removeSuffixes((value, value)
+
+  // False
+  ASSERT_EQ("abc", strlib::removeSuffixes("abc", (std::vector<std::string>){}));
+  ASSERT_EQ("abc", strlib::removeSuffixes("abc", (std::vector<std::string>){""}));
+  ASSERT_EQ("abc", strlib::removeSuffixes("abc", (std::vector<std::string>){" "}));
+  ASSERT_EQ("abc", strlib::removeSuffixes("abc", (std::vector<std::string>){"xyz"}));
+  ASSERT_EQ("abc", strlib::removeSuffixes("abc", (std::vector<std::string>){"xyz", "def"}));
+  ASSERT_EQ("abc", strlib::removeSuffixes("abc", (std::vector<std::string>){"def", "xyz"}));
+
+  // True
+  ASSERT_EQ("ab", strlib::removeSuffixes("abc", (std::vector<std::string>){"c"}));
+  ASSERT_EQ("a", strlib::removeSuffixes("abc", (std::vector<std::string>){"bc"}));
+  ASSERT_EQ("", strlib::removeSuffixes("abc", (std::vector<std::string>){"abc"}));
+  ASSERT_EQ("", strlib::removeSuffixes("abc", (std::vector<std::string>){"abc", "xyz"}));
+  ASSERT_EQ("", strlib::removeSuffixes("abc", (std::vector<std::string>){"xyz", "abc"}));
+
+  ASSERT_EQ("a", strlib::removeSuffixes("abc", (std::vector<std::string>){"bc", "abc"})); // first 'bc'
+
+  ////
+  ASSERT_EQ("myfile.", strlib::removeSuffixes("myfile.txt", (std::vector<std::string>){"txt"}));
+  ASSERT_EQ("myfile", strlib::removeSuffixes("myfile.txt", (std::vector<std::string>){".txt"}));
+  ASSERT_EQ("", strlib::removeSuffixes("myfile.txt", (std::vector<std::string>){"myfile.txt"}));
+
+  ASSERT_EQ("myfile", strlib::removeSuffixes("myfile.txt", (std::vector<std::string>){".txt", ".csv"}));
 
 }
 
@@ -1999,11 +2159,15 @@ INIT(strlib) {
   SET_TEST(reverse);
 
   SET_TEST(startsWith);
+  SET_TEST(startsWithIgnoreCase);
   SET_TEST(endsWith);
+  SET_TEST(endsWithIgnoreCase);
   SET_TEST(hasPrefix);
   SET_TEST(hasSuffix);
   SET_TEST(removePrefix);
+  SET_TEST(removePrefixes);
   SET_TEST(removeSuffix);
+  SET_TEST(removeSuffixes);
 
   SET_TEST(countChars);
   SET_TEST(countStrings);

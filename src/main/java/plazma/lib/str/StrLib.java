@@ -191,16 +191,16 @@ public class StrLib {
     // 4.1
     //
     // - startsWith(String str, String prefix)                             - startsWith("myfile.txt", "myfile") = true
-    // - endsWith(String str, String suffix)                               - endsWith("myfile.txt", ".txt") = true
-    //
-    // - hasPrefix(String str, String prefix)                              - [alias]: hasPrefix("myfile.txt", "myfile") = true
-    // - hasSuffix(String str, String suffix)                              - [alias]: hasSuffix("myfile.txt", ".txt") = true
-    //
     // - startsWithIgnoreCase(String str, String prefix)                   - startsWithIgnoreCase("myfile.txt", "MyFile") = true
+    //    
+    // - endsWith(String str, String suffix)                               - endsWith("myfile.txt", ".txt") = true
     // - endsWithIgnoreCase(String str, String suffix)                     - endsWithIgnoreCase("myfile.txt", ".TxT") = true
     //
-    // - hasPrefixIgnoreCase(String str, String prefix)                    - hasPrefixIgnoreCase("myfile.txt", "MyFile") = true
-    // - hasSuffixIgnoreCase(String str, String suffix)                    - hasSuffixIgnoreCase("myfile.txt", ".TxT") = true
+    // - hasPrefix(String str, String prefix)                              - [alias]: hasPrefix("myfile.txt", "myfile") = true
+    // - hasPrefixIgnoreCase(String str, String prefix)                    - [alias]: hasPrefixIgnoreCase("myfile.txt", "MyFile") = true
+    //
+    // - hasSuffix(String str, String suffix)                              - [alias]: hasSuffix("myfile.txt", ".txt") = true
+    // - hasSuffixIgnoreCase(String str, String suffix)                    - [alias]: hasSuffixIgnoreCase("myfile.txt", ".TxT") = true
     //
     // 4.2
     // 
@@ -1558,13 +1558,17 @@ public class StrLib {
 
     // toCase(locale)
     public static String toCase(String str, boolean upper, Locale locale) {
-        if (str == null || str.isEmpty()) {
+        if (isEmpty(str)) {
             return str;
-        }
+        }        
         if (locale == null) {
             locale = Locale.getDefault();
         }
         return upper ? str.toUpperCase(locale) : str.toLowerCase(locale);
+    }
+    
+    private static String toIgnoreCase(String str) {
+        return isEmpty(str) ? str : str.toLowerCase();
     }
 
     ////
@@ -2042,6 +2046,23 @@ public class StrLib {
     }
 
     /**
+     * Return true if <code>str</code> starts with <code>prefix</code> (ignore case)
+     * 
+     * @param str
+     * @param prefix
+     * @return
+     */
+    public static boolean startsWithIgnoreCase(String str, String prefix) {
+        if (isEmpty(str) || isEmpty(prefix)) {
+            return false;
+        }
+        
+        String strn = toIgnoreCase(str);
+        String prefixn = toIgnoreCase(prefix);
+        return startsWith(strn, prefixn);
+    }
+
+    /**
      * Tests if this string ends with the specified suffix.
      * 
      * @param str
@@ -2055,7 +2076,22 @@ public class StrLib {
         return str.endsWith(suffix);
     }
 
-    //
+    /**
+     * Return true if <code>str</code> ends with <code>suffix</code> (ignore case)
+     * 
+     * @param str
+     * @param suffix
+     * @return
+     */
+    public static boolean endsWithIgnoreCase(String str, String suffix) {
+        if (isEmpty(str) || isEmpty(suffix)) {
+            return false;
+        }
+        
+        String strn = toIgnoreCase(str);
+        String suffixn = toIgnoreCase(suffix);
+        return endsWith(strn, suffixn);
+    }
 
     /**
      * Tests if this string starts with the specified prefix.
@@ -2069,50 +2105,6 @@ public class StrLib {
     }
 
     /**
-     * Tests if this string ends with the specified suffix.
-     * 
-     * @param str
-     * @param suffix
-     * @return
-     */
-    public static boolean hasSuffix(String str, String suffix) {
-        return endsWith(str, suffix);
-    }
-
-    // TODO: What about: startsWithIgnoreCase(str, prefix) -> startsWith(str,
-    // prefix, true) {
-
-    /**
-     * Return true if <code>str</code> starts with <code>prefix</code> (ignore case)
-     * 
-     * @param str
-     * @param prefix
-     * @return
-     */
-    public static boolean startsWithIgnoreCase(String str, String prefix) {
-        if (str == null || prefix == null) {
-            return false;
-        }
-        return str.toUpperCase().startsWith(prefix.toUpperCase());
-    }
-
-    /**
-     * Return true if <code>str</code> ends with <code>suffix</code> (ignore case)
-     * 
-     * @param str
-     * @param suffix
-     * @return
-     */
-    public static boolean endsWithIgnoreCase(String str, String suffix) {
-        if (str == null || suffix == null) {
-            return false;
-        }
-        return str.toUpperCase().endsWith(suffix.toUpperCase());
-    }
-
-    //
-
-    /**
      * Return true if <code>str</code> starts with <code>prefix</code> (ignore case)
      * 
      * @param str
@@ -2121,6 +2113,17 @@ public class StrLib {
      */
     public static boolean hasPrefixWithIgnoreCase(String str, String prefix) {
         return startsWithIgnoreCase(str, prefix);
+    }
+    
+    /**
+     * Tests if this string ends with the specified suffix.
+     * 
+     * @param str
+     * @param suffix
+     * @return
+     */
+    public static boolean hasSuffix(String str, String suffix) {
+        return endsWith(str, suffix);
     }
 
     /**

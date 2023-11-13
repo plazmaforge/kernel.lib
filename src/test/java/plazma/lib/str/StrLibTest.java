@@ -2121,7 +2121,56 @@ public class StrLibTest extends AbstractTestCase {
         assertTrue(StrLib.startsWith("myfile.txt", "myfile.txt"));
         
     }
-    
+
+    public void testStartsWithIgnoreCase() {
+        
+        // startsWithIgnoreCase(null, value)
+        assertFalse(StrLib.startsWithIgnoreCase(null, null));
+        assertFalse(StrLib.startsWithIgnoreCase(null, ""));
+        assertFalse(StrLib.startsWithIgnoreCase(null, " "));
+        assertFalse(StrLib.startsWithIgnoreCase(null, "abc"));
+        
+        // startsWithIgnoreCase(empty, value)        
+        assertFalse(StrLib.startsWithIgnoreCase("", null));
+        assertFalse(StrLib.startsWithIgnoreCase("", ""));     // important
+        assertFalse(StrLib.startsWithIgnoreCase("", " "));
+        assertFalse(StrLib.startsWithIgnoreCase("", "abc"));
+
+        // startsWithIgnoreCase(blank, value)        
+        assertFalse(StrLib.startsWithIgnoreCase(" ", null));
+        assertFalse(StrLib.startsWithIgnoreCase(" ", ""));   // important
+        assertTrue(StrLib.startsWithIgnoreCase(" ", " "));   // True
+        assertFalse(StrLib.startsWithIgnoreCase(" ", "abc"));
+
+        // startsWithIgnoreCase(value, value)
+        
+        // False
+        assertFalse(StrLib.startsWithIgnoreCase("abc", null));
+        assertFalse(StrLib.startsWithIgnoreCase("abc", "")); // important
+        assertFalse(StrLib.startsWithIgnoreCase("abc", " "));
+        assertFalse(StrLib.startsWithIgnoreCase("abc", "xyz"));
+        
+        // True
+        assertTrue(StrLib.startsWithIgnoreCase("abc", "a"));
+        assertTrue(StrLib.startsWithIgnoreCase("abc", "ab"));
+        assertTrue(StrLib.startsWithIgnoreCase("abc", "abc"));
+
+        // True - IgnoreCase
+        assertTrue(StrLib.startsWithIgnoreCase("abc", "A"));
+        assertTrue(StrLib.startsWithIgnoreCase("abc", "Ab"));
+        assertTrue(StrLib.startsWithIgnoreCase("abc", "AbC"));
+
+        ////
+        assertTrue(StrLib.startsWithIgnoreCase("myfile.txt", "my"));
+        assertTrue(StrLib.startsWithIgnoreCase("myfile.txt", "myfile"));
+        assertTrue(StrLib.startsWithIgnoreCase("myfile.txt", "myfile.txt"));
+
+        assertTrue(StrLib.startsWithIgnoreCase("myfile.txt", "My"));
+        assertTrue(StrLib.startsWithIgnoreCase("myfile.txt", "Myfile"));
+        assertTrue(StrLib.startsWithIgnoreCase("myfile.txt", "Myfile.TxT"));
+
+    }
+
     public void testEndsWith() {
 
         // endsWith(null, value)
@@ -2161,7 +2210,56 @@ public class StrLibTest extends AbstractTestCase {
         assertTrue(StrLib.endsWith("myfile.txt", "myfile.txt"));
         
     }
-    
+
+    public void testEndsWithIgnoreCase() {
+
+        // endsWithIgnoreCase(null, value)
+        assertFalse(StrLib.endsWithIgnoreCase(null, null));
+        assertFalse(StrLib.endsWithIgnoreCase(null, ""));
+        assertFalse(StrLib.endsWithIgnoreCase(null, " "));
+        assertFalse(StrLib.endsWithIgnoreCase(null, "abc"));
+        
+        // endsWithIgnoreCase(empty, value)        
+        assertFalse(StrLib.endsWithIgnoreCase("", null));
+        assertFalse(StrLib.endsWithIgnoreCase("", ""));     // important
+        assertFalse(StrLib.endsWithIgnoreCase("", " "));
+        assertFalse(StrLib.endsWithIgnoreCase("", "abc"));
+
+        // endsWithIgnoreCase(blank, value)        
+        assertFalse(StrLib.endsWithIgnoreCase(" ", null));
+        assertFalse(StrLib.endsWithIgnoreCase(" ", ""));   // important
+        assertTrue(StrLib.endsWithIgnoreCase(" ", " "));   // True
+        assertFalse(StrLib.endsWithIgnoreCase(" ", "abc"));
+                
+        // endsWithIgnoreCase(value, value)
+
+        // False
+        assertFalse(StrLib.endsWithIgnoreCase("abc", null));
+        assertFalse(StrLib.endsWithIgnoreCase("abc", "")); // important
+        assertFalse(StrLib.endsWithIgnoreCase("abc", " "));
+        assertFalse(StrLib.endsWithIgnoreCase("abc", "xyz"));
+
+        // True
+        assertTrue(StrLib.endsWithIgnoreCase("abc", "c"));
+        assertTrue(StrLib.endsWithIgnoreCase("abc", "bc"));
+        assertTrue(StrLib.endsWithIgnoreCase("abc", "abc"));
+
+        // True - IgnoreCase
+        assertTrue(StrLib.endsWithIgnoreCase("abc", "C"));
+        assertTrue(StrLib.endsWithIgnoreCase("abc", "Bc"));
+        assertTrue(StrLib.endsWithIgnoreCase("abc", "aBc"));
+
+        ////
+        assertTrue(StrLib.endsWithIgnoreCase("myfile.txt", "txt"));
+        assertTrue(StrLib.endsWithIgnoreCase("myfile.txt", ".txt"));
+        assertTrue(StrLib.endsWithIgnoreCase("myfile.txt", "myfile.txt"));
+
+        assertTrue(StrLib.endsWithIgnoreCase("myfile.txt", "TxT"));
+        assertTrue(StrLib.endsWithIgnoreCase("myfile.txt", ".TxT"));
+        assertTrue(StrLib.endsWithIgnoreCase("myfile.txt", "MyFile.TxT"));
+
+    }
+
     public void testHasPrefix() {
         
         // hasPrefix(null, value)
@@ -2284,6 +2382,58 @@ public class StrLibTest extends AbstractTestCase {
         
     }
 
+    public void testRemovePrefixes() {
+
+        // removePrefixes(null, value)
+        assertNull(StrLib.removePrefixes(null, null));
+        assertNull(StrLib.removePrefixes(null, new String[] {}));
+        assertNull(StrLib.removePrefixes(null, new String[] {""}));
+        assertNull(StrLib.removePrefixes(null, new String[] {" "}));
+        assertNull(StrLib.removePrefixes(null, new String[] {"abc"}));
+
+        // removePrefixes(empty, value)
+        assertEquals("", StrLib.removePrefixes("", null));
+        assertEquals("", StrLib.removePrefixes("", new String[] {}));
+        assertEquals("", StrLib.removePrefixes("", new String[] {""}));
+        assertEquals("", StrLib.removePrefixes("", new String[] {" "}));
+        assertEquals("", StrLib.removePrefixes("", new String[] {"abc"}));
+
+        // removePrefixes(blank, value)
+        assertEquals(" ", StrLib.removePrefixes(" ", null));
+        assertEquals(" ", StrLib.removePrefixes(" ", new String[] {}));
+        assertEquals(" ", StrLib.removePrefixes(" ", new String[] {""}));
+        assertEquals("", StrLib.removePrefixes(" ", new String[] {" "}));     // True
+        assertEquals(" ", StrLib.removePrefixes(" ", new String[] {"abc"}));
+
+        // removePrefixes(value, value)
+        
+        // False
+        assertEquals("abc", StrLib.removePrefixes("abc", null));
+        assertEquals("abc", StrLib.removePrefixes("abc", new String[] {}));
+        assertEquals("abc", StrLib.removePrefixes("abc", new String[] {""}));
+        assertEquals("abc", StrLib.removePrefixes("abc", new String[] {" "}));
+        assertEquals("abc", StrLib.removePrefixes("abc", new String[] {"xyz"}));
+        assertEquals("abc", StrLib.removePrefixes("abc", new String[] {"xyz", "def"}));
+        assertEquals("abc", StrLib.removePrefixes("abc", new String[] {"def", "xyz"}));
+
+        // True
+        assertEquals("bc", StrLib.removePrefixes("abc", new String[] {"a"}));
+        assertEquals("c", StrLib.removePrefixes("abc", new String[] {"ab"}));
+        assertEquals("", StrLib.removePrefixes("abc", new String[] {"abc"}));
+        assertEquals("", StrLib.removePrefixes("abc", new String[] {"abc", "xyz"}));
+        assertEquals("", StrLib.removePrefixes("abc", new String[] {"xyz", "abc"}));
+        
+        assertEquals("c", StrLib.removePrefixes("abc", new String[] {"ab", "abc"})); // first 'ab'
+
+        ////
+        assertEquals("file.txt", StrLib.removePrefixes("myfile.txt", new String[] {"my"}));
+        assertEquals(".txt", StrLib.removePrefixes("myfile.txt", new String[] {"myfile"}));
+        assertEquals("", StrLib.removePrefixes("myfile.txt", new String[] {"myfile.txt"}));
+        
+        assertEquals(".txt", StrLib.removePrefixes("myfile.txt", new String[] {"myfile", "yourfile"}));
+        
+    }
+
     public void testRemoveSuffix() {
 
         // removeSuffix(null, value)
@@ -2323,7 +2473,59 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("", StrLib.removeSuffix("myfile.txt", "myfile.txt"));
                 
     }
-    
+
+    public void testRemoveSuffixes() {
+
+        // removeSuffixes(null, value)
+        assertNull(StrLib.removeSuffixes(null, null));
+        assertNull(StrLib.removeSuffixes(null, new String[] {}));
+        assertNull(StrLib.removeSuffixes(null, new String[] {""}));
+        assertNull(StrLib.removeSuffixes(null, new String[] {" "}));
+        assertNull(StrLib.removeSuffixes(null, new String[] {"abc"}));
+
+        // removeSuffixes(empty, value)
+        assertEquals("", StrLib.removeSuffixes("", null));
+        assertEquals("", StrLib.removeSuffixes("", new String[] {}));
+        assertEquals("", StrLib.removeSuffixes("", new String[] {""}));
+        assertEquals("", StrLib.removeSuffixes("", new String[] {" "}));
+        assertEquals("", StrLib.removeSuffixes("", new String[] {"abc"}));
+
+        // removeSuffixes(blank, value)
+        assertEquals(" ", StrLib.removeSuffixes(" ", null));
+        assertEquals(" ", StrLib.removeSuffixes(" ", new String[] {}));
+        assertEquals(" ", StrLib.removeSuffixes(" ", new String[] {""}));
+        assertEquals("", StrLib.removeSuffixes(" ", new String[] {" "}));    // True
+        assertEquals(" ", StrLib.removeSuffixes(" ", new String[] {"abc"}));
+
+        // removeSuffixes(value, value)
+        
+        // False
+        assertEquals("abc", StrLib.removeSuffixes("abc", null));
+        assertEquals("abc", StrLib.removeSuffixes("abc", new String[] {}));
+        assertEquals("abc", StrLib.removeSuffixes("abc", new String[] {""}));
+        assertEquals("abc", StrLib.removeSuffixes("abc", new String[] {" "}));
+        assertEquals("abc", StrLib.removeSuffixes("abc", new String[] {"xyz"}));
+        assertEquals("abc", StrLib.removeSuffixes("abc", new String[] {"xyz", "def"}));
+        assertEquals("abc", StrLib.removeSuffixes("abc", new String[] {"def", "xyz"}));
+        
+        // True
+        assertEquals("ab", StrLib.removeSuffixes("abc", new String[] {"c"}));
+        assertEquals("a", StrLib.removeSuffixes("abc", new String[] {"bc"}));
+        assertEquals("", StrLib.removeSuffixes("abc", new String[] {"abc"}));
+        assertEquals("", StrLib.removeSuffixes("abc", new String[] {"abc", "xyz"}));
+        assertEquals("", StrLib.removeSuffixes("abc", new String[] {"xyz", "abc"}));
+        
+        assertEquals("a", StrLib.removeSuffixes("abc", new String[] {"bc", "abc"})); // first 'bc'
+                
+        ////
+        assertEquals("myfile.", StrLib.removeSuffixes("myfile.txt", new String[] {"txt"}));
+        assertEquals("myfile", StrLib.removeSuffixes("myfile.txt", new String[] {".txt"}));
+        assertEquals("", StrLib.removeSuffixes("myfile.txt", new String[] {"myfile.txt"}));
+        
+        assertEquals("myfile", StrLib.removeSuffixes("myfile.txt", new String[] {".txt", ".csv"}));
+                
+    }
+
     
     // 5.1
 

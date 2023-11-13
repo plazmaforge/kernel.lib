@@ -135,15 +135,15 @@
 // 4.1
 //
 // - startsWith(const string& str, const string& prefix)                       - startsWith("myfile.txt", "myfile") = true
-// - endsWith(const string& str, const string& suffix)                         - endsWith("myfile.txt", ".txt") = true
-//
-// - hasPrefix(const string& str, const string& prefix)                        - [alias]: hasPrefix("myfile.txt", "myfile") = true
-// - hasSuffix(const string& str, const string& suffix)                        - [alias]: hasSuffix("myfile.txt", ".txt") = true
-//
 // - startsWithIgnoreCase(const string& str, const string& prefix)             - startsWithIgnoreCase("myfile.txt", "MyFile") = true
+//
+// - endsWith(const string& str, const string& suffix)                         - endsWith("myfile.txt", ".txt") = true
 // - endsWithIgnoreCase(const string& str, const string& suffix)               - endsWithIgnoreCase("myfile.txt", ".TxT") = true
 //
+// - hasPrefix(const string& str, const string& prefix)                        - [alias]: hasPrefix("myfile.txt", "myfile") = true
 // - hasPrefixIgnoreCase(const string& str, const string& prefix)              - [alias]: hasPrefixIgnoreCase("myfile.txt", "MyFile") = true
+//
+// - hasSuffix(const string& str, const string& suffix)                        - [alias]: hasSuffix("myfile.txt", ".txt") = true
 // - hasSuffixIgnoreCase(const string& str, const string& suffix)              - [alias]: hasSuffixIgnoreCase("myfile.txt", ".TxT") = true
 //
 // 4.2
@@ -1136,6 +1136,14 @@ namespace strlib {
         return upper ? toupper(ch) : tolower(ch);
     }
 
+    ////
+
+    std::string toIgnoreCase(const std::string& str) {
+        return toLowerCase(str);
+    }
+
+    ////
+
     // toCamelCase
     std::string toCamelCase(const std::string& str) {
         std::string strn = str;
@@ -1554,7 +1562,7 @@ namespace strlib {
 
     //// 4.1
 
-    // startsWith, endsWith
+    // startsWith, startsWithIgnoreCase
 
     bool startsWith(const std::string& str, const std::string& prefix) {
         if (str.empty() || prefix.empty()) {
@@ -1563,12 +1571,23 @@ namespace strlib {
         return str.size() >= prefix.size() && str.compare(0, prefix.size(), prefix) == 0;
     }
 
-    bool startsWith2(const std::string& str, const std::string& prefix) {
+    bool startsWithIgnoreCase(const std::string& str, const std::string& prefix) {
         if (str.empty() || prefix.empty()) {
             return false;
         }
-        return str.size() >= prefix.size() && str.substr(0, prefix.size()) == prefix; // Myabe 'compare()' is better
+        std::string strn = toIgnoreCase(str);
+        std::string prefixn = toIgnoreCase(prefix);
+        return startsWith(strn, prefixn);
     }
+
+    //bool startsWith2(const std::string& str, const std::string& prefix) {
+    //    if (str.empty() || prefix.empty()) {
+    //        return false;
+    //    }
+    //    return str.size() >= prefix.size() && str.substr(0, prefix.size()) == prefix; // Myabe 'compare()' is better
+    //}
+
+    // endsWith, endsWithIgnoreCase
 
     bool endsWith(const std::string& str, const std::string& suffix) {
         if (str.empty() || suffix.empty()) {
@@ -1577,34 +1596,29 @@ namespace strlib {
         return str.size() >= suffix.size() && str.compare(str.size() - suffix.size(), str.size(), suffix) == 0;
     }
 
-    // hasPrefix, hasSuffix
+    bool endsWithIgnoreCase(const std::string& str, const std::string& suffix) {
+        if (str.empty() || suffix.empty()) {
+            return false;
+        }
+        std::string strn = toIgnoreCase(str);
+        std::string suffixn = toIgnoreCase(suffix);
+        return endsWith(strn, suffixn);
+    }
+
+    // hasPrefix, hasPrefixIgnoreCase
 
     bool hasPrefix(const std::string& str, const std::string& prefix) {
         return startsWith(str, prefix);
     }
 
-    bool hasSuffix (const std::string& str, const std::string& suffix) {
-        return endsWith(str, suffix);
-    }
-
-    // startsWithIgnoreCase, endsWithIgnoreCase
-
-    bool startsWithIgnoreCase(const std::string& str, const std::string& prefix) {
-        std::string strn = lower(str);
-        std::string prefixn = lower(prefix);
-        return startsWith(strn, prefixn);
-    }
-
-    bool endsWithIgnoreCase(const std::string& str, const std::string& suffix) {
-        std::string strn = lower(str);
-        std::string suffixn = lower(suffix);
-        return endsWith(strn, suffixn);
-    }
-
-    // hasPrefixIgnoreCase, hasSuffixIgnoreCase
-
     bool hasPrefixIgnoreCase(const std::string& str, const std::string& prefix) {
         return startsWithIgnoreCase(str, prefix);
+    }
+
+    // hasSuffix, hasSuffixIgnoreCase
+
+    bool hasSuffix (const std::string& str, const std::string& suffix) {
+        return endsWith(str, suffix);
     }
 
     bool hasSuffixIgnoreCase(const std::string& str, const std::string& suffix) {

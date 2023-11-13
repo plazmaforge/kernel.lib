@@ -1923,6 +1923,54 @@ class StrlibTest(unittest.TestCase):
         self.assertTrue(strlib.startsWith('myfile.txt', 'myfile'))
         self.assertTrue(strlib.startsWith('myfile.txt', 'myfile.txt'))
 
+    def test_startsWithIgnoreCase(self):
+        
+        # startsWithIgnoreCase(None, value)
+        self.assertFalse(strlib.startsWithIgnoreCase(None, None))
+        self.assertFalse(strlib.startsWithIgnoreCase(None, ''))
+        self.assertFalse(strlib.startsWithIgnoreCase(None, ' '))
+        self.assertFalse(strlib.startsWithIgnoreCase(None, 'abc'))
+
+        # startsWithIgnoreCase(empty, value)
+        self.assertFalse(strlib.startsWithIgnoreCase('', None))
+        self.assertFalse(strlib.startsWithIgnoreCase('', ''))     # important
+        self.assertFalse(strlib.startsWithIgnoreCase('', ' '))
+        self.assertFalse(strlib.startsWithIgnoreCase('', 'abc'))
+
+        # startsWithIgnoreCase(blank, value)
+        self.assertFalse(strlib.startsWithIgnoreCase(' ', None))
+        self.assertFalse(strlib.startsWithIgnoreCase(' ', ''))    # important
+        self.assertTrue(strlib.startsWithIgnoreCase(' ', ' '))    # True
+        self.assertFalse(strlib.startsWithIgnoreCase(' ', 'abc'))
+
+        # startsWithIgnoreCase(value, value)
+
+        # False
+        self.assertFalse(strlib.startsWithIgnoreCase('abc', None))
+        self.assertFalse(strlib.startsWithIgnoreCase('abc', ''))  # important
+        self.assertFalse(strlib.startsWithIgnoreCase('abc', ' '))
+        self.assertFalse(strlib.startsWithIgnoreCase('abc', 'xyz'))
+
+        # True
+        self.assertTrue(strlib.startsWithIgnoreCase('abc', 'a'))
+        self.assertTrue(strlib.startsWithIgnoreCase('abc', 'ab'))
+        self.assertTrue(strlib.startsWithIgnoreCase('abc', 'abc'))
+
+        # True - IgnoreCase
+        self.assertTrue(strlib.startsWithIgnoreCase('abc', 'A'))
+        self.assertTrue(strlib.startsWithIgnoreCase('abc', 'Ab'))
+        self.assertTrue(strlib.startsWithIgnoreCase('abc', 'AbC'))
+
+        ##
+        self.assertTrue(strlib.startsWithIgnoreCase('myfile.txt', 'my'))
+        self.assertTrue(strlib.startsWithIgnoreCase('myfile.txt', 'myfile'))
+        self.assertTrue(strlib.startsWithIgnoreCase('myfile.txt', 'myfile.txt'))
+
+        self.assertTrue(strlib.startsWithIgnoreCase('myfile.txt', 'My'))
+        self.assertTrue(strlib.startsWithIgnoreCase('myfile.txt', 'MyFile'))
+        self.assertTrue(strlib.startsWithIgnoreCase('myfile.txt', 'MyFile.TxT'))
+
+
     def test_endsWith(self):
         
         # endsWith(None, value)
@@ -1960,6 +2008,53 @@ class StrlibTest(unittest.TestCase):
         self.assertTrue(strlib.endsWith('myfile.txt', 'txt'))
         self.assertTrue(strlib.endsWith('myfile.txt', '.txt'))
         self.assertTrue(strlib.endsWith('myfile.txt', 'myfile.txt'))
+
+    def test_endsWithIgnoreCase(self):
+        
+        # endsWithIgnoreCase(None, value)
+        self.assertFalse(strlib.endsWithIgnoreCase(None, None))
+        self.assertFalse(strlib.endsWithIgnoreCase(None, ''))
+        self.assertFalse(strlib.endsWithIgnoreCase(None, ' '))
+        self.assertFalse(strlib.endsWithIgnoreCase(None, 'abc'))
+
+        # endsWithIgnoreCase(empty, value)
+        self.assertFalse(strlib.endsWithIgnoreCase('', None))
+        self.assertFalse(strlib.endsWithIgnoreCase('', ''))     # important
+        self.assertFalse(strlib.endsWithIgnoreCase('', ' '))
+        self.assertFalse(strlib.endsWithIgnoreCase('', 'abc'))
+
+        # endsWithIgnoreCase(blank, value)
+        self.assertFalse(strlib.endsWithIgnoreCase(' ', None))
+        self.assertFalse(strlib.endsWithIgnoreCase(' ', ''))    # important
+        self.assertTrue(strlib.endsWithIgnoreCase(' ', ' '))    # True
+        self.assertFalse(strlib.endsWithIgnoreCase(' ', 'abc'))
+
+        # endsWithIgnoreCase(value, value)
+
+        # False
+        self.assertFalse(strlib.endsWithIgnoreCase('abc', None))
+        self.assertFalse(strlib.endsWithIgnoreCase('abc', ''))  # important
+        self.assertFalse(strlib.endsWithIgnoreCase('abc', ' '))
+        self.assertFalse(strlib.endsWithIgnoreCase('abc', 'xyz'))
+
+        # True
+        self.assertTrue(strlib.endsWithIgnoreCase('abc', 'c'))
+        self.assertTrue(strlib.endsWithIgnoreCase('abc', 'bc'))
+        self.assertTrue(strlib.endsWithIgnoreCase('abc', 'abc'))
+
+        # True - IgnoreCase
+        self.assertTrue(strlib.endsWithIgnoreCase('abc', 'C'))
+        self.assertTrue(strlib.endsWithIgnoreCase('abc', 'Bc'))
+        self.assertTrue(strlib.endsWithIgnoreCase('abc', 'aBc'))
+
+        ##
+        self.assertTrue(strlib.endsWithIgnoreCase('myfile.txt', 'txt'))
+        self.assertTrue(strlib.endsWithIgnoreCase('myfile.txt', '.txt'))
+        self.assertTrue(strlib.endsWithIgnoreCase('myfile.txt', 'myfile.txt'))
+
+        self.assertTrue(strlib.endsWithIgnoreCase('myfile.txt', 'TxT'))
+        self.assertTrue(strlib.endsWithIgnoreCase('myfile.txt', '.TxT'))
+        self.assertTrue(strlib.endsWithIgnoreCase('myfile.txt', 'MyFile.TxT'))
 
     def test_hasPrefix(self):
 
@@ -2075,6 +2170,56 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('.txt', strlib.removePrefix('myfile.txt', 'myfile'))
         self.assertEqual('', strlib.removePrefix('myfile.txt', 'myfile.txt'))
 
+    def test_removePrefixes(self):
+
+        # removePrefixes(None, value)
+        self.assertIsNone(strlib.removePrefixes(None, None))
+        self.assertIsNone(strlib.removePrefixes(None, []))
+        self.assertIsNone(strlib.removePrefixes(None, ['']))
+        self.assertIsNone(strlib.removePrefixes(None, [' ']))
+        self.assertIsNone(strlib.removePrefixes(None, ['abc']))
+
+        # removePrefixes(empty, value)
+        self.assertEqual('', strlib.removePrefixes('', None))
+        self.assertEqual('', strlib.removePrefixes('', []))
+        self.assertEqual('', strlib.removePrefixes('', ['']))
+        self.assertEqual('', strlib.removePrefixes('', [' ']))
+        self.assertEqual('', strlib.removePrefixes('', ['abc']))
+
+        # removePrefixes(blank, value)
+        self.assertEqual(' ', strlib.removePrefixes(' ', None))
+        self.assertEqual(' ', strlib.removePrefixes(' ', []))
+        self.assertEqual(' ', strlib.removePrefixes(' ', ['']))
+        self.assertEqual('', strlib.removePrefixes(' ', [' ']))  # True
+        self.assertEqual(' ', strlib.removePrefixes(' ', ['abc']))
+
+        # removePrefixes(value, value)
+
+        # False
+        self.assertEqual('abc', strlib.removePrefixes('abc', None))
+        self.assertEqual('abc', strlib.removePrefixes('abc', []))
+        self.assertEqual('abc', strlib.removePrefixes('abc', ['']))
+        self.assertEqual('abc', strlib.removePrefixes('abc', [' ']))
+        self.assertEqual('abc', strlib.removePrefixes('abc', ['xyz']))
+        self.assertEqual('abc', strlib.removePrefixes('abc', ['xyz', 'def']))
+        self.assertEqual('abc', strlib.removePrefixes('abc', ['def', 'xyz']))
+
+        # True
+        self.assertEqual('bc', strlib.removePrefixes('abc', ['a']))
+        self.assertEqual('c', strlib.removePrefixes('abc', ['ab']))
+        self.assertEqual('', strlib.removePrefixes('abc', ['abc']))
+        self.assertEqual('', strlib.removePrefixes('abc', ['abc', 'xyz']))
+        self.assertEqual('', strlib.removePrefixes('abc', ['xyz', 'abc']))
+
+        self.assertEqual('c', strlib.removePrefixes('abc', ['ab', 'abc'])) # first 'ab'
+
+        ##
+        self.assertEqual('file.txt', strlib.removePrefixes('myfile.txt', ['my']))
+        self.assertEqual('.txt', strlib.removePrefixes('myfile.txt', ['myfile']))
+        self.assertEqual('', strlib.removePrefixes('myfile.txt', ['myfile.txt']))
+
+        self.assertEqual('.txt', strlib.removePrefixes('myfile.txt', ['myfile', 'yourfile']))
+
     def test_removeSuffix(self):
 
         # removeSuffix(None, value)
@@ -2112,6 +2257,56 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('myfile.', strlib.removeSuffix('myfile.txt', 'txt'))
         self.assertEqual('myfile', strlib.removeSuffix('myfile.txt', '.txt'))
         self.assertEqual('', strlib.removeSuffix('myfile.txt', 'myfile.txt'))
+
+    def test_removeSuffixes(self):
+
+        # removeSuffixes(None, value)
+        self.assertIsNone(strlib.removeSuffixes(None, None))
+        self.assertIsNone(strlib.removeSuffixes(None, []))
+        self.assertIsNone(strlib.removeSuffixes(None, ['']))
+        self.assertIsNone(strlib.removeSuffixes(None, [' ']))
+        self.assertIsNone(strlib.removeSuffixes(None, ['abc']))
+
+        # removeSuffixes(empty, value)
+        self.assertEqual('', strlib.removeSuffixes('', None))
+        self.assertEqual('', strlib.removeSuffixes('', []))
+        self.assertEqual('', strlib.removeSuffixes('', ['']))
+        self.assertEqual('', strlib.removeSuffixes('', [' ']))
+        self.assertEqual('', strlib.removeSuffixes('', ['abc']))
+
+        # removeSuffixes(blank, value)
+        self.assertEqual(' ', strlib.removeSuffixes(' ', None))
+        self.assertEqual(' ', strlib.removeSuffixes(' ', []))
+        self.assertEqual(' ', strlib.removeSuffixes(' ', ['']))
+        self.assertEqual('', strlib.removeSuffixes(' ', [' ']))  # True
+        self.assertEqual(' ', strlib.removeSuffixes(' ', ['abc']))
+
+        # removeSuffixes(value, value)
+
+        # False
+        self.assertEqual('abc', strlib.removeSuffixes('abc', None))
+        self.assertEqual('abc', strlib.removeSuffixes('abc', []))
+        self.assertEqual('abc', strlib.removeSuffixes('abc', ['']))
+        self.assertEqual('abc', strlib.removeSuffixes('abc', [' ']))
+        self.assertEqual('abc', strlib.removeSuffixes('abc', ['xyz']))
+        self.assertEqual('abc', strlib.removeSuffixes('abc', ['xyz', 'def']))
+        self.assertEqual('abc', strlib.removeSuffixes('abc', ['def', 'xyz']))
+
+        # True
+        self.assertEqual('ab', strlib.removeSuffixes('abc', ['c']))
+        self.assertEqual('a', strlib.removeSuffixes('abc', ['bc']))
+        self.assertEqual('', strlib.removeSuffixes('abc', ['abc']))
+        self.assertEqual('', strlib.removeSuffixes('abc', ['abc', 'xyz']))
+        self.assertEqual('', strlib.removeSuffixes('abc', ['xyz', 'abc']))
+
+        self.assertEqual('a', strlib.removeSuffixes('abc', ['bc', 'abc'])) # first 'bc'
+
+        ##
+        self.assertEqual('myfile.', strlib.removeSuffixes('myfile.txt', ['txt']))
+        self.assertEqual('myfile', strlib.removeSuffixes('myfile.txt', ['.txt']))
+        self.assertEqual('', strlib.removeSuffixes('myfile.txt', ['myfile.txt']))
+
+        self.assertEqual('myfile', strlib.removeSuffixes('myfile.txt', ['.txt', '.csv']))
 
 if __name__ == '__main__':
     unittest.main()

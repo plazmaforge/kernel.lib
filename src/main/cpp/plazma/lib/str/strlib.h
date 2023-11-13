@@ -131,15 +131,15 @@
 // 4.1
 //
 // - startsWith(const string& str, const string& prefix)                       - startsWith("myfile.txt", "myfile") = true
-// - endsWith(const string& str, const string& suffix)                         - endsWith("myfile.txt", ".txt") = true
-//
-// - hasPrefix(const string& str, const string& prefix)                        - [alias]: hasPrefix("myfile.txt", "myfile") = true
-// - hasSuffix(const string& str, const string& suffix)  [alias]               - [alias]: hasSuffix("myfile.txt", ".txt") = true
-//
 // - startsWithIgnoreCase(const string& str, const string& prefix)             - startsWithIgnoreCase("myfile.txt", "MyFile") = true
+//
+// - endsWith(const string& str, const string& suffix)                         - endsWith("myfile.txt", ".txt") = true
 // - endsWithIgnoreCase(const string& str, const string& suffix)               - endsWithIgnoreCase("myfile.txt", ".TxT") = true
 //
+// - hasPrefix(const string& str, const string& prefix)                        - [alias]: hasPrefix("myfile.txt", "myfile") = true
 // - hasPrefixIgnoreCase(const string& str, const string& prefix)              - [alias]: hasPrefixIgnoreCase("myfile.txt", "MyFile") = true
+//
+// - hasSuffix(const string& str, const string& suffix)  [alias]               - [alias]: hasSuffix("myfile.txt", ".txt") = true
 // - hasSuffixIgnoreCase(const string& str, const string& suffix)              - [alias]: hasSuffixIgnoreCase("myfile.txt", ".TxT") = true
 //
 // 4.2
@@ -642,31 +642,28 @@ namespace strlib {
     void _reverse(std::string& str);
 
     //// 4.1
-
  
-    // startsWith, endsWith(
+    // startsWith, startsWithIgnoreCase
 
     bool startsWith(const std::string& str, const std::string& prefix);
 
-    bool startsWith2(const std::string& str, const std::string& prefix);
+    bool startsWithIgnoreCase(const std::string& str, const std::string& prefix);
+
+    // endsWith, endsWithIgnoreCase
 
     bool endsWith(const std::string& str, const std::string& suffix);
 
-    // hasPrefix, hasSuffix
+    bool endsWithIgnoreCase(const std::string& str, const std::string& suffix);
+
+    // hasPrefix, hasPrefixIgnoreCase 
 
     bool hasPrefix(const std::string& str, const std::string& prefix);
 
-    bool hasSuffix (const std::string& str, const std::string& suffix);
-
-    // startsWithIgnoreCase, endsWithIgnoreCase
-
-    bool startsWithIgnoreCase(const std::string& str, const std::string& prefix);
-
-    bool endsWithIgnoreCase(const std::string& str, const std::string& suffix);
-
-    // hasPrefixIgnoreCase, hasSuffixIgnoreCase
-
     bool hasPrefixIgnoreCase(const std::string& str, const std::string& prefix);
+
+    // hasSuffix, hasSuffixIgnoreCase
+
+    bool hasSuffix (const std::string& str, const std::string& suffix);
 
     bool hasSuffixIgnoreCase(const std::string& str, const std::string& suffix);
 

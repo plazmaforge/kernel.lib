@@ -169,24 +169,24 @@ KEBAB_CONNECTOR = '-' # kebab-case
 # 4.1
 #
 # - startsWith(str, prefix)                                           - startsWith("myfile.txt", "myfile") = True
+# - startsWithIgnoreCase(str, prefix)                                 - startsWithIgnoreCase("myfile.txt", "MyFile") = True
+#
 # - endsWith(str, suffix)                                             - endsWith("myfile.txt", ".txt") = True
+# - endsWithIgnoreCase(str, suffix)                                   - endsWithIgnoreCase("myfile.txt", ".TxT") = True
 #
 # - hasPrefix(str, prefix)                                            - [alias]: hasPrefix("myfile.txt", "myfile") = True
+# - hasPrefixIgnoreCase(str, prefix)                                  - [alias]: hasPrefixIgnoreCase("myfile.txt", "MyFile") = True
+
 # - hasSuffix(str, suffix)                                            - [alias]: hasSuffix("myfile.txt", ".txt") = True
-#
-# - startsWithIgnoreCase(str, prefix)                                 - N/A: startsWithIgnoreCase("myfile.txt", "MyFile") = True
-# - endsWithIgnoreCase(str, suffix)                                   - N/A: endsWithIgnoreCase("myfile.txt", ".TxT") = True
-#
-# - hasPrefixIgnoreCase(str, prefix)                                  - N/A: hasPrefixIgnoreCase("myfile.txt", "MyFile") = True
-# - hasSuffixIgnoreCase(str, suffix)                                  - N/A: hasSuffixIgnoreCase("myfile.txt", ".TxT") = True
+# - hasSuffixIgnoreCase(str, suffix)                                  - [alias]: hasSuffixIgnoreCase("myfile.txt", ".TxT") = True
 #
 # 4.2
 #
 # - removePrefix(str, prefix)
-# - removePrefixes(str, prefixes)                                    - N/A
+# - removePrefixes(str, prefixes)
 #
 # - removeSuffix(str, suffix)
-# - removeSuffixes(str, suffixes)                                    - N/A
+# - removeSuffixes(str, suffixes)
 
 
 # 1.1
@@ -683,6 +683,12 @@ def toCase(str, upper):
         return str.upper()
     else:
         return str.lower()
+####
+
+def toIgnoreCase(str):
+    return toLowerCase(str)
+
+####
 
 def toCamelCase(str, separators = None, capitalize = True):
     type = 'Camel' if capitalize else 'camel'
@@ -960,15 +966,29 @@ def reverse(str):
 
 # 4.1
 
-def startsWith(str, substr):
-    if isEmpty(str) or isEmpty(substr):
+def startsWith(str, prefix):
+    if isEmpty(str) or isEmpty(prefix):
         return False
-    return str.startswith(substr)
+    return str.startswith(prefix)
 
-def endsWith(str, substr):
-    if isEmpty(str) or isEmpty(substr):
+def endsWith(str, suffix):
+    if isEmpty(str) or isEmpty(suffix):
         return False
-    return str.endswith(substr)
+    return str.endswith(suffix)
+
+def startsWithIgnoreCase(str, prefix):
+    if isEmpty(str) or isEmpty(prefix):
+        return False
+    strn = toIgnoreCase(str)
+    prefixn = toIgnoreCase(prefix)
+    return startsWith(strn, prefixn)
+
+def endsWithIgnoreCase(str, suffix):
+    if isEmpty(str) or isEmpty(suffix):
+        return False
+    strn = toIgnoreCase(str)
+    suffixn = toIgnoreCase(suffix)
+    return endsWith(strn, suffixn)
 
 ##
 
@@ -978,14 +998,42 @@ def hasPrefix(str, prefix):
 def hasSuffix(str, suffix):
     return endsWith(str, suffix)
 
-##
+def hasPrefixIgnoreCase(str, prefix):
+    return startsWithIgnoreCase(str, prefix)
+
+def hasSuffixIgnoreCase(str, suffix):
+    return endsWithIgnoreCase(str, suffix)
+
+# 4.2
 
 def removePrefix(str, prefix):
     if not hasPrefix(str, prefix):
         return str
     return str[len(prefix):]
 
+def removePrefixes(str, prefixes):
+    if isEmpty(str) or isEmpty(prefixes):
+        return str    
+    for prefix in prefixes:
+        if isEmpty(prefix):
+            continue
+        if hasPrefix(str, prefix):
+            return removePrefix(str, prefix)    
+    return str
+
+##
+
 def removeSuffix(str, suffix):
     if not hasSuffix(str, suffix):
         return str
     return str[0:len(str)-len(suffix)]
+
+def removeSuffixes(str, suffixes):
+    if isEmpty(str) or isEmpty(suffixes):
+        return str    
+    for suffix in suffixes:
+        if isEmpty(suffix):
+            continue
+        if hasSuffix(str, suffix):
+            return removeSuffix(str, suffix)    
+    return str
