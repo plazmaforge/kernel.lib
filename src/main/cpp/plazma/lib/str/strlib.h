@@ -153,13 +153,16 @@
 // 4.3
 // 
 // - isQuoted(const string& str)                                               -
-// - isQuoted(const string& str, const string& startQuote, const string& endQuote)
+// - isQuoted(const string& str, const string& start, const string& end)
+//
 // - needQuote(const string& str)                                              -
-// - needQuote(const string& str, const string& startQuote, const string& endQuote)
+// - needQuote(const string& str, const string& start, const string& end)
+//
 // - quote(const string& str)                                                  -
-// - quote(const string& str, const string& startQuote, const string& endQuote)
+// - quote(const string& str, const string& start, const string& end)
+//
 // - unquote(const string& str)                                                -
-// - unquote(const string& str, const string& startQuote, const string& endQuote)
+// - unquote(const string& str, const string& start, const string& end)
 //
 // 4.4
 // 
@@ -693,41 +696,41 @@ namespace strlib {
    
     //// 4.3
 
-    // isQuoted by default: ', "
+    // isQuoted by default: '', ""
     bool isQuoted(const std::string& str);
 
     // isQuoted
-    bool isQuoted(const std::string& str, const std::string& startQuote, const std::string& endQuote);
+    bool isQuoted(const std::string& str, const std::string& start, const std::string& end);
 
-    // needQuote by default: ', "
+    // needQuote by default: '', ""
     bool needQuote(const std::string& str);
 
     // needQuote
     bool needQuote(const std::string& str);
 
-    // quote by default: "
+    // quote by default: ""
     std::string quote(const std::string& str);
 
-    // quote by default: "
+    // quote by default: ""
     void _quote(std::string& str);
 
     // quote
-    std::string quote(const std::string& str, const std::string& startQuote, const std::string& endQuote);
+    std::string quote(const std::string& str, const std::string& start, const std::string& end);
 
     // quote
-    void _quote(std::string& str, const std::string& startQuote, const std::string& endQuote);
+    void _quote(std::string& str, const std::string& start, const std::string& end);
 
-    // unquote by default: ', "
+    // unquote by default: '', ""
     std::string unquote(const std::string& str);
 
-    // unquote by default: ', "
+    // unquote by default: '', ""
     void _unquote(std::string& str);
 
     // unquote
-    std::string unquote(const std::string& str, const std::string& startQuote, const std::string& endQuote);
+    std::string unquote(const std::string& str, const std::string& start, const std::string& end);
 
     // unquote
-    void _unquote(std::string& str, const std::string& startQuote, const std::string& endQuote);
+    void _unquote(std::string& str, const std::string& start, const std::string& end);
 
     //// 4.4
 

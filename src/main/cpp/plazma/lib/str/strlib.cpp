@@ -157,13 +157,16 @@
 // 4.3
 // 
 // - isQuoted(const string& str)                                               -
-// - isQuoted(const string& str, const string& startQuote, const string& endQuote)
+// - isQuoted(const string& str, const string& start, const string& end)
+//
 // - needQuote(const string& str)                                              -
-// - needQuote(const string& str, const string& startQuote, const string& endQuote)
+// - needQuote(const string& str, const string& start, const string& end)
+//
 // - quote(const string& str)                                                  -
-// - quote(const string& str, const string& startQuote, const string& endQuote)
+// - quote(const string& str, const string& start, const string& end)
+//
 // - unquote(const string& str)                                                -
-// - unquote(const string& str, const string& startQuote, const string& endQuote)
+// - unquote(const string& str, const string& start, const string& end)
 //
 // 4.4
 // 
@@ -1722,28 +1725,32 @@ namespace strlib {
         if (str.empty()) {
             return false;
         }
+        // by default: '', ""
         return isQuoted(str, "'", "'") || isQuoted(str, "\"", "\"");
     }
 
     // isQuoted
-    bool isQuoted(const std::string& str, const std::string& startQuote, const std::string& endQuote) {
+    bool isQuoted(const std::string& str, const std::string& start, const std::string& end) {
         if (str.empty()) {
             return false;
         }
-        return startsWith(str, startQuote) && endsWith(str, endQuote);
+        if (start.empty() || end.empty()) {
+            return false; // hard condition         
+        }
+        return startsWith(str, start) && endsWith(str, end) && str.length() >= start.length() + end.length();
     }
 
-    // needQuote by default: ', "
+    // needQuote by default: '', ""
     bool needQuote(const std::string& str) {
         return !isQuoted(str);
     }
 
     // needQuote
-    bool needQuote(const std::string& str, const std::string& startQuote, const std::string& endQuote) {
-        return !isQuoted(str, startQuote, endQuote);
+    bool needQuote(const std::string& str, const std::string& start, const std::string& end) {
+        return !isQuoted(str, start, end);
     }
 
-    // quote by default: "
+    // quote by default: ""
     std::string quote(const std::string& str) {
         std::string strn = str;
         _quote(strn);
@@ -1751,48 +1758,61 @@ namespace strlib {
     }
 
     void _quote(std::string& str) {
+        // quote by default: ""
         _quote(str, "\"", "\"");
     }
 
     // quote
-    std::string quote(const std::string& str, const std::string& startQuote, const std::string& endQuote) {
+    std::string quote(const std::string& str, const std::string& start, const std::string& end) {
         std::string strn = str;
-        _quote(strn, startQuote, endQuote);
+        _quote(strn, start, end);
         return strn;
     }
 
-    void _quote(std::string& str, const std::string& startQuote, const std::string& endQuote) {
-        str = startQuote + str + endQuote;
+    void _quote(std::string& str, const std::string& start, const std::string& end) {
+        if (start.empty() || end.empty()) {
+            return;// hard condition
+        }
+        str = start + str + end;
     }
 
-    // unquote by default: ', "
+    // unquote by default: '', ""
     std::string unquote(const std::string& str) {
         std::string strn = str;
         _unquote(strn);
         return strn;
     }
 
-    // unquote by default: ', "
+    // unquote by default: '', ""
     void _unquote(std::string& str) {
-        if (!isQuoted(str, "'", "'") && !isQuoted(str, "\"", "\"")) {
+        if (str.empty()) {
+            return;
+        }
+        if (!isQuoted(str)) {
             return;
         }
         str = str.substr(1, str.length() - 2);
     }
 
     // unquote
-    std::string unquote(const std::string& str, const std::string& startQuote, const std::string& endQuote) {
+    std::string unquote(const std::string& str, const std::string& start, const std::string& end) {
         std::string strn = str;
-        _unquote(strn, startQuote, endQuote);
+        _unquote(strn, start, end);
         return strn;
     }
 
     // unquote
-    void _unquote(std::string& str, const std::string& startQuote, const std::string& endQuote) {
-        if (!isQuoted(str, startQuote, endQuote)) {
+    void _unquote(std::string& str, const std::string& start, const std::string& end) {
+        if (str.empty()) {
             return;
         }
-        str = str.substr(startQuote.length(), str.length() - startQuote.length() - endQuote.length());
+        if (start.empty() || end.empty()) {
+            return; // hard condition
+        }
+        if (!isQuoted(str, start, end)) {
+            return;
+        }
+        str = str.substr(start.length(), str.length() - start.length() - end.length());
     }
 
     //// 4.4

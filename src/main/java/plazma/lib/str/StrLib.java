@@ -213,13 +213,16 @@ public class StrLib {
     // 4.3
     // 
     // - isQuoted(String str)
-    // - isQuoted(String str, String startQuote, String endQuote)
+    // - isQuoted(String str, String start, String end)
+    //
     // - needQuote(String str)
-    // - needQuote(String str, String startQuote, String endQuote)
+    // - needQuote(String str, String start, String end)
+    //
     // - quote(String str)
-    // - quote(String str, String startQuote, String endQuote)
+    // - quote(String str, String start, String end)
+    //
     // - unquote(String str)
-    // - unquote(String str, String startQuote, String endQuote)
+    // - unquote(String str, String start, String end)
     //
     // 4.4
     // 
@@ -2212,7 +2215,7 @@ public class StrLib {
                 continue;
             }
             // Remove first found suffix
-            if (endsWith(str, suffix)) { // TODO: double check in removeSuffix. We cannot remove this check!
+            if (hasSuffix(str, suffix)) { // TODO: double check in removeSuffix. We cannot remove this check!
                 return removeSuffix(str, suffix);
             }
         }
@@ -2225,7 +2228,7 @@ public class StrLib {
         if (isEmpty(str)) {
             return false;
         }
-        // default quote: '' or ""
+        // by default: '', ""
         return (isQuoted(str, "'", "'") || isQuoted(str, "\"", "\""));
     }
 
@@ -2233,50 +2236,52 @@ public class StrLib {
      * Test if this string is in quotes
      * 
      * @param str
-     * @param startQuote
-     * @param endQuote
+     * @param star
+     * @param end
      * @return
      */
-    public static boolean isQuoted(String str, String startQuote, String endQuote) {
-        if (isEmpty(str) || isEmpty(startQuote) || isEmpty(endQuote)) {
+    public static boolean isQuoted(String str, String start, String end) {
+        if (isEmpty(str)) {
             return false;
         }
-        return startsWith(str, startQuote) && endsWith(str, endQuote);
+        if (isEmpty(start) || isEmpty(end)) {
+            return false; // hard condition            
+        }
+        return startsWith(str, start) && endsWith(str, end) && str.length() >= start.length() + end.length();
     }
 
     public static boolean needQuote(String str) {
-        // TODO: What about 'abc" or "abc' or 'abc'def'
-        // default quote: '' or ""
         return !isQuoted(str);
     }
 
-    public static boolean needQuote(String str, String startQuote, String endQuote) {
-        // TODO: What about 'abc" or "abc' or 'abc'def'
-        // default quote: '' or ""
-        return !isQuoted(str, startQuote, endQuote);
+    public static boolean needQuote(String str, String start, String end) {
+        return !isQuoted(str, start, end);
     }
 
     ////
 
-    // quote by default: "
+    // quote by default: ""
     public static String quote(String str) {
         return quote(str, "\"", "\"");
     }
 
     // quote
-    public static String quote(String str, String startQuote, String endQuote) {
+    public static String quote(String str, String start, String end) {
         if (str == null) {
-            return null; // We can't quote null. But we can quote empty string
+            return str; // We can't quote null. But we can quote empty string
         }
-        return startQuote + str + endQuote;
+        if (isEmpty(start) || isEmpty(end)) {
+            return str; // hard condition         
+        }
+        return start + str + end;
     }
 
-    // unquote by default: ', "
+    // unquote by default: '', ""
     public static String unquote(String str) {
         if (isEmpty(str)) {
             return str;
         }
-        if (!isQuoted(str, "'", "'") && !isQuoted(str, "\"", "\"")) {
+        if (!isQuoted(str)) {
             return str;
         }
         // Java: start, end (exclude)
@@ -2284,15 +2289,18 @@ public class StrLib {
     }
 
     // unquote
-    public static String unquote(String str, String startQuote, String endQuote) {
+    public static String unquote(String str, String start, String end) {
         if (isEmpty(str)) {
             return str;
-        }
-        if (!isQuoted(str, startQuote, endQuote)) {
+        }        
+        if (isEmpty(start) || isEmpty(end)) {
+            return str; // hard condition         
+        }        
+        if (!isQuoted(str, start, end)) {
             return str;
         }
         // Java: start, end (exclude)
-        return str.substring(startQuote.length(), str.length() - endQuote.length());
+        return str.substring(start.length(), str.length() - end.length());
     }
 
     //// 4.4
