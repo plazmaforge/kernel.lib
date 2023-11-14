@@ -187,6 +187,20 @@ KEBAB_CONNECTOR = '-' # kebab-case
 #
 # - removeSuffix(str, suffix)
 # - removeSuffixes(str, suffixes)
+#
+# 4.3
+# 
+# - isQuoted(str)
+# - isQuoted(str, start, end)
+#
+# - needQuote(str)
+# - needQuote(str, start, end)
+#
+# - quote(str)
+# - quote(str, start, end)
+#
+# - unquote(str)
+# - unquote(str, start, end)
 
 
 # 1.1
@@ -1037,3 +1051,56 @@ def removeSuffixes(str, suffixes):
         if hasSuffix(str, suffix):
             return removeSuffix(str, suffix)    
     return str
+
+# 4.3
+
+# internal
+def _isQuoted(str, start, end):
+    return startsWith(str, start) and endsWith(str, end) and size(str) >= size(start) + size(end)
+
+def isQuoted(str, start = None, end = None):
+    if isEmpty(str):
+        return False
+    
+    # by default: '', ""    
+    if start is None and end is None:
+        return _isQuoted(str, '"', '"') or _isQuoted(str, "'", "'")
+    
+    if isEmpty(start) or isEmpty(end):
+        return False # hard condition
+
+    return _isQuoted(str, start, end)
+
+def needQuote(str, start = None, end = None):
+    return not isQuoted(str, start, end)
+
+def quote(str, start = None, end = None):
+    if str is None:
+        return str # We can't quote None. But we can quote empty string
+    
+    # by default: ""
+    if start is None and end is None:
+        return '"' + str + '"'
+
+    if isEmpty(start) or isEmpty(end):
+        return str # hard condition
+
+    return start + str + end
+
+def unquote(str, start = None, end = None):
+    if isEmpty(str):
+        return str
+    
+    if start is None and end is None:
+        if not isQuoted(str, None, None):
+            return str
+        else:
+            return str[1:len(str)-1]
+
+    if isEmpty(start) or isEmpty(end):
+        return str # hard condition
+    
+    if not isQuoted(str, start, end):
+        return str
+    
+    return str[len(start):len(str)-len(end)]
