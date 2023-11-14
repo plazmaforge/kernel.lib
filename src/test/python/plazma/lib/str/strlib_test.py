@@ -2308,5 +2308,169 @@ class StrlibTest(unittest.TestCase):
 
         self.assertEqual('myfile', strlib.removeSuffixes('myfile.txt', ['.txt', '.csv']))
 
+    # 4.3
+
+    def test_isQuoted(self):
+
+        # False
+        self.assertFalse(strlib.isQuoted(None))
+        self.assertFalse(strlib.isQuoted(''))
+        self.assertFalse(strlib.isQuoted(' '))
+        self.assertFalse(strlib.isQuoted('abc'))
+
+        # False "
+        self.assertFalse(strlib.isQuoted('"'))           # False - only one quote
+        self.assertFalse(strlib.isQuoted('"', '"', '"')) # False - only one quote
+
+        # False '
+        self.assertFalse(strlib.isQuoted("'"))           # False - only one quote
+        self.assertFalse(strlib.isQuoted("'", "'", "'")) # False - only one quote
+
+        # False value
+        self.assertFalse(strlib.isQuoted("[", "[", "]")) # False - only one quote
+        self.assertFalse(strlib.isQuoted("{", "{", "}")) # False - only one quote
+        self.assertFalse(strlib.isQuoted("(", "(", ")")) # False - only one quote
+
+        self.assertFalse(strlib.isQuoted("'abc'", '"', '"')) # '' is not """
+        self.assertFalse(strlib.isQuoted('"abc"', "'", "'")) # """ is not ''
+        self.assertFalse(strlib.isQuoted("[abc]", "{", "}")) # [] is not {}
+        self.assertFalse(strlib.isQuoted("{abc}", "[", "]")) # {} is not []
+
+        # True "
+        self.assertTrue(strlib.isQuoted('""'))
+        self.assertTrue(strlib.isQuoted('"abc"'))
+
+        self.assertTrue(strlib.isQuoted('""', '"', '"'))
+        self.assertTrue(strlib.isQuoted('"abc"', '"', '"'))
+
+        # True '
+        self.assertTrue(strlib.isQuoted("''"))
+        self.assertTrue(strlib.isQuoted("'abc'"))
+
+        self.assertTrue(strlib.isQuoted("''", "'", "'"))
+        self.assertTrue(strlib.isQuoted("'abc'", "'", "'"))
+
+        # True value
+        self.assertTrue(strlib.isQuoted("[]", "[", "]"))
+        self.assertTrue(strlib.isQuoted("[abc]", "[", "]"))
+
+        self.assertTrue(strlib.isQuoted("{}", "{", "}"))
+        self.assertTrue(strlib.isQuoted("{abc}", "{", "}"))
+
+        self.assertTrue(strlib.isQuoted("()", "(", ")"))
+        self.assertTrue(strlib.isQuoted("(abc)", "(", ")"))
+
+    def test_needQuote(self):
+
+        # True
+        self.assertTrue(strlib.needQuote(None))
+        self.assertTrue(strlib.needQuote(''))
+        self.assertTrue(strlib.needQuote(' '))
+        self.assertTrue(strlib.needQuote('abc'))
+
+        # True "
+        self.assertTrue(strlib.needQuote('"'))           # True - only one quote
+        self.assertTrue(strlib.needQuote('"', '"', '"')) # True - only one quote
+
+        # True '
+        self.assertTrue(strlib.needQuote("'"))           # True - only one quote
+        self.assertTrue(strlib.needQuote("'", "'", "'")) # True - only one quote
+
+        # True value
+        self.assertTrue(strlib.needQuote("[", "[", "]")) # True - only one quote
+        self.assertTrue(strlib.needQuote("{", "{", "}")) # True - only one quote
+        self.assertTrue(strlib.needQuote("(", "(", ")")) # True - only one quote
+
+        self.assertTrue(strlib.needQuote("'abc'", '"', '"')) # '' is not """
+        self.assertTrue(strlib.needQuote('"abc"', "'", "'")) # """ is not ''
+        self.assertTrue(strlib.needQuote("[abc]", "{", "}")) # [] is not {}
+        self.assertTrue(strlib.needQuote("{abc}", "[", "]")) # {} is not []
+
+        # False "
+        self.assertFalse(strlib.needQuote('""'))
+        self.assertFalse(strlib.needQuote('"abc"'))
+
+        self.assertFalse(strlib.needQuote('""', '"', '"'))
+        self.assertFalse(strlib.needQuote('"abc"', '"', '"'))
+
+        # False '
+        self.assertFalse(strlib.needQuote("''"))
+        self.assertFalse(strlib.needQuote("'abc'"))
+
+        self.assertFalse(strlib.needQuote("''", "'", "'"))
+        self.assertFalse(strlib.needQuote("'abc'", "'", "'"))
+
+        # False value
+        self.assertFalse(strlib.needQuote("[]", "[", "]"))
+        self.assertFalse(strlib.needQuote("[abc]", "[", "]"))
+
+        self.assertFalse(strlib.needQuote("{}", "{", "}"))
+        self.assertFalse(strlib.needQuote("{abc}", "{", "}"))
+
+        self.assertFalse(strlib.needQuote("()", "(", ")"))
+        self.assertFalse(strlib.needQuote("(abc)", "(", ")"))
+
+    def test_quote(self):
+
+        # quote(None/empty/blank)
+        self.assertIsNone(strlib.quote(None))
+        self.assertEqual('""', strlib.quote(''))
+        self.assertEqual('" "', strlib.quote(' '))
+
+        # quote(value)
+        self.assertEqual('"abc"', strlib.quote('abc'))
+        self.assertEqual('"abc"', strlib.quote('abc', '"', '"'))
+        self.assertEqual("'abc'", strlib.quote('abc', "'", "'"))
+
+        self.assertEqual('" abc "', strlib.quote(' abc '))
+        self.assertEqual('" abc "', strlib.quote(' abc ', '"', '"'))
+        self.assertEqual("' abc '", strlib.quote(' abc ', "'", "'"))
+
+        self.assertEqual('[abc]', strlib.quote('abc', '[', ']'))
+        self.assertEqual('{abc}', strlib.quote('abc', '{', '}'))
+        self.assertEqual('(abc)', strlib.quote('abc', '(', ')'))
+
+        # quote "
+        self.assertEqual('"""', strlib.quote('"'))
+        self.assertEqual('"""', strlib.quote('"', '"', '"'))
+        self.assertEqual("\"'\"", strlib.quote("'", '"', '"'))
+
+        # quote '
+        self.assertEqual("'''", strlib.quote("'", "'", "'"))
+        self.assertEqual('\'"\'', strlib.quote('"', "'", "'"))
+
+    def test_unquote(self):
+
+        # unquote(None/empty/blank)
+        self.assertIsNone(strlib.unquote(None))
+        self.assertEqual('', strlib.unquote(''))
+        self.assertEqual(' ', strlib.unquote(' '))
+
+        # unquote(value) - Nothing
+        self.assertEqual('abc', strlib.unquote('abc'))
+        self.assertEqual('abc', strlib.unquote('abc', '"', '"'))
+        self.assertEqual('abc', strlib.unquote('abc', "'", "'"))
+
+        self.assertEqual(' abc ', strlib.unquote(' abc '))
+        self.assertEqual(' abc ', strlib.unquote(' abc ', '"', '"'))
+        self.assertEqual(' abc ', strlib.unquote(' abc ', "'", "'"))
+
+        self.assertEqual('abc', strlib.unquote('abc', '[', ']'))
+        self.assertEqual('abc', strlib.unquote('abc', '{', '}'))
+        self.assertEqual('abc', strlib.unquote('abc', '(', ')'))
+
+        # unquote(value) - Result
+        self.assertEqual('abc', strlib.unquote('"abc"'))
+        self.assertEqual('abc', strlib.unquote('"abc"', '"', '"'))
+        self.assertEqual('abc', strlib.unquote("'abc'", "'", "'"))
+
+        self.assertEqual(' abc ', strlib.unquote('" abc "'))
+        self.assertEqual(' abc ', strlib.unquote('" abc "', '"', '"'))
+        self.assertEqual(' abc ', strlib.unquote("' abc '", "'", "'"))
+
+        self.assertEqual('abc', strlib.unquote('[abc]', '[', ']'))
+        self.assertEqual('abc', strlib.unquote('{abc}', '{', '}'))
+        self.assertEqual('abc', strlib.unquote('(abc)', '(', ')'))
+
 if __name__ == '__main__':
     unittest.main()
