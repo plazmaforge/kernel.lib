@@ -2472,5 +2472,145 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('abc', strlib.unquote('{abc}', '{', '}'))
         self.assertEqual('abc', strlib.unquote('(abc)', '(', ')'))
 
+    # 4.4
+
+    def test_isColumnSeparator(self):
+
+        # False
+        self.assertFalse(strlib.isColumnSeparator(None))
+        self.assertFalse(strlib.isColumnSeparator(''))
+        self.assertFalse(strlib.isColumnSeparator(' '))
+        self.assertFalse(strlib.isColumnSeparator('a'))
+        self.assertFalse(strlib.isColumnSeparator('abc'))  # not char - string
+
+        # True
+        self.assertTrue(strlib.isColumnSeparator('\r'))
+        self.assertTrue(strlib.isColumnSeparator('\n'))
+        self.assertTrue(strlib.isColumnSeparator('\t'))
+
+    def test_isColumnText(self):
+
+        # False
+        self.assertFalse(strlib.isColumnText(None))
+        self.assertFalse(strlib.isColumnText(''))
+        self.assertFalse(strlib.isColumnText(' '))
+        self.assertFalse(strlib.isColumnText('a'))
+        self.assertFalse(strlib.isColumnText('abc'))
+        self.assertFalse(strlib.isColumnText('abc def'))
+
+        # True
+        self.assertTrue(strlib.isColumnText('\r'))
+        self.assertTrue(strlib.isColumnText('\n'))
+        self.assertTrue(strlib.isColumnText('\t'))
+        self.assertTrue(strlib.isColumnText('abc\rdef'))
+        self.assertTrue(strlib.isColumnText('abc\ndef'))
+        self.assertTrue(strlib.isColumnText('abc\r\ndef'))
+        self.assertTrue(strlib.isColumnText('abc\r\ndef\txyz'))
+
+    def test_isLineText(self):
+
+        # True
+        self.assertTrue(strlib.isLineText(None))
+        self.assertTrue(strlib.isLineText(''))
+        self.assertTrue(strlib.isLineText(' '))
+        self.assertTrue(strlib.isLineText('a'))
+        self.assertTrue(strlib.isLineText('abc'))
+        self.assertTrue(strlib.isLineText('abc def'))
+
+        # False
+        self.assertFalse(strlib.isLineText('\r'))
+        self.assertFalse(strlib.isLineText('\n'))
+        self.assertFalse(strlib.isLineText('\t'))
+        self.assertFalse(strlib.isLineText('abc\rdef'))
+        self.assertFalse(strlib.isLineText('abc\ndef'))
+        self.assertFalse(strlib.isLineText('abc\r\ndef'))
+        self.assertFalse(strlib.isLineText('abc\r\ndef\txyz'))
+
+    # 5.1
+
+    def test_countChars(self):
+
+        # countChars(None, value)
+        self.assertEqual(0, strlib.countChars(None, None))
+        self.assertEqual(0, strlib.countChars(None, ''))
+        self.assertEqual(0, strlib.countChars(None, ' '))
+        self.assertEqual(0, strlib.countChars(None, 'a'))
+        self.assertEqual(0, strlib.countChars(None, 'abc')) # not char - string
+
+        # countChars(empty, value)
+        self.assertEqual(0, strlib.countChars('', None))
+        self.assertEqual(0, strlib.countChars('', ''))
+        self.assertEqual(0, strlib.countChars('', ' '))
+        self.assertEqual(0, strlib.countChars('', 'a'))
+        self.assertEqual(0, strlib.countChars('', 'abc'))   # not char - string
+
+        # countChars(blank, value)
+        self.assertEqual(0, strlib.countChars(' ', None))
+        self.assertEqual(0, strlib.countChars(' ', ''))
+        self.assertEqual(1, strlib.countChars(' ', ' '))    # OK
+        self.assertEqual(0, strlib.countChars(' ', 'a'))
+        self.assertEqual(0, strlib.countChars(' ', 'abc'))  # not char - string
+
+        # countChars(char, value)
+        self.assertEqual(0, strlib.countChars('a', None))
+        self.assertEqual(0, strlib.countChars('a', ''))
+        self.assertEqual(0, strlib.countChars('a', ' '))
+        self.assertEqual(1, strlib.countChars('a', 'a'))    # OK
+        self.assertEqual(0, strlib.countChars('a', 'abc'))  # not char - string
+
+
+        # countChars(value, value)
+        self.assertEqual(0, strlib.countChars('abcabcc', None))
+        self.assertEqual(0, strlib.countChars('abcabcc', ''))
+        self.assertEqual(0, strlib.countChars('abcabcc', ' '))
+        self.assertEqual(2, strlib.countChars('abcabcc', 'a'))    # OK - 2
+        self.assertEqual(2, strlib.countChars('abcabcc', 'b'))    # OK - 2
+        self.assertEqual(3, strlib.countChars('abcabcc', 'c'))    # OK - 3
+        self.assertEqual(0, strlib.countChars('abcabcc', 'abc'))  # not char - string
+
+        self.assertEqual(2, strlib.countChars('Hi, my name is Alex, tell me something about you', ','))  # OK - 2
+
+    def test_countStrings(self):
+
+        # countStrings(None, value)
+        self.assertEqual(0, strlib.countStrings(None, None))
+        self.assertEqual(0, strlib.countStrings(None, ''))
+        self.assertEqual(0, strlib.countStrings(None, ' '))
+        self.assertEqual(0, strlib.countStrings(None, 'a'))
+        self.assertEqual(0, strlib.countStrings(None, 'abc'))
+
+        # countStrings(empty, value)
+        self.assertEqual(0, strlib.countStrings('', None))
+        self.assertEqual(0, strlib.countStrings('', ''))
+        self.assertEqual(0, strlib.countStrings('', ' '))
+        self.assertEqual(0, strlib.countStrings('', 'a'))
+        self.assertEqual(0, strlib.countStrings('', 'abc'))
+
+        # countStrings(blank, value)
+        self.assertEqual(0, strlib.countStrings(' ', None))
+        self.assertEqual(0, strlib.countStrings(' ', ''))
+        self.assertEqual(1, strlib.countStrings(' ', ' '))       # Ok - 1
+        self.assertEqual(0, strlib.countStrings(' ', 'a'))
+        self.assertEqual(0, strlib.countStrings(' ', 'abc'))
+
+        # countStrings(char, value)
+        self.assertEqual(0, strlib.countStrings('a', None))
+        self.assertEqual(0, strlib.countStrings('a', ''))
+        self.assertEqual(0, strlib.countStrings('a', ' '))
+        self.assertEqual(1, strlib.countStrings('a', 'a'))       # Ok - 1
+        self.assertEqual(0, strlib.countStrings('a', 'abc'))
+
+        # countStrings(value, value)
+        self.assertEqual(0, strlib.countStrings('abcxyzabc', None))
+        self.assertEqual(0, strlib.countStrings('abcxyzabc', ''))
+        self.assertEqual(0, strlib.countStrings('abcxyzabc', ' '))
+        self.assertEqual(2, strlib.countStrings('abcxyzabc', 'a'))   # Ok - 2
+        self.assertEqual(2, strlib.countStrings('abcxyzabc', 'abc')) # Ok - 2
+        self.assertEqual(1, strlib.countStrings('abcxyzabc', 'xyz')) # Ok - 1
+
+        self.assertEqual(1, strlib.countStrings('Hello world! It is good world!', 'Hello')) # Ok - 1
+        self.assertEqual(2, strlib.countStrings('Hello world! It is good world!', 'world')) # Ok - 2
+        self.assertEqual(2, strlib.countStrings('Hello world! It is good world!', '!'))     # Ok - 2
+        
 if __name__ == '__main__':
     unittest.main()
