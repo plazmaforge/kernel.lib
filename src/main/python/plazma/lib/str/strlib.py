@@ -201,7 +201,28 @@ KEBAB_CONNECTOR = '-' # kebab-case
 #
 # - unquote(str)
 # - unquote(str, start, end)
+#
+# 4.4
+# 
+# - isColumnSeparator(ch)
+#
+# - isColumnText(str)
+# - isColumnText(str, len)
+#
+# - isLineText(str)
+# - isLineText(str, len)
 
+#################################################################################
+#    
+# 5.1
+#
+# - countChars(str, ch)
+# - countStrings(str, substr)
+#
+# - countWords(str)                                                   - N/A
+# - countWords(str, separators)                                       - N/A
+# - countLines(str)                                                   - N/A
+#
 
 # 1.1
 
@@ -410,7 +431,7 @@ def findFirstOf(str, terms, pos = None):
 
     i = pos
 
-    if (len == 1):
+    if (size(terms) == 1):
         return str.find(terms, pos) # [pos: len]
         #while (i < len):
         #    if (str[i] == terms):
@@ -421,6 +442,11 @@ def findFirstOf(str, terms, pos = None):
             if (contains(terms, str[i])):
                 return i
             i += 1
+
+    while (i < len):
+        if (contains(terms, str[i])):
+            return i
+        i += 1
 
     return -1
 
@@ -440,7 +466,7 @@ def findLastOf(str, terms, pos = None):
 
     i = pos
 
-    if (len == 1):
+    if (size(terms) == 1):
         return str.rfind(terms, 0, pos + 1) # [0: pos + 1] exclude last index
         #while (i >= 0):
         #    if (str[i] == terms):
@@ -470,7 +496,7 @@ def findFirstNotOf(str, terms, pos = None):
 
     i = pos
 
-    if (len == 1):
+    if (size(terms) == 1):
         while (i < len):
             if (str[i] != terms):
                 return i
@@ -499,7 +525,7 @@ def findLastNotOf(str, terms, pos = None):
 
     i = pos
 
-    if (len == 1):
+    if (size(terms) == 1):
         while (i >= 0):
             if (str[i] != terms):
                 return i
@@ -1104,3 +1130,73 @@ def unquote(str, start = None, end = None):
         return str
     
     return str[len(start):len(str)-len(end)]
+
+# 4.4
+
+def isColumnSeparator(ch):
+    if ch is None:
+        return False
+    return ch == '\r' or ch == '\n' or ch == '\t' # TODO: Use constant COLUMN_SEPARATORS = '\r\n\t'
+
+def isColumnText(str, len = None):
+    if isEmpty(str):
+        return False
+    
+    if len is None:
+        len = size(str)
+    if len < 1:
+        return False
+    
+    strLen = size(str) 
+    if len >  strLen:
+        len = strLen
+        
+    #Use pos
+    #return findFirstOf(str, '\r\n\t') != -1 # TODO: Use constant COLUMN_SEPARATORS = '\r\n\t'
+    
+    i = 0
+    while i < len:
+        if isColumnSeparator(str[i]):
+            return True
+        i += 1
+    return False
+
+def isLineText(str, len = None):
+    return not isColumnText(str, len)
+
+# 5.1
+
+def countChars(str, ch):
+    if isEmpty(str) or isEmpty(ch):
+        return 0
+    
+    if len(ch) != 1:
+        return 0 # only one char, not string
+    
+    return str.count(ch)
+
+    #len = size(str)
+    #i = 0
+    #count = 0
+    #while i < len:
+    #    if str[i] == ch:
+    #        count += 1
+    #    i += 1
+    #return count
+
+def countStrings(str, substr):
+    if isEmpty(str) or isEmpty(substr):
+        return 0
+    
+    return str.count(substr)
+    
+    #sublen = len(substr)
+    #pos = 0
+    #count = 0
+    #while True:
+    #    pos = findFirst(str, substr, pos)
+    #    if pos == -1:
+    #        break
+    #    pos += sublen
+    #    count += 1
+    #return count
