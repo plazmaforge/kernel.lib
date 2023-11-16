@@ -443,11 +443,6 @@ def findFirstOf(str, terms, pos = None):
                 return i
             i += 1
 
-    while (i < len):
-        if (contains(terms, str[i])):
-            return i
-        i += 1
-
     return -1
 
 def findLastOf(str, terms, pos = None):
@@ -1150,7 +1145,7 @@ def isColumnText(str, len = None):
     strLen = size(str) 
     if len >  strLen:
         len = strLen
-        
+
     #Use pos
     #return findFirstOf(str, '\r\n\t') != -1 # TODO: Use constant COLUMN_SEPARATORS = '\r\n\t'
     
