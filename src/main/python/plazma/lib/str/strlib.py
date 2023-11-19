@@ -1195,3 +1195,95 @@ def countStrings(str, substr):
     #    pos += sublen
     #    count += 1
     #return count
+
+# 6.1
+
+# ObjLib: start ##########################
+
+def isType(value, name):
+    if value is None:
+        return False
+    return getTypeName(value) == name
+
+def getTypeName(value):
+    if value is None:
+        return None
+    return type(value).__name__
+
+##
+
+def isBoolType(value):
+    return isType(value, 'bool')
+
+def isIntType(value):
+    return isType(value, 'int')
+
+def isFloatType(value):
+    return isType(value, 'float')
+
+def isStrType(value):
+    return isType(value, 'str')
+
+def isListType(value):
+    return isType(value, 'list')
+
+def isDictType(value):
+    return isType(value, 'dict')
+
+# ObjLib: end ############################
+
+def _replaceAll_str(str, s1, s2):
+    return str.replace(s1, s2)
+
+def _replaceAll_list(str, values1, values2):
+
+    # [], []
+    size1 = len(values1)
+    size2 = len(values2)
+
+    size = size1
+    if size2 < size:
+        size = size2
+
+    if size == 0:
+        return str
+    
+    value1 = None
+    value2 = None
+    result = str
+    i = 0
+    while i < size:
+        value1 = values1[i]
+        value2 = values2[i]
+        i += 1
+
+        if isEmpty(value1) or value2 is None:
+            # ignore None/empty 'value1' or None 'value2'
+            # empty value 'value2' is correct case, we will remove 'value1' from 'str'
+            continue
+
+        if value1 == value2:
+            # ignore this case because nothing to replace
+            continue
+
+        result = result.replace(value1, value2)
+    return result
+
+def replaceAll(str, s1, s2):
+    if isEmpty(str):
+        return str
+    
+    if isEmpty(s1) or s2 is None:
+        # ignore None/empty 's1' or None 's2'
+        # empty value 's2' is correct case, we will remove 's1' from 'str'
+        return str
+    
+    # str, str
+    if isStrType(s1) and isStrType(s2):
+        return _replaceAll_str(str, s1, s2)
+    
+    # list, list
+    if isListType(s1) and isListType(s2):
+        return _replaceAll_list(str, s1, s2)
+    
+    return str
