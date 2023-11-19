@@ -238,9 +238,9 @@ public class StrLib {
     // 5.1
     //
     // - countChars(String str, char ch)
-    // - countStrings(String str, String findStr)
+    // - countStrings(String str, String substr)
     // - countWords(String str)
-    // - countWords(String str, String[] seperators)
+    // - countWords(String str, String[] separators)
     // - countLines(String str)
     
     /////////////////////////////////////////////////////////////////////////////////
@@ -252,12 +252,38 @@ public class StrLib {
     /////////////////////////////////////////////////////////////////////////////////
     // 7.1
     //      
-    // - split(String str, String seperators)
-    // - split(String str, String seperators, boolean include)
+    // - split(String str, char separator)
+    // - split(String str, String separator)    
+    //    
+    // - splitBySeparator(String str, char separator)
+    // - splitBySeparator(String str, char separator, boolean preverseAll)
+    //
+    // - splitBySeparator(String str, String separator)
+    // - splitBySeparator(String str, String separator, boolean preserveAll)
+    //
+    // - splitBySeparators(String str, String separators)
+    // - splitBySeparators(String str, String separators, boolean preserveAll)
+    //
+    // - splitTrim(String str, char separator)
+    // - splitTrim(String str, String separator)    
+    //
+    // - splitTrimBySeparator(String str, char separator)
+    // - splitTrimBySeparator(String str, String separator)    
+    //
+    // - splitTrimBySeparators(String str, String separators)    
     // 
     // - splitWords(String str)
-    // - splitWords(String str, String seperator)
+    // - splitWords(String str, String separator)
     // - splitLines(String str)
+    //
+    // - tokenizeBySeparator(String str, char separator)
+    // - tokenizeBySeparator(String str, char separator, boolean includeAll, boolean preserveAll)
+    //    
+    // - tokenizeBySeparator(String str, String separator)
+    // - tokenizeBySeparator(String str, String separator, boolean includeAll, boolean preserveAll)
+    //
+    // - tokenizeBySeparators(String str, String separators)
+    // - tokenizeBySeparators(String str, String separators, boolean includeAll, boolean preserveAll)
 	
     /////////////////////////////////////////////////////////////////////////////////
     // 8.1
@@ -2314,7 +2340,7 @@ public class StrLib {
      * @return
      */
     public static boolean isColumnSeparator(char ch) {
-        return (ch == '\r' || ch == '\n' || ch == '\t');
+        return (ch == '\r' || ch == '\n' || ch == '\t'); // TODO: Use constant COLUMN_SEPARATORS = '\r\n\t'
     }
 
     // isColumnText
@@ -2330,10 +2356,14 @@ public class StrLib {
         if (array == null || array.length == 0 || len < 1) {
             return false; // by default inline (isColumnText = false)
         }
-        char ch;
+        if (len > array.length) {
+            len = array.length;            
+        }
+        
+        // TODO: Use constant COLUMN_SEPARATORS = '\r\n\t'
+        
         for (int i = 0; i < len; i++) {
-            ch = array[i];
-            if (isColumnSeparator(ch)) {
+            if (isColumnSeparator(array[i])) {
                 return true;
             }
         }
@@ -2350,24 +2380,24 @@ public class StrLib {
     // isLineText
 
     public static boolean isLineText(char[] array) {
-        if (array == null || array.length == 0) {
-            return true; // by default inline
-        }
-        return isLineText(array, array.length);
+        //if (array == null || array.length == 0) {
+        //    return true; // by default inline
+        //}
+        return isLineText(array, array == null ? 0 : array.length);
     }
 
     public static boolean isLineText(char[] array, int len) {
-        if (array == null || array.length == 0 || len < 1) {
-            return true; // by default inline
-        }
+        //if (array == null || array.length == 0 || len < 1) {
+        //    return true; // by default inline
+        //}
         return !isColumnText(array, len);
     }
 
     public static boolean isLineText(String str) {
-        if (isEmpty(str)) {
-            return true; // by default: inline
-        }
-        return isLineText(str.toCharArray(), str.length());
+        //if (isEmpty(str)) {
+        //    return true; // by default: inline
+        //}
+        return isLineText(str == null ? null : str.toCharArray(), str == null ? 0: str.length());
     }
 
     //// 5.1
@@ -2421,10 +2451,12 @@ public class StrLib {
 
     // Non RegExp
     public static String replaceAll(String str, String s1, String s2) {
-        if (str == null) {
-            return null;
+        if (isEmpty(str)) {
+            return str;
         }
-        if (s1 == null || s2 == null) {
+        if (isEmpty(s1) || s2 == null) {
+            // ignore null/empty 's1' or null 's2'
+            // empty value 's2' is correct case, we will remove 's1' from 'str'            
             return str;
         }
         if (s1 == s2) {
@@ -2471,6 +2503,19 @@ public class StrLib {
         for (int i = 0; i < size; i++) {
             oldValue = oldValues[i];
             newValue = newValues[i];
+            
+            if (isEmpty(oldValue) || newValue == null) {
+                // ignore null/empty 'value1' or null 'value2'
+                // empty value 'value2' is correct case, we will remove 'value1' from 'str'
+                continue;
+                
+            }
+            
+            if (oldValue == newValue || oldValue.equals(newValue)) {
+                // ignore this case because nothing to replace
+                continue;                
+            }
+            
             result = replaceAll(str, oldValue, newValue); // TODO: maybe optimization
         }
         return result;
@@ -2517,32 +2562,33 @@ public class StrLib {
     }
 
     ////
-
-//    public static String[] split(String str, String seperators) {
-//        return split(str, seperators, false, false);
-//    } 
-//
-//    public static String[] split(String str, String seperators, boolean include, boolean trim) {
-//        if (isEmpty(str)) {
-//            return EMPTY_STRING_ARRAY;
-//        }
-//        if (seperators == null) {
-//            return new String[] { str };
-//        }
-//        StringTokenizer tokens = new StringTokenizer(str, seperators, include);
-//        String[] result = new String[tokens.countTokens()];
-//        int i = 0;
-//        String token;
-//        while (tokens.hasMoreTokens()) {
-//            token = tokens.nextToken();
-//            if (trim) {
-//                token = trim(token);                
-//            }
-//            result[i++] = token;
-//        }
-//        return result;
-//    }
     
+    /*
+    public static String[] split(String str, String separators) {
+        return split(str, separators, false, false);
+    } 
+
+    public static String[] split(String str, String separators, boolean include, boolean trim) {
+        if (isEmpty(str)) {
+            return EMPTY_STRING_ARRAY;
+        }
+        if (separators == null) {
+            return new String[] { str };
+        }
+        StringTokenizer tokens = new StringTokenizer(str, separators, include);
+        String[] result = new String[tokens.countTokens()];
+        int i = 0;
+        String token;
+        while (tokens.hasMoreTokens()) {
+            token = tokens.nextToken();
+            if (trim) {
+                token = trim(token);                
+            }
+            result[i++] = token;
+        }
+        return result;
+    }
+    */    
     
     ////
     
@@ -2556,23 +2602,60 @@ public class StrLib {
     }
     
     ////
-        
+
+    public static String[] splitTrim(String str, char separator) {
+        return splitTrimBySeparator(str, separator);
+    }
+
     public static String[] splitTrim(String str, String separator) {
         return splitTrimBySeparator(str, separator);
     }
+    
+    //
+    
+    public static String[] splitTrimBySeparator(String str, char separator) {
+        String[] res = splitBySeparator(str, separator);
+        trimArray(res);
+        return res;
+    }    
 
     public static String[] splitTrimBySeparator(String str, String separator) {
         String[] res = splitBySeparator(str, separator);
         trimArray(res);
         return res;
     }
+    
+    //
 
     public static String[] splitTrimBySeparators(String str, String separators) {
         String[] res = splitBySeparator(str, separators);
         trimArray(res);
         return res;
     }
+    
+    ////
+        
+    public static String[] splitWords(String str) {
+        return splitWords(str, null);
+    }
 
+    public static String[] splitWords(String str, String separators) {
+        if (separators == null) {
+            separators = DEFAULT_WORD_SEPARATORS;
+        }
+        return splitBySeparators(str, separators, false);
+    }
+
+    public static String[] splitLines(String str) {
+        if (isEmpty(str)) {
+            return EMPTY_STRING_ARRAY;
+        }
+        return str.split("[\\r]?\\n");
+    }
+    
+    ////
+    
+    /*
     public static String[] splitWorker(final String str, final char separatorChar, final boolean preserveAllTokens) {
         
         if (str == null) {
@@ -2611,8 +2694,13 @@ public class StrLib {
         
         return list.toArray(new String[0]);
     }
+    */
     
     ////
+    
+    public static String[] tokenizeBySeparator(String str, char separator) {
+        return tokenizeBySeparator(str, separator, true, false);
+    }
     
     public static String[] tokenizeBySeparator(String str, char separator, boolean includeAll, boolean preserveAll) {
         if (isEmpty(str)) {
@@ -2653,6 +2741,12 @@ public class StrLib {
         }
         
         return result.toArray(new String[0]);
+    }
+    
+    ////
+    
+    public static String[] tokenizeBySeparator(String str, String separator) {
+        return tokenizeBySeparator(str, separator, true, false);
     }
 
     public static String[] tokenizeBySeparator(String str, String separator, boolean includeAll, boolean preserveAll) {
@@ -2699,6 +2793,12 @@ public class StrLib {
         return result.toArray(new String[0]);
     }
     
+    ////
+    
+    public static String[] tokenizeBySeparators(String str, String separators) {
+        return tokenizeBySeparators(str, separators, true, false);
+    }
+    
     public static String[] tokenizeBySeparators(String str, String separators, boolean includeAll, boolean preserveAll) {
         if (isEmpty(str)) {
             return EMPTY_STRING_ARRAY;
@@ -2743,26 +2843,6 @@ public class StrLib {
         return result.toArray(new String[0]);
     }
     
-    ////
-    
-    public static String[] splitWords(String str) {
-        return splitWords(str, null);
-    }
-
-    public static String[] splitWords(String str, String separators) {
-        if (separators == null) {
-            separators = DEFAULT_WORD_SEPARATORS;
-        }
-        return splitBySeparators(str, separators, false);
-    }
-
-    public static String[] splitLines(String str) {
-        if (isEmpty(str)) {
-            return EMPTY_STRING_ARRAY;
-        }
-        return str.split("[\\r]?\\n");
-    }
-
     //// 8.1
 
     public static String toString(char[] array) {

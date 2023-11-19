@@ -192,10 +192,28 @@
 //      
 // - split(const string& str, char separator)
 // - split(const string& str, const string& separator)
-// 
+//
+// - splitBySeparator(const std::string& str, char separator)
+// - splitBySeparator(const std::string& str, char separator, bool preserveAll)
+//
+// - splitBySeparator(const std::string& str, const std::string& separator)
+// - splitBySeparator(const std::string& str, const std::string& separator, bool preserveAll)
+//
+// - splitBySeparators(const std::string& str, const std::string& separators)
+// - splitBySeparators(const std::string& str, const std::string& separators, bool preserveAll)
+//
 // - splitWords(const string& str)
 // - splitWords(const string& str, const string& separators)
 // - splitLines(const string& str)
+//
+// - tokenizeBySeparator(const std::string& str, char separator)
+// - tokenizeBySeparator(const std::string& str, char separator, bool includeAll, bool preserveAll)
+//
+// - tokenizeBySeparator(const std::string& str, const std::string& separator);
+// - tokenizeBySeparator(const std::string& str, const std::string& separator, bool includeAll, bool preserveAll)
+//
+// - tokenizeBySeparators(const std::string& str, const std::string& separators)
+// - tokenizeBySeparators(const std::string& str, const std::string& separators, bool includeAll, bool preserveAll)
 
 /////////////////////////////////////////////////////////////////////////////////
 // 8.1

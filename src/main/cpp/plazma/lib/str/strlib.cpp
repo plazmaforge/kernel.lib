@@ -197,9 +197,27 @@
 // - split(const string& str, char separator)
 // - split(const string& str, const string& separator)
 // 
+// - splitBySeparator(const std::string& str, char separator)
+// - splitBySeparator(const std::string& str, char separator, bool preserveAll)
+//
+// - splitBySeparator(const std::string& str, const std::string& separator)
+// - splitBySeparator(const std::string& str, const std::string& separator, bool preserveAll)
+//
+// - splitBySeparators(const std::string& str, const std::string& separators)
+// - splitBySeparators(const std::string& str, const std::string& separators, bool preserveAll)
+//
 // - splitWords(const string& str)
 // - splitWords(const string& str, const string& separators)
 // - splitLines(const string& str)
+//
+// - tokenizeBySeparator(const std::string& str, char separator)
+// - tokenizeBySeparator(const std::string& str, char separator, bool includeAll, bool preserveAll)
+//
+// - tokenizeBySeparator(const std::string& str, const std::string& separator);
+// - tokenizeBySeparator(const std::string& str, const std::string& separator, bool includeAll, bool preserveAll)
+//
+// - tokenizeBySeparators(const std::string& str, const std::string& separators)
+// - tokenizeBySeparators(const std::string& str, const std::string& separators, bool includeAll, bool preserveAll)
 
 /////////////////////////////////////////////////////////////////////////////////
 // 8.1
@@ -2061,7 +2079,17 @@ namespace strlib {
         return tokenizeBySeparator(str, separator, false, preserveAll);
     }
 
-    //
+    // splitBySeparator
+
+    std::vector<std::string> splitBySeparator(const std::string& str, const std::string& separator) {
+        return tokenizeBySeparator(str, separator, false, true);
+    }
+
+    std::vector<std::string> splitBySeparator(const std::string& str, const std::string& separator, bool preserveAll) {
+        return tokenizeBySeparator(str, separator, false, preserveAll);
+    }
+
+    // splitWords
 
     std::vector<std::string> splitWords(const std::string& str) {
         return splitWords(str, DEFAULT_WORD_SEPARATORS);
@@ -2071,6 +2099,8 @@ namespace strlib {
         std::vector<std::string> result = splitBySeparators(str, separators.empty() ? DEFAULT_WORD_SEPARATORS : separators, false); // no preserve
         return result;
     }
+
+    // splitLines
 
     std::vector<std::string> splitLines(const std::string& str) {
         std::vector<std::string> result = splitBySeparators(str, "\r\n", false); // no preserve
@@ -2123,16 +2153,6 @@ namespace strlib {
         }
         
         return res;
-    }
-
-    // splitBySeparator
-
-    std::vector<std::string> splitBySeparator(const std::string& str, const std::string& separator) {
-        return tokenizeBySeparator(str, separator, false, true);
-    }
-
-    std::vector<std::string> splitBySeparator(const std::string& str, const std::string& separator, bool preserveAll) {
-        return tokenizeBySeparator(str, separator, false, preserveAll);
     }
 
     // tokenizeBySeparator
