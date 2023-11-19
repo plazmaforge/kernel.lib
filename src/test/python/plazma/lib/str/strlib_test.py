@@ -2611,6 +2611,231 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(1, strlib.countStrings('Hello world! It is good world!', 'Hello')) # Ok - 1
         self.assertEqual(2, strlib.countStrings('Hello world! It is good world!', 'world')) # Ok - 2
         self.assertEqual(2, strlib.countStrings('Hello world! It is good world!', '!'))     # Ok - 2
+
+    # 6.1
+
+    def test_replaceAll(self):
+
+        # str, str
+        ###########################################################
+
+        # replaceAll(None, value, value): None -> None
+        self.assertIsNone(strlib.replaceAll(None, None, None))
+        self.assertIsNone(strlib.replaceAll(None, None, ''))
+        self.assertIsNone(strlib.replaceAll(None, None, ' '))
+        self.assertIsNone(strlib.replaceAll(None, None, 'abc'))
+
+        self.assertIsNone(strlib.replaceAll(None, '', None))
+        self.assertIsNone(strlib.replaceAll(None, '', ''))
+        self.assertIsNone(strlib.replaceAll(None, '', ' '))
+        self.assertIsNone(strlib.replaceAll(None, '', 'abc'))
+
+        self.assertIsNone(strlib.replaceAll(None, ' ', None))
+        self.assertIsNone(strlib.replaceAll(None, ' ', ''))
+        self.assertIsNone(strlib.replaceAll(None, ' ', ' '))
+        self.assertIsNone(strlib.replaceAll(None, ' ', 'abc'))
+
+        self.assertIsNone(strlib.replaceAll(None, 'abc', None))
+        self.assertIsNone(strlib.replaceAll(None, 'abc', ''))
+        self.assertIsNone(strlib.replaceAll(None, 'abc', ' '))
+        self.assertIsNone(strlib.replaceAll(None, 'abc', 'abc'))
+        self.assertIsNone(strlib.replaceAll(None, 'abc', 'def'))
+
+        # replaceAll(empty, value, value): '' -> ''
+        self.assertEqual('', strlib.replaceAll('', None, None))
+        self.assertEqual('', strlib.replaceAll('', None, ''))
+        self.assertEqual('', strlib.replaceAll('', None, ' '))
+        self.assertEqual('', strlib.replaceAll('', None, 'abc'))
+
+        self.assertEqual('', strlib.replaceAll('', '', None))
+        self.assertEqual('', strlib.replaceAll('', '', ''))
+        self.assertEqual('', strlib.replaceAll('', '', ' '))
+        self.assertEqual('', strlib.replaceAll('', '', 'abc'))
+
+        self.assertEqual('', strlib.replaceAll('', ' ', None))
+        self.assertEqual('', strlib.replaceAll('', ' ', ''))
+        self.assertEqual('', strlib.replaceAll('', ' ', ' '))
+        self.assertEqual('', strlib.replaceAll('', ' ', 'abc'))
+
+        self.assertEqual('', strlib.replaceAll('', 'abc', None))
+        self.assertEqual('', strlib.replaceAll('', 'abc', ''))
+        self.assertEqual('', strlib.replaceAll('', 'abc', ' '))
+        self.assertEqual('', strlib.replaceAll('', 'abc', 'abc'))
+        self.assertEqual('', strlib.replaceAll('', 'abc', 'def'))
+
+        # replaceAll(value, value, value)
+        self.assertEqual('abc', strlib.replaceAll('abc', None, None))
+        self.assertEqual('abc', strlib.replaceAll('abc', None, ''))
+        self.assertEqual('abc', strlib.replaceAll('abc', None, ' '))
+        self.assertEqual('abc', strlib.replaceAll('abc', None, 'abc'))
+
+        self.assertEqual('abc', strlib.replaceAll('abc', '', None))
+        self.assertEqual('abc', strlib.replaceAll('abc', '', ''))
+        self.assertEqual('abc', strlib.replaceAll('abc', '', ' '))
+        self.assertEqual('abc', strlib.replaceAll('abc', '', 'abc'))
+
+        self.assertEqual('abc', strlib.replaceAll('abc', ' ', None))
+        self.assertEqual('abc', strlib.replaceAll('abc', ' ', ''))
+        self.assertEqual('abc', strlib.replaceAll('abc', ' ', ' '))
+        self.assertEqual('abc', strlib.replaceAll('abc', ' ', 'abc'))
+
+        self.assertEqual('abc', strlib.replaceAll('abc', 'abc', None))
+        self.assertEqual('', strlib.replaceAll('abc', 'abc', ''))              # remove
+        self.assertEqual(' ', strlib.replaceAll('abc', 'abc', ' '))            # blank
+        self.assertEqual('abc', strlib.replaceAll('abc', 'abc', 'abc'))        # notning
+        self.assertEqual('def', strlib.replaceAll('abc', 'abc', 'def'))        # replace
+
+        # [], []
+        ###########################################################
+
+        # replaceAll(None, value, value): None -> None
+        self.assertIsNone(strlib.replaceAll(None, None, []))
+        self.assertIsNone(strlib.replaceAll(None, None, ['']))
+        self.assertIsNone(strlib.replaceAll(None, None, [' ']))
+        self.assertIsNone(strlib.replaceAll(None, None, ['abc']))
+        self.assertIsNone(strlib.replaceAll(None, None, ['abc', 'def']))
+
+        self.assertIsNone(strlib.replaceAll(None, [], None))
+        self.assertIsNone(strlib.replaceAll(None, [], []))
+        self.assertIsNone(strlib.replaceAll(None, [], ['']))
+        self.assertIsNone(strlib.replaceAll(None, [], [' ']))
+        self.assertIsNone(strlib.replaceAll(None, [], ['abc']))
+        self.assertIsNone(strlib.replaceAll(None, [], ['abc', 'def']))
+
+        self.assertIsNone(strlib.replaceAll(None, ['abc'], None))
+        self.assertIsNone(strlib.replaceAll(None, ['abc'], []))
+        self.assertIsNone(strlib.replaceAll(None, ['abc'], ['']))
+        self.assertIsNone(strlib.replaceAll(None, ['abc'], [' ']))
+        self.assertIsNone(strlib.replaceAll(None, ['abc'], ['abc']))
+        self.assertIsNone(strlib.replaceAll(None, ['abc'], ['abc', 'def']))
+
+        # replaceAll(empty, value, value): empty -> empty
+        self.assertEqual('', strlib.replaceAll('', None, []))
+        self.assertEqual('', strlib.replaceAll('', None, ['']))
+        self.assertEqual('', strlib.replaceAll('', None, [' ']))
+        self.assertEqual('', strlib.replaceAll('', None, ['abc']))
+        self.assertEqual('', strlib.replaceAll('', None, ['abc', 'def']))
+
+        self.assertEqual('', strlib.replaceAll('', [], None))
+        self.assertEqual('', strlib.replaceAll('', [], []))
+        self.assertEqual('', strlib.replaceAll('', [], ['']))
+        self.assertEqual('', strlib.replaceAll('', [], [' ']))
+        self.assertEqual('', strlib.replaceAll('', [], ['abc']))
+        self.assertEqual('', strlib.replaceAll('', [], ['abc', 'def']))
+
+        self.assertEqual('', strlib.replaceAll('', ['abc'], None))
+        self.assertEqual('', strlib.replaceAll('', ['abc'], []))
+        self.assertEqual('', strlib.replaceAll('', ['abc'], ['']))
+        self.assertEqual('', strlib.replaceAll('', ['abc'], [' ']))
+        self.assertEqual('', strlib.replaceAll('', ['abc'], ['abc']))
+        self.assertEqual('', strlib.replaceAll('', ['abc'], ['abc', 'def']))
+
+        # replaceAll(value, value, value): empty -> empty
+        self.assertEqual('abc', strlib.replaceAll('abc', None, []))
+        self.assertEqual('abc', strlib.replaceAll('abc', None, ['']))
+        self.assertEqual('abc', strlib.replaceAll('abc', None, [' ']))
+        self.assertEqual('abc', strlib.replaceAll('abc', None, ['abc']))
+        self.assertEqual('abc', strlib.replaceAll('abc', None, ['abc', 'def']))
+
+        self.assertEqual('abc', strlib.replaceAll('abc', [], None))
+        self.assertEqual('abc', strlib.replaceAll('abc', [], []))
+        self.assertEqual('abc', strlib.replaceAll('abc', [], ['']))
+        self.assertEqual('abc', strlib.replaceAll('abc', [], [' ']))
+        self.assertEqual('abc', strlib.replaceAll('abc', [], ['abc']))
+        self.assertEqual('abc', strlib.replaceAll('abc', [], ['abc', 'def']))
+
+        self.assertEqual('abc', strlib.replaceAll('abc', ['abc'], None))
+        self.assertEqual('abc', strlib.replaceAll('abc', ['abc'], []))
+        self.assertEqual('', strlib.replaceAll('abc', ['abc'], ['']))              # remove
+        self.assertEqual(' ', strlib.replaceAll('abc', ['abc'], [' ']))            # blank
+
+        self.assertEqual('abc', strlib.replaceAll('abc', ['abc'], ['abc']))        # nothing
+        self.assertEqual('abc', strlib.replaceAll('abc', ['abc'], ['abc', 'def'])) # nothing
+
+        ##### incorrect parameters ################################
+
+        self.assertIsNone(strlib.replaceAll(None, '', []))
+        self.assertIsNone(strlib.replaceAll(None, '', ['abc']))
+        self.assertIsNone(strlib.replaceAll(None, '', ['abc', 'def']))
+
+        self.assertIsNone(strlib.replaceAll(None, ' ', []))
+        self.assertIsNone(strlib.replaceAll(None, ' ', ['abc']))
+        self.assertIsNone(strlib.replaceAll(None, ' ', ['abc', 'def']))
+
+        self.assertIsNone(strlib.replaceAll(None, 'abc', []))
+        self.assertIsNone(strlib.replaceAll(None, 'abc', ['abc']))
+        self.assertIsNone(strlib.replaceAll(None, 'abc', ['abc', 'def']))
+        self.assertIsNone(strlib.replaceAll(None, 'abc', ['def', 'abc']))
+
+        # replaceAll(empty, value, value): '' -> ''
+        self.assertEqual('', strlib.replaceAll('', None, []))
+        self.assertEqual('', strlib.replaceAll('', None, ['abc']))
+        self.assertEqual('', strlib.replaceAll('', None, ['abc', 'def']))
+
+        self.assertEqual('', strlib.replaceAll('', '', []))
+        self.assertEqual('', strlib.replaceAll('', '', ['abc']))
+        self.assertEqual('', strlib.replaceAll('', '', ['abc', 'def']))
+
+        self.assertEqual('', strlib.replaceAll('', ' ', []))
+        self.assertEqual('', strlib.replaceAll('', ' ', ['abc']))
+        self.assertEqual('', strlib.replaceAll('', ' ', ['abc', 'def']))
+
+        self.assertEqual('', strlib.replaceAll('', 'abc', []))
+        self.assertEqual('', strlib.replaceAll('', 'abc', ['abc']))
+        self.assertEqual('', strlib.replaceAll('', 'abc', ['abc', 'def']))
+        self.assertEqual('', strlib.replaceAll('', 'abc', ['def', 'abc']))
+
+        # replaceAll(value, value, value)
+        self.assertEqual('abc', strlib.replaceAll('abc', None, []))
+        self.assertEqual('abc', strlib.replaceAll('abc', None, ['abc']))
+        self.assertEqual('abc', strlib.replaceAll('abc', None, ['abc', 'def']))
+
+        self.assertEqual('abc', strlib.replaceAll('abc', '', []))
+        self.assertEqual('abc', strlib.replaceAll('abc', '', ['abc']))
+        self.assertEqual('abc', strlib.replaceAll('abc', '', ['abc', 'def']))
+
+        self.assertEqual('abc', strlib.replaceAll('abc', ' ', []))
+        self.assertEqual('abc', strlib.replaceAll('abc', ' ', ['abc']))
+        self.assertEqual('abc', strlib.replaceAll('abc', ' ', ['abc', 'def']))
+
+        self.assertEqual('abc', strlib.replaceAll('abc', 'abc', []))
+        self.assertEqual('abc', strlib.replaceAll('abc', 'abc', ['abc']))
+        self.assertEqual('abc', strlib.replaceAll('abc', 'abc', ['abc', 'def']))
+        self.assertEqual('abc', strlib.replaceAll('abc', 'abc', ['def', 'abc']))
+
+        # str, str
+
+        # False
+        self.assertEqual('abc xyz abc', strlib.replaceAll('abc xyz abc', 'd', ''))
+        self.assertEqual('abc xyz abc', strlib.replaceAll('abc xyz abc', 'd', '1'))
+        self.assertEqual('abc xyz abc', strlib.replaceAll('abc xyz abc', 'def', '123'))
+
+        # True
+        self.assertEqual('bc xyz bc', strlib.replaceAll('abc xyz abc', 'a', ''))         # remove
+        self.assertEqual('1bc xyz 1bc', strlib.replaceAll('abc xyz abc', 'a', '1'))      # replace
+        self.assertEqual('123 xyz 123', strlib.replaceAll('abc xyz abc', 'abc', '123'))  # replace
+
+        # [], []
+
+        # False
+        self.assertEqual('abc xyz abc', strlib.replaceAll('abc xyz abc', [], []))
+        self.assertEqual('abc xyz abc', strlib.replaceAll('abc xyz abc', [], ['def']))                               # size <>: 0,1
+        self.assertEqual('abc xyz abc', strlib.replaceAll('abc xyz abc', ['def'], []))                               # size <>: 1,0
+        self.assertEqual('abc xyz abc', strlib.replaceAll('abc xyz abc', ['def'], ['123']))
+
+        self.assertEqual('abc xyz abc', strlib.replaceAll('abc xyz abc', ['def', 'qwe'], ['123', '456']))
+
+        self.assertEqual('abc xyz abc', strlib.replaceAll('abc xyz abc', ['def'], ['123', '456']))                   # size <>: 1,2
+        self.assertEqual('abc xyz abc', strlib.replaceAll('abc xyz abc', ['def', 'qwe'], ['123']))                   # size <>: 2,1
+
+        # True
+        self.assertEqual('123 xyz 123', strlib.replaceAll('abc xyz abc', ['abc'], ['123']))
+
+        self.assertEqual('123 456 123', strlib.replaceAll('abc xyz abc', ['abc', 'xyz'], ['123', '456']))
+        self.assertEqual('123 456 123 def', strlib.replaceAll('abc xyz abc def', ['abc', 'xyz'], ['123', '456']))
+
+        self.assertEqual('123 xyz 123', strlib.replaceAll('abc xyz abc', ['abc'], ['123', '456']))                   # size <>: 1,2
+        self.assertEqual('123 xyz 123 def', strlib.replaceAll('abc xyz abc def', ['abc', 'xyz'], ['123']))           # size <>: 2,1
         
 if __name__ == '__main__':
     unittest.main()
