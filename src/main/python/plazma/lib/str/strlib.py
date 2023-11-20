@@ -1259,7 +1259,7 @@ def _replaceAll_list(str, values1, values2):
 
         if isEmpty(value1) or value2 is None:
             # ignore None/empty 'value1' or None 'value2'
-            # empty value 'value2' is correct case, we will remove 'value1' from 'str'
+            # empty 'value2' is correct case, we will remove 'value1' from 'str'
             continue
 
         if value1 == value2:
@@ -1269,13 +1269,27 @@ def _replaceAll_list(str, values1, values2):
         result = result.replace(value1, value2)
     return result
 
-def replaceAll(str, s1, s2):
+def _replaceAll_map(str, map):
+    result = str
+    for key, value in map.items():
+        if isEmpty(key) or value is None:
+            # ignore None/empty 'key' or None 'value'
+            # empty 'value' is correct case, we will remove 'key' from 'str'
+            continue
+        result = result.replace(key, value)
+    return result
+
+def replaceAll(str, s1, s2 = None):
     if isEmpty(str):
         return str
     
+    # dict    
+    if s2 is None and isDictType(s1):
+        return _replaceAll_map(str, s1)
+    
     if isEmpty(s1) or s2 is None:
         # ignore None/empty 's1' or None 's2'
-        # empty value 's2' is correct case, we will remove 's1' from 'str'
+        # empty 's2' is correct case, we will remove 's1' from 'str'
         return str
     
     # str, str
