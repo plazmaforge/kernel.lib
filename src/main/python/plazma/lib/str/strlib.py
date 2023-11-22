@@ -4,6 +4,9 @@ SPACE_CHAR = ' '
 ELLIPSIS = '...'
 ELLIPSIS_LEN = 3
 
+DEFAULT_SEPARATORS = ' \t\n\r\f\v'
+DEFAULT_WORD_SEPARATORS = DEFAULT_SEPARATORS + ".,;'(){}[]!?+/=<>*&^%$#@`~|\\"
+
 DEFAULT_CASE_SEPARATOR = '_'
 DEFAULT_CASE_SEPARATORS_ = ' -_'
 DEFAULT_CASE_SEPARATORS_A = ' -_A'
@@ -224,6 +227,40 @@ KEBAB_CONNECTOR = '-' # kebab-case
 # - countLines(str)                                                   - N/A
 #
 
+#################################################################################
+# 6.1
+#  
+# - replaceAll(str, s1, s2)
+# - replaceAll(str, values1, values2)
+# - replaceAll(str, map)
+
+#################################################################################
+# 7.1
+#      
+# - split(str, separator)
+#    
+# - splitBySeparator(str, separator)
+# - splitBySeparator(str, separator, preverseAll)
+#
+# - splitBySeparators(str, separators)
+# - splitBySeparators(str, separators, preserveAll)
+#
+# - splitTrim(str, separator)    
+#
+# - splitTrimBySeparator(str, separator)
+#
+# - splitTrimBySeparators(str, separators)
+#
+# - splitWords(String str)
+# - splitWords(String str, String separator)
+# - splitLines(String str)
+#    
+# - tokenizeBySeparator(str, separator)
+# - tokenizeBySeparator(str, separator, includeAll, preserveAll)
+#
+# - tokenizeBySeparators(str, separators)
+# - tokenizeBySeparators(str, separators, includeAll, preserveAll)
+
 # 1.1
 
 def isEmpty(str):
@@ -355,6 +392,15 @@ def rtrimSpace(str):
 
 def rtrimAll(str):
     return rtrim(str, None)
+
+##
+
+def trimElements(elements):
+    if isEmpty(elements):
+        return
+    
+    for i, element in enumerate(elements):
+        elements[i] = trim(element)
 
 # 1.4
 
@@ -1196,6 +1242,14 @@ def countStrings(str, substr):
     #    count += 1
     #return count
 
+def countWords(str, separators = None):
+    words = splitWords(str, separators) # TODO Optimize it
+    return size(words)
+
+def countLines(str):
+    lines = splitLines(str)             # TODO Optimize it
+    return size(lines)
+
 # 6.1
 
 # ObjLib: start ##########################
@@ -1272,10 +1326,16 @@ def _replaceAll_list(str, values1, values2):
 def _replaceAll_map(str, map):
     result = str
     for key, value in map.items():
+
         if isEmpty(key) or value is None:
             # ignore None/empty 'key' or None 'value'
             # empty 'value' is correct case, we will remove 'key' from 'str'
             continue
+
+        if key == value:
+            # ignore this case because nothing to replace
+            continue
+
         result = result.replace(key, value)
     return result
 
@@ -1301,3 +1361,116 @@ def replaceAll(str, s1, s2 = None):
         return _replaceAll_list(str, s1, s2)
     
     return str
+
+# 7.1
+
+# split
+
+def split(str, separator = None, preverseAll = True):
+    return splitBySeparator(str, separator, preverseAll)
+
+def splitBySeparator(str, separator, preverseAll = True):
+    return tokenizeBySeparator(str, separator, False, preverseAll)
+
+def splitBySeparators(str, separators, preverseAll = True):
+    return tokenizeBySeparators(str, separators, False, preverseAll)
+
+# splitTrim
+
+def splitTrim(str, separator, preverseAll = True):
+    return splitTrimBySeparator(str, separator, preverseAll)
+
+def splitTrimBySeparator(str, separator, preverseAll = True):
+    elements = splitBySeparator(str, separator, preverseAll)
+    trimElements(elements)
+    return elements
+
+def splitTrimBySeparators(str, separators, preverseAll = True):
+    elements = splitBySeparators(str, separators, preverseAll)
+    trimElements(elements)
+    return elements
+
+##
+
+def splitWords(str, separators = None):
+    if separators is None:
+            separators = DEFAULT_WORD_SEPARATORS        
+    return splitBySeparators(str, separators, False)
+
+
+def splitLines(str):
+    if isEmpty(str):
+        return []
+    return str.splitlines()
+
+# tokenize
+
+def _findFirst(mode, str, substr, pos):
+    if mode == 1:
+        # one separator
+        return findFirst(str, substr, pos)
+    else:
+        # many separators
+        return findFirstOf(str, substr, pos)
+
+def _tokenize(mode, str, separator, includeAll = True, preserveAll = False):
+    if isEmpty(str):
+        return []
+    
+    #if isEmpty(separator):
+    #    return [str]
+    
+    # Standard case: one separator (mode = 1)
+    #if mode == 1 and not includeAll and preserveAll:
+    #    if size(separator) == 0:
+    #        return []
+    #    return str.split(separator)
+
+    if separator is None:
+        mode = 2
+        separator = DEFAULT_SEPARATORS
+        preserveAll = False # !!!
+
+    if isEmpty(separator):
+        return [str]
+    
+    start = 0
+    end = 0
+
+    if mode == 1:
+        sep_len = len(separator) # real length of separartor
+    else:
+        sep_len = 1
+
+    result = []
+
+    while True:
+
+        end = _findFirst(mode, str, separator, start)
+        if end == -1:
+            break
+
+        if end - start == 0:
+            if preserveAll and not includeAll:
+                result.append('')
+        else:
+            result.append(str[start: end])         # end - start
+
+        if includeAll:
+            result.append(str[end: end + sep_len]) # sep_len
+
+        start = end + sep_len
+
+    if start == len(str):
+        if preserveAll and not includeAll:
+            result.append('')
+    else:
+        result.append(str[start:])
+
+    return result
+
+def tokenizeBySeparator(str, separator, includeAll = True, preserveAll = False):
+    return _tokenize(1, str, separator, includeAll, preserveAll) # one separator
+
+def tokenizeBySeparators(str, separators, includeAll = True, preserveAll = False):
+    return _tokenize(2, str, separators, includeAll, preserveAll) # many seprators
