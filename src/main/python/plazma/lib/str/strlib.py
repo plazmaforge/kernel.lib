@@ -1421,15 +1421,25 @@ def _tokenize(mode, str, separator, includeAll = True, preserveAll = False):
     #    return [str]
     
     # Standard case: one separator (mode = 1)
-    #if mode == 1 and not includeAll and preserveAll:
-    #    if size(separator) == 0:
-    #        return []
-    #    return str.split(separator)
+    if mode == 1 and not includeAll and preserveAll:
+
+        if separator is None:
+            # Standard case
+            return str.split()
+
+        if len(separator) == 0:
+            # 'split' doesn't support empty separator
+            return [str]
+        
+        return str.split(separator)
 
     if separator is None:
         mode = 2
         separator = DEFAULT_SEPARATORS
-        preserveAll = False # !!!
+
+        # Standard 'split' works with 'preserveAll = False' 
+        # when separator is None 
+        preserveAll = False 
 
     if isEmpty(separator):
         return [str]
