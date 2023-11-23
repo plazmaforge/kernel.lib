@@ -2692,6 +2692,40 @@ class StrlibTest(unittest.TestCase):
 
         self.assertEqual(2, strlib.countWords('Hello world! It is good world!', '!'))     # ['Hello world', ' It is good world']]
 
+    def test_countLines(self):
+
+        # countLines(None)
+        self.assertEqual(0, strlib.countLines(None))
+
+        # countLines(empty)
+        self.assertEqual(0, strlib.countLines(''))
+
+        # countLines(blank)
+        self.assertEqual(1, strlib.countLines(' '))
+
+        # countLines(char)
+        self.assertEqual(1, strlib.countLines('a'))
+
+        # countLines(value)
+        self.assertEqual(1, strlib.countLines('Hello'))
+
+        # split=False
+        self.assertEqual(1, strlib.countLines('Hello world! It is good world!'))
+        self.assertEqual(1, strlib.countLines('Hello world!\tIt is good world!'))
+
+        # split=True
+        self.assertEqual(2, strlib.countLines('Hello world!\nIt is good world!'))    # ['Hello world!', 'It is good world!']: \n    - OK
+        self.assertEqual(2, strlib.countLines('Hello world!\rIt is good world!'))    # ['Hello world!', 'It is good world!']: \r    - OK
+        self.assertEqual(2, strlib.countLines('Hello world!\r\nIt is good world!'))  # ['Hello world!', 'It is good world!']: \r\n  - OK 
+
+        self.assertEqual(2, strlib.countLines('Hello world!\fIt is good world!'))    # ['Hello world!', 'It is good world!']: \f    - OK (???)
+        self.assertEqual(2, strlib.countLines('Hello world!\vIt is good world!'))    # ['Hello world!', 'It is good world!']: \v    - OK (???)
+
+        # IMPORTANT !!!
+        self.assertEqual(3, strlib.countLines('Hello world!\n\rIt is good world!'))  # ['Hello world!', '', 'It is good world!']: \n\r  - OK (!!!)
+        self.assertEqual(3, strlib.countLines('Hello world!\n\nIt is good world!'))  # ['Hello world!', '', 'It is good world!']: \n\n  - OK (!!!)
+        self.assertEqual(3, strlib.countLines('Hello world!\r\rIt is good world!'))  # ['Hello world!', '', 'It is good world!']: \r\r  - OK (!!!)
+
     # 6.1
 
     def test_replaceAll_str(self):
