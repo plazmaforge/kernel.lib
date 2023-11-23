@@ -165,7 +165,7 @@ KEBAB_CONNECTOR = '-' # kebab-case
 # - toSnakeCase(str, separators, upper)
 # - toKebabCase(str, separators, upper)
 #
-#  - reverse(String str)                                               - reverse("abc") = "cba"
+#  - reverse(str)                                                     - reverse("abc") = "cba"
 
 #################################################################################
 #
@@ -222,9 +222,9 @@ KEBAB_CONNECTOR = '-' # kebab-case
 # - countChars(str, ch)
 # - countStrings(str, substr)
 #
-# - countWords(str)                                                   - N/A
-# - countWords(str, separators)                                       - N/A
-# - countLines(str)                                                   - N/A
+# - countWords(str)
+# - countWords(str, separators)
+# - countLines(str)
 #
 
 #################################################################################
@@ -236,7 +236,8 @@ KEBAB_CONNECTOR = '-' # kebab-case
 
 #################################################################################
 # 7.1
-#      
+#
+# - split(str)
 # - split(str, separator)
 #    
 # - splitBySeparator(str, separator)
@@ -245,15 +246,16 @@ KEBAB_CONNECTOR = '-' # kebab-case
 # - splitBySeparators(str, separators)
 # - splitBySeparators(str, separators, preserveAll)
 #
-# - splitTrim(str, separator)    
+# - splitTrim(str)
+# - splitTrim(str, separator)
 #
 # - splitTrimBySeparator(str, separator)
 #
 # - splitTrimBySeparators(str, separators)
 #
-# - splitWords(String str)
-# - splitWords(String str, String separator)
-# - splitLines(String str)
+# - splitWords(str)
+# - splitWords(str, separator)
+# - splitLines(str)
 #    
 # - tokenizeBySeparator(str, separator)
 # - tokenizeBySeparator(str, separator, includeAll, preserveAll)
@@ -1377,7 +1379,7 @@ def splitBySeparators(str, separators, preverseAll = True):
 
 # splitTrim
 
-def splitTrim(str, separator, preverseAll = True):
+def splitTrim(str, separator = None, preverseAll = True):
     return splitTrimBySeparator(str, separator, preverseAll)
 
 def splitTrimBySeparator(str, separator, preverseAll = True):
