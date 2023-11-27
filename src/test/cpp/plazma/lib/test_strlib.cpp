@@ -1,11 +1,11 @@
-//#ifndef PLAZMA_LIB_TEST_STRLIB_H
-//#define PLAZMA_LIB_TEST_STRLIB_H
 
 #include <string>
 #include <iostream>
 
 #include "plazma/lib/str/strlib.h" 
 #include "test.h"
+
+typedef std::vector<std::string> VS;
 
 // 1.1
 
@@ -2053,6 +2053,41 @@ TEST(splitWords) {
 
 }
 
+TEST(splitLines) {
+
+  // splitLines(empty)
+  ASSERT_TRUE(((VS) {} ==strlib::splitLines("")));
+
+  // splitLines(blank)
+  ASSERT_TRUE(((VS) {" "} ==strlib::splitLines(" ")));
+
+  // splitLines(value)
+  ASSERT_TRUE(((VS) {"Hello"} == strlib::splitLines("Hello")));
+
+  // split=False
+  ASSERT_TRUE(( (VS) {"Hello world! It is good world!"} == strlib::splitLines("Hello world! It is good world!")));
+  ASSERT_TRUE(((VS) {"Hello world!\tIt is good world!"} == strlib::splitLines("Hello world!\tIt is good world!")));
+
+  // split=True
+  ASSERT_TRUE(((VS) {"Hello world!", "It is good world!"} == strlib::splitLines("Hello world!\rIt is good world!")));
+  ASSERT_TRUE(((VS) {"Hello world!", "It is good world!"} == strlib::splitLines("Hello world!\nIt is good world!")));
+  ASSERT_TRUE(((VS) {"Hello world!", "It is good world!"} == strlib::splitLines("Hello world!\r\nIt is good world!")));
+
+  ////
+
+  ASSERT_TRUE(((VS) {"Hello world!", "It is good world!"} == strlib::splitLines("Hello world!\fIt is good world!")));
+  ASSERT_TRUE(((VS) {"Hello world!", "It is good world!"} == strlib::splitLines("Hello world!\vIt is good world!")));
+
+  // IMPORTANT !!!
+  ASSERT_TRUE(((VS) {"Hello world!", "", "It is good world!"} == strlib::splitLines("Hello world!\n\rIt is good world!")));
+  ASSERT_TRUE(((VS) {"Hello world!", "", "It is good world!"} == strlib::splitLines("Hello world!\n\nIt is good world!")));
+  ASSERT_TRUE(((VS) {"Hello world!", "", "It is good world!"} == strlib::splitLines("Hello world!\r\rIt is good world!")));
+
+  ASSERT_TRUE(((VS) {"Hello world!", "", "It is good world!"} == strlib::splitLines("Hello world!\n\r\nIt is good world!")));
+  ASSERT_TRUE(((VS) {"Hello world!", "", "", "It is good world!"} == strlib::splitLines("Hello world!\n\n\rIt is good world!")));
+
+}
+
 // 8.1
 
 TEST(toString) {
@@ -2177,6 +2212,8 @@ INIT(strlib) {
   SET_TEST(splitBySeparator);
   SET_TEST(splitBySeparators);
   SET_TEST(splitWords);
+  SET_TEST(splitLines);
+
   SET_TEST(toString);
   SET_TEST(isIdentifier);
 
@@ -2208,5 +2245,3 @@ TEST_ALL(strlib) {
     
  }
  */
-
-//#endif // PLAZMA_LIB_TEST_STRLIB_H

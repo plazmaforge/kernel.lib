@@ -6,6 +6,9 @@
 #include <vector>
 #include <cmath>
 
+#include <regex>
+#include <iterator>
+
 #include "strlib.h"
 
 // Functions
@@ -2100,11 +2103,42 @@ namespace strlib {
         return result;
     }
 
+    // splitRegex
+
+    // https://stackoverflow.com/questions/13172158/c-split-string-by-line#comment56336259_13172514
+    //
+    // splitRegex(content, R"(\r\n|\r|\n)");
+    //
+
+    std::vector<std::string> splitRegex(const std::string& str, const std::string in_pattern) {
+        std::vector<std::string> result;
+        if (isEmpty(str) || isEmpty(in_pattern)) {
+            return result;
+        }
+    
+        std::regex pattern(in_pattern);
+        std::copy( std::sregex_token_iterator(str.begin(), str.end(), pattern, -1), std::sregex_token_iterator(), std::back_inserter(result));
+        return result;
+    }
+
     // splitLines
 
+    // https://en.wikipedia.org/wiki/Newline
+
+    std::vector<std::string> splitLines1(const std::string& str) {
+        return splitRegex(str, R"(\r\n|\r|\n)");
+    }
+
+    std::vector<std::string> splitLines2(const std::string& str) {
+        return splitRegex(str, R"(\r\n|\r|\n|\f|\v)");
+    }
+
     std::vector<std::string> splitLines(const std::string& str) {
-        std::vector<std::string> result = splitBySeparators(str, "\r\n", false); // no preserve
-        return result;
+
+        //std::vector<std::string> result = splitBySeparators(str, "\r\n", false); // no preserve
+        //return result;
+
+        return splitLines2(str);
     }
 
     // tokenizeBySeparator

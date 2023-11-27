@@ -93,7 +93,7 @@ class StrlibTest(unittest.TestCase):
         
     # 1.2
 
-    def test_normilize(self):
+    def test_normalize(self):
 
         # normalize(None), normalize(empty)
         self.assertIsNone(strlib.normalize(None))
@@ -115,7 +115,7 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('abc', strlib.normalize('abc\t\n\r\f\v '))
         self.assertEqual('abc', strlib.normalize(' \t\n\r\f\vabc\t\n\r\f\v '))
 
-    def test_normilizeSafe(self):
+    def test_normalizeSafe(self):
 
         # normalizeSafe(None), normalizeSafe(empty)
         self.assertEqual('', strlib.normalizeSafe(None))
@@ -137,7 +137,7 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('abc', strlib.normalizeSafe('abc\t\n\r\f\v '))
         self.assertEqual('abc', strlib.normalizeSafe(' \t\n\r\f\vabc\t\n\r\f\v '))
 
-    def test_normilizeBlank(self):
+    def test_normalizeBlank(self):
 
         # False, False
         # normalizeBlank(None, False, False), normalizeBlank(empty, False, False)
@@ -2558,7 +2558,6 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(1, strlib.countChars('a', 'a'))    # OK
         self.assertEqual(0, strlib.countChars('a', 'abc'))  # not char - string
 
-
         # countChars(value, value)
         self.assertEqual(0, strlib.countChars('abcabcc', None))
         self.assertEqual(0, strlib.countChars('abcabcc', ''))
@@ -2614,7 +2613,7 @@ class StrlibTest(unittest.TestCase):
 
     def test_countWords(self):
 
-        # seprators=default
+        # separators=default
 
         # countWords(None)
         self.assertEqual(0, strlib.countWords(None))
@@ -2631,7 +2630,7 @@ class StrlibTest(unittest.TestCase):
         # countWords(value)
         self.assertEqual(1, strlib.countWords('Hello'))
 
-        # seprators=value
+        # separators=value
 
         # countWords(None, value)
         self.assertEqual(0, strlib.countWords(None, None))
@@ -2689,7 +2688,6 @@ class StrlibTest(unittest.TestCase):
 
         self.assertEqual(6, strlib.countWords('Hello world! It is good world!'))          # ['Hello', 'world', 'It', 'is', 'good', 'world']
         self.assertEqual(6, strlib.countWords('Hello world! It is good world!', ' !?.'))  # ['Hello', 'world', 'It', 'is', 'good', 'world']
-
         self.assertEqual(2, strlib.countWords('Hello world! It is good world!', '!'))     # ['Hello world', ' It is good world']]
 
     def test_countLines(self):
@@ -2714,17 +2712,20 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(1, strlib.countLines('Hello world!\tIt is good world!'))
 
         # split=True
-        self.assertEqual(2, strlib.countLines('Hello world!\nIt is good world!'))    # ['Hello world!', 'It is good world!']: \n    - OK
-        self.assertEqual(2, strlib.countLines('Hello world!\rIt is good world!'))    # ['Hello world!', 'It is good world!']: \r    - OK
-        self.assertEqual(2, strlib.countLines('Hello world!\r\nIt is good world!'))  # ['Hello world!', 'It is good world!']: \r\n  - OK 
+        self.assertEqual(2, strlib.countLines('Hello world!\rIt is good world!'))     # ['Hello world!', 'It is good world!']: \r    - OK
+        self.assertEqual(2, strlib.countLines('Hello world!\nIt is good world!'))     # ['Hello world!', 'It is good world!']: \n    - OK
+        self.assertEqual(2, strlib.countLines('Hello world!\r\nIt is good world!'))   # ['Hello world!', 'It is good world!']: \r\n  - OK 
 
-        self.assertEqual(2, strlib.countLines('Hello world!\fIt is good world!'))    # ['Hello world!', 'It is good world!']: \f    - OK (???)
-        self.assertEqual(2, strlib.countLines('Hello world!\vIt is good world!'))    # ['Hello world!', 'It is good world!']: \v    - OK (???)
+        self.assertEqual(2, strlib.countLines('Hello world!\fIt is good world!'))     # ['Hello world!', 'It is good world!']: \f    - OK (???)
+        self.assertEqual(2, strlib.countLines('Hello world!\vIt is good world!'))     # ['Hello world!', 'It is good world!']: \v    - OK (???)
 
         # IMPORTANT !!!
-        self.assertEqual(3, strlib.countLines('Hello world!\n\rIt is good world!'))  # ['Hello world!', '', 'It is good world!']: \n\r  - OK (!!!)
-        self.assertEqual(3, strlib.countLines('Hello world!\n\nIt is good world!'))  # ['Hello world!', '', 'It is good world!']: \n\n  - OK (!!!)
-        self.assertEqual(3, strlib.countLines('Hello world!\r\rIt is good world!'))  # ['Hello world!', '', 'It is good world!']: \r\r  - OK (!!!)
+        self.assertEqual(3, strlib.countLines('Hello world!\n\rIt is good world!'))   # ['Hello world!', '', 'It is good world!']: \n\r  - OK
+        self.assertEqual(3, strlib.countLines('Hello world!\n\nIt is good world!'))   # ['Hello world!', '', 'It is good world!']: \n\n  - OK
+        self.assertEqual(3, strlib.countLines('Hello world!\r\rIt is good world!'))   # ['Hello world!', '', 'It is good world!']: \r\r  - OK
+
+        self.assertEqual(3, strlib.countLines('Hello world!\n\r\nIt is good world!')) # ['Hello world!', '', 'It is good world!']: \n\r\n - OK
+        self.assertEqual(4, strlib.countLines('Hello world!\n\n\rIt is good world!')) # ['Hello world!', '', '', 'It is good world!']: \n\n\r - OK
 
     # 6.1
 
@@ -3056,15 +3057,17 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(['abc', 'def', 'xyz'], strlib.split('abc\f def\v \txyz'))
 
         # separator=value
-        self.assertEqual(['abc', 'def', 'xyz'], strlib.split('abc,def,xyz', ','))                            # preserveAll = True by default
-        self.assertEqual(['abc', ' def', ' xyz'], strlib.split('abc, def, xyz', ','))                        # preserveAll = True by default
+        self.assertEqual(['abc', 'def', 'xyz'], strlib.split('abc,def,xyz', ','))                             # preserveAll = True by default
+        self.assertEqual(['abc', ' def', ' xyz'], strlib.split('abc, def, xyz', ','))                         # preserveAll = True by default
+        self.assertEqual(['abc', 'def', 'xyz'], strlib.split('abc, def, xyz', ', '))                          # preserveAll = True by default
 
-        self.assertEqual(['', 'abc', 'def', '', 'xyz', ''], strlib.split(',abc,def,,xyz,', ',', True))       # preserveAll = True
-        self.assertEqual(['', 'abc', ' def', '', ' xyz', ''], strlib.split(',abc, def,, xyz,', ',', True))   # preserveAll = True
+        self.assertEqual(['', 'abc', 'def', '', 'xyz', ''], strlib.split(',abc,def,,xyz,', ',', True))        # preserveAll = True
+        self.assertEqual(['', 'abc', ' def', '', ' xyz', ''], strlib.split(',abc, def,, xyz,', ',', True))    # preserveAll = True
+        self.assertEqual(['', 'abc', 'def', '', 'xyz', ''], strlib.split(', abc, def, , xyz, ', ', ', True))  # preserveAll = True
 
-        self.assertEqual(['abc', 'def', 'xyz'], strlib.split('abc,def,,xyz', ',', False))                    # preserveAll = False
-        self.assertEqual(['abc', ' def', ' xyz'], strlib.split('abc, def,, xyz', ',', False))                # preserveAll = False
-
+        self.assertEqual(['abc', 'def', 'xyz'], strlib.split(',abc,def,,xyz,', ',', False))                   # preserveAll = False
+        self.assertEqual(['abc', ' def', ' xyz'], strlib.split(',abc, def,, xyz,', ',', False))               # preserveAll = False
+        self.assertEqual(['abc', 'def', 'xyz'], strlib.split(', abc, def, , xyz, ', ', ', False))             # preserveAll = False
 
     def test_splitBySeparator(self):
 
@@ -3092,14 +3095,17 @@ class StrlibTest(unittest.TestCase):
 
         # True
         # separator=value
-        self.assertEqual(['abc', 'def', 'xyz'], strlib.splitBySeparator('abc,def,xyz', ','))                            # preserveAll = True by default
-        self.assertEqual(['abc', ' def', ' xyz'], strlib.splitBySeparator('abc, def, xyz', ','))                        # preserveAll = True by default
+        self.assertEqual(['abc', 'def', 'xyz'], strlib.splitBySeparator('abc,def,xyz', ','))                             # preserveAll = True by default
+        self.assertEqual(['abc', ' def', ' xyz'], strlib.splitBySeparator('abc, def, xyz', ','))                         # preserveAll = True by default
+        self.assertEqual(['abc', 'def', 'xyz'], strlib.splitBySeparator('abc, def, xyz', ', '))                          # preserveAll = True by default
 
-        self.assertEqual(['', 'abc', 'def', '', 'xyz', ''], strlib.splitBySeparator(',abc,def,,xyz,', ',', True))       # preserveAll = True
-        self.assertEqual(['', 'abc', ' def', '', ' xyz', ''], strlib.splitBySeparator(',abc, def,, xyz,', ',', True))   # preserveAll = True
+        self.assertEqual(['', 'abc', 'def', '', 'xyz', ''], strlib.splitBySeparator(',abc,def,,xyz,', ',', True))        # preserveAll = True
+        self.assertEqual(['', 'abc', ' def', '', ' xyz', ''], strlib.splitBySeparator(',abc, def,, xyz,', ',', True))    # preserveAll = True
+        self.assertEqual(['', 'abc', 'def', '', 'xyz', ''], strlib.splitBySeparator(', abc, def, , xyz, ', ', ', True))  # preserveAll = True
 
-        self.assertEqual(['abc', 'def', 'xyz'], strlib.splitBySeparator(',abc,def,,xyz,', ',', False))                  # preserveAll = False
-        self.assertEqual(['abc', ' def', ' xyz'], strlib.splitBySeparator(',abc, def,, xyz,', ',', False))              # preserveAll = False
+        self.assertEqual(['abc', 'def', 'xyz'], strlib.splitBySeparator(',abc,def,,xyz,', ',', False))                   # preserveAll = False
+        self.assertEqual(['abc', ' def', ' xyz'], strlib.splitBySeparator(',abc, def,, xyz,', ',', False))               # preserveAll = False
+        self.assertEqual(['abc', 'def', 'xyz'], strlib.splitBySeparator(', abc, def, , xyz, ', ', ', False))             # preserveAll = False
 
     def test_splitBySeparators(self):
 
@@ -3158,7 +3164,7 @@ class StrlibTest(unittest.TestCase):
 
     def test_splitWords(self):
 
-        # separator=default
+        # separators=default
 
         # splitWords(None)
         self.assertEqual([], strlib.splitWords(None))
@@ -3173,7 +3179,7 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(['Hello'], strlib.splitWords('Hello'))
 
 
-        # separator=value
+        # separators=value
 
         # splitWords(None, value)
         self.assertEqual([], strlib.splitWords(None, None))
@@ -3213,7 +3219,6 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(['Hello', 'world', 'It', 'is', 'good', 'world'], strlib.splitWords('Hello world! It is good world!'))
         self.assertEqual(['Hello', 'world', 'It', 'is', 'good', 'world'], strlib.splitWords('Hello world! It is good world!', ' !'))
         self.assertEqual(['Hello', 'world', 'It', 'is', 'good', 'world'], strlib.splitWords('Hello world! It is good world!', ' !?.'))
-
         self.assertEqual(['Hello world', ' It is good world'], strlib.splitWords('Hello world! It is good world!', '!'))
 
     def test_splitLines(self):
@@ -3235,19 +3240,22 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(['Hello world!\tIt is good world!'], strlib.splitLines('Hello world!\tIt is good world!'))
 
         # split=True
-        self.assertEqual(['Hello world!', 'It is good world!'], strlib.splitLines('Hello world!\nIt is good world!'))        # \n    - OK
         self.assertEqual(['Hello world!', 'It is good world!'], strlib.splitLines('Hello world!\rIt is good world!'))        # \r    - OK
+        self.assertEqual(['Hello world!', 'It is good world!'], strlib.splitLines('Hello world!\nIt is good world!'))        # \n    - OK
         self.assertEqual(['Hello world!', 'It is good world!'], strlib.splitLines('Hello world!\r\nIt is good world!'))      # \r\n  - OK 
 
         self.assertEqual(['Hello world!', 'It is good world!'], strlib.splitLines('Hello world!\fIt is good world!'))        # \f    - OK (???)
         self.assertEqual(['Hello world!', 'It is good world!'], strlib.splitLines('Hello world!\vIt is good world!'))        # \v    - OK (???)
 
         # IMPORTANT !!!
-        self.assertEqual(['Hello world!', '', 'It is good world!'], strlib.splitLines('Hello world!\n\rIt is good world!'))  # \n\r  - OK (!!!)
-        self.assertEqual(['Hello world!', '', 'It is good world!'], strlib.splitLines('Hello world!\n\nIt is good world!'))  # \n\n  - OK (!!!)
-        self.assertEqual(['Hello world!', '', 'It is good world!'], strlib.splitLines('Hello world!\r\rIt is good world!'))  # \r\r  - OK (!!!)
+        self.assertEqual(['Hello world!', '', 'It is good world!'], strlib.splitLines('Hello world!\n\rIt is good world!'))  # \n\r  - OK
+        self.assertEqual(['Hello world!', '', 'It is good world!'], strlib.splitLines('Hello world!\n\nIt is good world!'))  # \n\n  - OK
+        self.assertEqual(['Hello world!', '', 'It is good world!'], strlib.splitLines('Hello world!\r\rIt is good world!'))  # \r\r  - OK
 
-    ##
+        self.assertEqual(['Hello world!', '', 'It is good world!'], strlib.splitLines('Hello world!\n\r\nIt is good world!')) # \n\r\n - OK
+        self.assertEqual(['Hello world!', '', '', 'It is good world!'], strlib.splitLines('Hello world!\n\n\rIt is good world!')) # \n\n\r - OK
+
+    ####
 
     def test_tokenizeBySeparator_default(self):
 
@@ -3264,7 +3272,7 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual([], strlib.tokenizeBySeparator('', ','))
 
         # tokenizeBySeparator(value, value)
-        self.assertEqual([' '], strlib.tokenizeBySeparator(' ', None))   # split by default. ' ' - default separartor, include by default
+        self.assertEqual([' '], strlib.tokenizeBySeparator(' ', None))   # split by default. ' ' - default separator, include by default
         self.assertEqual([' '], strlib.tokenizeBySeparator(' ', ''))
         self.assertEqual([' '], strlib.tokenizeBySeparator(' ', ' '))
         self.assertEqual([' '], strlib.tokenizeBySeparator(' ', ','))
@@ -3283,8 +3291,49 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(['abc', ',', 'def', ',', 'xyz'], strlib.tokenizeBySeparator('abc,def,xyz', ','))
         self.assertEqual(['abc', ',', ' def', ',', ' xyz'], strlib.tokenizeBySeparator('abc, def, xyz', ','))
 
+    # base=tokenizeBySeparator_true_false
+    # includeAll=True, preserveAll=True
+    def test_tokenizeBySeparator_true_true(self):
 
-    def test_tokenizeBySeparator_include_true(self):
+        # tokenizeBySeparator(None, value, True, True)
+        self.assertEqual([], strlib.tokenizeBySeparator(None, None, True, True))
+        self.assertEqual([], strlib.tokenizeBySeparator(None, '', True, True))
+        self.assertEqual([], strlib.tokenizeBySeparator(None, ' ', True, True))
+        self.assertEqual([], strlib.tokenizeBySeparator(None, ',', True, True))
+
+        # tokenizeBySeparator(empty, value, True, True)
+        self.assertEqual([], strlib.tokenizeBySeparator('', None, True, True))
+        self.assertEqual([], strlib.tokenizeBySeparator('', '', True, True))
+        self.assertEqual([], strlib.tokenizeBySeparator('', ' ', True, True))
+        self.assertEqual([], strlib.tokenizeBySeparator('', ',', True, True))
+
+        # tokenizeBySeparator(value, value, True, True)
+        self.assertEqual([' '], strlib.tokenizeBySeparator(' ', None, True, True))    # split by default. ' ' - default separator
+        self.assertEqual([' '], strlib.tokenizeBySeparator(' ', '', True, True))
+        self.assertEqual([' '], strlib.tokenizeBySeparator(' ', ' ', True, True))
+        self.assertEqual([' '], strlib.tokenizeBySeparator(' ', ',', True, True))
+
+        # tokenizeBySeparator(value, value, True, True)
+        self.assertEqual(['a'], strlib.tokenizeBySeparator('a', None, True, True))
+        self.assertEqual(['a'], strlib.tokenizeBySeparator('a', '', True, True))
+        self.assertEqual(['a'], strlib.tokenizeBySeparator('a', ' ', True, True))
+        self.assertEqual(['a'], strlib.tokenizeBySeparator('a', ',', True, True))
+
+        # False
+        self.assertEqual(['abc'], strlib.tokenizeBySeparator('abc', ',', True, True))
+        self.assertEqual(['abc:def'], strlib.tokenizeBySeparator('abc:def', ',', True, True))
+
+        # True
+        self.assertEqual(['abc', ',', 'def', ',', 'xyz'], strlib.tokenizeBySeparator('abc,def,xyz', ',', True, True))
+        self.assertEqual([',', 'abc', ',', 'def', ',', 'xyz'], strlib.tokenizeBySeparator(',abc,def,xyz', ',', True, True))
+        self.assertEqual([',', 'abc', ',', 'def', ',', 'xyz', ','], strlib.tokenizeBySeparator(',abc,def,xyz,', ',', True, True))
+
+        self.assertEqual(['abc', ',', ' def', ',', ' xyz'], strlib.tokenizeBySeparator('abc, def, xyz', ',', True, True))
+        self.assertEqual([',', ' abc', ',', ' def', ',', ' xyz'], strlib.tokenizeBySeparator(', abc, def, xyz', ',', True, True))
+        self.assertEqual([',', ' abc', ',', ' def', ',', ' xyz', ','], strlib.tokenizeBySeparator(', abc, def, xyz,', ',', True, True))
+
+    # includeAll=True, preserveAll=False
+    def test_tokenizeBySeparator_true_false(self):
 
         # tokenizeBySeparator(None, value, True, False)
         self.assertEqual([], strlib.tokenizeBySeparator(None, None, True, False))
@@ -3299,7 +3348,7 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual([], strlib.tokenizeBySeparator('', ',', True, False))
 
         # tokenizeBySeparator(value, value, True, False)
-        self.assertEqual([' '], strlib.tokenizeBySeparator(' ', None, True, False))    # split by default. ' ' - default separartor
+        self.assertEqual([' '], strlib.tokenizeBySeparator(' ', None, True, False))    # split by default. ' ' - default separator
         self.assertEqual([' '], strlib.tokenizeBySeparator(' ', '', True, False))
         self.assertEqual([' '], strlib.tokenizeBySeparator(' ', ' ', True, False))
         self.assertEqual([' '], strlib.tokenizeBySeparator(' ', ',', True, False))
@@ -3323,7 +3372,8 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual([',', ' abc', ',', ' def', ',', ' xyz'], strlib.tokenizeBySeparator(', abc, def, xyz', ',', True, False))
         self.assertEqual([',', ' abc', ',', ' def', ',', ' xyz', ','], strlib.tokenizeBySeparator(', abc, def, xyz,', ',', True, False))
 
-    def test_tokenizeBySeparator_include_false(self):
+    # includeAll=False, preserveAll=False
+    def test_tokenizeBySeparator_false_false(self):
 
         # tokenizeBySeparator(None, value, False, False)
         self.assertEqual([], strlib.tokenizeBySeparator(None, None, False, False))
@@ -3338,7 +3388,7 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual([], strlib.tokenizeBySeparator('', ',', False, False))
 
         # tokenizeBySeparator(value, value, False, False)
-        self.assertEqual([], strlib.tokenizeBySeparator(' ', None, False, False))  # split by default. ' ' - default separartor, not include
+        self.assertEqual([], strlib.tokenizeBySeparator(' ', None, False, False))    # split by default. ' ' - default separator, not include
         self.assertEqual([' '], strlib.tokenizeBySeparator(' ', '', False, False))
         self.assertEqual([], strlib.tokenizeBySeparator(' ', ' ', False, False))     # not include separator ' '
         self.assertEqual([' '], strlib.tokenizeBySeparator(' ', ',', False, False))
@@ -3362,35 +3412,36 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual([' abc', ' def', ' xyz'], strlib.tokenizeBySeparator(', abc, def, xyz', ',', False, False))   # not include separator ','
         self.assertEqual([' abc', ' def', ' xyz'], strlib.tokenizeBySeparator(', abc, def, xyz,', ',', False, False))  # not include separator ','
 
-    def test_tokenizeBySeparator_preserve(self):
+    # includeAll=False, preserveAll=True
+    def test_tokenizeBySeparator_false_true(self):
 
-        # tokenizeBySeparator(None, value, False, False)
-        self.assertEqual([], strlib.tokenizeBySeparator(None, None, False, False))
-        self.assertEqual([], strlib.tokenizeBySeparator(None, '', False, False))
-        self.assertEqual([], strlib.tokenizeBySeparator(None, ' ', False, False))
-        self.assertEqual([], strlib.tokenizeBySeparator(None, ',', False, False))
+        # tokenizeBySeparator(None, value, False, True)
+        self.assertEqual([], strlib.tokenizeBySeparator(None, None, False, True))
+        self.assertEqual([], strlib.tokenizeBySeparator(None, '', False, True))
+        self.assertEqual([], strlib.tokenizeBySeparator(None, ' ', False, True))
+        self.assertEqual([], strlib.tokenizeBySeparator(None, ',', False, True))
 
-        # tokenizeBySeparator(empty, value, False, False)
-        self.assertEqual([], strlib.tokenizeBySeparator('', None, False, False))
-        self.assertEqual([], strlib.tokenizeBySeparator('', '', False, False))
-        self.assertEqual([], strlib.tokenizeBySeparator('', ' ', False, False))
-        self.assertEqual([], strlib.tokenizeBySeparator('', ',', False, False))
+        # tokenizeBySeparator(empty, value, False, True)
+        self.assertEqual([], strlib.tokenizeBySeparator('', None, False, True))
+        self.assertEqual([], strlib.tokenizeBySeparator('', '', False, True))
+        self.assertEqual([], strlib.tokenizeBySeparator('', ' ', False, True))
+        self.assertEqual([], strlib.tokenizeBySeparator('', ',', False, True))
 
-        # tokenizeBySeparator(value, value, False, False)
-        self.assertEqual([], strlib.tokenizeBySeparator(' ', None, False, False))  # split by default. ' ' - default separartor, not include
-        self.assertEqual([' '], strlib.tokenizeBySeparator(' ', '', False, False))
-        self.assertEqual([], strlib.tokenizeBySeparator(' ', ' ', False, False))     # not include separator ' '
-        self.assertEqual([' '], strlib.tokenizeBySeparator(' ', ',', False, False))
+        # tokenizeBySeparator(value, value, False, True)
+        self.assertEqual([], strlib.tokenizeBySeparator(' ', None, False, True))      # split by default. ' ' - default separator, not include
+        self.assertEqual([' '], strlib.tokenizeBySeparator(' ', '', False, True))
+        self.assertEqual(['', ''], strlib.tokenizeBySeparator(' ', ' ', False, True)) # not include separator ' ', but preserveAll = True (???)
+        self.assertEqual([' '], strlib.tokenizeBySeparator(' ', ',', False, True))
 
-        # tokenizeBySeparator(value, value, False, False)
-        self.assertEqual(['a'], strlib.tokenizeBySeparator('a', None, False, False))
-        self.assertEqual(['a'], strlib.tokenizeBySeparator('a', '', False, False))
-        self.assertEqual(['a'], strlib.tokenizeBySeparator('a', ' ', False, False))
-        self.assertEqual(['a'], strlib.tokenizeBySeparator('a', ',', False, False))
+        # tokenizeBySeparator(value, value, False, True)
+        self.assertEqual(['a'], strlib.tokenizeBySeparator('a', None, False, True))
+        self.assertEqual(['a'], strlib.tokenizeBySeparator('a', '', False, True))
+        self.assertEqual(['a'], strlib.tokenizeBySeparator('a', ' ', False, True))
+        self.assertEqual(['a'], strlib.tokenizeBySeparator('a', ',', False, True))
 
         # False
-        self.assertEqual(['abc'], strlib.tokenizeBySeparator('abc', ',', False, False))
-        self.assertEqual(['abc:def'], strlib.tokenizeBySeparator('abc:def', ',', False, False))
+        self.assertEqual(['abc'], strlib.tokenizeBySeparator('abc', ',', False, True))
+        self.assertEqual(['abc:def'], strlib.tokenizeBySeparator('abc:def', ',', False, True))
 
         # True
         self.assertEqual(['abc', 'def', 'xyz'], strlib.tokenizeBySeparator('abc,def,xyz', ',', False, True))                 # not include separator ','

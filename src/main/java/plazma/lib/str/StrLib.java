@@ -247,7 +247,7 @@ public class StrLib {
     // 6.1
     //  
     // - replaceAll(String str, String s1, String s2)
-    // - replaceAll(String str, String[] oldValues, String[] newValues)
+    // - replaceAll(String str, String[] values1, String[] values2)
     
     /////////////////////////////////////////////////////////////////////////////////
     // 7.1
@@ -2456,7 +2456,7 @@ public class StrLib {
         }
         if (isEmpty(s1) || s2 == null) {
             // ignore null/empty 's1' or null 's2'
-            // empty value 's2' is correct case, we will remove 's1' from 'str'            
+            // empty 's2' is correct case, we will remove 's1' from 'str'            
             return str;
         }
         if (s1 == s2) {
@@ -2485,38 +2485,38 @@ public class StrLib {
 
     // See ArrayLib.replaceAll
     // Non RegExp
-    public static String replaceAll(String str, String[] oldValues, String[] newValues) {
-        if (oldValues == null) {
+    public static String replaceAll(String str, String[] values1, String[] values2) {
+        if (values1 == null) {
             return str;
 
         }
-        if (newValues == null) {
+        if (values2 == null) {
             return str;
         }
-        int size = Math.min(oldValues.length, newValues.length);
+        int size = Math.min(values1.length, values2.length);
         if (size == 0) {
             return str;
         }
-        String oldValue = null;
-        String newValue = null;
+        String value1 = null;
+        String value2 = null;
         String result = str;
         for (int i = 0; i < size; i++) {
-            oldValue = oldValues[i];
-            newValue = newValues[i];
+            value1 = values1[i];
+            value2 = values2[i];
             
-            if (isEmpty(oldValue) || newValue == null) {
+            if (isEmpty(value1) || value2 == null) {
                 // ignore null/empty 'value1' or null 'value2'
-                // empty value 'value2' is correct case, we will remove 'value1' from 'str'
+                // empty 'value2' is correct case, we will remove 'value1' from 'str'
                 continue;
                 
             }
             
-            if (oldValue == newValue || oldValue.equals(newValue)) {
+            if (value1 == value2 || value1.equals(value2)) {
                 // ignore this case because nothing to replace
                 continue;                
             }
             
-            result = replaceAll(str, oldValue, newValue); // TODO: maybe optimization
+            result = replaceAll(str, value1, value2); // TODO: maybe optimization
         }
         return result;
     }
@@ -2527,8 +2527,20 @@ public class StrLib {
         return splitBySeparator(str, separator);
     } 
 
+    public static String[] split(String str, char separator, boolean preverseAll) {
+        return splitBySeparator(str, separator, preverseAll);
+    } 
+
+    public static String[] split(String str) {
+        return splitBySeparator(str, null);
+    } 
+
     public static String[] split(String str, String separator) {
         return splitBySeparator(str, separator);
+    } 
+
+    public static String[] split(String str, String separator, boolean preverseAll) {
+        return splitBySeparator(str, separator, preverseAll);
     } 
 
     ////
@@ -2645,12 +2657,43 @@ public class StrLib {
         }
         return splitBySeparators(str, separators, false);
     }
+    
+    ////
+    
+    public static String[] splitRegex(String str, String pattern) {
+        if (isEmpty(str) || isEmpty(pattern)) {
+            return EMPTY_STRING_ARRAY;
+        }
+        return str.split(pattern);
+    }
+    
+    ////
+    
+    // https://en.wikipedia.org/wiki/Newline
 
-    public static String[] splitLines(String str) {
+    public static String[] splitLines1(String str) {
         if (isEmpty(str)) {
             return EMPTY_STRING_ARRAY;
         }
-        return str.split("[\\r]?\\n");
+        
+        return splitRegex(str, "\\r\\n|\\r|\\n"); // \r\n|\r|\n
+    }
+    
+    public static String[] splitLines2(String str) {
+        if (isEmpty(str)) {
+            return EMPTY_STRING_ARRAY;
+        }
+                
+        return splitRegex(str, "\\r\\n|\\r|\\n|\\f|\\u000B"); // \r\n|\r|\n|\f|\v
+    }
+
+    public static String[] splitLines(String str) {
+                
+        //return str.split("[\\r]?\\n");
+        //return str.split("[\\r\\n]|[\\r]|[\\n]");
+        //return str.split("\\r\\n|\\r|\\n");
+
+        return splitLines2(str);
     }
     
     ////
@@ -2695,6 +2738,81 @@ public class StrLib {
         return list.toArray(new String[0]);
     }
     */
+    
+    ////
+    
+    private static int _findFirst(int mode, String str, String substr, int pos) {
+        if (mode == 1) {
+            // one separator
+            return findFirst(str, substr, pos);            
+        } else {
+            // many separators
+            return findFirstOf(str, substr, pos);            
+        }       
+    }
+    
+    private static String[] _tokenize(int mode, String str, String separator, boolean includeAll, boolean preserveAll) {
+        if (isEmpty(str)) {
+            return EMPTY_STRING_ARRAY;
+        }
+        
+        //if (isEmpty(separator)) {
+        //    return new String[] {str};
+        //}
+
+        if (separator == null) {
+            mode = 2;
+            separator = DEFAULT_SEPARATORS;
+
+            // Standard 'split' works with 'preserveAll = False' 
+            // when separator is null 
+            preserveAll = false;
+        }
+
+        if (isEmpty(separator)) {
+            return new String[] {str};
+        }
+        
+        int start = 0;
+        int end = 0;
+        int sep_len = 1;
+        
+        if (mode == 1) {
+            sep_len = separator.length(); // real length of separator
+        }
+        
+        String token;
+        List<String> result = new ArrayList<String>();
+        
+        while ((end = _findFirst(mode, str, separator, start)) != INDEX_NOT_FOUND) {
+            if (end - start == 0) {
+                if (preserveAll && !includeAll) {
+                    result.add(EMPTY_STRING);
+                }
+            } else {
+                token = str.substring(start, end); // end - start
+                result.add(token);
+            }            
+
+            if (includeAll) {
+                token = str.substring(end, end + sep_len); // sep_len
+                result.add(token);
+            }
+
+            start = end + sep_len;
+
+        }
+        
+        if (start == str.length()) {
+            if (preserveAll && !includeAll) {
+                result.add(EMPTY_STRING);
+            }
+        } else {
+            result.add(str.substring(start));
+        }
+        
+        return result.toArray(new String[0]);
+    }
     
     ////
     
@@ -2749,48 +2867,8 @@ public class StrLib {
         return tokenizeBySeparator(str, separator, true, false);
     }
 
-    public static String[] tokenizeBySeparator(String str, String separator, boolean includeAll, boolean preserveAll) {
-        if (isEmpty(str)) {
-            return EMPTY_STRING_ARRAY;
-        }
-        if (isEmpty(separator)) {
-            return new String[] {str};
-        }
-
-        int start = 0;
-        int end = 0;
-        int sep_len = separator.length();
-        String token;
-        List<String> result = new ArrayList<String>();
-        
-        while ((end = find(str, separator, start)) != INDEX_NOT_FOUND) {
-            if (end - start == 0) {
-                if (preserveAll && !includeAll) {
-                    result.add(EMPTY_STRING);
-                }
-            } else {
-                token = str.substring(start, end); // end - start
-                result.add(token);
-            }            
-
-            if (includeAll) {
-                token = str.substring(end, end + sep_len); // sep_len
-                result.add(token);
-            }
-
-            start = end + sep_len;
-
-        }
-        
-        if (start == str.length()) {
-            if (preserveAll && !includeAll) {
-                result.add(EMPTY_STRING);
-            }
-        } else {
-            result.add(str.substring(start));
-        }
-        
-        return result.toArray(new String[0]);
+    public static String[] tokenizeBySeparator(String str, String separator, boolean includeAll, boolean preserveAll) {        
+        return _tokenize(1, str, separator, includeAll, preserveAll); // one separator
     }
     
     ////
@@ -2800,47 +2878,7 @@ public class StrLib {
     }
     
     public static String[] tokenizeBySeparators(String str, String separators, boolean includeAll, boolean preserveAll) {
-        if (isEmpty(str)) {
-            return EMPTY_STRING_ARRAY;
-        }
-        if (isEmpty(separators)) {
-            return new String[] {str};
-        }
-
-        int start = 0;
-        int end = 0;
-        int sep_len = 1;
-        String token;
-        List<String> result = new ArrayList<String>();
-        
-        while ((end = findFirstOf(str, separators, start)) != INDEX_NOT_FOUND) {
-            if (end - start == 0) {
-                if (preserveAll && !includeAll) {
-                    result.add(EMPTY_STRING);
-                }
-            } else {
-                token = str.substring(start, end); // end - start
-                result.add(token);
-            }            
-
-            if (includeAll) {
-                token = str.substring(end, end + sep_len); // sep_len
-                result.add(token);
-            }
-
-            start = end + sep_len;
-
-        }
-        
-        if (start == str.length()) {
-            if (preserveAll && !includeAll) {
-                result.add(EMPTY_STRING);
-            }
-        } else {
-            result.add(str.substring(start));
-        }
-        
-        return result.toArray(new String[0]);
+        return _tokenize(2, str, separators, includeAll, preserveAll); // many separators
     }
     
     //// 8.1

@@ -168,7 +168,7 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("abc", StrLib.normalizeSafe(" abc "));
 
         // normalizeSafe(" \t\n\r\f\v")
-        assertEquals("", StrLib.normalizeSafe(" \t\n\r\f\u000B"));                      // \v -> \u000B
+        assertEquals("", StrLib.normalizeSafe(" \t\n\r\f\u000B"));                       // \v -> \u000B
         assertEquals("abc", StrLib.normalizeSafe(" \t\n\r\f\u000Babc"));                 // \v -> \u000B
         assertEquals("abc", StrLib.normalizeSafe("abc\t\n\r\f\u000B "));                 // \v -> \u000B
         assertEquals("abc", StrLib.normalizeSafe(" \t\n\r\f\u000Babc\t\n\r\f\u000B "));  // \v -> \u000B
@@ -1684,7 +1684,8 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("hELLO WORLD!", StrLib.decapitalize("Hello world!", true));        
 
     }
-
+        
+    // alias=toUpperCase
     public void testUpper() {
 
         // upper(null), upper(empty)
@@ -1713,7 +1714,8 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("ABCD", StrLib.upper("aBcD"));
 
     }
-
+    
+    //alias=toLowercase
     public void testLower() {
 
         // lower(null), lower(empty)
@@ -2525,145 +2527,361 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("myfile", StrLib.removeSuffixes("myfile.txt", new String[] {".txt", ".csv"}));
                 
     }
-
+        
+    // 4.3
+    // 4.4
     
     // 5.1
 
     public void testCountChars() {
-
-        assertEquals(0, StrLib.countChars("abcde", 'z'));
-        assertEquals(1, StrLib.countChars("abcde", 'a'));
-        assertEquals(2, StrLib.countChars("abcdeabcx", 'a'));
         
-        assertEquals(4, StrLib.countChars("Hello world, my world is very nice world.", 'o'));
+        // countChars(null, value)
+        assertEquals(0, StrLib.countChars(null, '\0'));
+        assertEquals(0, StrLib.countChars(null, ' '));
+        assertEquals(0, StrLib.countChars(null, 'a'));
+
+        // countChars(empty, value)
+        assertEquals(0, StrLib.countChars("", '\0'));
+        assertEquals(0, StrLib.countChars("", ' '));
+        assertEquals(0, StrLib.countChars("", 'a'));
+
+        // countChars(blank, value)
+        assertEquals(0, StrLib.countChars(" ", '\0'));
+        assertEquals(1, StrLib.countChars(" ", ' '));    // OK
+        assertEquals(0, StrLib.countChars(" ", 'a'));
+
+        // countChars(char, value)
+        assertEquals(0, StrLib.countChars("a", '\0'));
+        assertEquals(0, StrLib.countChars("a", ' '));
+        assertEquals(1, StrLib.countChars("a", 'a'));    // OK
+
+        // countChars(value, value)
+        assertEquals(0, StrLib.countChars("abcabcc", '\0'));
+        assertEquals(0, StrLib.countChars("abcabcc", ' '));
+        assertEquals(2, StrLib.countChars("abcabcc", 'a'));    // OK - 2
+        assertEquals(2, StrLib.countChars("abcabcc", 'b'));    // OK - 2
+        assertEquals(3, StrLib.countChars("abcabcc", 'c'));    // OK - 3
+
+        assertEquals(2, StrLib.countChars("Hi, my name is Alex, tell me something about you", ','));  // OK - 2
 
     }
 
     public void testCountStrings() {
-
-        assertEquals(0, StrLib.countStrings("abcde", "xyz"));
-        assertEquals(1, StrLib.countStrings("abcde", "abc"));
-        assertEquals(2, StrLib.countStrings("abcdeabcx", "abc"));
-
-        assertEquals(2, StrLib.countStrings("abcdeabc", "abc"));
-        assertEquals(2, StrLib.countStrings("abc de abc", "abc"));
-        assertEquals(2, StrLib.countStrings("abc de abc x", "abc"));
         
-        assertEquals(3, StrLib.countStrings("Hello world, my world is very nice world.", "world"));
+        // countStrings(null, value)
+        assertEquals(0, StrLib.countStrings(null, null));
+        assertEquals(0, StrLib.countStrings(null, ""));
+        assertEquals(0, StrLib.countStrings(null, " "));
+        assertEquals(0, StrLib.countStrings(null, "a"));
+        assertEquals(0, StrLib.countStrings(null, "abc"));
+
+        // countStrings(empty, value)
+        assertEquals(0, StrLib.countStrings("", null));
+        assertEquals(0, StrLib.countStrings("", ""));
+        assertEquals(0, StrLib.countStrings("", " "));
+        assertEquals(0, StrLib.countStrings("", "a"));
+        assertEquals(0, StrLib.countStrings("", "abc"));
+
+        // countStrings(blank, value)
+        assertEquals(0, StrLib.countStrings(" ", null));
+        assertEquals(0, StrLib.countStrings(" ", ""));
+        assertEquals(1, StrLib.countStrings(" ", " ")); // Ok - 1
+        assertEquals(0, StrLib.countStrings(" ", "a"));
+        assertEquals(0, StrLib.countStrings(" ", "abc"));
+
+        // countStrings(char, value)
+        assertEquals(0, StrLib.countStrings("a", null));
+        assertEquals(0, StrLib.countStrings("a", ""));
+        assertEquals(0, StrLib.countStrings("a", " "));
+        assertEquals(1, StrLib.countStrings("a", "a")); // Ok - 1
+        assertEquals(0, StrLib.countStrings("a", "abc"));
+
+        // countStrings(value, value)
+        assertEquals(0, StrLib.countStrings("abcxyzabc", null));
+        assertEquals(0, StrLib.countStrings("abcxyzabc", ""));
+        assertEquals(0, StrLib.countStrings("abcxyzabc", " "));
+        assertEquals(2, StrLib.countStrings("abcxyzabc", "a"));   // Ok - 2
+        assertEquals(2, StrLib.countStrings("abcxyzabc", "abc")); // Ok - 2
+        assertEquals(1, StrLib.countStrings("abcxyzabc", "xyz")); // Ok - 1
+
+        assertEquals(1, StrLib.countStrings("Hello world! It is good world!", "Hello")); // Ok - 1
+        assertEquals(2, StrLib.countStrings("Hello world! It is good world!", "world")); // Ok - 2
+        assertEquals(2, StrLib.countStrings("Hello world! It is good world!", "!"));     // Ok - 2
 
     }
     
     public void testCountWords() {
+        
+        // separators=default
 
-        assertEquals(13, StrLib.countWords("Hello world, my world is very nice world. But we have other worlds."));
+        // countWords(null)
+        assertEquals(0, StrLib.countWords(null));
+
+        // countWords(empty)
+        assertEquals(0, StrLib.countWords(""));
+
+        // countWords(blank)
+        assertEquals(0, StrLib.countWords(" "));  // " " separator not include
+
+        // countWords(char)
+        assertEquals(1, StrLib.countWords("a"));
+
+        // countWords(value)
+        assertEquals(1, StrLib.countWords("Hello"));
+
+        // separators=value
+
+        // countWords(null, value)
+        assertEquals(0, StrLib.countWords(null, null));
+        assertEquals(0, StrLib.countWords(null, ""));
+        assertEquals(0, StrLib.countWords(null, " "));
+        assertEquals(0, StrLib.countWords(null, ","));
+        assertEquals(0, StrLib.countWords(null, ",; "));
+
+        // countWords(empty, value)
+        assertEquals(0, StrLib.countWords("", null));
+        assertEquals(0, StrLib.countWords("", ""));
+        assertEquals(0, StrLib.countWords("", " "));
+        assertEquals(0, StrLib.countWords("", ","));
+        assertEquals(0, StrLib.countWords("", ",; "));
+
+        // countWords(blank, value)
+        assertEquals(0, StrLib.countWords(" ", null));
+        assertEquals(1, StrLib.countWords(" ", ""));  // Ok - 1 (???)
+        assertEquals(0, StrLib.countWords(" ", " ")); // " " separator not include
+        assertEquals(1, StrLib.countWords(" ", ",")); // Ok - 1
+        assertEquals(0, StrLib.countWords(" ", ",; "));     // " " separator not include
+
+        // countWords(char, value)
+        assertEquals(1, StrLib.countWords("a", null));
+        assertEquals(1, StrLib.countWords("a", ""));
+        assertEquals(1, StrLib.countWords("a", " "));
+        assertEquals(1, StrLib.countWords("a", ","));
+        assertEquals(1, StrLib.countWords("a", ",; "));
+        assertEquals(0, StrLib.countWords("a", "a")); // Ok - 1
+        assertEquals(0, StrLib.countWords("a", "abc"));     // "a" separator not include
+
+        // countWords(value, value)
+        assertEquals(1, StrLib.countWords("Hello", null));
+        assertEquals(1, StrLib.countWords("Hello", ""));
+        assertEquals(1, StrLib.countWords("Hello", " "));
+        assertEquals(1, StrLib.countWords("Hello", ","));
+        assertEquals(1, StrLib.countWords("Hello", ",; "));
+
+        assertEquals(2, StrLib.countWords("Hello", "e"));   // Ok - 2
+        assertEquals(2, StrLib.countWords("Hello", "eo"));  // Ok - 2
+        assertEquals(2, StrLib.countWords("Hello", "l"));   // Ok - 1
+
+        // separate=False
+        assertEquals(1, StrLib.countWords("Hello-world"));  // ["Hello-world"]:   "-" is not separator
+
+        // separate=True
+        assertEquals(2, StrLib.countWords("Hello world!"));
+        assertEquals(3, StrLib.countWords("Hello - world!"));     // ["Hello", "-", "world"]: "-" is not separator
+        assertEquals(3, StrLib.countWords("Hello  -  world!"));   // ["Hello", "-", "world"]: "-" is not separator
+
+        assertEquals(2, StrLib.countWords("Hello- world!"));// ["Hello-", "world"]:     "-" is not separator
+        assertEquals(2, StrLib.countWords("Hello -world!"));// ["Hello", "-world"]:     "-" is not separator
+
+        ////
+
+        assertEquals(6, StrLib.countWords("Hello world! It is good world!"));          // ["Hello", "world", "It", "is", "good", "world"]
+        assertEquals(6, StrLib.countWords("Hello world! It is good world!", " !?."));  // ["Hello", "world", "It", "is", "good", "world"]
+        assertEquals(2, StrLib.countWords("Hello world! It is good world!", "!"));     // ["Hello world", " It is good world"]]
 
     }    
     
+    public void testCountLines() {
+        
+        // countLines(null)
+        assertEquals(0, StrLib.countLines(null));
+
+        // countLines(empty)
+        assertEquals(0, StrLib.countLines(""));
+
+        // countLines(blank)
+        assertEquals(1, StrLib.countLines(" "));
+
+        // countLines(char)
+        assertEquals(1, StrLib.countLines("a"));
+
+        // countLines(value)
+        assertEquals(1, StrLib.countLines("Hello"));
+
+        // split=False
+        assertEquals(1, StrLib.countLines("Hello world! It is good world!"));
+        assertEquals(1, StrLib.countLines("Hello world!\tIt is good world!"));
+
+        // split=True
+        assertEquals(2, StrLib.countLines("Hello world!\rIt is good world!"));      // ["Hello world!", "It is good world!"]: \r    - OK
+        assertEquals(2, StrLib.countLines("Hello world!\nIt is good world!"));      // ["Hello world!", "It is good world!"]: \n    - OK
+        assertEquals(2, StrLib.countLines("Hello world!\r\nIt is good world!"));    // ["Hello world!", "It is good world!"]: \r\n  - OK 
+
+        assertEquals(2, StrLib.countLines("Hello world!\fIt is good world!"));      // ["Hello world!", "It is good world!"]: \f    - OK (???)
+        assertEquals(2, StrLib.countLines("Hello world!\u000BIt is good world!"));  // ["Hello world!", "It is good world!"]: \v    - OK (???)
+
+        // IMPORTANT !!!
+        assertEquals(3, StrLib.countLines("Hello world!\n\rIt is good world!"));    // ["Hello world!", "", "It is good world!"]: \n\r  - OK
+        assertEquals(3, StrLib.countLines("Hello world!\n\nIt is good world!"));    // ["Hello world!", "", "It is good world!"]: \n\n  - OK
+        assertEquals(3, StrLib.countLines("Hello world!\r\rIt is good world!"));    // ["Hello world!", "", "It is good world!"]: \r\r  - OK
+        
+        assertEquals(3, StrLib.countLines("Hello world!\n\r\nIt is good world!"));  // ["Hello world!", "", "It is good world!"]: \n\r\n - OK
+        assertEquals(4, StrLib.countLines("Hello world!\n\n\rIt is good world!"));  // ["Hello world!", "", "", "It is good world!"]: \n\n\r - OK
+                
+    }
+    
     // 6.1
     
+    // - replaceAll(String str, String s1, String s2)
+    // - replaceAll(String str, String[] values1, String[] values2)
+        
     // 7.1
         
     public void testSplit() {
         
-        String[] res = null;
-        
-        res = StrLib.split(null, null);        
-        assertNotNull(res);
-        assertEquals(0,  res.length);
-        
-        res = StrLib.split(null, '\0');        
-        assertNotNull(res);
-        assertEquals(0,  res.length);
-        
-        res = StrLib.split(null, "");        
-        assertNotNull(res);
-        assertEquals(0,  res.length);
-        
-        ////
-        
-        res = StrLib.split("", null);        
-        assertNotNull(res);
-        assertEquals(0,  res.length);
-        
-        res = StrLib.split("", '\0');        
-        assertNotNull(res);
-        assertEquals(0,  res.length);
-        
-        res = StrLib.split("", "");        
-        assertNotNull(res);
-        assertEquals(0,  res.length);
-        
-        ////
+        // split(null)
+        assertEquals(new String[] {}, StrLib.split(null));
+        assertEquals(new String[] {}, StrLib.split(null, null));
+        assertEquals(new String[] {}, StrLib.split(null, ""));
+        assertEquals(new String[] {}, StrLib.split(null, " "));
+        assertEquals(new String[] {}, StrLib.split(null, ","));
 
-        res = StrLib.split(" ", null);        
-        assertNotNull(res);
-        assertEquals(1,  res.length);
-        assertEquals(" ",  res[0]);
-        
-        res = StrLib.split(" ", '\0');        
-        assertNotNull(res);
-        assertEquals(1,  res.length);
-        assertEquals(" ",  res[0]);
-        
-        res = StrLib.split(" ", "");        
-        assertNotNull(res);
-        assertEquals(1,  res.length);
-        assertEquals(" ",  res[0]);
-        
-        ////
+        // split(empty)
+        assertEquals(new String[] {}, StrLib.split(""));
+        assertEquals(new String[] {}, StrLib.split("", null));
+        assertEquals(new String[] {}, StrLib.split("", ""));
+        assertEquals(new String[] {}, StrLib.split("", " "));
+        assertEquals(new String[] {}, StrLib.split("", ","));
 
-        // ValueSpace=0, SeparatorSpace=0
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1,200,500,-12", ','));        
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1|200|500|-12", '|'));
-        
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1,200,500,-12", ","));        
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1|200|500|-12", "|"));
-        
+        // split(blank)
+        assertEquals(new String[] {}, StrLib.split(" "));             // split by default. " " - separator by default, not include
+        assertEquals(new String[] {}, StrLib.split(" ", null));       // split by default. " " - separator by default, not include
+        assertEquals(new String[] {" "}, StrLib.split(" ", ""));
+        assertEquals(new String[] {"", ""}, StrLib.split(" ", " "));  // preserveAll = True by default (???)
+        assertEquals(new String[] {" "}, StrLib.split(" ", ","));
 
-        // ValueSpace=1, SeparatorSpace=0
-        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1, 200, 500, -12", ','));
-        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1| 200| 500| -12", '|'));
+        // False
+        assertEquals(new String[] {"abc,def,xyz"}, StrLib.split("abc,def,xyz", "|"));
+        assertEquals(new String[] {"abc|def|xyz"}, StrLib.split("abc|def|xyz", ","));
         
-        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1, 200, 500, -12", ","));
-        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1| 200| 500| -12", "|"));
-        
-        
-        // ValueSpace=1, SeparatorSpace=1
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1, 200, 500, -12", ", "));
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1| 200| 500| -12", "| "));
-        
-        // ValueSpace=1-2, SeparatorSpace=1
-        assertEquals(new String[] {"1", "200", "500", " -12"}, StrLib.split("1, 200, 500,  -12", ", "));        
-        assertEquals(new String[] {"1", "200", "500", " -12"}, StrLib.split("1| 200| 500|  -12", "| "));
-        
+        // True
+        // separator=default
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.split("abc\ndef\rxyz"));
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.split("abc\f def\u000B \txyz"));
+
+        // separator=value
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.split("abc,def,xyz", ","));                             // preserveAll = True by default
+        assertEquals(new String[] {"abc", " def", " xyz"}, StrLib.split("abc, def, xyz", ","));                         // preserveAll = True by default
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.split("abc, def, xyz", ", "));                          // preserveAll = True by default
+
+        assertEquals(new String[] {"", "abc", "def", "", "xyz", ""}, StrLib.split(",abc,def,,xyz,", ",", true));        // preserveAll = True
+        assertEquals(new String[] {"", "abc", " def", "", " xyz", ""}, StrLib.split(",abc, def,, xyz,", ",", true));    // preserveAll = True
+        assertEquals(new String[] {"", "abc", "def", "", "xyz", ""}, StrLib.split(", abc, def, , xyz, ", ", ", true));  // preserveAll = True        
+
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.split(",abc,def,,xyz,", ",", false));                   // preserveAll = False
+        assertEquals(new String[] {"abc", " def", " xyz"}, StrLib.split(",abc, def,, xyz,", ",", false));               // preserveAll = False
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.split(", abc, def, , xyz, ", ", ", false));             // preserveAll = False        
+
     }
     
     public void testSplitBySeparator() {
-                
-        // ValueSpace=0, SeparatorSpace=0
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1,200,500,-12", ','));        
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1|200|500|-12", '|'));
         
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1,200,500,-12", ","));        
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1|200|500|-12", "|"));
+        // splitBySeparator(null)
+        assertEquals(new String[] {}, StrLib.splitBySeparator(null, null));
+        assertEquals(new String[] {}, StrLib.splitBySeparator(null, ""));
+        assertEquals(new String[] {}, StrLib.splitBySeparator(null, " "));
+        assertEquals(new String[] {}, StrLib.splitBySeparator(null, ","));
 
-        // ValueSpace=1, SeparatorSpace=0
-        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1, 200, 500, -12", ','));
-        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1| 200| 500| -12", '|'));
+        // splitBySeparator(empty)
+        assertEquals(new String[] {}, StrLib.splitBySeparator("", null));
+        assertEquals(new String[] {}, StrLib.splitBySeparator("", ""));
+        assertEquals(new String[] {}, StrLib.splitBySeparator("", " "));
+        assertEquals(new String[] {}, StrLib.splitBySeparator("", ","));
+
+        // splitBySeparator(blank)
+        assertEquals(new String[] {}, StrLib.splitBySeparator(" ", null));       // split by default. " " - separator by default, not include
+        assertEquals(new String[] {" "}, StrLib.splitBySeparator(" ", ""));
+        assertEquals(new String[] {"", ""}, StrLib.splitBySeparator(" ", " "));  // preserveAll = True by default (???)
+        assertEquals(new String[] {" "}, StrLib.splitBySeparator(" ", ","));
+
+        // False
+        assertEquals(new String[] {"abc,def,xyz"}, StrLib.splitBySeparator("abc,def,xyz", "|"));
+        assertEquals(new String[] {"abc|def|xyz"}, StrLib.splitBySeparator("abc|def|xyz", ","));
         
-        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1, 200, 500, -12", ","));
-        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1| 200| 500| -12", "|"));
+        // True
+        // separator=default
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.splitBySeparator("abc\ndef\rxyz", null));
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.splitBySeparator("abc\f def\u000B \txyz", null));
+
+        // separator=value
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.splitBySeparator("abc,def,xyz", ","));                             // preserveAll = True by default
+        assertEquals(new String[] {"abc", " def", " xyz"}, StrLib.splitBySeparator("abc, def, xyz", ","));                         // preserveAll = True by default
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.splitBySeparator("abc, def, xyz", ", "));                          // preserveAll = True by default
+
+        assertEquals(new String[] {"", "abc", "def", "", "xyz", ""}, StrLib.splitBySeparator(",abc,def,,xyz,", ",", true));        // preserveAll = True
+        assertEquals(new String[] {"", "abc", " def", "", " xyz", ""}, StrLib.splitBySeparator(",abc, def,, xyz,", ",", true));    // preserveAll = True
+        assertEquals(new String[] {"", "abc", "def", "", "xyz", ""}, StrLib.splitBySeparator(", abc, def, , xyz, ", ", ", true));  // preserveAll = True
+
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.splitBySeparator(",abc,def,,xyz,", ",", false));                   // preserveAll = False
+        assertEquals(new String[] {"abc", " def", " xyz"}, StrLib.splitBySeparator(",abc, def,, xyz,", ",", false));               // preserveAll = False
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.splitBySeparator(", abc, def, , xyz, ", ", ", false));             // preserveAll = False
         
-        // ValueSpace=1, SeparatorSpace=1
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1, 200, 500, -12", ", "));
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1| 200| 500| -12", "| "));
-        
-        // ValueSpace=1-2, SeparatorSpace=1
-        assertEquals(new String[] {"1", "200", "500", " -12"}, StrLib.split("1, 200, 500,  -12", ", "));        
-        assertEquals(new String[] {"1", "200", "500", " -12"}, StrLib.split("1| 200| 500|  -12", "| "));
-                
     }
     
+    public void testSplitBySeparators() {
+
+        // splitBySeparators(null, value)
+        assertEquals(new String[] {}, StrLib.splitBySeparators(null, null));
+        assertEquals(new String[] {}, StrLib.splitBySeparators(null, ""));
+        assertEquals(new String[] {}, StrLib.splitBySeparators(null, " "));
+        assertEquals(new String[] {}, StrLib.splitBySeparators(null, ","));
+
+        // splitBySeparators(empty, value)
+        assertEquals(new String[] {}, StrLib.splitBySeparators("", null));
+        assertEquals(new String[] {}, StrLib.splitBySeparators("", ""));
+        assertEquals(new String[] {}, StrLib.splitBySeparators("", " "));
+        assertEquals(new String[] {}, StrLib.splitBySeparators("", ","));
+
+        // splitBySeparators(blank, value)
+        assertEquals(new String[] {}, StrLib.splitBySeparators(" ", null)); // split by default. " " - separator by default, not include
+        assertEquals(new String[] {" "}, StrLib.splitBySeparators(" ", ""));
+        assertEquals(new String[] {"", ""}, StrLib.splitBySeparators(" ", " "));  // preserveAll = true by default (???)
+        assertEquals(new String[] {" "}, StrLib.splitBySeparators(" ", ","));
+
+        // false
+        // one separator
+        assertEquals(new String[] {"abc,def,xyz"}, StrLib.splitBySeparators("abc,def,xyz", "|"));
+        assertEquals(new String[] {"abc|def|xyz"}, StrLib.splitBySeparators("abc|def|xyz", ","));
+
+        // many separators
+        assertEquals(new String[] {"abc,def,xyz"}, StrLib.splitBySeparators("abc,def,xyz", "|;.-"));
+        assertEquals(new String[] {"abc|def|xyz"}, StrLib.splitBySeparators("abc|def|xyz", ",;.-"));
+
+        // true
+        // one separator
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.splitBySeparators("abc,def,xyz", ","));
+        assertEquals(new String[] {"abc", " def", " xyz"}, StrLib.splitBySeparators("abc, def, xyz", ","));
+
+        assertEquals(new String[] {"abc", "def", "", "xyz"}, StrLib.splitBySeparators("abc,def,,xyz", ",", true));
+        assertEquals(new String[] {"abc", " def", "", " xyz"}, StrLib.splitBySeparators("abc, def,, xyz", ",", true));
+
+        // many separators
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.splitBySeparators("abc,def;xyz", ",;"));
+        assertEquals(new String[] {"abc", " def", " xyz"}, StrLib.splitBySeparators("abc, def; xyz", ",;"));
+
+        assertEquals(new String[] {"abc", "def", "", "xyz"}, StrLib.splitBySeparators("abc,def;,xyz", ",;", true));
+        assertEquals(new String[] {"abc", " def", "", " xyz"}, StrLib.splitBySeparators("abc, def;, xyz", ",;", true));
+
+        // many separators - skip
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.splitBySeparators("abc,def;xyz", ",;.-"));
+        assertEquals(new String[] {"abc", " def", " xyz"}, StrLib.splitBySeparators("abc, def; xyz", ",;.-"));
+
+        assertEquals(new String[] {"abc", "def", "", "xyz"}, StrLib.splitBySeparators("abc,def;,xyz", ",;.-", true));
+        assertEquals(new String[] {"abc", " def", "", " xyz"}, StrLib.splitBySeparators("abc, def;, xyz", ",;.-", true));
+        
+    }
+        
+    ////    
     
     public void testSplitTrim() {
                 
@@ -2684,6 +2902,316 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1| 200| 500|  -12", "| "));
                 
     }
+        
+    ///////
+    
+    public void testSplitWords() {
+        
+        // separators=default
+
+        // splitWords(null)
+        assertEquals(new String[] {}, StrLib.splitWords(null));
+
+        // splitWords(empty)
+        assertEquals(new String[] {}, StrLib.splitWords(""));
+
+        // splitWords(blank)
+        assertEquals(new String[] {}, StrLib.splitWords(" "));
+
+        // splitWords(value)
+        assertEquals(new String[] {"Hello"}, StrLib.splitWords("Hello"));
+
+
+        // separators=value
+
+        // splitWords(null, value)
+        assertEquals(new String[] {}, StrLib.splitWords(null, null));
+        assertEquals(new String[] {}, StrLib.splitWords(null, ""));
+        assertEquals(new String[] {}, StrLib.splitWords(null, " "));
+        assertEquals(new String[] {}, StrLib.splitWords(null, ","));
+
+        // splitWords(empty, value)
+        assertEquals(new String[] {}, StrLib.splitWords("", null));
+        assertEquals(new String[] {}, StrLib.splitWords("", ""));
+        assertEquals(new String[] {}, StrLib.splitWords("", " "));
+        assertEquals(new String[] {}, StrLib.splitWords("", ","));
+
+        // splitWords(blank, value)
+        assertEquals(new String[] {}, StrLib.splitWords(" ", null));   // split by default. " " - separator by default, not include
+        assertEquals(new String[] {" "}, StrLib.splitWords(" ", ""));
+        assertEquals(new String[] {}, StrLib.splitWords(" ", " "));
+        assertEquals(new String[] {" "}, StrLib.splitWords(" ", ","));
+
+        // splitWords(value, value)
+        assertEquals(new String[] {"Hello"}, StrLib.splitWords("Hello", null));
+        assertEquals(new String[] {"Hello"}, StrLib.splitWords("Hello", ""));
+        assertEquals(new String[] {"Hello"}, StrLib.splitWords("Hello", " "));
+        assertEquals(new String[] {"Hello"}, StrLib.splitWords("Hello", ","));
+
+        // False
+        assertEquals(new String[] {"Hello-world"}, StrLib.splitWords("Hello-world"));    // "-" is not separator
+
+        // True
+        assertEquals(new String[] {"Hello", "world"}, StrLib.splitWords("Hello world!"));
+        assertEquals(new String[] {"Hello", "-", "world"}, StrLib.splitWords("Hello - world!"));     // "-" is not separator
+        assertEquals(new String[] {"Hello", "-", "world"}, StrLib.splitWords("Hello  -  world!"));   // "-" is not separator
+
+        assertEquals(new String[] {"Hello-", "world"}, StrLib.splitWords("Hello- world!"));    // "-" is not separator
+        assertEquals(new String[] {"Hello", "-world"}, StrLib.splitWords("Hello -world!"));    // "-" is not separator
+
+        assertEquals(new String[] {"Hello", "world", "It", "is", "good", "world"}, StrLib.splitWords("Hello world! It is good world!"));
+        assertEquals(new String[] {"Hello", "world", "It", "is", "good", "world"}, StrLib.splitWords("Hello world! It is good world!", " !"));
+        assertEquals(new String[] {"Hello", "world", "It", "is", "good", "world"}, StrLib.splitWords("Hello world! It is good world!", " !?."));
+        assertEquals(new String[] {"Hello world", " It is good world"}, StrLib.splitWords("Hello world! It is good world!", "!"));
+
+
+    }
+    
+    public void testSplitLines() {
+        
+        // splitLines(null)
+        assertEquals(new String[] {}, StrLib.splitLines(null));
+
+        // splitLines(empty)
+        assertEquals(new String[] {}, StrLib.splitLines(""));
+
+        // splitLines(blank)
+        assertEquals(new String[] {" "}, StrLib.splitLines(" "));
+
+        // splitLines(value)
+        assertEquals(new String[] {"Hello"}, StrLib.splitLines("Hello"));
+
+        // split=False
+        assertEquals(new String[] {"Hello world! It is good world!"}, StrLib.splitLines("Hello world! It is good world!"));
+        assertEquals(new String[] {"Hello world!\tIt is good world!"}, StrLib.splitLines("Hello world!\tIt is good world!"));
+
+        // split=True
+        assertEquals(new String[] {"Hello world!", "It is good world!"}, StrLib.splitLines("Hello world!\rIt is good world!"));       // \r    - OK
+        assertEquals(new String[] {"Hello world!", "It is good world!"}, StrLib.splitLines("Hello world!\nIt is good world!"));       // \n    - OK
+        assertEquals(new String[] {"Hello world!", "It is good world!"}, StrLib.splitLines("Hello world!\r\nIt is good world!"));     // \r\n  - OK 
+
+        assertEquals(new String[] {"Hello world!", "It is good world!"}, StrLib.splitLines("Hello world!\fIt is good world!"));       // \f    - OK (???)
+        assertEquals(new String[] {"Hello world!", "It is good world!"}, StrLib.splitLines("Hello world!\u000BIt is good world!"));   // \v    - OK (???)
+
+        // IMPORTANT !!!
+        assertEquals(new String[] {"Hello world!", "", "It is good world!"}, StrLib.splitLines("Hello world!\n\rIt is good world!"));  // \n\r  - OK
+        assertEquals(new String[] {"Hello world!", "", "It is good world!"}, StrLib.splitLines("Hello world!\n\nIt is good world!"));  // \n\n  - OK
+        assertEquals(new String[] {"Hello world!", "", "It is good world!"}, StrLib.splitLines("Hello world!\r\rIt is good world!"));  // \r\r  - OK
+
+        assertEquals(new String[] {"Hello world!", "", "It is good world!"}, StrLib.splitLines("Hello world!\n\r\nIt is good world!")); // \n\r\n - OK
+        assertEquals(new String[] {"Hello world!", "", "", "It is good world!"}, StrLib.splitLines("Hello world!\n\n\rIt is good world!")); // \n\n\r - OK
+        
+    }
+    
+    
+    ////
+    
+    public void testTokenizeBySeparator_default() {
+
+        // tokenizeBySeparator(null, value)
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, null));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, ""));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, " "));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, ","));
+
+        // tokenizeBySeparator(empty, value)
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", null));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", ""));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", " "));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", ","));
+
+        // tokenizeBySeparator(value, value)
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", null));   // split by default. " " - default separator, include by default
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", ""));
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", " "));
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", ","));
+
+        // tokenizeBySeparator(value, value)
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", null));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", ""));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", " "));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", ","));
+
+        // false
+        assertEquals(new String[] {"abc"}, StrLib.tokenizeBySeparator("abc", ","));
+        assertEquals(new String[] {"abc:def"}, StrLib.tokenizeBySeparator("abc:def", ","));
+
+        // true
+        assertEquals(new String[] {"abc", ",", "def", ",", "xyz"}, StrLib.tokenizeBySeparator("abc,def,xyz", ","));
+        assertEquals(new String[] {"abc", ",", " def", ",", " xyz"}, StrLib.tokenizeBySeparator("abc, def, xyz", ","));
+        
+    }
+
+    // base=tokenizeBySeparator_true_false
+    // includeAll=true, preserveAll=true    
+    public void testTokenizeBySeparator_true_true() {
+          
+        // tokenizeBySeparator(null, value, true, true)
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, null, true, true));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, "", true, true));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, " ", true, true));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, ",", true, true));
+
+        // tokenizeBySeparator(empty, value, true, true)
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", null, true, true));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", "", true, true));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", " ", true, true));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", ",", true, true));
+
+        // tokenizeBySeparator(value, value, true, true)
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", null, true, true));    // split by default. " " - default separator
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", "", true, true));
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", " ", true, true));
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", ",", true, true));
+
+        // tokenizeBySeparator(value, value, true, true)
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", null, true, true));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", "", true, true));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", " ", true, true));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", ",", true, true));
+
+        // false
+        assertEquals(new String[] {"abc"}, StrLib.tokenizeBySeparator("abc", ",", true, true));
+        assertEquals(new String[] {"abc:def"}, StrLib.tokenizeBySeparator("abc:def", ",", true, true));
+
+        // true
+        assertEquals(new String[] {"abc", ",", "def", ",", "xyz"}, StrLib.tokenizeBySeparator("abc,def,xyz", ",", true, true));
+        assertEquals(new String[] {",", "abc", ",", "def", ",", "xyz"}, StrLib.tokenizeBySeparator(",abc,def,xyz", ",", true, true));
+        assertEquals(new String[] {",", "abc", ",", "def", ",", "xyz", ","}, StrLib.tokenizeBySeparator(",abc,def,xyz,", ",", true, true));
+
+        assertEquals(new String[] {"abc", ",", " def", ",", " xyz"}, StrLib.tokenizeBySeparator("abc, def, xyz", ",", true, true));
+        assertEquals(new String[] {",", " abc", ",", " def", ",", " xyz"}, StrLib.tokenizeBySeparator(", abc, def, xyz", ",", true, true));
+        assertEquals(new String[] {",", " abc", ",", " def", ",", " xyz", ","}, StrLib.tokenizeBySeparator(", abc, def, xyz,", ",", true, true));
+        
+    }
+    
+    // includeAll=true, preserveAll=false    
+    public void testTokenizeBySeparator_true_false() {
+
+        // tokenizeBySeparator(null, value, true, false)
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, null, true, false));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, "", true, false));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, " ", true, false));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, ",", true, false));
+
+        // tokenizeBySeparator(empty, value, true, false)
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", null, true, false));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", "", true, false));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", " ", true, false));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", ",", true, false));
+
+        // tokenizeBySeparator(value, value, true, false)
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", null, true, false));    // split by default. " " - default separator
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", "", true, false));
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", " ", true, false));
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", ",", true, false));
+
+        // tokenizeBySeparator(value, value, true, false)
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", null, true, false));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", "", true, false));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", " ", true, false));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", ",", true, false));
+
+        // false
+        assertEquals(new String[] {"abc"}, StrLib.tokenizeBySeparator("abc", ",", true, false));
+        assertEquals(new String[] {"abc:def"}, StrLib.tokenizeBySeparator("abc:def", ",", true, false));
+
+        // true
+        assertEquals(new String[] {"abc", ",", "def", ",", "xyz"}, StrLib.tokenizeBySeparator("abc,def,xyz", ",", true, false));
+        assertEquals(new String[] {",", "abc", ",", "def", ",", "xyz"}, StrLib.tokenizeBySeparator(",abc,def,xyz", ",", true, false));
+        assertEquals(new String[] {",", "abc", ",", "def", ",", "xyz", ","}, StrLib.tokenizeBySeparator(",abc,def,xyz,", ",", true, false));
+
+        assertEquals(new String[] {"abc", ",", " def", ",", " xyz"}, StrLib.tokenizeBySeparator("abc, def, xyz", ",", true, false));
+        assertEquals(new String[] {",", " abc", ",", " def", ",", " xyz"}, StrLib.tokenizeBySeparator(", abc, def, xyz", ",", true, false));
+        assertEquals(new String[] {",", " abc", ",", " def", ",", " xyz", ","}, StrLib.tokenizeBySeparator(", abc, def, xyz,", ",", true, false));
+        
+    }
+    
+    // includeAll=false, preserveAll=false    
+    public void testTokenizeBySeparator_false_false() {
+
+        // tokenizeBySeparator(null, value, false, false)
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, null, false, false));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, "", false, false));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, " ", false, false));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, ",", false, false));
+
+        // tokenizeBySeparator(empty, value, false, false)
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", null, false, false));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", "", false, false));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", " ", false, false));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", ",", false, false));
+
+        // tokenizeBySeparator(value, value, false, false)
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(" ", null, false, false));    // split by default. " " - default separator, not include
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", "", false, false));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(" ", " ", false, false));     // not include separator " "
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", ",", false, false));
+
+        // tokenizeBySeparator(value, value, false, false)
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", null, false, false));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", "", false, false));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", " ", false, false));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", ",", false, false));
+
+        // false
+        assertEquals(new String[] {"abc"}, StrLib.tokenizeBySeparator("abc", ",", false, false));
+        assertEquals(new String[] {"abc:def"}, StrLib.tokenizeBySeparator("abc:def", ",", false, false));
+
+        // true
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.tokenizeBySeparator("abc,def,xyz", ",", false, false));          // not include separator ","
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.tokenizeBySeparator(",abc,def,xyz", ",", false, false));         // not include separator ","
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.tokenizeBySeparator(",abc,def,xyz,", ",", false, false));        // not include separator ","
+
+        assertEquals(new String[] {"abc", " def", " xyz"}, StrLib.tokenizeBySeparator("abc, def, xyz", ",", false, false));      // not include separator ","
+        assertEquals(new String[] {" abc", " def", " xyz"}, StrLib.tokenizeBySeparator(", abc, def, xyz", ",", false, false));   // not include separator ","
+        assertEquals(new String[] {" abc", " def", " xyz"}, StrLib.tokenizeBySeparator(", abc, def, xyz,", ",", false, false));  // not include separator ","
+        
+    }
+    
+    // includeAll=false, preserveAll=true
+    public void testTokenizeBySeparator_false_true() {
+
+        // tokenizeBySeparator(null, value, false, true)
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, null, false, true));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, "", false, true));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, " ", false, true));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(null, ",", false, true));
+
+        // tokenizeBySeparator(empty, value, false, true)
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", null, false, true));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", "", false, true));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", " ", false, true));
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator("", ",", false, true));
+
+        // tokenizeBySeparator(value, value, false, true)
+        assertEquals(new String[] {}, StrLib.tokenizeBySeparator(" ", null, false, true));       // split by default. " " - default separator, not include
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", "", false, true));
+        assertEquals(new String[] {"", ""}, StrLib.tokenizeBySeparator(" ", " ", false, true));  // not include separator " ", but preserveAll = true (???)
+        assertEquals(new String[] {" "}, StrLib.tokenizeBySeparator(" ", ",", false, true));
+
+        // tokenizeBySeparator(value, value, false, true)
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", null, false, true));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", "", false, true));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", " ", false, true));
+        assertEquals(new String[] {"a"}, StrLib.tokenizeBySeparator("a", ",", false, true));
+
+        // false
+        assertEquals(new String[] {"abc"}, StrLib.tokenizeBySeparator("abc", ",", false, true));
+        assertEquals(new String[] {"abc:def"}, StrLib.tokenizeBySeparator("abc:def", ",", false, true));
+
+        // true
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.tokenizeBySeparator("abc,def,xyz", ",", false, true));                  // not include separator ","
+        assertEquals(new String[] {"", "abc", "def", "xyz"}, StrLib.tokenizeBySeparator(",abc,def,xyz", ",", false, true));             // not include separator ","
+        assertEquals(new String[] {"", "abc", "def", "xyz", ""}, StrLib.tokenizeBySeparator(",abc,def,xyz,", ",", false, true));        // not include separator ","
+
+        assertEquals(new String[] {"abc", " def", " xyz"}, StrLib.tokenizeBySeparator("abc, def, xyz", ",", false, true));              // not include separator ","
+        assertEquals(new String[] {"", " abc", " def", " xyz"}, StrLib.tokenizeBySeparator(", abc, def, xyz", ",", false, true));       // not include separator ","
+        assertEquals(new String[] {"", " abc", " def", " xyz", ""}, StrLib.tokenizeBySeparator(", abc, def, xyz,", ",", false, true));  // not include separator ","
+        
+    }
+    
+    ////
     
 
     // isDigit, isISODigit

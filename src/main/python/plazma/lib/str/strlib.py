@@ -1448,11 +1448,10 @@ def _tokenize(mode, str, separator, includeAll = True, preserveAll = False):
     
     start = 0
     end = 0
+    sep_len = 1
 
     if mode == 1:
-        sep_len = len(separator) # real length of separartor
-    else:
-        sep_len = 1
+        sep_len = len(separator) # real length of separator
 
     result = []
 
