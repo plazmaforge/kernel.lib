@@ -1,5 +1,5 @@
-Java problems:  
- 
+Java problems:
+
  - Math: exp(x) <> pow(E, x)
  
  - Math: round(double x) -> int ?
