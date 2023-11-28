@@ -1,11 +1,16 @@
 package plazma.lib.str;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import plazma.lib.AbstractTestCase;
 import plazma.lib.str.StrLib;
 
 public class StrLibTest extends AbstractTestCase {
 
     // 1.1
+    
+    //// [OTK-START] ////
 
     public void testIsEmpty() {
 
@@ -2529,8 +2534,187 @@ public class StrLibTest extends AbstractTestCase {
     }
         
     // 4.3
-    // 4.4
     
+    public void testIsQuoted() {
+        
+        // False
+        assertFalse(StrLib.isQuoted(null));
+        assertFalse(StrLib.isQuoted(""));
+        assertFalse(StrLib.isQuoted(" "));
+        assertFalse(StrLib.isQuoted("abc"));
+
+        // False "
+        assertFalse(StrLib.isQuoted("\""));              // False - only one quote
+        assertFalse(StrLib.isQuoted("\"", "\"", "\""));  // False - only one quote
+
+        // False '
+        assertFalse(StrLib.isQuoted("'"));               // False - only one quote
+        assertFalse(StrLib.isQuoted("'", "'", "'"));     // False - only one quote
+
+        // False value
+        assertFalse(StrLib.isQuoted("[", "[", "]"));     // False - only one quote
+        assertFalse(StrLib.isQuoted("{", "{", "}"));     // False - only one quote
+        assertFalse(StrLib.isQuoted("(", "(", ")"));     // False - only one quote
+
+        assertFalse(StrLib.isQuoted("'abc'", "\"", "\""));  // '' is not ""
+        assertFalse(StrLib.isQuoted("\"abc\"", "'", "'"));  // "" is not ''
+        assertFalse(StrLib.isQuoted("[abc]", "{", "}"));    // [] is not {}
+        assertFalse(StrLib.isQuoted("{abc}", "[", "]"));    // {} is not []
+
+        // True "
+        assertTrue(StrLib.isQuoted("\"\""));
+        assertTrue(StrLib.isQuoted("\"abc\""));
+
+        assertTrue(StrLib.isQuoted("\"\"", "\"", "\""));
+        assertTrue(StrLib.isQuoted("\"abc\"", "\"", "\""));
+
+        // True '
+        assertTrue(StrLib.isQuoted("''"));
+        assertTrue(StrLib.isQuoted("'abc'"));
+
+        assertTrue(StrLib.isQuoted("''", "'", "'"));
+        assertTrue(StrLib.isQuoted("'abc'", "'", "'"));
+
+        // True value
+        assertTrue(StrLib.isQuoted("[]", "[", "]"));
+        assertTrue(StrLib.isQuoted("[abc]", "[", "]"));
+
+        assertTrue(StrLib.isQuoted("{}", "{", "}"));
+        assertTrue(StrLib.isQuoted("{abc}", "{", "}"));
+
+        assertTrue(StrLib.isQuoted("()", "(", ")"));
+        assertTrue(StrLib.isQuoted("(abc)", "(", ")"));
+        
+    }
+        
+    public void testNeedQuote() {
+        
+        // True
+        assertTrue(StrLib.needQuote(null));
+        assertTrue(StrLib.needQuote(""));
+        assertTrue(StrLib.needQuote(" "));
+        assertTrue(StrLib.needQuote("abc"));
+
+        // True "
+        assertTrue(StrLib.needQuote("\""));              // True - only one quote
+        assertTrue(StrLib.needQuote("\"", "\"", "\""));  // True - only one quote
+
+        // True '
+        assertTrue(StrLib.needQuote("'"));               // True - only one quote
+        assertTrue(StrLib.needQuote("'", "'", "'"));     // True - only one quote
+
+        // True value
+        assertTrue(StrLib.needQuote("[", "[", "]"));     // True - only one quote
+        assertTrue(StrLib.needQuote("{", "{", "}"));     // True - only one quote
+        assertTrue(StrLib.needQuote("(", "(", ")"));     // True - only one quote
+
+        assertTrue(StrLib.needQuote("'abc'", "\"", "\""));  // '' is not ""
+        assertTrue(StrLib.needQuote("\"abc\"", "'", "'"));  // "" is not ''
+        assertTrue(StrLib.needQuote("[abc]", "{", "}"));    // [] is not {}
+        assertTrue(StrLib.needQuote("{abc}", "[", "]"));    // {} is not []
+
+        // False "
+        assertFalse(StrLib.needQuote("\"\""));
+        assertFalse(StrLib.needQuote("\"abc\""));
+
+        assertFalse(StrLib.needQuote("\"\"", "\"", "\""));
+        assertFalse(StrLib.needQuote("\"abc\"", "\"", "\""));
+
+        // False '
+        assertFalse(StrLib.needQuote("''"));
+        assertFalse(StrLib.needQuote("'abc'"));
+
+        assertFalse(StrLib.needQuote("''", "'", "'"));
+        assertFalse(StrLib.needQuote("'abc'", "'", "'"));
+
+        // False value
+        assertFalse(StrLib.needQuote("[]", "[", "]"));
+        assertFalse(StrLib.needQuote("[abc]", "[", "]"));
+
+        assertFalse(StrLib.needQuote("{}", "{", "}"));
+        assertFalse(StrLib.needQuote("{abc}", "{", "}"));
+
+        assertFalse(StrLib.needQuote("()", "(", ")"));
+        assertFalse(StrLib.needQuote("(abc)", "(", ")"));
+        
+    }
+    
+    public void testQuote() {
+        
+        // quote(null/empty/blank)
+        assertNull(StrLib.quote(null));
+        assertEquals("\"\"", StrLib.quote(""));
+        assertEquals("\" \"", StrLib.quote(" "));
+
+        // quote(value)
+        assertEquals("\"abc\"", StrLib.quote("abc"));
+        assertEquals("\"abc\"", StrLib.quote("abc", "\"", "\""));
+        assertEquals("\"abc\"", StrLib.quote("abc", "\"", "\""));
+
+        assertEquals("\" abc \"", StrLib.quote(" abc "));
+        assertEquals("\" abc \"", StrLib.quote(" abc ", "\"", "\""));
+        assertEquals("\" abc \"", StrLib.quote(" abc ", "\"", "\""));
+
+        assertEquals("[abc]", StrLib.quote("abc", "[", "]"));
+        assertEquals("{abc}", StrLib.quote("abc", "{", "}"));
+        assertEquals("(abc)", StrLib.quote("abc", "(", ")"));
+
+        // quote "
+        assertEquals("\"\"\"", StrLib.quote("\"")); // "" - by default
+        assertEquals("\"\"\"", StrLib.quote("\"", "\"", "\""));
+        assertEquals("\"'\"", StrLib.quote("'", "\"", "\""));
+
+        // quote '
+        assertEquals("'''", StrLib.quote("'", "'", "'"));
+        assertEquals("'\"'", StrLib.quote("\"", "'", "'"));
+               
+    }
+    
+    public void testUnquote() {
+        
+        // unquote(null/empty/blank)
+        assertNull(StrLib.unquote(null));
+        assertEquals("", StrLib.unquote(""));
+        assertEquals(" ", StrLib.unquote(" "));
+
+        // unquote(value) - Nothing
+        assertEquals("abc", StrLib.unquote("abc"));
+        assertEquals("abc", StrLib.unquote("abc", "\"", "\""));
+        assertEquals("abc", StrLib.unquote("abc", "'", "'"));
+
+        assertEquals(" abc ", StrLib.unquote(" abc "));
+        assertEquals(" abc ", StrLib.unquote(" abc ", "\"", "\""));
+        assertEquals(" abc ", StrLib.unquote(" abc ", "'", "'"));
+
+        assertEquals("abc", StrLib.unquote("abc", "[", "]"));
+        assertEquals("abc", StrLib.unquote("abc", "{", "}"));
+        assertEquals("abc", StrLib.unquote("abc", "(", ")"));
+
+        // unquote(value) - Result
+        assertEquals("abc", StrLib.unquote("\"abc\""));
+        assertEquals("abc", StrLib.unquote("\"abc\"", "\"", "\""));
+        assertEquals("abc", StrLib.unquote("'abc'", "'", "'"));
+
+        assertEquals(" abc ", StrLib.unquote("\" abc \""));
+        assertEquals(" abc ", StrLib.unquote("\" abc \"", "\"", "\""));
+        assertEquals(" abc ", StrLib.unquote("' abc '", "'", "'"));
+
+        assertEquals("abc", StrLib.unquote("[abc]", "[", "]"));
+        assertEquals("abc", StrLib.unquote("{abc}", "{", "}"));
+        assertEquals("abc", StrLib.unquote("(abc)", "(", ")"));
+        
+    }
+        
+    
+    // 4.4
+    // - isColumnSeparator(char ch)
+    // - isColumnText(char[] array)
+    // - isColumnText(char[] array, int len)
+    // - isColumnText(String str)
+    // - isLineText(char[] array)
+    // - isLineText(char[] array, int len)
+    // - isLineText(String str)
+        
     // 5.1
 
     public void testCountChars() {
@@ -2732,8 +2916,241 @@ public class StrLibTest extends AbstractTestCase {
     
     // 6.1
     
-    // - replaceAll(String str, String s1, String s2)
-    // - replaceAll(String str, String[] values1, String[] values2)
+    public void testReplaceAll_string() {
+        
+        // replaceAll(null, value, value): null -> null
+        assertNull(StrLib.replaceAll(null, (String) null, (String) null));
+        assertNull(StrLib.replaceAll(null, null, ""));
+        assertNull(StrLib.replaceAll(null, null, " "));
+        assertNull(StrLib.replaceAll(null, null, "abc"));
+
+        assertNull(StrLib.replaceAll(null, "", null));
+        assertNull(StrLib.replaceAll(null, "", ""));
+        assertNull(StrLib.replaceAll(null, "", " "));
+        assertNull(StrLib.replaceAll(null, "", "abc"));
+
+        assertNull(StrLib.replaceAll(null, " ", null));
+        assertNull(StrLib.replaceAll(null, " ", ""));
+        assertNull(StrLib.replaceAll(null, " ", " "));
+        assertNull(StrLib.replaceAll(null, " ", "abc"));
+
+        assertNull(StrLib.replaceAll(null, "abc", null));
+        assertNull(StrLib.replaceAll(null, "abc", ""));
+        assertNull(StrLib.replaceAll(null, "abc", " "));
+        assertNull(StrLib.replaceAll(null, "abc", "abc"));
+        assertNull(StrLib.replaceAll(null, "abc", "def"));
+
+        // replaceAll(empty, value, value): "" -> ""
+        assertEquals("", StrLib.replaceAll("", (String) null, (String) null));
+        assertEquals("", StrLib.replaceAll("", null, ""));
+        assertEquals("", StrLib.replaceAll("", null, " "));
+        assertEquals("", StrLib.replaceAll("", null, "abc"));
+
+        assertEquals("", StrLib.replaceAll("", "", null));
+        assertEquals("", StrLib.replaceAll("", "", ""));
+        assertEquals("", StrLib.replaceAll("", "", " "));
+        assertEquals("", StrLib.replaceAll("", "", "abc"));
+
+        assertEquals("", StrLib.replaceAll("", " ", null));
+        assertEquals("", StrLib.replaceAll("", " ", ""));
+        assertEquals("", StrLib.replaceAll("", " ", " "));
+        assertEquals("", StrLib.replaceAll("", " ", "abc"));
+
+        assertEquals("", StrLib.replaceAll("", "abc", null));
+        assertEquals("", StrLib.replaceAll("", "abc", ""));
+        assertEquals("", StrLib.replaceAll("", "abc", " "));
+        assertEquals("", StrLib.replaceAll("", "abc", "abc"));
+        assertEquals("", StrLib.replaceAll("", "abc", "def"));
+
+        // replaceAll(value, value, value)
+        assertEquals("abc", StrLib.replaceAll("abc", (String) null, (String) null));
+        assertEquals("abc", StrLib.replaceAll("abc", null, ""));
+        assertEquals("abc", StrLib.replaceAll("abc", null, " "));
+        assertEquals("abc", StrLib.replaceAll("abc", null, "abc"));
+
+        assertEquals("abc", StrLib.replaceAll("abc", "", null));
+        assertEquals("abc", StrLib.replaceAll("abc", "", ""));
+        assertEquals("abc", StrLib.replaceAll("abc", "", " "));
+        assertEquals("abc", StrLib.replaceAll("abc", "", "abc"));
+
+        assertEquals("abc", StrLib.replaceAll("abc", " ", null));
+        assertEquals("abc", StrLib.replaceAll("abc", " ", ""));
+        assertEquals("abc", StrLib.replaceAll("abc", " ", " "));
+        assertEquals("abc", StrLib.replaceAll("abc", " ", "abc"));
+
+        assertEquals("abc", StrLib.replaceAll("abc", "abc", null));
+        assertEquals("", StrLib.replaceAll("abc", "abc", ""));        // remove
+        assertEquals(" ", StrLib.replaceAll("abc", "abc", " "));      // blank
+        assertEquals("abc", StrLib.replaceAll("abc", "abc", "abc"));  // nothing
+        assertEquals("def", StrLib.replaceAll("abc", "abc", "def"));  // replace
+
+        // False
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", "d", ""));
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", "d", "1"));
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", "def", "123"));
+
+        // True
+        assertEquals("bc xyz bc", StrLib.replaceAll("abc xyz abc", "a", ""));         // remove
+        assertEquals("1bc xyz 1bc", StrLib.replaceAll("abc xyz abc", "a", "1"));      // replace
+        assertEquals("123 xyz 123", StrLib.replaceAll("abc xyz abc", "abc", "123"));  // replace
+        
+    }
+        
+    public void testReplaceAll_array() {
+        
+        // replaceAll(null, value, value): null -> null
+        assertNull(StrLib.replaceAll(null, null, new String[] {}));
+        assertNull(StrLib.replaceAll(null, null, new String[] {null}));
+        assertNull(StrLib.replaceAll(null, null, new String[] {""}));
+        assertNull(StrLib.replaceAll(null, null, new String[] {" "}));
+        assertNull(StrLib.replaceAll(null, null, new String[] {"abc"}));
+        assertNull(StrLib.replaceAll(null, null, new String[] {"abc", "def"}));
+
+        assertNull(StrLib.replaceAll(null, new String[] {}, null));
+        assertNull(StrLib.replaceAll(null, new String[] {}, new String[] {}));
+        assertNull(StrLib.replaceAll(null, new String[] {}, new String[] {null}));
+        assertNull(StrLib.replaceAll(null, new String[] {}, new String[] {""}));
+        assertNull(StrLib.replaceAll(null, new String[] {}, new String[] {" "}));
+        assertNull(StrLib.replaceAll(null, new String[] {}, new String[] {"abc"}));
+        assertNull(StrLib.replaceAll(null, new String[] {}, new String[] {"abc", "def"}));
+
+        assertNull(StrLib.replaceAll(null, new String[] {null}, null));
+        assertNull(StrLib.replaceAll(null, new String[] {null}, new String[] {}));
+        assertNull(StrLib.replaceAll(null, new String[] {null}, new String[] {null}));
+        assertNull(StrLib.replaceAll(null, new String[] {null}, new String[] {""}));
+        assertNull(StrLib.replaceAll(null, new String[] {null}, new String[] {" "}));
+        assertNull(StrLib.replaceAll(null, new String[] {null}, new String[] {"abc"}));
+        assertNull(StrLib.replaceAll(null, new String[] {null}, new String[] {"abc", "def"}));
+
+        assertNull(StrLib.replaceAll(null, new String[] {"abc"}, null));
+        assertNull(StrLib.replaceAll(null, new String[] {"abc"}, new String[] {}));
+        assertNull(StrLib.replaceAll(null, new String[] {"abc"}, new String[] {null}));
+        assertNull(StrLib.replaceAll(null, new String[] {"abc"}, new String[] {""}));
+        assertNull(StrLib.replaceAll(null, new String[] {"abc"}, new String[] {" "}));
+        assertNull(StrLib.replaceAll(null, new String[] {"abc"}, new String[] {"abc"}));
+        assertNull(StrLib.replaceAll(null, new String[] {"abc"}, new String[] {"abc", "def"}));
+
+        // replaceAll(empty, value, value): empty -> empty
+        assertEquals("", StrLib.replaceAll("", null, new String[] {}));
+        assertEquals("", StrLib.replaceAll("", null, new String[] {null}));
+        assertEquals("", StrLib.replaceAll("", null, new String[] {""}));
+        assertEquals("", StrLib.replaceAll("", null, new String[] {" "}));
+        assertEquals("", StrLib.replaceAll("", null, new String[] {"abc"}));
+        assertEquals("", StrLib.replaceAll("", null, new String[] {"abc", "def"}));
+
+        assertEquals("", StrLib.replaceAll("", new String[] {}, null));
+        assertEquals("", StrLib.replaceAll("", new String[] {}, new String[] {}));
+        assertEquals("", StrLib.replaceAll("", new String[] {}, new String[] {null}));
+        assertEquals("", StrLib.replaceAll("", new String[] {}, new String[] {""}));
+        assertEquals("", StrLib.replaceAll("", new String[] {}, new String[] {" "}));
+        assertEquals("", StrLib.replaceAll("", new String[] {}, new String[] {"abc"}));
+        assertEquals("", StrLib.replaceAll("", new String[] {}, new String[] {"abc", "def"}));
+
+        assertEquals("", StrLib.replaceAll("", new String[] {"abc"}, null));
+        assertEquals("", StrLib.replaceAll("", new String[] {"abc"}, new String[] {}));
+        assertEquals("", StrLib.replaceAll("", new String[] {"abc"}, new String[] {null}));
+        assertEquals("", StrLib.replaceAll("", new String[] {"abc"}, new String[] {""}));
+        assertEquals("", StrLib.replaceAll("", new String[] {"abc"}, new String[] {" "}));
+        assertEquals("", StrLib.replaceAll("", new String[] {"abc"}, new String[] {"abc"}));
+        assertEquals("", StrLib.replaceAll("", new String[] {"abc"}, new String[] {"abc", "def"}));
+
+        // replaceAll(value, value, value): empty -> empty
+        assertEquals("abc", StrLib.replaceAll("abc", null, new String[] {}));
+        assertEquals("abc", StrLib.replaceAll("abc", null, new String[] {null}));
+        assertEquals("abc", StrLib.replaceAll("abc", null, new String[] {""}));
+        assertEquals("abc", StrLib.replaceAll("abc", null, new String[] {" "}));
+        assertEquals("abc", StrLib.replaceAll("abc", null, new String[] {"abc"}));
+        assertEquals("abc", StrLib.replaceAll("abc", null, new String[] {"abc", "def"}));
+
+        assertEquals("abc", StrLib.replaceAll("abc", new String[] {}, null));
+        assertEquals("abc", StrLib.replaceAll("abc", new String[] {}, new String[] {}));
+        assertEquals("abc", StrLib.replaceAll("abc", new String[] {}, new String[] {null}));
+        assertEquals("abc", StrLib.replaceAll("abc", new String[] {}, new String[] {""}));
+        assertEquals("abc", StrLib.replaceAll("abc", new String[] {}, new String[] {" "}));
+        assertEquals("abc", StrLib.replaceAll("abc", new String[] {}, new String[] {"abc"}));
+        assertEquals("abc", StrLib.replaceAll("abc", new String[] {}, new String[] {"abc", "def"}));
+
+        assertEquals("abc", StrLib.replaceAll("abc", new String[] {"abc"}, null));
+        assertEquals("abc", StrLib.replaceAll("abc", new String[] {"abc"}, new String[] {}));
+        assertEquals("abc", StrLib.replaceAll("abc", new String[] {"abc"}, new String[] {null}));
+        assertEquals("", StrLib.replaceAll("abc", new String[] {"abc"}, new String[] {""}));              // remove
+        assertEquals(" ", StrLib.replaceAll("abc", new String[] {"abc"}, new String[] {" "}));            // blank
+
+        assertEquals("abc", StrLib.replaceAll("abc", new String[] {"abc"}, new String[] {"abc"}));        // nothing
+        assertEquals("abc", StrLib.replaceAll("abc", new String[] {"abc"}, new String[] {"abc", "def"})); // nothing
+
+        // False
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", new String[] {}, new String[] {}));
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", new String[] {}, new String[] {"def"}));                             // size <>: 0,1
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", new String[] {"def"}, new String[] {}));                             // size <>: 1,0
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", new String[] {"def"}, new String[] {"123"}));
+
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", new String[] {"def", "qwe"}, new String[] {"123", "456"}));
+
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", new String[] {"def"}, new String[] {"123", "456"}));                 // size <>: 1,2
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", new String[] {"def", "qwe"}, new String[] {"123"}));                 // size <>: 2,1
+
+        // True
+        assertEquals("123 xyz 123", StrLib.replaceAll("abc xyz abc", new String[] {"abc"}, new String[] {"123"}));
+
+        assertEquals("123 456 123", StrLib.replaceAll("abc xyz abc", new String[] {"abc", "xyz"}, new String[] {"123", "456"}));
+        assertEquals("123 456 123 def", StrLib.replaceAll("abc xyz abc def", new String[] {"abc", "xyz"}, new String[] {"123", "456"}));
+
+        assertEquals("123 xyz 123", StrLib.replaceAll("abc xyz abc", new String[] {"abc"}, new String[] {"123", "456"}));                 // size <>: 1,2
+        assertEquals("123 xyz 123 def", StrLib.replaceAll("abc xyz abc def", new String[] {"abc", "xyz"}, new String[] {"123"}));         // size <>: 2,1
+        
+    }
+    
+    public void testReplaceAll_map() {
+        
+        // replaceAll(null, value): null -> null
+        assertNull(StrLib.replaceAll(null, null));
+        assertNull(StrLib.replaceAll(null, toMap(new String[] {})));
+        assertNull(StrLib.replaceAll(null, toMap(new String[] {"", "abc"})));
+        assertNull(StrLib.replaceAll(null, toMap(new String[] {"abc", ""})));
+        assertNull(StrLib.replaceAll(null, toMap(new String[] {"abc", "def"})));
+
+        // replaceAll(empty, value): "" -> ""
+        assertEquals("", StrLib.replaceAll("", null));
+        assertEquals("", StrLib.replaceAll("", toMap(new String[] {})));
+        assertEquals("", StrLib.replaceAll("", toMap(new String[] {"", "abc"})));
+        assertEquals("", StrLib.replaceAll("", toMap(new String[] {"abc", ""})));
+        assertEquals("", StrLib.replaceAll("", toMap(new String[] {"abc", "def"})));
+
+        // replaceAll(value, value):
+        assertEquals("abc", StrLib.replaceAll("abc", null));
+        assertEquals("abc", StrLib.replaceAll("abc", toMap(new String[] {})));
+        assertEquals("abc", StrLib.replaceAll("abc", toMap(new String[] {"", "abc"})));
+        assertEquals("", StrLib.replaceAll("abc", toMap(new String[] {"abc", ""})));        // remove
+        assertEquals("def", StrLib.replaceAll("abc", toMap(new String[] {"abc", "def"})));  // replace
+
+        // False
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", toMap(new String[] {})));
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", toMap(new String[] {null, "def"})));                        // size <>: 0,1  
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"", "def"})));                          // size <>: 0,1
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"def", null})));                        // size <>: 1,0
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"def", ""})));                          // size <>: 1,0
+        
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"def", "123"})));
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"def", "123", "qwe", "456"})));
+
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"def", "123", null, "456"})));          // size <>: 1,2
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"def", "123", "", "456"})));            // size <>: 1,2
+
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"def", "123", "qwe", null})));          // size <>: 2,1
+        assertEquals("abc xyz abc", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"def", "123", "qwe", ""})));            // size <>: 2,1
+
+        // True
+        assertEquals("123 xyz 123", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"abc", "123"})));
+
+        assertEquals("123 456 123", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"abc", "123", "xyz", "456"})));
+        assertEquals("123 456 123 def", StrLib.replaceAll("abc xyz abc def", toMap(new String[] {"abc", "123", "xyz", "456"})));
+
+        assertEquals("123 xyz 123", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"abc", "123", null, "456"})));          // size <>: 1,2
+        assertEquals("123 xyz 123 def", StrLib.replaceAll("abc xyz abc def", toMap(new String[] {"abc", "123", "xyz", null})));  // size <>: 2,1
+                
+    }
+
         
     // 7.1
         
@@ -3210,8 +3627,8 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals(new String[] {"", " abc", " def", " xyz", ""}, StrLib.tokenizeBySeparator(", abc, def, xyz,", ",", false, true));  // not include separator ","
         
     }
-    
-    ////
+        
+    //// [OTK-END] ////
     
 
     // isDigit, isISODigit
@@ -3361,4 +3778,29 @@ public class StrLibTest extends AbstractTestCase {
         assertTrue(StrLib.isISOIdentifier("_a_"));
         // int z = _2;
     }
+    
+    ////
+    
+    private Map<String, String> toMap(String[] entries) {
+        if (entries == null) {
+            return null;            
+        }
+        Map<String, String> map = new LinkedHashMap<String, String>();
+        int size = entries.length;
+        if (size == 0) {
+            return map;            
+        }
+        int i = 0;
+        String key;
+        String value;
+        while (i < size) {
+            key = entries[i];
+            i++;
+            value = (i < size) ? entries[i] : null;
+            map.put(key, value);
+            i++;
+        }
+        return map;        
+    }
+    
 }

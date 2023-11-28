@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import plazma.lib.array.ArrayLib;
 
@@ -248,6 +250,7 @@ public class StrLib {
     //  
     // - replaceAll(String str, String s1, String s2)
     // - replaceAll(String str, String[] values1, String[] values2)
+    // - replaceAll(String str, Map<String, String> map)    
     
     /////////////////////////////////////////////////////////////////////////////////
     // 7.1
@@ -2459,10 +2462,7 @@ public class StrLib {
             // empty 's2' is correct case, we will remove 's1' from 'str'            
             return str;
         }
-        if (s1 == s2) {
-            return str;
-        }
-        if (s1.equals(s2)) {
+        if (s1 == s2 || s1.equals(s2)) {
             return str;
         }
 
@@ -2486,13 +2486,13 @@ public class StrLib {
     // See ArrayLib.replaceAll
     // Non RegExp
     public static String replaceAll(String str, String[] values1, String[] values2) {
-        if (values1 == null) {
+        if (isEmpty(str)) {
             return str;
-
-        }
-        if (values2 == null) {
+        }  
+        if (values1 == null || values2 == null) {
             return str;
         }
+        
         int size = Math.min(values1.length, values2.length);
         if (size == 0) {
             return str;
@@ -2516,7 +2516,34 @@ public class StrLib {
                 continue;                
             }
             
-            result = replaceAll(str, value1, value2); // TODO: maybe optimization
+            result = replaceAll(result, value1, value2); // TODO: maybe optimization
+        }
+        return result;
+    }
+    
+    public static String replaceAll(String str, Map<String, String> map) {
+        if (isEmpty(str)) {
+            return str;            
+        }        
+        if (map == null || map.isEmpty()) {
+            return str;
+        }        
+        String value = null;
+        String result = str;
+        Set<String> keys = map.keySet();
+        for (String key: keys) {
+            value = map.get(key);
+            if (isEmpty(key) || value == null) {
+                // ignore null/empty 'key' or null 'value'
+                // empty 'value' is correct case, we will remove 'key' from 'str'
+                continue;                
+            }
+            
+            if (key == value || key.equals(value)) {
+                // ignore this case because nothing to replace
+                continue;                
+            }            
+            result = replaceAll(result, key, value); // TODO: maybe optimization            
         }
         return result;
     }
