@@ -1,0 +1,56 @@
+
+##########################################################
+#
+# <account> - Account
+# <user>    - User
+# <repo>    - Repository
+#
+# <account> = <user> for single user
+#
+##########################################################
+
+##########################################################
+#
+# Create a new repository on the command line
+#
+##########################################################
+
+echo "# <repo>" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/<account>/<repo>.git
+git push -u origin main
+
+
+##########################################################
+#
+# Push an existing repository from the command line
+#
+##########################################################
+
+git remote add origin https://github.com/<account>/<repo>.git
+git branch -M main
+git push -u origin main
+
+
+##########################################################
+#
+# Connect by token
+#
+##########################################################
+
+# Variant 1
+Username: <user>
+Password: <token>
+
+# Variant 2
+cd <repo>
+git remote set-url origin https://<user>:<token>@github.com/<account>/<repo>.git
+
+# Variant 3
+cd <repo>/.git
+
+# Change file 'config'
+# url = https://<user>:<token>@github.com/<account>/<repo>.git
