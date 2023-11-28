@@ -54,3 +54,6 @@ cd <repo>/.git
 
 # Change file 'config'
 # url = https://<user>:<token>@github.com/<account>/<repo>.git
+
+
+# https://stackoverflow.com/questions/18935539/authenticate-with-github-using-a-token
