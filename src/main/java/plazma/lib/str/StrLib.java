@@ -232,9 +232,11 @@ public class StrLib {
     // - isColumnText(char[] array)
     // - isColumnText(char[] array, int len)
     // - isColumnText(String str)
+    // - isColumnText(String str, int len)
     // - isLineText(char[] array)
     // - isLineText(char[] array, int len)
     // - isLineText(String str)
+    // - isLineText(String str, int len)    
     
     /////////////////////////////////////////////////////////////////////////////////
     // 5.1
@@ -2347,14 +2349,16 @@ public class StrLib {
     }
 
     // isColumnText
-
+    
+    // [char]
     public static boolean isColumnText(char[] array) {
         if (array == null || array.length == 0) {
             return false; // by default inline (isColumnText = false)
         }
         return isColumnText(array, array.length);
     }
-
+    
+    // [char]
     public static boolean isColumnText(char[] array, int len) {
         if (array == null || array.length == 0 || len < 1) {
             return false; // by default inline (isColumnText = false)
@@ -2372,35 +2376,47 @@ public class StrLib {
         }
         return false;
     }
-
-    public static boolean isColumnText(String str) {
-        if (isEmpty(str)) {
+    
+    public static boolean isColumnText(String str, int len) {
+        if (isEmpty(str) || len < 1) {
             return false; // by default inline (isColumnText = false)
         }
-        return isColumnText(str.toCharArray(), str.length());
+        if (len > str.length()) {
+            len = str.length();            
+        }
+        
+        // TODO: Use constant COLUMN_SEPARATORS = '\r\n\t'
+        
+        for (int i = 0; i < len; i++) {
+            if (isColumnSeparator(str.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isColumnText(String str) {
+        return isColumnText(str, str == null ? 0 : str.length());
     }
 
     // isLineText
-
+    
+    // [char]
     public static boolean isLineText(char[] array) {
-        //if (array == null || array.length == 0) {
-        //    return true; // by default inline
-        //}
         return isLineText(array, array == null ? 0 : array.length);
     }
-
+    
+    // [char]
     public static boolean isLineText(char[] array, int len) {
-        //if (array == null || array.length == 0 || len < 1) {
-        //    return true; // by default inline
-        //}
         return !isColumnText(array, len);
     }
 
+    public static boolean isLineText(String str, int len) {
+        return !isColumnText(str, str == null ? 0: str.length());
+    }
+
     public static boolean isLineText(String str) {
-        //if (isEmpty(str)) {
-        //    return true; // by default: inline
-        //}
-        return isLineText(str == null ? null : str.toCharArray(), str == null ? 0: str.length());
+        return isLineText(str, str == null ? 0: str.length());
     }
 
     //// 5.1

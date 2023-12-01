@@ -2704,16 +2704,66 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("abc", StrLib.unquote("(abc)", "(", ")"));
         
     }
-        
-    
+            
     // 4.4
-    // - isColumnSeparator(char ch)
-    // - isColumnText(char[] array)
-    // - isColumnText(char[] array, int len)
-    // - isColumnText(String str)
-    // - isLineText(char[] array)
-    // - isLineText(char[] array, int len)
-    // - isLineText(String str)
+    
+    public void testIsColumnSeparator() {
+        
+        // False
+        //assertFalse(StrLib.isColumnSeparator(null));
+        assertFalse(StrLib.isColumnSeparator('\0'));
+        assertFalse(StrLib.isColumnSeparator(' '));
+        assertFalse(StrLib.isColumnSeparator('a'));
+        //assertFalse(StrLib.isColumnSeparator('abc'));  // not char - string
+
+        // True
+        assertTrue(StrLib.isColumnSeparator('\r'));
+        assertTrue(StrLib.isColumnSeparator('\n'));
+        assertTrue(StrLib.isColumnSeparator('\t'));
+        
+    }
+    
+    public void testIsColumnText() {
+        
+        // False
+        assertFalse(StrLib.isColumnText((String) null));
+        assertFalse(StrLib.isColumnText(""));
+        assertFalse(StrLib.isColumnText(" "));
+        assertFalse(StrLib.isColumnText("a"));
+        assertFalse(StrLib.isColumnText("abc"));
+        assertFalse(StrLib.isColumnText("abc def"));
+
+        // True
+        assertTrue(StrLib.isColumnText("\r"));
+        assertTrue(StrLib.isColumnText("\n"));
+        assertTrue(StrLib.isColumnText("\t"));
+        assertTrue(StrLib.isColumnText("abc\rdef"));
+        assertTrue(StrLib.isColumnText("abc\ndef"));
+        assertTrue(StrLib.isColumnText("abc\r\ndef"));
+        assertTrue(StrLib.isColumnText("abc\r\ndef\txyz"));
+        
+    }
+    
+    public void testIsLineText() {
+        
+        // True
+        assertTrue(StrLib.isLineText((String) null));
+        assertTrue(StrLib.isLineText(""));
+        assertTrue(StrLib.isLineText(" "));
+        assertTrue(StrLib.isLineText("a"));
+        assertTrue(StrLib.isLineText("abc"));
+        assertTrue(StrLib.isLineText("abc def"));
+
+        // False
+        assertFalse(StrLib.isLineText("\r"));
+        assertFalse(StrLib.isLineText("\n"));
+        assertFalse(StrLib.isLineText("\t"));
+        assertFalse(StrLib.isLineText("abc\rdef"));
+        assertFalse(StrLib.isLineText("abc\ndef"));
+        assertFalse(StrLib.isLineText("abc\r\ndef"));
+        assertFalse(StrLib.isLineText("abc\r\ndef\txyz"));
+        
+    }
         
     // 5.1
 
