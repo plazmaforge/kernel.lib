@@ -56,24 +56,24 @@
 /////////////////////////////////////////////////////////////////////////////////
 // 2.1
 //
-// - replicate(const string& str, int n)                                       - replicate("abc", 3) = 'abcabcabc' : repeat (?)
 // - replicate(char ch, int n)                                                 - replicate('a', 3) = "aaa"
+// - replicate(const string& str, int n)                                       - replicate("abc", 3) = 'abcabcabc' : repeat (?)
 //
 // 2.2 lpad, rpad
 //
 // - lpad(const string& str, int len)                                          - lpad("abc", 5) = "  abc"
-// - lpad(const string& str, int len, const string& pad)                       - lpad("abc", 5, "*") = "**abc"
 // - lpad(const string& str, int len, char pad)                                - lpad("abc", 5, '*') = "**abc"
+// - lpad(const string& str, int len, const string& pad)                       - lpad("abc", 5, "*") = "**abc"
 //
 // - rpad(const string& str, int len)                                          - rpad("abc", 5) = "abc  "
-// - rpad(const string& str, int len, const string& pad)                       - rpad("abc", 5, "*") = "abc**""
 // - rpad(const string& str, int len, char pad)                                - rpad("abc", 5, '*') = "abc**""
+// - rpad(const string& str, int len, const string& pad)                       - rpad("abc", 5, "*") = "abc**""
 //
 // 2.3
 //
 // - fill(const string& str, int len)                                          - 
-// - fill(const string& str, int len, const string& pad)                       -  
 // - fill(const string& str, int len, char pad)                                -  
+// - fill(const string& str, int len, const string& pad)                       -  
 //
 // - ellipsis(const string& str, int len)                                      - 
 //
@@ -378,6 +378,7 @@ namespace strlib {
 
     //
 
+    // [char]
     int size(const char* str) {
         return str == nullptr ? 0 : strlen(str); // str.length()
     }
@@ -388,6 +389,7 @@ namespace strlib {
 
     ////
 
+    // [char]
     bool equals(const char* str1, const char* str2) {
         if (str1 == str2) {
             return true;
@@ -403,12 +405,15 @@ namespace strlib {
     }
 
     bool equalsContent(const std::string& str1, const char* str2) {
-        if (str1.empty()) {
-            return isEmpty(str2);
-        }
         if (str2 == nullptr) {
             return false;
         }
+        if (str1.empty()) {
+            return isEmpty(str2);
+        }
+        //if (str2 == nullptr) {
+        //    return false;
+        //}
         int len1 = str1.length();
         int len2 = strlen(str2);
         if (len1 != len2) {
@@ -809,6 +814,14 @@ namespace strlib {
 
     //// 2.1
 
+    std::string replicate(char ch, int n) {
+        if (n < 1) {
+            return EMPTY_STRING;
+        }
+        std::string result(n, ch);
+        return result;
+    }
+
     std::string replicate(const std::string& str, int n) {
         if (str.empty() || n < 1) {
             return EMPTY_STRING;
@@ -822,14 +835,6 @@ namespace strlib {
         return result;
     }
 
-    std::string replicate(char ch, int n) {
-        if (n < 1) {
-            return EMPTY_STRING;
-        }
-        std::string result(n, ch);
-        return result;
-    }
-
     //// 2.2 lpad, rpad
 
     // lpad
@@ -837,6 +842,22 @@ namespace strlib {
     std::string lpad(const std::string& str, int len) {
         return lpad(str, len, DEFAULT_PAD);
     }
+
+    std::string lpad(const std::string& str, int len, char pad) {
+        if (len < 1 || pad == 0) { // isEmpty(pad): no padding
+            return str;
+        }
+
+        int strLen = str.length();
+        if (len <= strLen) {
+            return str;
+        }
+
+        int padCount = len - strLen;
+        return replicate(pad, padCount) + str;
+    }
+
+    //
 
     std::string lpad(const std::string& str, int len, const std::string& pad) {
         if (len < 1 || pad.empty()) { // isEmpty(pad): no padding
@@ -863,10 +884,14 @@ namespace strlib {
         }
     }
 
-    //
+    // rpad
 
-    std::string lpad(const std::string& str, int len, char pad) {
-        if (len < 1 || pad == 0) { // isEmpty(pad): no padding
+    std::string rpad(const std::string& str, int len) {
+        return rpad(str, len, DEFAULT_PAD);
+    }
+
+    std::string rpad(const std::string& str, int len, char pad) {
+        if (len < 1 || pad == 0) {
             return str;
         }
 
@@ -876,14 +901,10 @@ namespace strlib {
         }
 
         int padCount = len - strLen;
-        return replicate(pad, padCount) + str;
+        return str + replicate(pad, padCount);
     }
 
-    // rpad
-
-    std::string rpad(const std::string& str, int len) {
-        return rpad(str, len, DEFAULT_PAD);
-    }
+    //
 
     std::string rpad(const std::string& str, int len, const std::string& pad) {
         if (len < 1 || pad.empty()) {
@@ -910,26 +931,15 @@ namespace strlib {
         }        
     }
 
-    //
-
-    std::string rpad(const std::string& str, int len, char pad) {
-        if (len < 1 || pad == 0) {
-            return str;
-        }
-
-        int strLen = str.length();
-        if (len <= strLen) {
-            return str;
-        }
-
-        int padCount = len - strLen;
-        return str + replicate(pad, padCount);
-    }
-
     //// 2.3
 
     std::string fill(const std::string& str, int len) {
         return fill(str, len, DEFAULT_PAD);
+    }
+
+    std::string fill(const std::string& str, int len, char pad) {
+        std::string strpad(1, pad); // TODO: Optimize
+        return fill(str, len, strpad);
     }
 
     std::string fill(const std::string& str, int len, const std::string& pad) {
@@ -955,11 +965,6 @@ namespace strlib {
             strn = trunc(str, len, true); // ellipsis
         }
         return strn;
-    }
-
-    std::string fill(const std::string& str, int len, char pad) {
-        std::string strpad(1, pad); // TODO: Optimize
-        return fill(str, len, strpad);
     }
 
     /*

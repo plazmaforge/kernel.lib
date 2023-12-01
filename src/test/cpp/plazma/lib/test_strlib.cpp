@@ -9,20 +9,40 @@ typedef std::vector<std::string> VS;
 
 // 1.1
 
-TEST(isEmpty) {
+TEST(isEmpty_char) {
+
+  // isEmpty(null)
+  ASSERT_TRUE(strlib::isEmpty((char*) nullptr));
 
   // isEmpty(empty)
-  ASSERT_TRUE(strlib::isEmpty(""));
+  ASSERT_TRUE(strlib::isEmpty((char*) ""));
 
   // isEmpty(blank)
-  ASSERT_FALSE(strlib::isEmpty(" "));
-  ASSERT_FALSE(strlib::isEmpty("  "));
+  ASSERT_FALSE(strlib::isEmpty((char*) " "));
+  ASSERT_FALSE(strlib::isEmpty((char*) "  "));
 
   // isEmpty(value)
-  ASSERT_FALSE(strlib::isEmpty("abc"));
-  ASSERT_FALSE(strlib::isEmpty(" abc"));
-  ASSERT_FALSE(strlib::isEmpty("abc "));
-  ASSERT_FALSE(strlib::isEmpty(" abc "));
+  ASSERT_FALSE(strlib::isEmpty((char*) "abc"));
+  ASSERT_FALSE(strlib::isEmpty((char*) " abc"));
+  ASSERT_FALSE(strlib::isEmpty((char*) "abc "));
+  ASSERT_FALSE(strlib::isEmpty((char*) " abc "));
+
+}
+
+TEST(isEmpty_string) {
+
+  // isEmpty(empty)
+  ASSERT_TRUE(strlib::isEmpty((std::string) ""));
+
+  // isEmpty(blank)
+  ASSERT_FALSE(strlib::isEmpty((std::string) " "));
+  ASSERT_FALSE(strlib::isEmpty((std::string) "  "));
+
+  // isEmpty(value)
+  ASSERT_FALSE(strlib::isEmpty((std::string) "abc"));
+  ASSERT_FALSE(strlib::isEmpty((std::string) " abc"));
+  ASSERT_FALSE(strlib::isEmpty((std::string) "abc "));
+  ASSERT_FALSE(strlib::isEmpty((std::string) " abc "));
 
 }
 
@@ -43,105 +63,127 @@ TEST(isBlank) {
 
 }
 
-TEST(size) {
+TEST(size_char) {
+
+  // size(null)
+  ASSERT_EQ(0, strlib::size((char*) nullptr));
 
   // size(empty)
-  ASSERT_EQ(0, strlib::size(""));
+  ASSERT_EQ(0, strlib::size((char*) ""));
 
   // size(blank)
-  ASSERT_EQ(1, strlib::size(" "));
-  ASSERT_EQ(2, strlib::size("  "));
+  ASSERT_EQ(1, strlib::size((char*) " "));
+  ASSERT_EQ(2, strlib::size((char*) "  "));
 
   // size(value)
-  ASSERT_EQ(3, strlib::size("abc"));
-  ASSERT_EQ(4, strlib::size(" abc"));
-  ASSERT_EQ(4, strlib::size("abc "));
-  ASSERT_EQ(5, strlib::size(" abc "));
+  ASSERT_EQ(3, strlib::size((char*) "abc"));
+  ASSERT_EQ(4, strlib::size((char*) " abc"));
+  ASSERT_EQ(4, strlib::size((char*) "abc "));
+  ASSERT_EQ(5, strlib::size((char*) " abc "));
 
 }
 
-TEST(equals) {
+TEST(size_string) {
+
+  // size(empty)
+  ASSERT_EQ(0, strlib::size((std::string) ""));
+
+  // size(blank)
+  ASSERT_EQ(1, strlib::size((std::string) " "));
+  ASSERT_EQ(2, strlib::size((std::string) "  "));
+
+  // size(value)
+  ASSERT_EQ(3, strlib::size((std::string) "abc"));
+  ASSERT_EQ(4, strlib::size((std::string) " abc"));
+  ASSERT_EQ(4, strlib::size((std::string) "abc "));
+  ASSERT_EQ(5, strlib::size((std::string) " abc "));
+
+}
+
+TEST(equals_char) {
 
   // char*
 
   // equals(null, null)
-  ASSERT_TRUE(strlib::equals(nullptr, nullptr));
+  ASSERT_TRUE(strlib::equals((char*) nullptr, (char*) nullptr));
 
-  // False
-  ASSERT_FALSE(strlib::equals(nullptr, ""));
-  ASSERT_FALSE(strlib::equals("", nullptr));
+  // equals(null, empty), equals(null, value)
+  ASSERT_FALSE(strlib::equals(nullptr, (char*) ""));
+  ASSERT_FALSE(strlib::equals(nullptr, (char*) " "));
+  ASSERT_FALSE(strlib::equals(nullptr, (char*) "abc"));
+
+  // equals(empty, null), equals(value, null)
+  ASSERT_FALSE(strlib::equals((char*) "", nullptr));
+  ASSERT_FALSE(strlib::equals((char*) " ", nullptr));
+  ASSERT_FALSE(strlib::equals((char*) "abc", nullptr));
+
+  // equals(empty, value), equals(value, empty)
+  ASSERT_FALSE(strlib::equals((char*) "", (char*) "abc"));
+  ASSERT_FALSE(strlib::equals((char*) "abc", (char*) ""));
+
+  // equals(empty, empty), equals(blank, blank)
+  ASSERT_TRUE(strlib::equals((char*) "", (char*) ""));
+  ASSERT_TRUE(strlib::equals((char*) " ", (char*) " "));
+  ASSERT_TRUE(strlib::equals((char*) "  ", (char*) "  "));
+
+  // equals(empty, blank), equals(blank, empty)
+  ASSERT_FALSE(strlib::equals((char*) "", (char*) " "));
+  ASSERT_FALSE(strlib::equals((char*) "", (char*) "  "));
+  ASSERT_FALSE(strlib::equals((char*) " ", (char*) ""));
+  ASSERT_FALSE(strlib::equals((char*) "  ", (char*) ""));
+
+  // equals(value, value)
+  ASSERT_FALSE(strlib::equals((char*) " abc", (char*) "abc"));
+  ASSERT_FALSE(strlib::equals((char*) "abc ", (char*) "abc"));
+  ASSERT_FALSE(strlib::equals((char*) " abc ", (char*) "abc"));
+  ASSERT_FALSE(strlib::equals((char*) "abc", (char*) "xyz"));
+
+  ASSERT_TRUE(strlib::equals((char*) "abc", (char*) "abc"));
+  ASSERT_TRUE(strlib::equals((char*) " abc", (char*) " abc"));
+  ASSERT_TRUE(strlib::equals((char*) "abc ", (char*) "abc "));
+  ASSERT_TRUE(strlib::equals((char*) " abc ", (char*) " abc "));
   
-  // True
-  const char* str1 = "";
-  const char* str2 = "";
-  ASSERT_TRUE(strlib::equals(str1, str2));
+}
 
-  str1 = " ";
-  str2 = " ";
-  ASSERT_TRUE(strlib::equals(str1, str2));
-
-  str1 = "  ";
-  str2 = "  ";
-  ASSERT_TRUE(strlib::equals(str1, str2));
-
-  str1 = "a";
-  str2 = "a";
-  ASSERT_TRUE(strlib::equals(str1, str2));
-
-  str1 = "ab";
-  str2 = "ab";
-  ASSERT_TRUE(strlib::equals(str1, str2));
-
-  str1 = "abc";
-  str2 = "abc";
-  ASSERT_TRUE(strlib::equals(str1, str2));
-
-  // False
-  str1 = "a";
-  str2 = "b";
-  ASSERT_FALSE(strlib::equals(str1, str2));
-
-  str1 = "abc";
-  str2 = "xyz";
-  ASSERT_FALSE(strlib::equals(str1, str2));
+TEST(equals_string) {
 
   // string
 
   // equals(empty, value), equals(value, empty)
-  ASSERT_FALSE(strlib::equals("", "abc"));
-  ASSERT_FALSE(strlib::equals("abc", ""));
+  ASSERT_FALSE(strlib::equals((std::string) "", (std::string) "abc"));
+  ASSERT_FALSE(strlib::equals((std::string) "abc", (std::string) ""));
 
   // equals(empty, empty), equals(blank, blank)
-  ASSERT_TRUE(strlib::equals("", ""));
-  ASSERT_TRUE(strlib::equals(" ", " "));
-  ASSERT_TRUE(strlib::equals("  ", "  "));
+  ASSERT_TRUE(strlib::equals((std::string) "", (std::string) ""));
+  ASSERT_TRUE(strlib::equals((std::string) " ", (std::string) " "));
+  ASSERT_TRUE(strlib::equals((std::string) "  ", (std::string) "  "));
 
   // equals(empty, blank), equals(blank, empty)
-  ASSERT_FALSE(strlib::equals("", " "));
-  ASSERT_FALSE(strlib::equals("", "  "));
-  ASSERT_FALSE(strlib::equals(" ", ""));
-  ASSERT_FALSE(strlib::equals("  ", ""));
+  ASSERT_FALSE(strlib::equals((std::string) "", (std::string) " "));
+  ASSERT_FALSE(strlib::equals((std::string) "", (std::string) "  "));
+  ASSERT_FALSE(strlib::equals((std::string) " ", (std::string) ""));
+  ASSERT_FALSE(strlib::equals((std::string) "  ", (std::string) ""));
 
   // equals(value, value)
-  ASSERT_FALSE(strlib::equals(" abc", "abc"));
-  ASSERT_FALSE(strlib::equals("abc ", "abc"));
-  ASSERT_FALSE(strlib::equals(" abc ", "abc"));
+  ASSERT_FALSE(strlib::equals((std::string) " abc", (std::string) "abc"));
+  ASSERT_FALSE(strlib::equals((std::string) "abc ", (std::string) "abc"));
+  ASSERT_FALSE(strlib::equals((std::string) " abc ", (std::string) "abc"));
+  ASSERT_FALSE(strlib::equals((std::string) "abc", (std::string) "xyz"));
 
-  ASSERT_TRUE(strlib::equals("abc", "abc"));
-  ASSERT_TRUE(strlib::equals(" abc", " abc"));
-  ASSERT_TRUE(strlib::equals("abc ", "abc "));
-  ASSERT_TRUE(strlib::equals(" abc ", " abc "));
+  ASSERT_TRUE(strlib::equals((std::string) "abc", (std::string) "abc"));
+  ASSERT_TRUE(strlib::equals((std::string) " abc", (std::string) " abc"));
+  ASSERT_TRUE(strlib::equals((std::string) "abc ", (std::string) "abc "));
+  ASSERT_TRUE(strlib::equals((std::string) " abc ", (std::string) " abc "));
   
 }
 
-TEST(equalsContent) {
+TEST(equalsContent_char) {
 
   // equalsContent(empty, null)
-  ASSERT_TRUE(strlib::equalsContent("", nullptr));
 
   // False
+  ASSERT_FALSE(strlib::equalsContent("", nullptr));  // "" != null
   ASSERT_FALSE(strlib::equalsContent(" ", nullptr));
-  ASSERT_FALSE(strlib::equalsContent("  ", nullptr));
   ASSERT_FALSE(strlib::equalsContent("  ", nullptr));
 
   ASSERT_FALSE(strlib::equalsContent("a", nullptr));
@@ -149,18 +191,18 @@ TEST(equalsContent) {
   ASSERT_FALSE(strlib::equalsContent("abc", nullptr));
 
   // True
-  ASSERT_TRUE(strlib::equalsContent("", ""));
-  ASSERT_TRUE(strlib::equalsContent(" ", " "));
-  ASSERT_TRUE(strlib::equalsContent("  ", "  "));
+  ASSERT_TRUE(strlib::equalsContent("", (char*) ""));
+  ASSERT_TRUE(strlib::equalsContent(" ", (char*) " "));
+  ASSERT_TRUE(strlib::equalsContent("  ", (char*) "  "));
 
-  ASSERT_TRUE(strlib::equalsContent("a", "a"));
-  ASSERT_TRUE(strlib::equalsContent("ab", "ab"));
-  ASSERT_TRUE(strlib::equalsContent("abc", "abc"));
+  ASSERT_TRUE(strlib::equalsContent("a", (char*) "a"));
+  ASSERT_TRUE(strlib::equalsContent("ab", (char*) "ab"));
+  ASSERT_TRUE(strlib::equalsContent("abc", (char*) "abc"));
 
   // False
-  ASSERT_FALSE(strlib::equalsContent("ab", "a"));
-  ASSERT_FALSE(strlib::equalsContent("abc", "a"));
-  ASSERT_FALSE(strlib::equalsContent("abc", "xyz"));
+  ASSERT_FALSE(strlib::equalsContent("ab", (char*) "a"));
+  ASSERT_FALSE(strlib::equalsContent("abc", (char*) "a"));
+  ASSERT_FALSE(strlib::equalsContent("abc", (char*) "xyz"));
 
 }
 
@@ -385,7 +427,7 @@ TEST(rtrim) {
 
 // 1.4
 
-TEST(contains) {
+TEST(contains_char) {
 
   // char
 
@@ -408,6 +450,10 @@ TEST(contains) {
   ASSERT_FALSE(strlib::contains("abc", 'x'));
   ASSERT_FALSE(strlib::contains("abc", 'y'));
   ASSERT_FALSE(strlib::contains("abc", 'z'));
+
+}
+
+TEST(contains_string) {
 
   // string
 
@@ -671,14 +717,7 @@ TEST(findLastNotOf) {
 
 // 2.1
 
-TEST(replicate) {
-
-  // replicate(empty, -n), replicate(empty, 0), replicate(empty, n)
-  ASSERT_EQ("", strlib::replicate("", -2));
-  ASSERT_EQ("", strlib::replicate("", -1));
-  ASSERT_EQ("", strlib::replicate("", 0));
-  ASSERT_EQ("", strlib::replicate("", 1));
-  ASSERT_EQ("", strlib::replicate("", 2));
+TEST(replicate_char) {
 
   // char
 
@@ -698,7 +737,40 @@ TEST(replicate) {
   ASSERT_EQ("aa", strlib::replicate('a', 2));
   ASSERT_EQ("aaa", strlib::replicate('a', 3));
 
+}
+
+TEST(replicate_char_as_string) {
+
+  // char as string
+
+  // replicate(char, -n), replicate(char, 0), replicate(char, n)
+  ASSERT_EQ("", strlib::replicate(".", -2));
+  ASSERT_EQ("", strlib::replicate(".", -1));
+  ASSERT_EQ("", strlib::replicate(".", 0));
+  ASSERT_EQ(".", strlib::replicate(".", 1));
+  ASSERT_EQ("..", strlib::replicate(".", 2));
+
+  // replicate(char, n)
+  ASSERT_EQ("*", strlib::replicate("*", 1));
+  ASSERT_EQ("**", strlib::replicate("*", 2));
+  ASSERT_EQ("***", strlib::replicate("*", 3));
+
+  ASSERT_EQ("a", strlib::replicate("a", 1));
+  ASSERT_EQ("aa", strlib::replicate("a", 2));
+  ASSERT_EQ("aaa", strlib::replicate("a", 3));
+
+}
+
+TEST(replicate_string) {
+
   // string
+
+  // replicate(empty, -n), replicate(empty, 0), replicate(empty, n)
+  ASSERT_EQ("", strlib::replicate("", -2));
+  ASSERT_EQ("", strlib::replicate("", -1));
+  ASSERT_EQ("", strlib::replicate("", 0));
+  ASSERT_EQ("", strlib::replicate("", 1));
+  ASSERT_EQ("", strlib::replicate("", 2));
 
   // replicate(str, -n), replicate(str, 0), replicate(str, n)
   ASSERT_EQ("", strlib::replicate("abc", -2));
@@ -2150,11 +2222,18 @@ TEST(isIdentifier) {
 
 INIT(strlib) {
 
-  SET_TEST(isEmpty);
+  SET_TEST(isEmpty_char);
+  SET_TEST(isEmpty_string);
+
   SET_TEST(isBlank);
-  SET_TEST(size);
-  SET_TEST(equals);
-  SET_TEST(equalsContent);
+
+  SET_TEST(size_char);
+  SET_TEST(size_string);
+
+  SET_TEST(equals_char);
+  SET_TEST(equals_string);
+  SET_TEST(equalsContent_char);
+
   SET_TEST(normalize);
   SET_TEST(normalizeBlank)
   SET_TEST(defautIfEmpty)
@@ -2164,12 +2243,18 @@ INIT(strlib) {
   SET_TEST(ltrim)
   SET_TEST(rtrim)
 
-  SET_TEST(contains)
+  SET_TEST(contains_char)
+  SET_TEST(contains_string)
+
   SET_TEST(findFirstOf);
   SET_TEST(findLastOf);
   SET_TEST(findFirstNotOf);
   SET_TEST(findLastNotOf);
-  SET_TEST(replicate);
+
+  SET_TEST(replicate_char);
+  SET_TEST(replicate_char_as_string);
+  SET_TEST(replicate_string);
+
   SET_TEST(lpad);
   SET_TEST(rpad);
   SET_TEST(fill);

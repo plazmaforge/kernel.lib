@@ -116,24 +116,24 @@ public class StrLib {
     /////////////////////////////////////////////////////////////////////////////////
     // 2.1
     //
+    // - replicate(char ch, int n)                                         - replicate('a', 3) = "aaa"    
     // - replicate(String str, int n)                                      - replicate("abc", 3) = "abcabcabc" : repeat (?)
-    // - replicate(char ch, int n)                                         - replicate('a', 3) = "aaa"
     //
     // 2.2
     //
     // - lpad(String str, int len)                                         - lpad("abc", 5)      = "  abc"
+    // - lpad(String str, int len, char pad)                               - lpad("abc", 5, '*') = "**abc"    
     // - lpad(String str, int len, String pad)                             - lpad("abc", 5, "*") = "**abc"
-    // - lpad(String str, int len, char pad)                               - lpad("abc", 5, '*') = "**abc"
     //
     // - rpad(String str, int len)                                         - rpad("abc", 5)      = "abc  "
+    // - rpad(String str, int len, char pad)                               - rpad("abc", 5, '*') = "abc**"    
     // - rpad(String str, int len, String pad)                             - rpad("abc", 5, "*") = "abc**"
-    // - rpad(String str, int len, char pad)                               - rpad("abc", 5, '*') = "abc**"
     //
     // 2.3
     //
     // - fill(String str, int len)
+    // - fill(String str, int len, char pad)    
     // - fill(String str, int len, String pad)
-    // - fill(String str, int len, char pad)
     //
     // - ellipsis(String str, int len)
     //
@@ -523,16 +523,17 @@ public class StrLib {
     }
 
     //// 1.1
-
+    
+    // [char]
+    public static boolean isEmpty(char[] array) {
+        return array == null || array.length == 0;
+    }
+    
     public static boolean isEmpty(String str) {
         return str == null || str.isEmpty();
     }
 
     private static boolean isEmpty(String[] array) {
-        return array == null || array.length == 0;
-    }
-
-    private static boolean isEmpty(char[] array) {
         return array == null || array.length == 0;
     }
     
@@ -555,16 +556,45 @@ public class StrLib {
     private static boolean _isWhitespace(char ch) {
         return ch <= ' ';        
     }
+    
+    // [char]
+    public static int length(char[] str) {
+        return str == null ? 0 : str.length;
+    }
 
     public static int length(String str) {
         return str == null ? 0 : str.length();
     }
+    
+    // [char]    
+    public static int size(char[] str) {
+        return length(str);
+    }    
 
     public static int size(String str) {
         return length(str);
     }
 
     //
+
+    public static boolean equals(char[] str1, char[] str2) {
+        if (str1 == str2) {
+            return true;
+        }        
+        if (str1 == null || str2 == null) {
+            return false;
+        }
+        int len = str1.length;
+        if (len != str2.length) {
+            return false;
+        }
+        for (int i = 0; i < len; i++) {
+            if (str1[i] != str2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static boolean equals(String str1, String str2) {
         if (str1 == str2) {
@@ -1120,7 +1150,29 @@ public class StrLib {
     }
 
     //// 2.1
-
+    
+    /**
+     * Return <b>n</b> copy of <b>ch</b> For example: replicate('*', 4) = "****"
+     * replicate('*', 0) = ""
+     * 
+     * @param ch
+     * @param n
+     * @return
+     */
+    public static String replicate(char ch, int n) {
+        if (n < 1) {
+            return EMPTY_STRING;
+        }
+        
+        if (n == 1) {
+            return String.valueOf(ch);            
+        }
+        
+        char[] chars = new char[n];
+        Arrays.fill(chars, ch);
+        return new String(chars);
+    }
+    
     /**
      * Return <b>n</b> copy of <b>str</b> For example: replicate("*", 4) = "****"
      * replicate("*", 0) = "" replicate("-.", 4) = "-.-.-.-."
@@ -1147,28 +1199,6 @@ public class StrLib {
         return buf.toString();
     }
 
-    /**
-     * Return <b>n</b> copy of <b>ch</b> For example: replicate('*', 4) = "****"
-     * replicate('*', 0) = ""
-     * 
-     * @param ch
-     * @param n
-     * @return
-     */
-    public static String replicate(char ch, int n) {
-        if (n < 1) {
-            return EMPTY_STRING;
-        }
-        
-        if (n == 1) {
-            return String.valueOf(ch);            
-        }
-        
-        char[] chars = new char[n];
-        Arrays.fill(chars, ch);
-        return new String(chars);
-    }
-
     //// 2.2
 
     /**
@@ -1182,6 +1212,31 @@ public class StrLib {
         return lpad(str, len, DEFAULT_PAD);
     }
 
+    /**
+     * Return left pad a string with a specified character.
+     * 
+     * @param str
+     * @param len
+     * @param pad
+     * @return
+     */
+    public static String lpad(String str, int len, char pad) {
+        if (str == null) {
+            return null;
+        }
+        if (len < 1) {
+            return str;
+        }
+        
+        int strLen = str.length();
+        if (len <= strLen) {
+            return str;
+        }
+        
+        int padCount = len - strLen;
+        return replicate(pad, padCount) + str;        
+    }
+    
     /**
      * Return left pad a string with a specified string.
      * 
@@ -1218,31 +1273,6 @@ public class StrLib {
         }
     }
 
-    /**
-     * Return left pad a string with a specified character.
-     * 
-     * @param str
-     * @param len
-     * @param pad
-     * @return
-     */
-    public static String lpad(String str, int len, char pad) {
-        if (str == null) {
-            return null;
-        }
-        if (len < 1) {
-            return str;
-        }
-        
-        int strLen = str.length();
-        if (len <= strLen) {
-            return str;
-        }
-        
-        int padCount = len - strLen;
-        return replicate(pad, padCount) + str;        
-    }
-
     // rpad
 
     /**
@@ -1256,6 +1286,32 @@ public class StrLib {
         return rpad(str, len, DEFAULT_PAD);
     }
 
+    /**
+     * Return right pad a string with a specified character.
+     * 
+     * @param str
+     * @param len
+     * @param pad
+     * @return
+     */
+    public static String rpad(String str, int len, char pad) {
+        if (str == null) {
+            return null;
+        }
+
+        if (len < 1) {
+            return str;
+        }
+        
+        int strLen = str.length();
+        if (len <= strLen) {
+            return str;
+        }
+
+        int padCount = len - strLen;
+        return str + replicate(pad, padCount);
+    }
+    
     /**
      * Return right pad a string with a specified string.
      * 
@@ -1293,31 +1349,6 @@ public class StrLib {
         }        
     }
 
-    /**
-     * Return right pad a string with a specified character.
-     * 
-     * @param str
-     * @param len
-     * @param pad
-     * @return
-     */
-    public static String rpad(String str, int len, char pad) {
-        if (str == null) {
-            return null;
-        }
-
-        if (len < 1) {
-            return str;
-        }
-        
-        int strLen = str.length();
-        if (len <= strLen) {
-            return str;
-        }
-
-        int padCount = len - strLen;
-        return str + replicate(pad, padCount);
-    }
 
     //// 2.3
 
@@ -1325,31 +1356,6 @@ public class StrLib {
 
     public static String fill(String str, int len) {
         return fill(str, len, DEFAULT_PAD);
-    }
-
-    public static String fill(String str, int len, String pad) {
-        if (str == null) {
-            return null;
-        }
-        
-        // hard format: <=len or empty
-        if (len < 1) {
-            return EMPTY_STRING;
-        }
-        
-        int strLen = str.length();
-        if (strLen == len) {
-            return str;
-        }
-        
-        // strong format: pad or trunc
-        if (strLen < len) {
-            // add <pad> to right side
-            return rpad(str, len, pad);
-        } else {
-            // remove chars from right side
-            return trunc(str, len, true); // ellipsis
-        }
     }
 
     public static String fill(String str, int len, char pad) {
@@ -1368,6 +1374,31 @@ public class StrLib {
         }
         
         // hard format: pad or trunc
+        if (strLen < len) {
+            // add <pad> to right side
+            return rpad(str, len, pad);
+        } else {
+            // remove chars from right side
+            return trunc(str, len, true); // ellipsis
+        }
+    }
+    
+    public static String fill(String str, int len, String pad) {
+        if (str == null) {
+            return null;
+        }
+        
+        // hard format: <=len or empty
+        if (len < 1) {
+            return EMPTY_STRING;
+        }
+        
+        int strLen = str.length();
+        if (strLen == len) {
+            return str;
+        }
+        
+        // strong format: pad or trunc
         if (strLen < len) {
             // add <pad> to right side
             return rpad(str, len, pad);

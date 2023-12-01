@@ -49,24 +49,24 @@
 /////////////////////////////////////////////////////////////////////////////////
 // 2.1
 //
-// - replicate(const string& str, int n)                                       - replicate("abc", 3) = 'abcabcabc' : repeat (?)
 // - replicate(char ch, int n)                                                 - replicate('a', 3) = "aaa"
+// - replicate(const string& str, int n)                                       - replicate("abc", 3) = 'abcabcabc' : repeat (?)
 //
 // 2.2 lpad, rpad
 //
 // - lpad(const string& str, int len)                                          - lpad("abc", 5) = "  abc"
-// - lpad(const string& str, int len, const string& pad)                       - lpad("abc", 5, "*") = "**abc"
 // - lpad(const string& str, int len, char pad)                                - lpad("abc", 5, '*') = "**abc"
+// - lpad(const string& str, int len, const string& pad)                       - lpad("abc", 5, "*") = "**abc"
 //
 // - rpad(const string& str, int len)                                          - rpad("abc", 5) = "abc  "
-// - rpad(const string& str, int len, const string& pad)                       - rpad("abc", 5, "*") = "abc**""
 // - rpad(const string& str, int len, char pad)                                - rpad("abc", 5, '*') = "abc**""
+// - rpad(const string& str, int len, const string& pad)                       - rpad("abc", 5, "*") = "abc**""
 //
 // 2.3
 //
 // - fill(const string& str, int len)                                          - 
-// - fill(const string& str, int len, const string& pad)                       -  
 // - fill(const string& str, int len, char pad)                                - 
+// - fill(const string& str, int len, const string& pad)                       -  
 // 
 // - ellipsis(const string& str, int len)                                      - 
 //
@@ -497,33 +497,33 @@ namespace strlib {
 
     //// 2.1
 
-    std::string replicate(const std::string& str, int n);
-
     std::string replicate(char ch, int n);
+
+    std::string replicate(const std::string& str, int n);
 
     //// 2.1
 
     std::string lpad(const std::string& str, int len);
 
-    std::string lpad(const std::string& str, int len, const std::string& pad);
-
     std::string lpad(const std::string& str, int len, char pad);
+
+    std::string lpad(const std::string& str, int len, const std::string& pad);
 
     //
 
     std::string rpad(const std::string& str, int len);
 
-    std::string rpad(const std::string& str, int len, const std::string& pad);
-
     std::string rpad(const std::string& str, int len, char pad);
+
+    std::string rpad(const std::string& str, int len, const std::string& pad);
 
     //// 2.3
 
     std::string fill(const std::string& str, int len);
 
-    std::string fill(const std::string& str, int len, const std::string& pad);
-
     std::string fill(const std::string& str, int len, char pad);
+
+    std::string fill(const std::string& str, int len, const std::string& pad);
 
     //
 

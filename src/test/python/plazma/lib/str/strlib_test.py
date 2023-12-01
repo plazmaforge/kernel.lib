@@ -84,7 +84,8 @@ class StrlibTest(unittest.TestCase):
         # equals(value, value)
         self.assertFalse(strlib.equals(' abc', 'abc'))
         self.assertFalse(strlib.equals('abc ', 'abc'))
-        self.assertFalse(strlib.equals(' abc ', 'abc'))
+        self.assertFalse(strlib.equals(' abc ', 'abc'))        
+        self.assertFalse(strlib.equals('abc', 'xyz'))
 
         self.assertTrue(strlib.equals('abc', 'abc'))
         self.assertTrue(strlib.equals(' abc', ' abc'))
@@ -198,10 +199,24 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('abc', strlib.normalizeBlank(' abc', True, False))
         self.assertEqual('abc', strlib.normalizeBlank('abc ', True, False))
         self.assertEqual('abc', strlib.normalizeBlank(' abc ', True, False))
-
     
-    # - emptyIfNone(str)                                           - None -> ''
-    # - noneIfEmpty(str)                                           - '' -> None
+    def test_emptyIfNone(self):
+
+        # emptyIfNone(None/empty)
+        self.assertEqual('', strlib.emptyIfNone(None))
+        self.assertEqual('', strlib.emptyIfNone(''))
+
+        self.assertEqual(' ', strlib.emptyIfNone(' '))
+        self.assertEqual('abc', strlib.emptyIfNone('abc'))
+
+    def test_noneIfEmpty(self):
+
+        # noneIfEmpty(None/empty)
+        self.assertIsNone(strlib.noneIfEmpty(None))
+        self.assertIsNone(strlib.noneIfEmpty(''))
+
+        self.assertEqual(' ', strlib.noneIfEmpty(' '))
+        self.assertEqual('abc', strlib.noneIfEmpty('abc'))
 
     def test_defaultIfNone(self):
 
