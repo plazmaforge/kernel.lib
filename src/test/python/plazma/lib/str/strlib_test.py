@@ -905,12 +905,26 @@ class StrlibTest(unittest.TestCase):
         self.assertIsNone(strlib.lpad(None, 1))
         self.assertIsNone(strlib.lpad(None, 2))
 
+        # lpad(None, -n, None), lpad(None, 0, None), lpad(None, n, None)
+        self.assertIsNone(strlib.lpad(None, -2, None))
+        self.assertIsNone(strlib.lpad(None, -1, None))
+        self.assertIsNone(strlib.lpad(None, 0, None))
+        self.assertIsNone(strlib.lpad(None, 1, None))
+        self.assertIsNone(strlib.lpad(None, 2, None))
+
         # lpad(None, -n, ''), lpad(None, 0, ''), lpad(None, n, '')
         self.assertIsNone(strlib.lpad(None, -2, ''))
         self.assertIsNone(strlib.lpad(None, -1, ''))
         self.assertIsNone(strlib.lpad(None, 0, ''))
         self.assertIsNone(strlib.lpad(None, 1, ''))
         self.assertIsNone(strlib.lpad(None, 2, ''))
+
+        # lpad(None, -n, '\0'), lpad(None, 0, '\0'), lpad(None, n, '\0')
+        self.assertIsNone(strlib.lpad(None, -2, '\0'))
+        self.assertIsNone(strlib.lpad(None, -1, '\0'))
+        self.assertIsNone(strlib.lpad(None, 0, '\0'))
+        self.assertIsNone(strlib.lpad(None, 1, '\0'))
+        self.assertIsNone(strlib.lpad(None, 2, '\0'))
 
         # lpad(None, -n, ' '), lpad(None, 0, ' '), lpad(None, n, ' ')
         self.assertIsNone(strlib.lpad(None, -2, ' '))
@@ -936,6 +950,39 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('  ', strlib.lpad('', 2))
         self.assertEqual('   ', strlib.lpad('', 3))
 
+        # lpad(empty, -n, None), lpad(empty, 0, None), lpad(empty, n, None)
+        self.assertEqual('', strlib.lpad('', -2, None))
+        self.assertEqual('', strlib.lpad('', -1, None))
+        self.assertEqual('', strlib.lpad('', 0, None))
+        self.assertEqual('', strlib.lpad('', 1, None))
+        self.assertEqual('', strlib.lpad('', 2, None))
+        self.assertEqual('', strlib.lpad('', 3, None))
+
+        # lpad(empty, -n, ''), lpad(empty, 0, ''), lpad(empty, n, '')
+        self.assertEqual('', strlib.lpad('', -2, ''))
+        self.assertEqual('', strlib.lpad('', -1, ''))
+        self.assertEqual('', strlib.lpad('', 0, ''))
+        self.assertEqual('', strlib.lpad('', 1, ''))
+        self.assertEqual('', strlib.lpad('', 2, ''))
+        self.assertEqual('', strlib.lpad('', 3, ''))
+
+        # lpad(empty, -n, '\0'), lpad(empty, 0, '\0'), lpad(empty, n, '\0')
+        self.assertEqual('', strlib.lpad('', -2, '\0'))
+        self.assertEqual('', strlib.lpad('', -1, '\0'))
+        self.assertEqual('', strlib.lpad('', 0, '\0'))
+        #self.assertEqual('\0', strlib.lpad('', 1, '\0'))     # NUL SPEC
+        #self.assertEqual('\0\0', strlib.lpad('', 2, '\0'))   # NUL SPEC
+        #self.assertEqual('\0\0\0', strlib.lpad('', 3, '\0')) # NUL SPEC
+
+        # lpad(empty, -n, ' '), lpad(empty, 0, ' '), lpad(empty, n, ' ')
+        self.assertEqual('', strlib.lpad('', -2, ' '))
+        self.assertEqual('', strlib.lpad('', -1, ' '))
+        self.assertEqual('', strlib.lpad('', 0, ' '))
+        self.assertEqual(' ', strlib.lpad('', 1, ' '))
+        self.assertEqual('  ', strlib.lpad('', 2, ' '))
+        self.assertEqual('   ', strlib.lpad('', 3, ' '))
+
+        # lpad(empty, -n, '*'), lpad(empty, 0, '*'), lpad(empty, n, '*')
         self.assertEqual('', strlib.lpad('', -2, '*'))
         self.assertEqual('', strlib.lpad('', -1, '*'))
         self.assertEqual('', strlib.lpad('', 0, '*'))
@@ -1011,12 +1058,26 @@ class StrlibTest(unittest.TestCase):
         self.assertIsNone(strlib.rpad(None, 1))
         self.assertIsNone(strlib.rpad(None, 2))
 
+        # rpad(None, -n, None), rpad(None, 0, None), rpad(None, n, None)
+        self.assertIsNone(strlib.rpad(None, -2, None))
+        self.assertIsNone(strlib.rpad(None, -1, None))
+        self.assertIsNone(strlib.rpad(None, 0, None))
+        self.assertIsNone(strlib.rpad(None, 1, None))
+        self.assertIsNone(strlib.rpad(None, 2, None))
+
         # rpad(None, -n, ''), rpad(None, 0, ''), rpad(None, n, '')
         self.assertIsNone(strlib.rpad(None, -2, ''))
         self.assertIsNone(strlib.rpad(None, -1, ''))
         self.assertIsNone(strlib.rpad(None, 0, ''))
         self.assertIsNone(strlib.rpad(None, 1, ''))
         self.assertIsNone(strlib.rpad(None, 2, ''))
+
+        # rpad(None, -n, '\0'), rpad(None, 0, '\0'), rpad(None, n, '\0')
+        self.assertIsNone(strlib.rpad(None, -2, '\0'))
+        self.assertIsNone(strlib.rpad(None, -1, '\0'))
+        self.assertIsNone(strlib.rpad(None, 0, '\0'))
+        self.assertIsNone(strlib.rpad(None, 1, '\0'))
+        self.assertIsNone(strlib.rpad(None, 2, '\0'))
 
         # rpad(None, -n, ' '), rpad(None, 0, ' '), rpad(None, n, ' ')
         self.assertIsNone(strlib.rpad(None, -2, ' '))
@@ -1042,6 +1103,39 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('  ', strlib.rpad('', 2))
         self.assertEqual('   ', strlib.rpad('', 3))
 
+        # rpad(empty, -n, None), rpad(empty, 0, None), rpad(empty, n, None)
+        self.assertEqual('', strlib.rpad('', -2, None))
+        self.assertEqual('', strlib.rpad('', -1, None))
+        self.assertEqual('', strlib.rpad('', 0, None))
+        self.assertEqual('', strlib.rpad('', 1, None))
+        self.assertEqual('', strlib.rpad('', 2, None))
+        self.assertEqual('', strlib.rpad('', 3, None))
+
+        # rpad(empty, -n, ''), rpad(empty, 0, ''), rpad(empty, n, '')
+        self.assertEqual('', strlib.rpad('', -2, ''))
+        self.assertEqual('', strlib.rpad('', -1, ''))
+        self.assertEqual('', strlib.rpad('', 0, ''))
+        self.assertEqual('', strlib.rpad('', 1, ''))
+        self.assertEqual('', strlib.rpad('', 2, ''))
+        self.assertEqual('', strlib.rpad('', 3, ''))
+
+        # rpad(empty, -n, '\0'), rpad(empty, 0, '\0'), rpad(empty, n, '\0')
+        self.assertEqual('', strlib.rpad('', -2, '\0'))
+        self.assertEqual('', strlib.rpad('', -1, '\0'))
+        self.assertEqual('', strlib.rpad('', 0, '\0'))
+        #self.assertEqual('\0', strlib.rpad('', 1, '\0'))     # NUL SPEC
+        #self.assertEqual('\0\0', strlib.rpad('', 2, '\0'))   # NUL SPEC
+        #self.assertEqual('\0\0\0', strlib.rpad('', 3, '\0')) # NUL SPEC
+
+        # rpad(empty, -n, ' '), rpad(empty, 0, ' '), rpad(empty, n, ' ')
+        self.assertEqual('', strlib.rpad('', -2, ' '))
+        self.assertEqual('', strlib.rpad('', -1, ' '))
+        self.assertEqual('', strlib.rpad('', 0, ' '))
+        self.assertEqual(' ', strlib.rpad('', 1, ' '))
+        self.assertEqual('  ', strlib.rpad('', 2, ' '))
+        self.assertEqual('   ', strlib.rpad('', 3, ' '))
+
+        # rpad(empty, -n, '*'), rpad(empty, 0, '*'), rpad(empty, n, '*')
         self.assertEqual('', strlib.rpad('', -2, '*'))
         self.assertEqual('', strlib.rpad('', -1, '*'))
         self.assertEqual('', strlib.rpad('', 0, '*'))
@@ -1109,6 +1203,8 @@ class StrlibTest(unittest.TestCase):
 
     def test_fill(self):
 
+        # None
+
         # fill(None, -n), fill(None, 0), fill(None, n)
         self.assertIsNone(strlib.fill(None, -2))
         self.assertIsNone(strlib.fill(None, -1))
@@ -1116,23 +1212,42 @@ class StrlibTest(unittest.TestCase):
         self.assertIsNone(strlib.fill(None, 1))
         self.assertIsNone(strlib.fill(None, 2))
 
+        # fill(None, -n, None), fill(None, 0, None), fill(None, n, None)
+        self.assertIsNone(strlib.fill(None, -2, None))
+        self.assertIsNone(strlib.fill(None, -1, None))
+        self.assertIsNone(strlib.fill(None, 0, None))
+        self.assertIsNone(strlib.fill(None, 1, None))
+        self.assertIsNone(strlib.fill(None, 2, None))
+
+        # fill(None, -n, ''), fill(None, 0, ''), fill(None, n, '')
         self.assertIsNone(strlib.fill(None, -2, ''))
         self.assertIsNone(strlib.fill(None, -1, ''))
         self.assertIsNone(strlib.fill(None, 0, ''))
         self.assertIsNone(strlib.fill(None, 1, ''))
         self.assertIsNone(strlib.fill(None, 2, ''))
 
+        # fill(None, -n, '\0'), fill(None, 0, '\0'), fill(None, n, '\0')
+        self.assertIsNone(strlib.fill(None, -2, '\0'))
+        self.assertIsNone(strlib.fill(None, -1, '\0'))
+        self.assertIsNone(strlib.fill(None, 0, '\0'))
+        self.assertIsNone(strlib.fill(None, 1, '\0'))
+        self.assertIsNone(strlib.fill(None, 2, '\0'))
+
+        # fill(None, -n, ' '), fill(None, 0, ' '), fill(None, n, ' ')
         self.assertIsNone(strlib.fill(None, -2, ' '))
         self.assertIsNone(strlib.fill(None, -1, ' '))
         self.assertIsNone(strlib.fill(None, 0, ' '))
         self.assertIsNone(strlib.fill(None, 1, ' '))
         self.assertIsNone(strlib.fill(None, 2, ' '))
 
+        # fill(None, -n, '*'), fill(None, 0, '*'), fill(None, n, '*')
         self.assertIsNone(strlib.fill(None, -2, '*'))
         self.assertIsNone(strlib.fill(None, -1, '*'))
         self.assertIsNone(strlib.fill(None, 0, '*'))
         self.assertIsNone(strlib.fill(None, 1, '*'))
         self.assertIsNone(strlib.fill(None, 2, '*'))
+
+        # empty
 
         # fill(empty, -n), fill(empty, 0), fill(empty, n)
         self.assertEqual('', strlib.fill('', -2))
@@ -1140,6 +1255,15 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('', strlib.fill('', 0))
         self.assertEqual(' ', strlib.fill('', 1))
         self.assertEqual('  ', strlib.fill('', 2))
+        self.assertEqual('   ', strlib.fill('', 3))
+
+        # fill(empty, -n, None), fill(empty, 0, None), fill(empty, n, None)
+        self.assertEqual('', strlib.fill('', -2, None))
+        self.assertEqual('', strlib.fill('', -1, None))
+        self.assertEqual('', strlib.fill('', 0, None))
+        self.assertEqual('', strlib.fill('', 1, None))
+        self.assertEqual('', strlib.fill('', 2, None))
+        self.assertEqual('', strlib.fill('', 3, None))
 
         # fill(empty, -n, ''), fill(empty, 0, ''), fill(empty, n, '')
         self.assertEqual('', strlib.fill('', -2, ''))
@@ -1147,6 +1271,15 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('', strlib.fill('', 0, ''))
         self.assertEqual('', strlib.fill('', 1, ''))
         self.assertEqual('', strlib.fill('', 2, ''))
+        self.assertEqual('', strlib.fill('', 3, ''))
+
+        # fill(empty, -n, '\0'), fill(empty, 0, '\0'), fill(empty, n, '\0')
+        self.assertEqual('', strlib.fill('', -2, '\0'))
+        self.assertEqual('', strlib.fill('', -1, '\0'))
+        self.assertEqual('', strlib.fill('', 0, '\0'))
+        #self.assertEqual('\0', strlib.fill('', 1, '\0'))     # NUL SPEC
+        #self.assertEqual('\0\0', strlib.fill('', 2, '\0'))   # NUL SPEC
+        #self.assertEqual('\0\0\0', strlib.fill('', 3, '\0')) # NUL SPEC
 
         # fill(empty, -n, ' '), fill(empty, 0, ' '), fill(empty, n, ' ')
         self.assertEqual('', strlib.fill('', -2, ' '))
@@ -1154,6 +1287,7 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('', strlib.fill('', 0, ' '))
         self.assertEqual(' ', strlib.fill('', 1, ' '))
         self.assertEqual('  ', strlib.fill('', 2, ' '))
+        self.assertEqual('   ', strlib.fill('', 3, ' '))
 
         # fill(empty, -n, '*'), fill(empty, 0, '*'), fill(empty, n, '*')
         self.assertEqual('', strlib.fill('', -2, '*'))
@@ -1161,6 +1295,7 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('', strlib.fill('', 0, '*'))
         self.assertEqual('*', strlib.fill('', 1, '*'))
         self.assertEqual('**', strlib.fill('', 2, '*'))
+        self.assertEqual('***', strlib.fill('', 3, '*'))
 
         # char
 
@@ -1210,6 +1345,20 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('abcxyz', strlib.fill('abcxyz', 6, '*'))
         self.assertEqual('abcxyz*', strlib.fill('abcxyz', 7, '*'))
         self.assertEqual('abcxyz**', strlib.fill('abcxyz', 8, '*'))
+
+        # fill(str, -n, '+-'), fill(str, 0, '+-'), fill(str, n, '+-')
+        self.assertEqual('', strlib.fill('abcxyz', -2, '+-'))
+        self.assertEqual('', strlib.fill('abcxyz', -1, '+-'))
+        self.assertEqual('', strlib.fill('abcxyz', 0, '+-'))
+        self.assertEqual('a', strlib.fill('abcxyz', 1, '+-'))
+        self.assertEqual('ab', strlib.fill('abcxyz', 2, '+-'))
+        self.assertEqual('abc', strlib.fill('abcxyz', 3, '+-'))
+        self.assertEqual('a...', strlib.fill('abcxyz', 4, '+-'))   # ellipsis
+        self.assertEqual('ab...', strlib.fill('abcxyz', 5, '+-'))  # ellipsis
+        self.assertEqual('abcxyz', strlib.fill('abcxyz', 6, '+-'))
+        self.assertEqual('abcxyz+', strlib.fill('abcxyz', 7, '+-'))
+        self.assertEqual('abcxyz+-', strlib.fill('abcxyz', 8, '+-'))
+        self.assertEqual('abcxyz+-+', strlib.fill('abcxyz', 9, '+-'))
 
 
     def test_ellipsis(self):
