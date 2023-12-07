@@ -293,7 +293,22 @@ void fail(const char* file, const int line, const char* func, const std::string&
 
 std::string toString(const std::string& value) {
     return "\"" + value + "\"";
-} 
+}
+
+std::string toString(const std::vector<std::string>& values) {
+    if (values.empty()) {
+        return "[]";
+    }
+    std::string result = "[";
+    for (int i = 0; i < values.size(); i++) {
+        if (i > 0) {
+            result.append(", ");
+        }
+        result.append(values[i]);
+    }
+    result += "]";
+    return result;
+}
 
 std::string toString(const short value) {
     return std::to_string(value);

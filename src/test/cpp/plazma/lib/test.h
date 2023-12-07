@@ -166,6 +166,8 @@ void fail(const char* file, const int line, const char* func, const std::string&
 
 std::string toString(const std::string& value);
 
+std::string toString(const std::vector<std::string>& values);
+
 std::string toString(const short value);
 
 std::string toString(const int value);
