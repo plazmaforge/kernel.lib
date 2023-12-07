@@ -197,6 +197,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 // 7.1
 //      
+// - split(const string& str)
 // - split(const string& str, char separator)
 // - split(const string& str, const string& separator)
 // 
@@ -2073,12 +2074,28 @@ namespace strlib {
 
     ////
 
+    std::vector<std::string> split(const std::string& str) {
+        return splitBySeparators(str, DEFAULT_SEPARATORS, false); // by default preserveAll=false
+    }
+
+    //
+
     std::vector<std::string> split(const std::string& str, char separator) {
         return splitBySeparator(str, separator);
     }
 
+    std::vector<std::string> split(const std::string& str, char separator, bool preserveAll) {
+        return splitBySeparator(str, separator, preserveAll);
+    }
+
+    //
+
     std::vector<std::string> split(const std::string& str, const std::string& separator) {
         return splitBySeparator(str, separator);
+    }
+
+    std::vector<std::string> split(const std::string& str, const std::string& separator, bool preserveAll) {
+        return splitBySeparator(str, separator, preserveAll);
     }
 
     // splitBySeparator
@@ -2099,6 +2116,16 @@ namespace strlib {
 
     std::vector<std::string> splitBySeparator(const std::string& str, const std::string& separator, bool preserveAll) {
         return tokenizeBySeparator(str, separator, false, preserveAll);
+    }
+
+    // splitBySeparators
+
+    std::vector<std::string> splitBySeparators(const std::string& str, const std::string& separators) {
+        return tokenizeBySeparators(str, separators, false, true);
+    }
+
+    std::vector<std::string> splitBySeparators(const std::string& str, const std::string& separators, bool preserveAll) {
+        return tokenizeBySeparators(str, separators, false, preserveAll);
     }
 
     // splitWords
@@ -2249,16 +2276,6 @@ namespace strlib {
         }
         
         return res;
-    }
-
-    // splitBySeparators
-
-    std::vector<std::string> splitBySeparators(const std::string& str, const std::string& separators) {
-        return tokenizeBySeparators(str, separators, false, true);
-    }
-
-    std::vector<std::string> splitBySeparators(const std::string& str, const std::string& separators, bool preserveAll) {
-        return tokenizeBySeparators(str, separators, false, preserveAll);
     }
 
     // tokenizeBySeparators

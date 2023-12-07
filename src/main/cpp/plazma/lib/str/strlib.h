@@ -190,6 +190,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 // 7.1
 //      
+// - split(const string& str)
 // - split(const string& str, char separator)
 // - split(const string& str, const string& separator)
 //
@@ -795,9 +796,19 @@ namespace strlib {
 
     //// 7.1
 
+    std::vector<std::string> split(const std::string& str);
+
+    //
+
     std::vector<std::string> split(const std::string& str, char separator);
 
+    std::vector<std::string> split(const std::string& str, char separator, bool preserveAll);
+
+    //
+
     std::vector<std::string> split(const std::string& str, const std::string& separator);
+
+    std::vector<std::string> split(const std::string& str, const std::string& separator, bool preserveAll);
 
     // splitBySeparator
 
