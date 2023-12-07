@@ -3725,6 +3725,10 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals("123 xyz 123", StrLib.replaceAll("abc xyz abc", new String[] {"abc"}, new String[] {"123", "456"}));                 // size <>: 1,2
         assertEquals("123 xyz 123 def", StrLib.replaceAll("abc xyz abc def", new String[] {"abc", "xyz"}, new String[] {"123"}));         // size <>: 2,1
         
+        ////
+        
+        assertEquals("ABCDEF", StrLib.replaceAll("123456", new String[] {"1", "2", "3", "4", "5", "6"}, new String[] {"A", "B", "C", "D", "E", "F"}));
+        
     }
     
     public void testReplaceAll_map() {
@@ -3774,6 +3778,10 @@ public class StrLibTest extends AbstractTestCase {
 
         assertEquals("123 xyz 123", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"abc", "123", null, "456"})));          // size <>: 1,2
         assertEquals("123 xyz 123 def", StrLib.replaceAll("abc xyz abc def", toMap(new String[] {"abc", "123", "xyz", null})));  // size <>: 2,1
+        
+        ////
+        
+        assertEquals("ABCDEF", StrLib.replaceAll("123456", toMap(new String[] {"1", "A", "2", "B", "3", "C", "4", "D", "5", "E", "6", "F"})));
                 
     }
 
@@ -3823,7 +3831,26 @@ public class StrLibTest extends AbstractTestCase {
 
         assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.split(",abc,def,,xyz,", ",", false));                   // preserveAll = False
         assertEquals(new String[] {"abc", " def", " xyz"}, StrLib.split(",abc, def,, xyz,", ",", false));               // preserveAll = False
-        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.split(", abc, def, , xyz, ", ", ", false));             // preserveAll = False        
+        assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.split(", abc, def, , xyz, ", ", ", false));             // preserveAll = False
+        
+        ////
+        
+        // ValueSpace=0, SeparatorSpace=0
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1,200,500,-12", ","));        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1|200|500|-12", "|"));
+
+        // ValueSpace=1, SeparatorSpace=0
+        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1, 200, 500, -12", ","));
+        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.split("1| 200| 500| -12", "|"));
+        
+        // ValueSpace=1, SeparatorSpace=1
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1, 200, 500, -12", ", "));
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.split("1| 200| 500| -12", "| "));
+        
+        // ValueSpace=1-2, SeparatorSpace=1
+        assertEquals(new String[] {"1", "200", "500", " -12"}, StrLib.split("1, 200, 500,  -12", ", "));        
+        assertEquals(new String[] {"1", "200", "500", " -12"}, StrLib.split("1| 200| 500|  -12", "| "));
+        
 
     }
     
@@ -3868,6 +3895,24 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.splitBySeparator(",abc,def,,xyz,", ",", false));                   // preserveAll = False
         assertEquals(new String[] {"abc", " def", " xyz"}, StrLib.splitBySeparator(",abc, def,, xyz,", ",", false));               // preserveAll = False
         assertEquals(new String[] {"abc", "def", "xyz"}, StrLib.splitBySeparator(", abc, def, , xyz, ", ", ", false));             // preserveAll = False
+        
+        ////
+        
+        // ValueSpace=0, SeparatorSpace=0
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitBySeparator("1,200,500,-12", ","));        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitBySeparator("1|200|500|-12", "|"));
+
+        // ValueSpace=1, SeparatorSpace=0
+        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.splitBySeparator("1, 200, 500, -12", ","));
+        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.splitBySeparator("1| 200| 500| -12", "|"));
+        
+        // ValueSpace=1, SeparatorSpace=1
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitBySeparator("1, 200, 500, -12", ", "));
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitBySeparator("1| 200| 500| -12", "| "));
+        
+        // ValueSpace=1-2, SeparatorSpace=1
+        assertEquals(new String[] {"1", "200", "500", " -12"}, StrLib.splitBySeparator("1, 200, 500,  -12", ", "));        
+        assertEquals(new String[] {"1", "200", "500", " -12"}, StrLib.splitBySeparator("1| 200| 500|  -12", "| "));        
         
     }
     
@@ -3921,7 +3966,36 @@ public class StrLibTest extends AbstractTestCase {
 
         assertEquals(new String[] {"abc", "def", "", "xyz"}, StrLib.splitBySeparators("abc,def;,xyz", ",;.-", true));
         assertEquals(new String[] {"abc", " def", "", " xyz"}, StrLib.splitBySeparators("abc, def;, xyz", ",;.-", true));
+
+        ////
         
+        // ValueSpace=0, SeparatorSpace=0
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitBySeparators("1,200,500,-12", ","));        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitBySeparators("1|200|500|-12", "|"));
+
+        // ValueSpace=1, SeparatorSpace=0
+        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.splitBySeparators("1, 200, 500, -12", ","));
+        assertEquals(new String[] {"1", " 200", " 500", " -12"}, StrLib.splitBySeparators("1| 200| 500| -12", "|"));
+        
+        // ValueSpace=1, SeparatorSpace=1
+        assertEquals(new String[] {"1", "", "200", "", "500", "", "-12"}, StrLib.splitBySeparators("1, 200, 500, -12", ", "));
+        assertEquals(new String[] {"1", "", "200", "", "500", "", "-12"}, StrLib.splitBySeparators("1| 200| 500| -12", "| "));
+        
+        // ValueSpace=1-2, SeparatorSpace=1
+        assertEquals(new String[] {"1", "", "200", "", "500", "", "", "-12"}, StrLib.splitBySeparators("1, 200, 500,  -12", ", "));        
+        assertEquals(new String[] {"1", "", "200", "", "500", "", "", "-12"}, StrLib.splitBySeparators("1| 200| 500|  -12", "| "));        
+
+        // ValueSpace=1-2, SeparatorSpace=1, preserveAll=false
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitBySeparators("1, 200, 500,  -12", ", ", false));        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitBySeparators("1| 200| 500|  -12", "| ", false));
+        
+        // IMPORTANT! It doesn't split and trim elements: need use preserveAll=true and trim each element 
+        // Use splitTrim, splitTrimBySeparator, splitTrimBySeparators
+
+        // ValueSpace=1-2, SeparatorSpace=1, preserveAll=false, first separator
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitBySeparators(",1, 200, 500,  -12", ", ", false));        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitBySeparators("|1| 200| 500|  -12", "| ", false));        
+
     }
         
     ////    
@@ -3937,15 +4011,18 @@ public class StrLibTest extends AbstractTestCase {
         assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1| 200| 500| -12", "|"));
         
         // ValueSpace=1, SeparatorSpace=1
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1, 200, 500, -12", ", "));
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1| 200| 500| -12", "| "));
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1, 200, 500, -12", ", ")); // no effect separator ' ', we use trim
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1| 200| 500| -12", "| ")); // no effect separator ' ', we use trim
         
         // ValueSpace=1-2, SeparatorSpace=1
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1, 200, 500,  -12", ", "));        
-        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1| 200| 500|  -12", "| "));
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1, 200, 500,  -12", ", ")); // no effect separator ' ', we use trim        
+        assertEquals(new String[] {"1", "200", "500", "-12"}, StrLib.splitTrim("1| 200| 500|  -12", "| ")); // no effect separator ' ', we use trim
                 
     }
-        
+    
+    // - splitTrimBySeparator
+    // - splitTrimBySeparators
+            
     ///////
     
     public void testSplitWords() {

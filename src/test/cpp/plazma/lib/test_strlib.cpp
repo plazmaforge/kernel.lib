@@ -2761,16 +2761,10 @@ TEST(replaceAll_string) {
   ASSERT_EQ("1bc xyz 1bc", strlib::replaceAll("abc xyz abc", "a", "1"));      // replace
   ASSERT_EQ("123 xyz 123", strlib::replaceAll("abc xyz abc", "abc", "123"));  // replace
 
-
-  //ASSERT_EQ("Abcdef12345Abcdef", strlib::replaceAll("abcdef12345abcdef", "a", "A"));
-  //std::vector<std::string> from = {"1", "2", "3", "4", "5", "6"};
-  //std::vector<std::string> to = {"A", "B", "C", "D", "E", "F"};
-  //ASSERT_EQ("ABCDEF", strlib::replaceAll("123456", from, to));
-
 }
 
 TEST(replaceAll_list) {
-  
+
     // replaceAll(empty, value, value): empty -> empty
     ASSERT_EQ("", strlib::replaceAll("", (VS) {}, (VS) {}));
     ASSERT_EQ("", strlib::replaceAll("", (VS) {}, (VS) {""}));
@@ -2818,58 +2812,220 @@ TEST(replaceAll_list) {
     ASSERT_EQ("123 xyz 123", strlib::replaceAll("abc xyz abc", (VS) {"abc"}, (VS) {"123", "456"}));                 // size <>: 1,2
     ASSERT_EQ("123 xyz 123 def", strlib::replaceAll("abc xyz abc def", (VS) {"abc", "xyz"}, (VS) {"123"}));         // size <>: 2,1
 
+    ////
+
+    ASSERT_EQ("ABCDEF", strlib::replaceAll("123456", (VS) {"1", "2", "3", "4", "5", "6"}, (VS) {"A", "B", "C", "D", "E", "F"}));
+
 }
 
 // 7.1
 
 TEST(split) {
 
-  // splitBySeparator = split
+    // split(empty)
+  ASSERT_EQ(((VS) {}), strlib::split(""));
+  ASSERT_EQ(((VS) {}), strlib::split("", ""));
+  ASSERT_EQ(((VS) {}), strlib::split("", " "));
+  ASSERT_EQ(((VS) {}), strlib::split("", ","));
 
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1,200,500,-12", ',')));
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1|200|500|-12", '|')));
+  // split(blank)
+  ASSERT_EQ(((VS) {}), strlib::split(" "));             // split by default. " " - separator by default, not include
+  ASSERT_EQ(((VS) {" "}), strlib::split(" ", ""));
+  ASSERT_EQ(((VS) {"", ""}), strlib::split(" ", " "));  // preserveAll = True by default (???)
+  ASSERT_EQ(((VS) {" "}), strlib::split(" ", ","));
 
-  ASSERT_TRUE(((std::vector<std::string>){"1", " 200", " 500", " -12"} == strlib::split("1, 200, 500, -12", ',')));
-  ASSERT_TRUE(((std::vector<std::string>){"1", " 200", " 500", " -12"} == strlib::split("1| 200| 500| -12", '|')));
+  // False
+  ASSERT_EQ(((VS) {"abc,def,xyz"}), strlib::split("abc,def,xyz", "|"));
+  ASSERT_EQ(((VS) {"abc|def|xyz"}), strlib::split("abc|def|xyz", ","));
+    
+  // True
+  // separator=default
+  ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::split("abc\ndef\rxyz"));
+  ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::split("abc\f def\v \txyz"));
+  //ASSERT_TRUE(((VS) {"abc", "def", "xyz"} == strlib::split("abc\f def\v \txyz")));
 
-  //printVector(strlib::split("1, 200, 500, -12", " ,"));
+  // separator=value
+  ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::split("abc,def,xyz", ","));                             // preserveAll = True by default
+  ASSERT_EQ(((VS) {"abc", " def", " xyz"}), strlib::split("abc, def, xyz", ","));                         // preserveAll = True by default
+  ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::split("abc, def, xyz", ", "));                          // preserveAll = True by default
 
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1, 200, 500, -12", ", ")));
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1| 200| 500| -12", "| ")));
+  ASSERT_EQ(((VS) {"", "abc", "def", "", "xyz", ""}), strlib::split(",abc,def,,xyz,", ",", true));        // preserveAll = True
+  ASSERT_EQ(((VS) {"", "abc", " def", "", " xyz", ""}), strlib::split(",abc, def,, xyz,", ",", true));    // preserveAll = True
+  ASSERT_EQ(((VS) {"", "abc", "def", "", "xyz", ""}), strlib::split(", abc, def, , xyz, ", ", ", true));  // preserveAll = True        
 
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", " -12"} == strlib::split("1, 200, 500,  -12", ", ")));
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", " -12"} == strlib::split("1| 200| 500|  -12", "| ")));
+  ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::split(",abc,def,,xyz,", ",", false));                   // preserveAll = False
+  ASSERT_EQ(((VS) {"abc", " def", " xyz"}), strlib::split(",abc, def,, xyz,", ",", false));               // preserveAll = False
+  ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::split(", abc, def, , xyz, ", ", ", false));             // preserveAll = False        
 
-  //ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "", "-12"} == strlib::split("1, 200| 500|| -12", ",|", true))); // trim
+  ////
+
+  // ValueSpace=0, SeparatorSpace=0
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::split("1,200,500,-12", ','));
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::split("1|200|500|-12", '|'));
+
+  // ValueSpace=1, SeparatorSpace=0
+  ASSERT_EQ(((VS) {"1", " 200", " 500", " -12"}), strlib::split("1, 200, 500, -12", ','));
+  ASSERT_EQ(((VS) {"1", " 200", " 500", " -12"}), strlib::split("1| 200| 500| -12", '|'));
+
+  // ValueSpace=1, SeparatorSpace=1
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::split("1, 200, 500, -12", ", "));
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::split("1| 200| 500| -12", "| "));
+
+  // ValueSpace=1-2, SeparatorSpace=1
+  ASSERT_EQ(((VS) {"1", "200", "500", " -12"}), strlib::split("1, 200, 500,  -12", ", "));
+  ASSERT_EQ(((VS) {"1", "200", "500", " -12"}), strlib::split("1| 200| 500|  -12", "| "));
 
 }
 
 TEST(splitBySeparator) {
 
-  // splitBySeparator
+  // splitBySeparator(empty)
+  ASSERT_EQ(((VS) {}), strlib::splitBySeparator("", ""));
+  ASSERT_EQ(((VS) {}), strlib::splitBySeparator("", " "));
+  ASSERT_EQ(((VS) {}), strlib::splitBySeparator("", ","));
 
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1,200,500,-12", ',')));
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1|200|500|-12", '|')));
+  // splitBySeparator(blank)
+  ASSERT_EQ(((VS) {" "}), strlib::splitBySeparator(" ", ""));
+  ASSERT_EQ(((VS) {"", ""}), strlib::splitBySeparator(" ", " "));  // preserveAll = True by default (???)
+  ASSERT_EQ(((VS) {" "}), strlib::splitBySeparator(" ", ","));
 
-  ASSERT_TRUE(((std::vector<std::string>){"1", " 200", " 500", " -12"} == strlib::split("1, 200, 500, -12", ',')));
-  ASSERT_TRUE(((std::vector<std::string>){"1", " 200", " 500", " -12"} == strlib::split("1| 200| 500| -12", '|')));
+  // False
+  ASSERT_EQ(((VS) {"abc,def,xyz"}), strlib::splitBySeparator("abc,def,xyz", "|"));
+  ASSERT_EQ(((VS) {"abc|def|xyz"}), strlib::splitBySeparator("abc|def|xyz", ","));
+    
+  // True
+  // separator=default
+  //ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::splitBySeparators("abc\ndef\rxyz", strlib::DEFAULT_SEPARATORS, false));
+  //ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::splitBySeparators("abc\f def\v \txyz", strlib::DEFAULT_SEPARATORS, false));
 
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1, 200, 500, -12", ", ")));
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::split("1| 200| 500| -12", "| ")));
+  // separator=value
+  ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::splitBySeparator("abc,def,xyz", ","));                             // preserveAll = True by default
+  ASSERT_EQ(((VS) {"abc", " def", " xyz"}), strlib::splitBySeparator("abc, def, xyz", ","));                         // preserveAll = True by default
+  ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::splitBySeparator("abc, def, xyz", ", "));                          // preserveAll = True by default
 
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", " -12"} == strlib::split("1, 200, 500,  -12", ", ")));
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", " -12"} == strlib::split("1| 200| 500|  -12", "| ")));
+  ASSERT_EQ(((VS) {"", "abc", "def", "", "xyz", ""}), strlib::splitBySeparator(",abc,def,,xyz,", ",", true));        // preserveAll = True
+  ASSERT_EQ(((VS) {"", "abc", " def", "", " xyz", ""}), strlib::splitBySeparator(",abc, def,, xyz,", ",", true));    // preserveAll = True
+  ASSERT_EQ(((VS) {"", "abc", "def", "", "xyz", ""}), strlib::splitBySeparator(", abc, def, , xyz, ", ", ", true));  // preserveAll = True
+
+  ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::splitBySeparator(",abc,def,,xyz,", ",", false));                   // preserveAll = False
+  ASSERT_EQ(((VS) {"abc", " def", " xyz"}), strlib::splitBySeparator(",abc, def,, xyz,", ",", false));               // preserveAll = False
+  ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::splitBySeparator(", abc, def, , xyz, ", ", ", false));             // preserveAll = False
+
+  ////
+
+  // ValueSpace=0, SeparatorSpace=0
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitBySeparator("1,200,500,-12", ','));
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitBySeparator("1|200|500|-12", '|'));
+
+  // ValueSpace=1, SeparatorSpace=0
+  ASSERT_EQ(((VS) {"1", " 200", " 500", " -12"}), strlib::splitBySeparator("1, 200, 500, -12", ','));
+  ASSERT_EQ(((VS) {"1", " 200", " 500", " -12"}), strlib::splitBySeparator("1| 200| 500| -12", '|'));
+
+  // ValueSpace=1, SeparatorSpace=1
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitBySeparator("1, 200, 500, -12", ", "));
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitBySeparator("1| 200| 500| -12", "| "));
+
+  // ValueSpace=1-2, SeparatorSpace=1
+  ASSERT_EQ(((VS) {"1", "200", "500", " -12"}), strlib::splitBySeparator("1, 200, 500,  -12", ", "));
+  ASSERT_EQ(((VS) {"1", "200", "500", " -12"}), strlib::splitBySeparator("1| 200| 500|  -12", "| "));
 
 }
 
 TEST(splitBySeparators) {
 
-  // splitBySeparators
+  // splitBySeparators(empty, value)
+  ASSERT_EQ(((VS) {}), strlib::splitBySeparators("", ""));
+  ASSERT_EQ(((VS) {}), strlib::splitBySeparators("", " "));
+  ASSERT_EQ(((VS) {}), strlib::splitBySeparators("", ","));
 
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::splitBySeparators("1, 200| 500|| -12", " ,|", false)));
-  ASSERT_TRUE(((std::vector<std::string>){"1", "200", "500", "-12"} == strlib::splitBySeparators("1, 200| 500||    -12", " ,|", false)));
+  // splitBySeparators(blank, value)
+  ASSERT_EQ(((VS) {" "}), strlib::splitBySeparators(" ", ""));
+  ASSERT_EQ(((VS) {"", ""}), strlib::splitBySeparators(" ", " "));  // preserveAll = true by default (???)
+  ASSERT_EQ(((VS) {" "}), strlib::splitBySeparators(" ", ","));
+
+  // false
+  // one separator
+  ASSERT_EQ(((VS) {"abc,def,xyz"}), strlib::splitBySeparators("abc,def,xyz", "|"));
+  ASSERT_EQ(((VS) {"abc|def|xyz"}), strlib::splitBySeparators("abc|def|xyz", ","));
+
+  // many separators
+  ASSERT_EQ(((VS) {"abc,def,xyz"}), strlib::splitBySeparators("abc,def,xyz", "|;.-"));
+  ASSERT_EQ(((VS) {"abc|def|xyz"}), strlib::splitBySeparators("abc|def|xyz", ",;.-"));
+
+  // true
+  // one separator
+  ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::splitBySeparators("abc,def,xyz", ","));
+  ASSERT_EQ(((VS) {"abc", " def", " xyz"}), strlib::splitBySeparators("abc, def, xyz", ","));
+
+  ASSERT_EQ(((VS) {"abc", "def", "", "xyz"}), strlib::splitBySeparators("abc,def,,xyz", ",", true));
+  ASSERT_EQ(((VS) {"abc", " def", "", " xyz"}), strlib::splitBySeparators("abc, def,, xyz", ",", true));
+
+  // many separators
+  ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::splitBySeparators("abc,def;xyz", ",;"));
+  ASSERT_EQ(((VS) {"abc", " def", " xyz"}), strlib::splitBySeparators("abc, def; xyz", ",;"));
+
+  ASSERT_EQ(((VS) {"abc", "def", "", "xyz"}), strlib::splitBySeparators("abc,def;,xyz", ",;", true));
+  ASSERT_EQ(((VS) {"abc", " def", "", " xyz"}), strlib::splitBySeparators("abc, def;, xyz", ",;", true));
+
+  // many separators - skip
+  ASSERT_EQ(((VS) {"abc", "def", "xyz"}), strlib::splitBySeparators("abc,def;xyz", ",;.-"));
+  ASSERT_EQ(((VS) {"abc", " def", " xyz"}), strlib::splitBySeparators("abc, def; xyz", ",;.-"));
+
+  ASSERT_EQ(((VS) {"abc", "def", "", "xyz"}), strlib::splitBySeparators("abc,def;,xyz", ",;.-", true));
+  ASSERT_EQ(((VS) {"abc", " def", "", " xyz"}), strlib::splitBySeparators("abc, def;, xyz", ",;.-", true));
+
+  ////
+
+  // ValueSpace=0, SeparatorSpace=0
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitBySeparators("1,200,500,-12", ","));
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitBySeparators("1|200|500|-12", "|"));
+
+  // ValueSpace=1, SeparatorSpace=0
+  ASSERT_EQ(((VS) {"1", " 200", " 500", " -12"}), strlib::splitBySeparators("1, 200, 500, -12", ","));
+  ASSERT_EQ(((VS) {"1", " 200", " 500", " -12"}), strlib::splitBySeparators("1| 200| 500| -12", "|"));
+
+  // ValueSpace=1, SeparatorSpace=1
+  ASSERT_EQ(((VS) {"1", "", "200", "", "500", "", "-12"}), strlib::splitBySeparators("1, 200, 500, -12", ", "));
+  ASSERT_EQ(((VS) {"1", "", "200", "", "500", "", "-12"}), strlib::splitBySeparators("1| 200| 500| -12", "| "));
+
+  // ValueSpace=1-2, SeparatorSpace=1
+  ASSERT_EQ(((VS) {"1", "", "200", "", "500", "", "", "-12"}), strlib::splitBySeparators("1, 200, 500,  -12", ", "));
+  ASSERT_EQ(((VS) {"1", "", "200", "", "500", "", "", "-12"}), strlib::splitBySeparators("1| 200| 500|  -12", "| "));
+
+  // ValueSpace=1-2, SeparatorSpace=1, preserveAll=false
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitBySeparators("1, 200, 500,  -12", ", ", false));
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitBySeparators("1| 200| 500|  -12", "| ", false));
+
+  // IMPORTANT! It doesn't split and trim elements: need use preserveAll=true and trim each element 
+  // Use splitTrim, splitTrimBySeparator, splitTrimBySeparators
+
+  // ValueSpace=1-2, SeparatorSpace=1, preserveAll=false, first separator
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitBySeparators(",1, 200, 500,  -12", ", ", false));
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitBySeparators("|1| 200| 500|  -12", "| ", false));
 
 }
+
+/*
+TEST(splitTrim) {
+
+  // ValueSpace=0, SeparatorSpace=0
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrim("1,200,500,-12", ','));
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrim("1|200|500|-12", '|'));
+
+  // ValueSpace=1, SeparatorSpace=0
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrim("1, 200, 500, -12", ','));
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrim("1| 200| 500| -12", '|'));
+
+  // ValueSpace=1, SeparatorSpace=1
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrim("1, 200, 500, -12", ", ")); // no effect separator ' ', we use trim
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrim("1| 200| 500| -12", "| ")); // no effect separator ' ', we use trim
+
+  // ValueSpace=1-2, SeparatorSpace=1
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrim("1, 200, 500,  -12", ", ")); // no effect separator ' ', we use trim
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrim("1| 200| 500|  -12", "| ")); // no effect separator ' ', we use trim
+
+}
+*/
 
 TEST(splitWords) {
 

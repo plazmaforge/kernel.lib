@@ -3139,6 +3139,10 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual('123 xyz 123', strlib.replaceAll('abc xyz abc', ['abc'], ['123', '456']))                   # size <>: 1,2
         self.assertEqual('123 xyz 123 def', strlib.replaceAll('abc xyz abc def', ['abc', 'xyz'], ['123']))           # size <>: 2,1
 
+        ##
+
+        self.assertEqual('ABCDEF', strlib.replaceAll('123456', ['1', '2', '3', '4', '5', '6'], ['A', 'B', 'C', 'D', 'E', 'F']))
+
     def test_replaceAll_map(self):
 
         # replaceAll(None, value): None -> None
@@ -3186,6 +3190,10 @@ class StrlibTest(unittest.TestCase):
 
         self.assertEqual('123 xyz 123', strlib.replaceAll('abc xyz abc', {'abc': '123', None: '456'}))                # size <>: 1,2
         self.assertEqual('123 xyz 123 def', strlib.replaceAll('abc xyz abc def', {'abc': '123', 'xyz': None}))        # size <>: 2,1
+        
+        ##
+
+        self.assertEqual('ABCDEF', strlib.replaceAll('123456', {'1': 'A', '2': 'B', '3': 'C', '4': 'D', '5': 'E', '6': 'F'}))
 
     # 7.1
 
@@ -3235,6 +3243,25 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(['abc', ' def', ' xyz'], strlib.split(',abc, def,, xyz,', ',', False))               # preserveAll = False
         self.assertEqual(['abc', 'def', 'xyz'], strlib.split(', abc, def, , xyz, ', ', ', False))             # preserveAll = False
 
+        ##
+
+        # ValueSpace=0, SeparatorSpace=0
+        self.assertEqual(['1', '200', '500', '-12'], strlib.split('1,200,500,-12', ','))
+        self.assertEqual(['1', '200', '500', '-12'], strlib.split('1|200|500|-12', '|'))
+
+        # ValueSpace=1, SeparatorSpace=0
+        self.assertEqual(['1', ' 200', ' 500', ' -12'], strlib.split('1, 200, 500, -12', ','))
+        self.assertEqual(['1', ' 200', ' 500', ' -12'], strlib.split('1| 200| 500| -12', '|'))
+        
+        # ValueSpace=1, SeparatorSpace=1
+        self.assertEqual(['1', '200', '500', '-12'], strlib.split('1, 200, 500, -12', ', '))
+        self.assertEqual(['1', '200', '500', '-12'], strlib.split('1| 200| 500| -12', '| '))
+        
+        # ValueSpace=1-2, SeparatorSpace=1
+        self.assertEqual(['1', '200', '500', ' -12'], strlib.split('1, 200, 500,  -12', ', '))
+        self.assertEqual(['1', '200', '500', ' -12'], strlib.split('1| 200| 500|  -12', '| '))
+
+
     def test_splitBySeparator(self):
 
         # splitBySeparator(None, value)
@@ -3272,6 +3299,24 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(['abc', 'def', 'xyz'], strlib.splitBySeparator(',abc,def,,xyz,', ',', False))                   # preserveAll = False
         self.assertEqual(['abc', ' def', ' xyz'], strlib.splitBySeparator(',abc, def,, xyz,', ',', False))               # preserveAll = False
         self.assertEqual(['abc', 'def', 'xyz'], strlib.splitBySeparator(', abc, def, , xyz, ', ', ', False))             # preserveAll = False
+
+        ##
+
+        # ValueSpace=0, SeparatorSpace=0
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitBySeparator('1,200,500,-12', ','))
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitBySeparator('1|200|500|-12', '|'))
+
+        # ValueSpace=1, SeparatorSpace=0
+        self.assertEqual(['1', ' 200', ' 500', ' -12'], strlib.splitBySeparator('1, 200, 500, -12', ','))
+        self.assertEqual(['1', ' 200', ' 500', ' -12'], strlib.splitBySeparator('1| 200| 500| -12', '|'))
+        
+        # ValueSpace=1, SeparatorSpace=1
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitBySeparator('1, 200, 500, -12', ', '))
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitBySeparator('1| 200| 500| -12', '| '))
+        
+        # ValueSpace=1-2, SeparatorSpace=1
+        self.assertEqual(['1', '200', '500', ' -12'], strlib.splitBySeparator('1, 200, 500,  -12', ', '))
+        self.assertEqual(['1', '200', '500', ' -12'], strlib.splitBySeparator('1| 200| 500|  -12', '| '))
 
     def test_splitBySeparators(self):
 
@@ -3324,7 +3369,53 @@ class StrlibTest(unittest.TestCase):
         self.assertEqual(['abc', 'def', '', 'xyz'], strlib.splitBySeparators('abc,def;,xyz', ',;.-', True))
         self.assertEqual(['abc', ' def', '', ' xyz'], strlib.splitBySeparators('abc, def;, xyz', ',;.-', True))
 
-    # - splitTrim
+        ##
+
+        # ValueSpace=0, SeparatorSpace=0
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitBySeparators('1,200,500,-12', ','))
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitBySeparators('1|200|500|-12', '|'))
+
+        # ValueSpace=1, SeparatorSpace=0
+        self.assertEqual(['1', ' 200', ' 500', ' -12'], strlib.splitBySeparators('1, 200, 500, -12', ','))
+        self.assertEqual(['1', ' 200', ' 500', ' -12'], strlib.splitBySeparators('1| 200| 500| -12', '|'))
+        
+        # ValueSpace=1, SeparatorSpace=1
+        self.assertEqual(['1', '', '200', '', '500', '', '-12'], strlib.splitBySeparators('1, 200, 500, -12', ', '))
+        self.assertEqual(['1', '', '200', '', '500', '', '-12'], strlib.splitBySeparators('1| 200| 500| -12', '| '))
+        
+        # ValueSpace=1-2, SeparatorSpace=1
+        self.assertEqual(['1', '', '200', '', '500', '', '', '-12'], strlib.splitBySeparators('1, 200, 500,  -12', ', '))
+        self.assertEqual(['1', '', '200', '', '500', '', '', '-12'], strlib.splitBySeparators('1| 200| 500|  -12', '| '))
+
+        # ValueSpace=1-2, SeparatorSpace=1, preserveAll=false
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitBySeparators('1, 200, 500,  -12', ', ', False))
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitBySeparators('1| 200| 500|  -12', '| ', False))
+
+        # IMPORTANT! It doesn't split and trim elements: need use preserveAll=true and trim each element 
+        # Use splitTrim, splitTrimBySeparator, splitTrimBySeparators
+
+        # ValueSpace=1-2, SeparatorSpace=1, preserveAll=false, first separator
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitBySeparators(',1, 200, 500,  -12', ', ', False))
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitBySeparators('|1| 200| 500|  -12', '| ', False))
+
+    def test_splitTrim(self):
+
+        # ValueSpace=0, SeparatorSpace=0
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitTrim('1,200,500,-12', ','))
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitTrim('1|200|500|-12', '|'))
+
+        # ValueSpace=1, SeparatorSpace=0
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitTrim('1, 200, 500, -12', ','))
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitTrim('1| 200| 500| -12', '|'))
+        
+        # ValueSpace=1, SeparatorSpace=1
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitTrim('1, 200, 500, -12', ', '))  # no effect separator ' ', we use trim
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitTrim('1| 200| 500| -12', '| '))  # no effect separator ' ', we use trim
+        
+        # ValueSpace=1-2, SeparatorSpace=1
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitTrim('1, 200, 500,  -12', ', ')) # no effect separator ' ', we use trim
+        self.assertEqual(['1', '200', '500', '-12'], strlib.splitTrim('1| 200| 500|  -12', '| ')) # no effect separator ' ', we use trim
+
     # - splitTrimBySeparator
     # - splitTrimBySeparators
 
