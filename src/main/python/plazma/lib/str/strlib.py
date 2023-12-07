@@ -241,7 +241,7 @@ KEBAB_CONNECTOR = '-' # kebab-case
 # - split(str, separator)
 #    
 # - splitBySeparator(str, separator)
-# - splitBySeparator(str, separator, preverseAll)
+# - splitBySeparator(str, separator, preserveAll)
 #
 # - splitBySeparators(str, separators)
 # - splitBySeparators(str, separators, preserveAll)
@@ -1368,27 +1368,27 @@ def replaceAll(str, s1, s2 = None):
 
 # split
 
-def split(str, separator = None, preverseAll = True):
-    return splitBySeparator(str, separator, preverseAll)
+def split(str, separator = None, preserveAll = True):
+    return splitBySeparator(str, separator, preserveAll)
 
-def splitBySeparator(str, separator, preverseAll = True):
-    return tokenizeBySeparator(str, separator, False, preverseAll)
+def splitBySeparator(str, separator, preserveAll = True):
+    return tokenizeBySeparator(str, separator, False, preserveAll)
 
-def splitBySeparators(str, separators, preverseAll = True):
-    return tokenizeBySeparators(str, separators, False, preverseAll)
+def splitBySeparators(str, separators, preserveAll = True):
+    return tokenizeBySeparators(str, separators, False, preserveAll)
 
 # splitTrim
 
-def splitTrim(str, separator = None, preverseAll = True):
-    return splitTrimBySeparator(str, separator, preverseAll)
+def splitTrim(str, separator = None, preserveAll = True):
+    return splitTrimBySeparator(str, separator, preserveAll)
 
-def splitTrimBySeparator(str, separator, preverseAll = True):
-    elements = splitBySeparator(str, separator, preverseAll)
+def splitTrimBySeparator(str, separator, preserveAll = True):
+    elements = splitBySeparator(str, separator, preserveAll)
     trimElements(elements)
     return elements
 
-def splitTrimBySeparators(str, separators, preverseAll = True):
-    elements = splitBySeparators(str, separators, preverseAll)
+def splitTrimBySeparators(str, separators, preserveAll = True):
+    elements = splitBySeparators(str, separators, preserveAll)
     trimElements(elements)
     return elements
 
