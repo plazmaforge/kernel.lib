@@ -2327,36 +2327,496 @@ TEST(removeSuffixes) {
 }
 
 // 4.3
+
+TEST(isQuoted) {
+
+  // False
+  //ASSERT_FALSE(strlib::isQuoted(null));
+  ASSERT_FALSE(strlib::isQuoted(""));
+  ASSERT_FALSE(strlib::isQuoted(" "));
+  ASSERT_FALSE(strlib::isQuoted("abc"));
+
+  // False "
+  ASSERT_FALSE(strlib::isQuoted("\""));  // False - only one quote
+  ASSERT_FALSE(strlib::isQuoted("\"", "\"", "\""));  // False - only one quote
+
+  // False '
+  ASSERT_FALSE(strlib::isQuoted("'"));   // False - only one quote
+  ASSERT_FALSE(strlib::isQuoted("'", "'", "'"));     // False - only one quote
+
+  // False value
+  ASSERT_FALSE(strlib::isQuoted("[", "[", "]"));     // False - only one quote
+  ASSERT_FALSE(strlib::isQuoted("{", "{", "}"));     // False - only one quote
+  ASSERT_FALSE(strlib::isQuoted("(", "(", ")"));     // False - only one quote
+
+  ASSERT_FALSE(strlib::isQuoted("'abc'", "\"", "\""));  // '' is not ""
+  ASSERT_FALSE(strlib::isQuoted("\"abc\"", "'", "'"));  // "" is not ''
+  ASSERT_FALSE(strlib::isQuoted("[abc]", "{", "}"));    // [] is not {}
+  ASSERT_FALSE(strlib::isQuoted("{abc}", "[", "]"));    // {} is not []
+
+  // True "
+  ASSERT_TRUE(strlib::isQuoted("\"\""));
+  ASSERT_TRUE(strlib::isQuoted("\"abc\""));
+
+  ASSERT_TRUE(strlib::isQuoted("\"\"", "\"", "\""));
+  ASSERT_TRUE(strlib::isQuoted("\"abc\"", "\"", "\""));
+
+  // True '
+  ASSERT_TRUE(strlib::isQuoted("''"));
+  ASSERT_TRUE(strlib::isQuoted("'abc'"));
+
+  ASSERT_TRUE(strlib::isQuoted("''", "'", "'"));
+  ASSERT_TRUE(strlib::isQuoted("'abc'", "'", "'"));
+
+  // True value
+  ASSERT_TRUE(strlib::isQuoted("[]", "[", "]"));
+  ASSERT_TRUE(strlib::isQuoted("[abc]", "[", "]"));
+
+  ASSERT_TRUE(strlib::isQuoted("{}", "{", "}"));
+  ASSERT_TRUE(strlib::isQuoted("{abc}", "{", "}"));
+
+  ASSERT_TRUE(strlib::isQuoted("()", "(", ")"));
+  ASSERT_TRUE(strlib::isQuoted("(abc)", "(", ")"));
+  
+}
+
+TEST(needQuote) {
+        
+  // True
+  ASSERT_TRUE(strlib::needQuote(""));
+  ASSERT_TRUE(strlib::needQuote(" "));
+  ASSERT_TRUE(strlib::needQuote("abc"));
+
+  // True "
+  ASSERT_TRUE(strlib::needQuote("\""));              // True - only one quote
+  ASSERT_TRUE(strlib::needQuote("\"", "\"", "\""));  // True - only one quote
+
+  // True '
+  ASSERT_TRUE(strlib::needQuote("'"));               // True - only one quote
+  ASSERT_TRUE(strlib::needQuote("'", "'", "'"));     // True - only one quote
+
+  // True value
+  ASSERT_TRUE(strlib::needQuote("[", "[", "]"));     // True - only one quote
+  ASSERT_TRUE(strlib::needQuote("{", "{", "}"));     // True - only one quote
+  ASSERT_TRUE(strlib::needQuote("(", "(", ")"));     // True - only one quote
+
+  ASSERT_TRUE(strlib::needQuote("'abc'", "\"", "\""));  // '' is not ""
+  ASSERT_TRUE(strlib::needQuote("\"abc\"", "'", "'"));  // "" is not ''
+  ASSERT_TRUE(strlib::needQuote("[abc]", "{", "}"));    // [] is not {}
+  ASSERT_TRUE(strlib::needQuote("{abc}", "[", "]"));    // {} is not []
+
+  // False "
+  ASSERT_FALSE(strlib::needQuote("\"\""));
+  ASSERT_FALSE(strlib::needQuote("\"abc\""));
+
+  ASSERT_FALSE(strlib::needQuote("\"\"", "\"", "\""));
+  ASSERT_FALSE(strlib::needQuote("\"abc\"", "\"", "\""));
+
+  // False '
+  ASSERT_FALSE(strlib::needQuote("''"));
+  ASSERT_FALSE(strlib::needQuote("'abc'"));
+
+  ASSERT_FALSE(strlib::needQuote("''", "'", "'"));
+  ASSERT_FALSE(strlib::needQuote("'abc'", "'", "'"));
+
+  // False value
+  ASSERT_FALSE(strlib::needQuote("[]", "[", "]"));
+  ASSERT_FALSE(strlib::needQuote("[abc]", "[", "]"));
+
+  ASSERT_FALSE(strlib::needQuote("{}", "{", "}"));
+  ASSERT_FALSE(strlib::needQuote("{abc}", "{", "}"));
+
+  ASSERT_FALSE(strlib::needQuote("()", "(", ")"));
+  ASSERT_FALSE(strlib::needQuote("(abc)", "(", ")"));
+
+}
+
+TEST(quote) {
+
+  // quote(null/empty/blank)
+  ASSERT_EQ("\"\"", strlib::quote(""));
+  ASSERT_EQ("\" \"", strlib::quote(" "));
+
+  // quote(value)
+  ASSERT_EQ("\"abc\"", strlib::quote("abc"));
+  ASSERT_EQ("\"abc\"", strlib::quote("abc", "\"", "\""));
+  ASSERT_EQ("\"abc\"", strlib::quote("abc", "\"", "\""));
+
+  ASSERT_EQ("\" abc \"", strlib::quote(" abc "));
+  ASSERT_EQ("\" abc \"", strlib::quote(" abc ", "\"", "\""));
+  ASSERT_EQ("\" abc \"", strlib::quote(" abc ", "\"", "\""));
+
+  ASSERT_EQ("[abc]", strlib::quote("abc", "[", "]"));
+  ASSERT_EQ("{abc}", strlib::quote("abc", "{", "}"));
+  ASSERT_EQ("(abc)", strlib::quote("abc", "(", ")"));
+
+  // quote "
+  ASSERT_EQ("\"\"\"", strlib::quote("\"")); // "" - by default
+  ASSERT_EQ("\"\"\"", strlib::quote("\"", "\"", "\""));
+  ASSERT_EQ("\"'\"", strlib::quote("'", "\"", "\""));
+
+  // quote '
+  ASSERT_EQ("'''", strlib::quote("'", "'", "'"));
+  ASSERT_EQ("'\"'", strlib::quote("\"", "'", "'"));
+
+}
+
+TEST(unquote) {
+
+  // unquote(null/empty/blank)
+  ASSERT_EQ("", strlib::unquote(""));
+  ASSERT_EQ(" ", strlib::unquote(" "));
+
+  // unquote(value) - Nothing
+  ASSERT_EQ("abc", strlib::unquote("abc"));
+  ASSERT_EQ("abc", strlib::unquote("abc", "\"", "\""));
+  ASSERT_EQ("abc", strlib::unquote("abc", "'", "'"));
+
+  ASSERT_EQ(" abc ", strlib::unquote(" abc "));
+  ASSERT_EQ(" abc ", strlib::unquote(" abc ", "\"", "\""));
+  ASSERT_EQ(" abc ", strlib::unquote(" abc ", "'", "'"));
+
+  ASSERT_EQ("abc", strlib::unquote("abc", "[", "]"));
+  ASSERT_EQ("abc", strlib::unquote("abc", "{", "}"));
+  ASSERT_EQ("abc", strlib::unquote("abc", "(", ")"));
+
+  // unquote(value) - Result
+  ASSERT_EQ("abc", strlib::unquote("\"abc\""));
+  ASSERT_EQ("abc", strlib::unquote("\"abc\"", "\"", "\""));
+  ASSERT_EQ("abc", strlib::unquote("'abc'", "'", "'"));
+
+  ASSERT_EQ(" abc ", strlib::unquote("\" abc \""));
+  ASSERT_EQ(" abc ", strlib::unquote("\" abc \"", "\"", "\""));
+  ASSERT_EQ(" abc ", strlib::unquote("' abc '", "'", "'"));
+
+  ASSERT_EQ("abc", strlib::unquote("[abc]", "[", "]"));
+  ASSERT_EQ("abc", strlib::unquote("{abc}", "{", "}"));
+  ASSERT_EQ("abc", strlib::unquote("(abc)", "(", ")"));
+
+}
+
 // 4.4
+
+TEST(isColumnSeparator) {
+
+  // False
+  ASSERT_FALSE(strlib::isColumnSeparator('\0'));
+  ASSERT_FALSE(strlib::isColumnSeparator(' '));
+  ASSERT_FALSE(strlib::isColumnSeparator('a'));
+  //ASSERT_FALSE(strlib::isColumnSeparator('abc'));  // not char - string
+
+  // True
+  ASSERT_TRUE(strlib::isColumnSeparator('\r'));
+  ASSERT_TRUE(strlib::isColumnSeparator('\n'));
+  ASSERT_TRUE(strlib::isColumnSeparator('\t'));
+
+}
+
+TEST(isColumnText) {
+
+  // False
+  ASSERT_FALSE(strlib::isColumnText(""));
+  ASSERT_FALSE(strlib::isColumnText(" "));
+  ASSERT_FALSE(strlib::isColumnText("a"));
+  ASSERT_FALSE(strlib::isColumnText("abc"));
+  ASSERT_FALSE(strlib::isColumnText("abc def"));
+
+  // True
+  ASSERT_TRUE(strlib::isColumnText("\r"));
+  ASSERT_TRUE(strlib::isColumnText("\n"));
+  ASSERT_TRUE(strlib::isColumnText("\t"));
+  ASSERT_TRUE(strlib::isColumnText("abc\rdef"));
+  ASSERT_TRUE(strlib::isColumnText("abc\ndef"));
+  ASSERT_TRUE(strlib::isColumnText("abc\r\ndef"));
+  ASSERT_TRUE(strlib::isColumnText("abc\r\ndef\txyz"));
+
+}
+
+TEST(isLineText) {
+
+  // True
+  ASSERT_TRUE(strlib::isLineText(""));
+  ASSERT_TRUE(strlib::isLineText(" "));
+  ASSERT_TRUE(strlib::isLineText("a"));
+  ASSERT_TRUE(strlib::isLineText("abc"));
+  ASSERT_TRUE(strlib::isLineText("abc def"));
+
+  // False
+  ASSERT_FALSE(strlib::isLineText("\r"));
+  ASSERT_FALSE(strlib::isLineText("\n"));
+  ASSERT_FALSE(strlib::isLineText("\t"));
+  ASSERT_FALSE(strlib::isLineText("abc\rdef"));
+  ASSERT_FALSE(strlib::isLineText("abc\ndef"));
+  ASSERT_FALSE(strlib::isLineText("abc\r\ndef"));
+  ASSERT_FALSE(strlib::isLineText("abc\r\ndef\txyz"));
+
+}
+
 // 5.1
 
 TEST(countChars) {
 
-  ASSERT_EQ(4, strlib::countChars("Hello world, my world is very nice world", 'o'));
+  // countChars(empty, value)
+  ASSERT_EQ(0, strlib::countChars("", '\0'));
+  ASSERT_EQ(0, strlib::countChars("", ' '));
+  ASSERT_EQ(0, strlib::countChars("", 'a'));
+
+  // countChars(blank, value)
+  ASSERT_EQ(0, strlib::countChars(" ", '\0'));
+  ASSERT_EQ(1, strlib::countChars(" ", ' '));    // OK
+  ASSERT_EQ(0, strlib::countChars(" ", 'a'));
+
+  // countChars(char, value)
+  ASSERT_EQ(0, strlib::countChars("a", '\0'));
+  ASSERT_EQ(0, strlib::countChars("a", ' '));
+  ASSERT_EQ(1, strlib::countChars("a", 'a'));    // OK
+
+  // countChars(value, value)
+  ASSERT_EQ(0, strlib::countChars("abcabcc", '\0'));
+  ASSERT_EQ(0, strlib::countChars("abcabcc", ' '));
+  ASSERT_EQ(2, strlib::countChars("abcabcc", 'a'));    // OK - 2
+  ASSERT_EQ(2, strlib::countChars("abcabcc", 'b'));    // OK - 2
+  ASSERT_EQ(3, strlib::countChars("abcabcc", 'c'));    // OK - 3
+
+  ASSERT_EQ(2, strlib::countChars("Hi, my name is Alex, tell me something about you", ','));  // OK - 2
 
 }
 
 TEST(countStrings) {
 
-  ASSERT_EQ(3, strlib::countStrings("Hello world, my world is very nice world", "world"));
+  // countStrings(empty, value)
+  ASSERT_EQ(0, strlib::countStrings("", ""));
+  ASSERT_EQ(0, strlib::countStrings("", " "));
+  ASSERT_EQ(0, strlib::countStrings("", "a"));
+  ASSERT_EQ(0, strlib::countStrings("", "abc"));
+
+  // countStrings(blank, value)
+  ASSERT_EQ(0, strlib::countStrings(" ", ""));
+  ASSERT_EQ(1, strlib::countStrings(" ", " ")); // Ok - 1
+  ASSERT_EQ(0, strlib::countStrings(" ", "a"));
+  ASSERT_EQ(0, strlib::countStrings(" ", "abc"));
+
+  // countStrings(char, value)
+  ASSERT_EQ(0, strlib::countStrings("a", ""));
+  ASSERT_EQ(0, strlib::countStrings("a", " "));
+  ASSERT_EQ(1, strlib::countStrings("a", "a")); // Ok - 1
+  ASSERT_EQ(0, strlib::countStrings("a", "abc"));
+
+  // countStrings(value, value)
+  ASSERT_EQ(0, strlib::countStrings("abcxyzabc", ""));
+  ASSERT_EQ(0, strlib::countStrings("abcxyzabc", " "));
+  ASSERT_EQ(2, strlib::countStrings("abcxyzabc", "a"));   // Ok - 2
+  ASSERT_EQ(2, strlib::countStrings("abcxyzabc", "abc")); // Ok - 2
+  ASSERT_EQ(1, strlib::countStrings("abcxyzabc", "xyz")); // Ok - 1
+
+  ASSERT_EQ(1, strlib::countStrings("Hello world! It is good world!", "Hello")); // Ok - 1
+  ASSERT_EQ(2, strlib::countStrings("Hello world! It is good world!", "world")); // Ok - 2
+  ASSERT_EQ(2, strlib::countStrings("Hello world! It is good world!", "!"));     // Ok - 2
 
 }
 
 TEST(countWords) {
 
-  ASSERT_EQ(13, strlib::countWords("Hello world, my world is very nice world. But we have other worlds."));
+  // separators=default
+
+  // countWords(empty)
+  ASSERT_EQ(0, strlib::countWords(""));
+
+  // countWords(blank)
+  ASSERT_EQ(0, strlib::countWords(" "));  // " " separator not include
+
+  // countWords(char)
+  ASSERT_EQ(1, strlib::countWords("a"));
+
+  // countWords(value)
+  ASSERT_EQ(1, strlib::countWords("Hello"));
+
+  // separators=value
+
+  // countWords(empty, value)
+  ASSERT_EQ(0, strlib::countWords("", ""));
+  ASSERT_EQ(0, strlib::countWords("", " "));
+  ASSERT_EQ(0, strlib::countWords("", ","));
+  ASSERT_EQ(0, strlib::countWords("", ",; "));
+
+  // countWords(blank, value)
+  ASSERT_EQ(1, strlib::countWords(" ", ""));     // Ok - 1 (???)
+  ASSERT_EQ(0, strlib::countWords(" ", " "));    // " " separator not include
+  ASSERT_EQ(1, strlib::countWords(" ", ","));    // Ok - 1
+  ASSERT_EQ(0, strlib::countWords(" ", ",; "));  // " " separator not include
+
+  // countWords(char, value)
+  ASSERT_EQ(1, strlib::countWords("a", ""));
+  ASSERT_EQ(1, strlib::countWords("a", " "));
+  ASSERT_EQ(1, strlib::countWords("a", ","));
+  ASSERT_EQ(1, strlib::countWords("a", ",; "));
+  ASSERT_EQ(0, strlib::countWords("a", "a"));    // Ok - 1
+  ASSERT_EQ(0, strlib::countWords("a", "abc"));  // "a" separator not include
+
+  // countWords(value, value)
+  ASSERT_EQ(1, strlib::countWords("Hello", ""));
+  ASSERT_EQ(1, strlib::countWords("Hello", " "));
+  ASSERT_EQ(1, strlib::countWords("Hello", ","));
+  ASSERT_EQ(1, strlib::countWords("Hello", ",; "));
+
+  ASSERT_EQ(2, strlib::countWords("Hello", "e"));   // Ok - 2
+  ASSERT_EQ(2, strlib::countWords("Hello", "eo"));  // Ok - 2
+  ASSERT_EQ(2, strlib::countWords("Hello", "l"));   // Ok - 1
+
+  // separate=False
+  ASSERT_EQ(1, strlib::countWords("Hello-world"));       // ["Hello-world"]:   "-" is not separator
+
+  // separate=True
+  ASSERT_EQ(2, strlib::countWords("Hello world!"));
+  ASSERT_EQ(3, strlib::countWords("Hello - world!"));    // ["Hello", "-", "world"]: "-" is not separator
+  ASSERT_EQ(3, strlib::countWords("Hello  -  world!"));  // ["Hello", "-", "world"]: "-" is not separator
+
+  ASSERT_EQ(2, strlib::countWords("Hello- world!"));     // ["Hello-", "world"]:     "-" is not separator
+  ASSERT_EQ(2, strlib::countWords("Hello -world!"));     // ["Hello", "-world"]:     "-" is not separator
+
+  ////
+
+  ASSERT_EQ(6, strlib::countWords("Hello world! It is good world!"));          // ["Hello", "world", "It", "is", "good", "world"]
+  ASSERT_EQ(6, strlib::countWords("Hello world! It is good world!", " !?."));  // ["Hello", "world", "It", "is", "good", "world"]
+  ASSERT_EQ(2, strlib::countWords("Hello world! It is good world!", "!"));     // ["Hello world", " It is good world"]]
+
+}
+
+TEST(countLines) {
+
+  // countLines(empty)
+  ASSERT_EQ(0, strlib::countLines(""));
+
+  // countLines(blank)
+  ASSERT_EQ(1, strlib::countLines(" "));
+
+  // countLines(char)
+  ASSERT_EQ(1, strlib::countLines("a"));
+
+  // countLines(value)
+  ASSERT_EQ(1, strlib::countLines("Hello"));
+
+  // split=False
+  ASSERT_EQ(1, strlib::countLines("Hello world! It is good world!"));
+  ASSERT_EQ(1, strlib::countLines("Hello world!\tIt is good world!"));
+
+  // split=True
+  ASSERT_EQ(2, strlib::countLines("Hello world!\rIt is good world!"));      // ["Hello world!", "It is good world!"]: \r    - OK
+  ASSERT_EQ(2, strlib::countLines("Hello world!\nIt is good world!"));      // ["Hello world!", "It is good world!"]: \n    - OK
+  ASSERT_EQ(2, strlib::countLines("Hello world!\r\nIt is good world!"));    // ["Hello world!", "It is good world!"]: \r\n  - OK 
+
+  ASSERT_EQ(2, strlib::countLines("Hello world!\fIt is good world!"));      // ["Hello world!", "It is good world!"]: \f    - OK (???)
+  ASSERT_EQ(2, strlib::countLines("Hello world!\vIt is good world!"));      // ["Hello world!", "It is good world!"]: \v    - OK (???)
+
+  // IMPORTANT !!!
+  ASSERT_EQ(3, strlib::countLines("Hello world!\n\rIt is good world!"));    // ["Hello world!", "", "It is good world!"]: \n\r  - OK
+  ASSERT_EQ(3, strlib::countLines("Hello world!\n\nIt is good world!"));    // ["Hello world!", "", "It is good world!"]: \n\n  - OK
+  ASSERT_EQ(3, strlib::countLines("Hello world!\r\rIt is good world!"));    // ["Hello world!", "", "It is good world!"]: \r\r  - OK
+  
+  ASSERT_EQ(3, strlib::countLines("Hello world!\n\r\nIt is good world!"));  // ["Hello world!", "", "It is good world!"]: \n\r\n - OK
+  ASSERT_EQ(4, strlib::countLines("Hello world!\n\n\rIt is good world!"));  // ["Hello world!", "", "", "It is good world!"]: \n\n\r - OK
 
 }
 
 // 6.1
 
-TEST(replaceAll) {
+TEST(replaceAll_string) {
 
-  ASSERT_EQ("Abcdef12345Abcdef", strlib::replaceAll("abcdef12345abcdef", "a", "A"));
+    // replaceAll(empty, value, value): "" -> ""
+  ASSERT_EQ("", strlib::replaceAll("", "", ""));
+  ASSERT_EQ("", strlib::replaceAll("", "", " "));
+  ASSERT_EQ("", strlib::replaceAll("", "", "abc"));
 
-  std::vector<std::string> from = {"1", "2", "3", "4", "5", "6"};
-  std::vector<std::string> to = {"A", "B", "C", "D", "E", "F"};
-  ASSERT_EQ("ABCDEF", strlib::replaceAll("123456", from, to));
+  ASSERT_EQ("", strlib::replaceAll("", " ", ""));
+  ASSERT_EQ("", strlib::replaceAll("", " ", " "));
+  ASSERT_EQ("", strlib::replaceAll("", " ", "abc"));
+
+  ASSERT_EQ("", strlib::replaceAll("", "abc", ""));
+  ASSERT_EQ("", strlib::replaceAll("", "abc", " "));
+  ASSERT_EQ("", strlib::replaceAll("", "abc", "abc"));
+  ASSERT_EQ("", strlib::replaceAll("", "abc", "def"));
+
+  // replaceAll(value, value, value)
+
+  ASSERT_EQ("abc", strlib::replaceAll("abc", "", ""));
+  ASSERT_EQ("abc", strlib::replaceAll("abc", "", " "));
+  ASSERT_EQ("abc", strlib::replaceAll("abc", "", "abc"));
+
+  ASSERT_EQ("abc", strlib::replaceAll("abc", " ", ""));
+  ASSERT_EQ("abc", strlib::replaceAll("abc", " ", " "));
+  ASSERT_EQ("abc", strlib::replaceAll("abc", " ", "abc"));
+
+  ASSERT_EQ("", strlib::replaceAll("abc", "abc", ""));        // remove
+  ASSERT_EQ(" ", strlib::replaceAll("abc", "abc", " "));      // blank
+  ASSERT_EQ("abc", strlib::replaceAll("abc", "abc", "abc"));  // nothing
+  ASSERT_EQ("def", strlib::replaceAll("abc", "abc", "def"));  // replace
+
+  // False
+  ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", "d", ""));
+  ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", "d", "1"));
+  ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", "def", "123"));
+
+  // True
+  ASSERT_EQ("bc xyz bc", strlib::replaceAll("abc xyz abc", "a", ""));         // remove
+  ASSERT_EQ("1bc xyz 1bc", strlib::replaceAll("abc xyz abc", "a", "1"));      // replace
+  ASSERT_EQ("123 xyz 123", strlib::replaceAll("abc xyz abc", "abc", "123"));  // replace
+
+
+  //ASSERT_EQ("Abcdef12345Abcdef", strlib::replaceAll("abcdef12345abcdef", "a", "A"));
+  //std::vector<std::string> from = {"1", "2", "3", "4", "5", "6"};
+  //std::vector<std::string> to = {"A", "B", "C", "D", "E", "F"};
+  //ASSERT_EQ("ABCDEF", strlib::replaceAll("123456", from, to));
+
+}
+
+TEST(replaceAll_list) {
+  
+    // replaceAll(empty, value, value): empty -> empty
+    ASSERT_EQ("", strlib::replaceAll("", (VS) {}, (VS) {}));
+    ASSERT_EQ("", strlib::replaceAll("", (VS) {}, (VS) {""}));
+    ASSERT_EQ("", strlib::replaceAll("", (VS) {}, (VS) {" "}));
+    ASSERT_EQ("", strlib::replaceAll("", (VS) {}, (VS) {"abc"}));
+    ASSERT_EQ("", strlib::replaceAll("", (VS) {}, (VS) {"abc", "def"}));
+
+    ASSERT_EQ("", strlib::replaceAll("", (VS) {"abc"}, (VS) {}));
+    ASSERT_EQ("", strlib::replaceAll("", (VS) {"abc"}, (VS) {""}));
+    ASSERT_EQ("", strlib::replaceAll("", (VS) {"abc"}, (VS) {" "}));
+    ASSERT_EQ("", strlib::replaceAll("", (VS) {"abc"}, (VS) {"abc"}));
+    ASSERT_EQ("", strlib::replaceAll("", (VS) {"abc"}, (VS) {"abc", "def"}));
+
+    // replaceAll(value, value, value): empty -> empty
+    ASSERT_EQ("abc", strlib::replaceAll("abc", (VS) {}, (VS) {}));
+    ASSERT_EQ("abc", strlib::replaceAll("abc", (VS) {}, (VS) {""}));
+    ASSERT_EQ("abc", strlib::replaceAll("abc", (VS) {}, (VS) {" "}));
+    ASSERT_EQ("abc", strlib::replaceAll("abc", (VS) {}, (VS) {"abc"}));
+    ASSERT_EQ("abc", strlib::replaceAll("abc", (VS) {}, (VS) {"abc", "def"}));
+
+    ASSERT_EQ("abc", strlib::replaceAll("abc", (VS) {"abc"}, (VS) {}));
+    ASSERT_EQ("", strlib::replaceAll("abc", (VS) {"abc"}, (VS) {""}));              // remove
+    ASSERT_EQ(" ", strlib::replaceAll("abc", (VS) {"abc"}, (VS) {" "}));            // blank
+
+    ASSERT_EQ("abc", strlib::replaceAll("abc", (VS) {"abc"}, (VS) {"abc"}));        // nothing
+    ASSERT_EQ("abc", strlib::replaceAll("abc", (VS) {"abc"}, (VS) {"abc", "def"})); // nothing
+
+    // False
+    ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", (VS) {}, (VS) {}));
+    ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", (VS) {}, (VS) {"def"}));                             // size <>: 0,1
+    ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", (VS) {"def"}, (VS) {}));                             // size <>: 1,0
+    ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", (VS) {"def"}, (VS) {"123"}));
+
+    ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", (VS) {"def", "qwe"}, (VS) {"123", "456"}));
+
+    ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", (VS) {"def"}, (VS) {"123", "456"}));                 // size <>: 1,2
+    ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", (VS) {"def", "qwe"}, (VS) {"123"}));                 // size <>: 2,1
+
+    // True
+    ASSERT_EQ("123 xyz 123", strlib::replaceAll("abc xyz abc", (VS) {"abc"}, (VS) {"123"}));
+
+    ASSERT_EQ("123 456 123", strlib::replaceAll("abc xyz abc", (VS) {"abc", "xyz"}, (VS) {"123", "456"}));
+    ASSERT_EQ("123 456 123 def", strlib::replaceAll("abc xyz abc def", (VS) {"abc", "xyz"}, (VS) {"123", "456"}));
+
+    ASSERT_EQ("123 xyz 123", strlib::replaceAll("abc xyz abc", (VS) {"abc"}, (VS) {"123", "456"}));                 // size <>: 1,2
+    ASSERT_EQ("123 xyz 123 def", strlib::replaceAll("abc xyz abc def", (VS) {"abc", "xyz"}, (VS) {"123"}));         // size <>: 2,1
 
 }
 
@@ -2591,10 +3051,23 @@ INIT(strlib) {
   SET_TEST(removeSuffix);
   SET_TEST(removeSuffixes);
 
+  SET_TEST(isQuoted)
+  SET_TEST(needQuote)
+  SET_TEST(quote)
+  SET_TEST(unquote)
+
+  SET_TEST(isColumnSeparator)
+  SET_TEST(isColumnText)
+  SET_TEST(isLineText)
+
   SET_TEST(countChars);
   SET_TEST(countStrings);
   SET_TEST(countWords);
-  SET_TEST(replaceAll);
+  SET_TEST(countLines);
+
+  SET_TEST(replaceAll_string);
+  SET_TEST(replaceAll_list);
+
   SET_TEST(split);
   SET_TEST(splitBySeparator);
   SET_TEST(splitBySeparators);

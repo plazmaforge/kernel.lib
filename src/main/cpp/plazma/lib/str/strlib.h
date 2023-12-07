@@ -724,7 +724,7 @@ namespace strlib {
     bool needQuote(const std::string& str);
 
     // needQuote
-    bool needQuote(const std::string& str);
+    bool needQuote(const std::string& str, const std::string& start, const std::string& end);
 
     // quote by default: ""
     std::string quote(const std::string& str);

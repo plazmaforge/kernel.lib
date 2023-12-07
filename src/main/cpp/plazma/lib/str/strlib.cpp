@@ -1946,7 +1946,11 @@ namespace strlib {
     }
 
     void _replaceAll(std::string& str, const std::string& s1, const std::string& s2) {
-        if (str.empty()) {
+        if (str.empty() || s1.empty()) {
+            // empty 's2' is correct case, we will remove 's1' from 'str'
+            return;
+        }
+        if (s1 == s2) {
             return;
         }
         size_t start_pos = 0;
@@ -2104,7 +2108,7 @@ namespace strlib {
     }
 
     std::vector<std::string> splitWords(const std::string& str, const std::string& separators) {
-        std::vector<std::string> result = splitBySeparators(str, separators.empty() ? DEFAULT_WORD_SEPARATORS : separators, false); // no preserve
+        std::vector<std::string> result = splitBySeparators(str, /*separators.empty() ? DEFAULT_WORD_SEPARATORS :*/ separators, false); // no preserve
         return result;
     }
 
