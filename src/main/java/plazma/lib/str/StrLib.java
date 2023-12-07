@@ -257,6 +257,7 @@ public class StrLib {
     /////////////////////////////////////////////////////////////////////////////////
     // 7.1
     //      
+    // - split(String str)
     // - split(String str, char separator)
     // - split(String str, String separator)    
     //    
@@ -2596,17 +2597,17 @@ public class StrLib {
     }
 
     //// 7.1
-    
+
+    public static String[] split(String str) {
+        return splitBySeparator(str, null);
+    } 
+
     public static String[] split(String str, char separator) {
         return splitBySeparator(str, separator);
     } 
 
     public static String[] split(String str, char separator, boolean preverseAll) {
         return splitBySeparator(str, separator, preverseAll);
-    } 
-
-    public static String[] split(String str) {
-        return splitBySeparator(str, null);
     } 
 
     public static String[] split(String str, String separator) {
