@@ -3,7 +3,6 @@
 #include <algorithm>
 
 #include <sstream>
-#include <vector>
 #include <cmath>
 
 #include <regex>
@@ -44,6 +43,8 @@
 //
 // - rtrim(const string& str)                                                  - right trim
 // - rtrim(const string& str, char ch)
+//
+// - void trimElements(std::vector<std::string>& elements)
 //
 // 1.4
 //
@@ -1940,6 +1941,8 @@ namespace strlib {
 
     //// 6.1
 
+    // [string]
+
     std::string replaceAll(const std::string& str, const std::string& s1, const std::string& s2) {
         std::string strn = str;
         _replaceAll(strn, s1, s2);
@@ -1961,6 +1964,8 @@ namespace strlib {
         }
     }
 
+    // [vector]
+
     std::string replaceAll(const std::string& str, const std::vector<std::string>& oldValues, const std::vector<std::string>& newValues) {
         std::string  strn = str;
         _replaceAll(strn, oldValues, newValues);
@@ -1975,12 +1980,28 @@ namespace strlib {
         if (size == 0) {
             return;
         }
-        std::string s1;
-        std::string s2;
         for (int i = 0; i < size; i++) {
-            s1 = oldValues.at(i);
-            s2 = newValues.at(i);
-            _replaceAll(str, s1, s2);
+            _replaceAll(str, oldValues.at(i), newValues.at(i));
+        }
+    }
+
+    // [map]
+
+    std::string replaceAll(const std::string& str, const std::map<std::string, std::string>& map) {
+        std::string strn = str;
+        _replaceAll(strn, map);
+        return strn;
+    }
+
+    void _replaceAll(std::string& str, const std::map<std::string, std::string>& map) {
+        if (str.empty()) {
+            return;
+        }
+        if (map.empty()) {
+            return;
+        }
+        for (std::map<std::string, std::string>::const_iterator it = map.begin(); it != map.end(); ++it) {
+            _replaceAll(str, it->first, it->second);
         }
     }
 
@@ -2127,6 +2148,51 @@ namespace strlib {
     std::vector<std::string> splitBySeparators(const std::string& str, const std::string& separators, bool preserveAll) {
         return tokenizeBySeparators(str, separators, false, preserveAll);
     }
+
+    // trimElements
+
+    void trimElements(std::vector<std::string>& elements) {
+        if (elements.empty()) {
+            return;            
+        }
+        for (int i = 0; i < elements.size(); i++) {
+            _trim(elements[i]);
+        }
+    }
+
+    // splitTrim
+
+    std::vector<std::string> splitTrim(const std::string& str, char separator) {
+        return splitTrimBySeparator(str, separator);
+    }
+
+    std::vector<std::string> splitTrim(const std::string& str, const std::string& separator) {
+        return splitTrimBySeparator(str, separator);
+    }
+    
+    // splitTrimBySeparartor
+    
+    std::vector<std::string> splitTrimBySeparator(const std::string& str, char separator) {
+        std::vector<std::string> elements = splitBySeparator(str, separator);
+        trimElements(elements);
+        return elements;
+    }    
+
+    std::vector<std::string> splitTrimBySeparator(const std::string& str, const std::string& separator) {
+        std::vector<std::string> elements = splitBySeparator(str, separator);
+        trimElements(elements);
+        return elements;
+    }
+    
+    // splitTrimBySeparartors
+
+    std::vector<std::string> splitTrimBySeparators(const std::string& str, const std::string& separators) {
+        std::vector<std::string> elements = splitBySeparators(str, separators);
+        trimElements(elements);
+        return elements;
+    }
+
+    ////
 
     // splitWords
 

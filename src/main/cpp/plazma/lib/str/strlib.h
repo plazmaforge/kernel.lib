@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 #include "plazma/lib/sys/define.h"
 
@@ -37,6 +38,8 @@
 //
 // - rtrim(const string& str)                                                  - right trim
 // - rtrim(const string& str, char ch)
+//
+// - void trimElements(std::vector<std::string>& elements)
 //
 // 1.4
 //
@@ -448,6 +451,10 @@ namespace strlib {
 
     void _rtrim(std::string& str, const char* terms);
 
+    // trimElements
+
+    void trimElements(std::vector<std::string>& elements);
+
     // contains
 
     bool contains(const std::string& str, char ch);
@@ -786,13 +793,23 @@ namespace strlib {
 
     //// 6.1
 
+    // [string]
+
     std::string replaceAll(const std::string& str, const std::string& s1, const std::string& s2);
 
     void _replaceAll(std::string& str, const std::string& s1, const std::string& s2);
 
+    // [vector]
+
     std::string replaceAll(const std::string& str, const std::vector<std::string>& oldValues, const std::vector<std::string>& newValues);
 
     void _replaceAll(std::string& str, const std::vector<std::string>& oldValues, const std::vector<std::string>& newValues);
+
+    // [map]
+
+    std::string replaceAll(const std::string& str, const std::map<std::string, std::string>& map);
+
+    void _replaceAll(std::string& str, const std::map<std::string, std::string>& map);
 
     //// 7.1
 
@@ -828,7 +845,23 @@ namespace strlib {
 
     std::vector<std::string> splitBySeparators(const std::string& str, const std::string& separators, bool preserveAll);
 
-    //
+    // splitTrim
+
+    std::vector<std::string> splitTrim(const std::string& str, char separator);
+
+    std::vector<std::string> splitTrim(const std::string& str, const std::string& separator);
+    
+    // splitTrimBySeparartor
+    
+    std::vector<std::string> splitTrimBySeparator(const std::string& str, char separator);
+
+    std::vector<std::string> splitTrimBySeparator(const std::string& str, const std::string& separator);
+    
+    // splitTrimBySeparartors
+
+    std::vector<std::string> splitTrimBySeparators(const std::string& str, const std::string& separators);
+
+    // splitWords
 
     std::vector<std::string> splitWords(const std::string& str);
 
