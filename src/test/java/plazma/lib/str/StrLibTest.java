@@ -3778,7 +3778,10 @@ public class StrLibTest extends AbstractTestCase {
 
         assertEquals("123 xyz 123", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"abc", "123", null, "456"})));          // size <>: 1,2
         assertEquals("123 xyz 123 def", StrLib.replaceAll("abc xyz abc def", toMap(new String[] {"abc", "123", "xyz", null})));  // size <>: 2,1
-        
+
+        assertEquals("123 xyz 123", StrLib.replaceAll("abc xyz abc", toMap(new String[] {"abc", "123", "", "456"})));            // size <>: 1,2
+        assertEquals("123  123 def", StrLib.replaceAll("abc xyz abc def", toMap(new String[] {"abc", "123", "xyz", ""})));       // size <>: 2,1
+
         ////
         
         assertEquals("ABCDEF", StrLib.replaceAll("123456", toMap(new String[] {"1", "A", "2", "B", "3", "C", "4", "D", "5", "E", "6", "F"})));

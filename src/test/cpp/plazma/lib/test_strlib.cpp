@@ -2818,6 +2818,60 @@ TEST(replaceAll_list) {
 
 }
 
+std::map<std::string, std::string> toMap(const std::vector<std::string>& entries) {
+  std::map<std::string, std::string> map;
+  int size = entries.size();
+  if (size == 0) {
+    return map;
+  }
+  int i = 0;
+  while (i < size) {
+      map[entries[i]] = i + 1 < size ? entries[i + 1] : "";
+      i += 2;
+  }
+  return map;
+}
+
+TEST(replaceAll_map) {
+
+  // replaceAll(empty, value): "" -> ""
+  ASSERT_EQ("", strlib::replaceAll("", toMap((VS) {})));
+  ASSERT_EQ("", strlib::replaceAll("", toMap((VS) {"", "abc"})));
+  ASSERT_EQ("", strlib::replaceAll("", toMap((VS) {"abc", ""})));
+  ASSERT_EQ("", strlib::replaceAll("", toMap((VS) {"abc", "def"})));
+
+  // replaceAll(value, value):
+  ASSERT_EQ("abc", strlib::replaceAll("abc", toMap((VS) {})));
+  ASSERT_EQ("abc", strlib::replaceAll("abc", toMap((VS) {"", "abc"})));
+  ASSERT_EQ("", strlib::replaceAll("abc", toMap((VS) {"abc", ""})));        // remove
+  ASSERT_EQ("def", strlib::replaceAll("abc", toMap((VS) {"abc", "def"})));  // replace
+
+  // False
+  ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", toMap((VS) {})));
+  ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", toMap((VS) {"", "def"})));  // size <>: 0,1
+  ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", toMap((VS) {"def", ""})));  // size <>: 1,0
+  
+  ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", toMap((VS) {"def", "123"})));
+  ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", toMap((VS) {"def", "123", "qwe", "456"})));
+
+  ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", toMap((VS) {"def", "123", "", "456"}))); // size <>: 1,2
+  ASSERT_EQ("abc xyz abc", strlib::replaceAll("abc xyz abc", toMap((VS) {"def", "123", "qwe", ""}))); // size <>: 2,1
+
+  // True
+  ASSERT_EQ("123 xyz 123", strlib::replaceAll("abc xyz abc", toMap((VS) {"abc", "123"})));
+
+  ASSERT_EQ("123 456 123", strlib::replaceAll("abc xyz abc", toMap((VS) {"abc", "123", "xyz", "456"})));
+  ASSERT_EQ("123 456 123 def", strlib::replaceAll("abc xyz abc def", toMap((VS) {"abc", "123", "xyz", "456"})));
+
+  ASSERT_EQ("123 xyz 123", strlib::replaceAll("abc xyz abc", toMap((VS) {"abc", "123", "", "456"})));       // size <>: 1,2
+  ASSERT_EQ("123  123 def", strlib::replaceAll("abc xyz abc def", toMap((VS) {"abc", "123", "xyz", ""})));  // size <>: 2,1
+  
+  ////
+  
+  ASSERT_EQ("ABCDEF", strlib::replaceAll("123456", toMap((VS) {"1", "A", "2", "B", "3", "C", "4", "D", "5", "E", "6", "F"})));
+
+}
+
 // 7.1
 
 TEST(split) {
@@ -3005,7 +3059,6 @@ TEST(splitBySeparators) {
 
 }
 
-/*
 TEST(splitTrim) {
 
   // ValueSpace=0, SeparatorSpace=0
@@ -3025,7 +3078,46 @@ TEST(splitTrim) {
   ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrim("1| 200| 500|  -12", "| ")); // no effect separator ' ', we use trim
 
 }
-*/
+
+TEST(splitTrimBySeparator) {
+
+  // ValueSpace=0, SeparatorSpace=0
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrimBySeparator("1,200,500,-12", ','));
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrimBySeparator("1|200|500|-12", '|'));
+
+  // ValueSpace=1, SeparatorSpace=0
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrimBySeparator("1, 200, 500, -12", ','));
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrimBySeparator("1| 200| 500| -12", '|'));
+
+  // ValueSpace=1, SeparatorSpace=1
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrimBySeparator("1, 200, 500, -12", ", ")); // no effect separator ' ', we use trim
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrimBySeparator("1| 200| 500| -12", "| ")); // no effect separator ' ', we use trim
+
+  // ValueSpace=1-2, SeparatorSpace=1
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrimBySeparator("1, 200, 500,  -12", ", ")); // no effect separator ' ', we use trim
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrimBySeparator("1| 200| 500|  -12", "| ")); // no effect separator ' ', we use trim
+
+}
+
+TEST(splitTrimBySeparators) {
+
+  // ValueSpace=0, SeparatorSpace=0
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrimBySeparators("1,200,500,-12", ","));
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrimBySeparators("1|200|500|-12", "|"));
+
+  // ValueSpace=1, SeparatorSpace=0
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrimBySeparators("1, 200, 500, -12", ","));
+  ASSERT_EQ(((VS) {"1", "200", "500", "-12"}), strlib::splitTrimBySeparators("1| 200| 500| -12", "|"));
+
+  // ValueSpace=1, SeparatorSpace=1
+  ASSERT_EQ(((VS) {"1", "", "200", "", "500", "", "-12"}), strlib::splitTrimBySeparators("1, 200, 500, -12", ", ")); // no effect separator ' ', we use trim
+  ASSERT_EQ(((VS) {"1", "", "200", "", "500", "", "-12"}), strlib::splitTrimBySeparators("1| 200| 500| -12", "| ")); // no effect separator ' ', we use trim
+
+  // ValueSpace=1-2, SeparatorSpace=1
+  ASSERT_EQ(((VS) {"1", "", "200", "", "500", "", "", "-12"}), strlib::splitTrimBySeparators("1, 200, 500,  -12", ", ")); // no effect separator ' ', we use trim
+  ASSERT_EQ(((VS) {"1", "", "200", "", "500", "", "", "-12"}), strlib::splitTrimBySeparators("1| 200| 500|  -12", "| ")); // no effect separator ' ', we use trim
+
+}
 
 TEST(splitWords) {
 
@@ -3223,10 +3315,16 @@ INIT(strlib) {
 
   SET_TEST(replaceAll_string);
   SET_TEST(replaceAll_list);
+  SET_TEST(replaceAll_map);
 
   SET_TEST(split);
   SET_TEST(splitBySeparator);
   SET_TEST(splitBySeparators);
+
+  SET_TEST(splitTrim);
+  SET_TEST(splitTrimBySeparator);
+  SET_TEST(splitTrimBySeparators);
+  
   SET_TEST(splitWords);
   SET_TEST(splitLines);
 

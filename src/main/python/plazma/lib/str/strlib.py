@@ -95,6 +95,8 @@ KEBAB_CONNECTOR = '-' # kebab-case
 # - rtrim(str)                                                 - right trim
 # - rtrim(str, ch)
 #
+# - trimElements(elements)
+#
 # 1.4
 #
 # - contains(str, substr)

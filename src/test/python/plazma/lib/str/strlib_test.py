@@ -3190,7 +3190,10 @@ class StrlibTest(unittest.TestCase):
 
         self.assertEqual('123 xyz 123', strlib.replaceAll('abc xyz abc', {'abc': '123', None: '456'}))                # size <>: 1,2
         self.assertEqual('123 xyz 123 def', strlib.replaceAll('abc xyz abc def', {'abc': '123', 'xyz': None}))        # size <>: 2,1
-        
+
+        self.assertEqual('123 xyz 123', strlib.replaceAll('abc xyz abc', {'abc': '123', '': '456'}))                  # size <>: 1,2
+        self.assertEqual('123  123 def', strlib.replaceAll('abc xyz abc def', {'abc': '123', 'xyz': ''}))             # size <>: 2,1
+
         ##
 
         self.assertEqual('ABCDEF', strlib.replaceAll('123456', {'1': 'A', '2': 'B', '3': 'C', '4': 'D', '5': 'E', '6': 'F'}))
