@@ -73,6 +73,8 @@ public class StrLib {
     // - rtrim(String str)                                                 - right trim
     // - rtrim(String str, char ch)
     //
+    // - trimElements(String[] array)
+    //
     // 1.4
     // 
     // - contains(String str, char ch)
@@ -864,6 +866,15 @@ public class StrLib {
         }
 
         return str.substring(0, pos + 1);
+    }
+    
+    public static void trimElements(String[] array) {
+        if (array == null || array.length == 0) {
+            return;            
+        }
+        for (int i = 0; i < array.length; i++) {
+            array[i] = trim(array[i]);            
+        }
     }
 
     //// 1.4
@@ -2678,17 +2689,6 @@ public class StrLib {
     */    
     
     ////
-    
-    public static void trimArray(String[] array) {
-        if (array == null || array.length == 0) {
-            return;            
-        }
-        for (int i = 0; i < array.length; i++) {
-            array[i] = trim(array[i]);            
-        }
-    }
-    
-    ////
 
     public static String[] splitTrim(String str, char separator) {
         return splitTrimBySeparator(str, separator);
@@ -2701,23 +2701,23 @@ public class StrLib {
     //
     
     public static String[] splitTrimBySeparator(String str, char separator) {
-        String[] res = splitBySeparator(str, separator);
-        trimArray(res);
-        return res;
+        String[] elements = splitBySeparator(str, separator);
+        trimElements(elements);
+        return elements;
     }    
 
     public static String[] splitTrimBySeparator(String str, String separator) {
-        String[] res = splitBySeparator(str, separator);
-        trimArray(res);
-        return res;
+        String[] elements = splitBySeparator(str, separator);
+        trimElements(elements);
+        return elements;
     }
     
     //
 
     public static String[] splitTrimBySeparators(String str, String separators) {
-        String[] res = splitBySeparator(str, separators);
-        trimArray(res);
-        return res;
+        String[] elements = splitBySeparator(str, separators);
+        trimElements(elements);
+        return elements;
     }
     
     ////
