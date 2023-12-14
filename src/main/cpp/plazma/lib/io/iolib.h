@@ -9,7 +9,6 @@
 
 namespace iolib {
 
-
     //// init ////
 
     void init_utf8_console();
@@ -154,8 +153,19 @@ namespace iolib {
 
     void writeText(const std::string &fileName, std::string &text);
 
-
     //char* readCharArray(const std::string &fileName);
+
+    char* readBytes(const char* fileName);
+
+    char* readBytes(const char* fileName, size_t& size);
+
+    void writeBytes(const char* fileName, char* data, size_t& size);
+
+    void dumpFile(const char* fileName);
+
+    void dumpFile(const char* fileName, size_t& size);
+
+    void dumpBytes(const char* data, size_t size);
 
 }
 
