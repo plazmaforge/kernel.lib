@@ -347,3 +347,10 @@ https://developer.apple.com/library/archive/documentation/MusicAudio/Conceptual/
 https://chromium.googlesource.com/chromium/src/media/+/7479f0acde23267d810b8e58c07b342719d9a923/audio/mac/audio_manager_mac.cc
 https://chromium.googlesource.com/chromium/src/media/+/7479f0acde23267d810b8e58c07b342719d9a923/audio/mac/audio_low_latency_output_mac.cc
 https://chromium.googlesource.com/chromium/src/media/+/7479f0acde23267d810b8e58c07b342719d9a923/audio/mac/audio_synchronized_mac.cc
+
+
+https://github.com/zmb3/hexdump/blob/master/Hexdump.hpp
+https://github.com/philip82148/cpp-dump
+https://codereview.stackexchange.com/questions/165120/printing-hex-dumps-for-diagnostics
+https://i42.co.uk/stuff/hexdump.htm
+https://gist.github.com/kristopherjohnson/90581f20aab44e669907
