@@ -375,3 +375,10 @@ https://gist.github.com/kristopherjohnson/90581f20aab44e669907
 C++ scandir
 =============================================================================
 https://github.com/tronkko/dirent/blob/master/examples/scandir.c
+
+C++ WIN32: Get full path name
+=============================================================================
+
+https://cpp.hotexamples.com/examples/-/-/GetFullPathNameW/cpp-getfullpathnamew-function-examples.html
+https://github.com/Filtik/Plasma/blob/master/Sources/Plasma/CoreLib/plFileSystem.cpp
+
