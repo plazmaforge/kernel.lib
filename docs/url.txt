@@ -311,7 +311,24 @@ https://www.oreilly.com/library/view/c-cookbook/0596007612/ch01s05.html
 OpenBSD
 =============================================================================
 https://github.com/openbsd
+https://github.com/openbsd/src/blob/master/bin/cp/cp.c
+https://github.com/openbsd/src/blob/master/bin/ls/ls.c
+https://github.com/openbsd/src/blob/master/bin/ls/utf8.c
 
+C/C++ getopt (short/long options)
+=============================================================================
+https://azrael.digipen.edu/~mmead/www/Courses/CS180/getopt.html
+https://stackoverflow.com/questions/33469445/passing-negative-numbers-into-getopt
+
+https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
+
+C/C++ getopt on Windows
+=============================================================================
+https://gist.github.com/superwills/5815344
+https://itecnote.com/tecnote/r-getopt-h-compiling-linux-c-code-in-windows/
+
+https://github.com/Chunde/getopt-for-windows
+https://www.codeproject.com/Articles/157001/Full-getopt-Port-for-Unicode-and-Multibyte-Microso
 
 C++ wxWidgets
 =============================================================================
@@ -354,3 +371,7 @@ https://github.com/philip82148/cpp-dump
 https://codereview.stackexchange.com/questions/165120/printing-hex-dumps-for-diagnostics
 https://i42.co.uk/stuff/hexdump.htm
 https://gist.github.com/kristopherjohnson/90581f20aab44e669907
+
+C++ scandir
+=============================================================================
+https://github.com/tronkko/dirent/blob/master/examples/scandir.c
