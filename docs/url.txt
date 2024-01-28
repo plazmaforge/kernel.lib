@@ -274,6 +274,7 @@ https://stackoverflow.com/questions/61501298/xcrun-error-unable-to-find-utility-
 ~/% sudo xcode-select -p                                    
 /Library/Developer/CommandLineTools
 ~/% sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+                         /Applications/Xcode.app/Contents/Developer
 ~/% sudo xcode-select -p                                           
 /Applications/Xcode.app/Contents/Developer
 
@@ -330,6 +331,15 @@ https://itecnote.com/tecnote/r-getopt-h-compiling-linux-c-code-in-windows/
 https://github.com/Chunde/getopt-for-windows
 https://www.codeproject.com/Articles/157001/Full-getopt-Port-for-Unicode-and-Multibyte-Microso
 
+C getopt
+=============================================================================
+https://azrael.digipen.edu/~mmead/www/Courses/CS180/getopt.html
+https://opensource.com/article/21/8/short-option-parsing-c
+https://www.geeksforgeeks.org/getopt-function-in-c-to-parse-command-line-arguments/
+https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
+https://man7.org/linux/man-pages/man3/getopt.3.html
+https://linuxprograms.wordpress.com/2012/06/22/c-getopt_long_only-example-accessing-command-line-arguments/
+
 C++ wxWidgets
 =============================================================================
 
@@ -382,3 +392,31 @@ C++ WIN32: Get full path name
 https://cpp.hotexamples.com/examples/-/-/GetFullPathNameW/cpp-getfullpathnamew-function-examples.html
 https://github.com/Filtik/Plasma/blob/master/Sources/Plasma/CoreLib/plFileSystem.cpp
 
+C++ mbstowcs
+=============================================================================
+https://man7.org/linux/man-pages/man3/mbstowcs.3.html
+
+C++ Locale
+=============================================================================
+https://rtfm.co.ua/ru/linux-setlocale-lc_all-cannot-change-locale-en_us-utf8-i-kirilica/
+
+UNIX system programming (richmit)
+=============================================================================
+https://www.mitchr.me/SS/exampleCode/AUPG.html
+https://github.com/richmit/ex-aupg
+
+C++ library for generating raster images (richmit)
+=============================================================================
+https://richmit.github.io/mraster/index.html
+https://github.com/richmit/mraster
+
+C Json Parser
+=============================================================================
+https://github.com/cesanta/frozen/blob/master/frozen.c
+https://github.com/cesanta/str
+https://github.com/cesanta/mongoose
+https://github.com/cesanta/mongoose-os
+
+C Search/getopt example
+=============================================================================
+https://github.com/blowery/better_than_ack/blob/master/src/main.c
