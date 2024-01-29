@@ -420,3 +420,44 @@ https://github.com/cesanta/mongoose-os
 C Search/getopt example
 =============================================================================
 https://github.com/blowery/better_than_ack/blob/master/src/main.c
+
+C like JS code (!), UTF (!) utf2w, w2utf, JSON parser (!)
+=============================================================================
+https://github.com/exebook/jslike
+
+C Generic print/C overload/__builtin_choose_expr (!)
+=============================================================================
+https://habr.com/ru/articles/544038/
+https://github.com/exebook/generic-print/tree/main
+
+C X11/XLib
+=============================================================================
+https://habr.com/ru/articles/712376/
+https://github.com/exebook/x11clipboard
+
+C HashTable
+=============================================================================
+https://github.com/exebook/hashdict.c
+
+C CoreUtils (!) cp, rm, mkdir, cat, uname ... csplit, ls (!)
+=============================================================================
+https://github.com/wertarbyte/coreutils
+https://github.com/wertarbyte/coreutils/blob/master/src/csplit.c
+https://github.com/wertarbyte/coreutils/blob/master/src/ls.c
+
+C CPU Arch, Size (!)
+=============================================================================
+https://github.com/libvirt/libvirt/blob/master/src/util/virarch.c
+https://github.com/libvirt/libvirt/blob/master/src/util/virhostcpu.c
+https://github.com/libvirt/libvirt/blob/master/src/util/virconf.c
+
+C GLib
+=============================================================================
+https://github.com/GNOME/glib/blob/main/glib/gmem.h
+https://github.com/GNOME/glib/blob/main/glib/gnode.h
+https://github.com/GNOME/glib/blob/main/glib/gtypes.h
+https://github.com/GNOME/glib/blob/main/glib/gutf8.c
+
+C Glib (!) SysInfo: OS Info, User Info
+=============================================================================
+https://github.com/GNOME/glib/blob/main/glib/gutils.h
