@@ -451,6 +451,14 @@ https://github.com/libvirt/libvirt/blob/master/src/util/virarch.c
 https://github.com/libvirt/libvirt/blob/master/src/util/virhostcpu.c
 https://github.com/libvirt/libvirt/blob/master/src/util/virconf.c
 
+C FS
+=============================================================================
+https://github.com/libvirt/libvirt/blob/master/src/util/virfile.c
+
+C Mem
+=============================================================================
+https://github.com/libvirt/libvirt/blob/master/src/util/virhostmem.c
+
 C GLib
 =============================================================================
 https://github.com/GNOME/glib/blob/main/glib/gmem.h
@@ -461,3 +469,16 @@ https://github.com/GNOME/glib/blob/main/glib/gutf8.c
 C Glib (!) SysInfo: OS Info, User Info
 =============================================================================
 https://github.com/GNOME/glib/blob/main/glib/gutils.h
+
+C Scandir Source Code
+=============================================================================
+https://gist.github.com/saghul/8013376
+
+C Windows: dirent
+=============================================================================
+https://github.com/win32ports/dirent_h/blob/master/dirent.h
+
+C CPU Issue: os.cpu_count() WIN: GetLogicalProcessorInformationEx
+=============================================================================
+https://github.com/giampaolo/psutil/issues/771
+https://github.com/umezawatakeshi/GetLogicalProcessorInformationEx/blob/master/GetLogicalProcessorInformationEx.cc
