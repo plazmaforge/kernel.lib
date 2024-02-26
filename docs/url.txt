@@ -386,6 +386,22 @@ C++ scandir
 =============================================================================
 https://github.com/tronkko/dirent/blob/master/examples/scandir.c
 
+Python scandir
+=============================================================================
+https://github.com/Alejandro-Roldan/scandirRecursive/blob/master/scandirrecursive/scandirrecursive.py
+
+C Scandir Source Code
+=============================================================================
+https://gist.github.com/saghul/8013376
+
+C Ack/Scandir/Search/getopt example (!)
+=============================================================================
+https://github.com/blowery/better_than_ack/blob/master/src/main.c
+
+C Windows: dirent/scandir (filter/sorter)
+=============================================================================
+https://github.com/win32ports/dirent_h/blob/master/dirent.h
+
 C++ WIN32: Get full path name
 =============================================================================
 
@@ -416,10 +432,6 @@ https://github.com/cesanta/frozen/blob/master/frozen.c
 https://github.com/cesanta/str
 https://github.com/cesanta/mongoose
 https://github.com/cesanta/mongoose-os
-
-C Search/getopt example
-=============================================================================
-https://github.com/blowery/better_than_ack/blob/master/src/main.c
 
 C like JS code (!), UTF (!) utf2w, w2utf, JSON parser (!)
 =============================================================================
@@ -470,15 +482,66 @@ C Glib (!) SysInfo: OS Info, User Info
 =============================================================================
 https://github.com/GNOME/glib/blob/main/glib/gutils.h
 
-C Scandir Source Code
-=============================================================================
-https://gist.github.com/saghul/8013376
-
-C Windows: dirent
-=============================================================================
-https://github.com/win32ports/dirent_h/blob/master/dirent.h
-
 C CPU Issue: os.cpu_count() WIN: GetLogicalProcessorInformationEx
 =============================================================================
 https://github.com/giampaolo/psutil/issues/771
 https://github.com/umezawatakeshi/GetLogicalProcessorInformationEx/blob/master/GetLogicalProcessorInformationEx.cc
+
+C Data Types
+=============================================================================
+https://en.wikibooks.org/wiki/C_Programming/Language_Reference#Table_of_Data_Types
+
+Java vs C Locale
+=============================================================================
+https://stackoverflow.com/questions/24423386/which-default-locale-is-which
+
+
+C Utils:
+
+Get Proccess ID
+=============================================================================
+https://github.com/catboost/catboost/blob/master/util/system/getpid.h
+
+MemoryInfo, ProcessorInfo
+=============================================================================
+https://github.com/catboost/catboost/blob/master/util/system/info.cpp
+
+Dynamic Lib
+=============================================================================
+https://github.com/catboost/catboost/blob/master/util/system/dynlib.cpp
+
+Get/Set Env variable
+=============================================================================
+https://github.com/catboost/catboost/blob/master/util/system/env.cpp
+
+CPU ID
+=============================================================================
+https://github.com/catboost/catboost/blob/master/util/system/cpu_id.cpp
+
+Error code/Text
+=============================================================================
+https://github.com/catboost/catboost/blob/master/util/system/error.cpp
+
+FS rename, mkdir, mkdir recursive, rmdir recursive, symlink, hard link
+=============================================================================
+https://github.com/catboost/catboost/blob/master/util/system/fs.cpp
+https://github.com/catboost/catboost/blob/master/util/system/fs_win.cpp
+
+FS Get File Type, Mode, Size
+=============================================================================
+https://github.com/catboost/catboost/blob/master/util/system/fstat.cpp
+
+chmod, mkdir
+=============================================================================
+https://github.com/catboost/catboost/blob/master/util/system/sysstat.cpp
+
+https://github.com/catboost/catboost/blob/master/util/system/rusage.cpp
+https://github.com/catboost/catboost/blob/master/util/system/mem_info.cpp
+
+C Ruby FS
+=============================================================================
+https://opensource.apple.com/source/ruby/ruby-83.3.1/ruby/file.c.auto.html
+
+FS Ruby
+=============================================================================
+https://rubydoc.info/stdlib/core/File
