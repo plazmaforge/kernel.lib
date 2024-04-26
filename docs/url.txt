@@ -545,3 +545,105 @@ https://opensource.apple.com/source/ruby/ruby-83.3.1/ruby/file.c.auto.html
 FS Ruby
 =============================================================================
 https://rubydoc.info/stdlib/core/File
+
+https://copyprogramming.com/howto/copying-data-from-one-text-file-to-another-in-c
+
+FTP/FTPS
+=============================================================================
+https://habr.com/ru/articles/500438/
+
+C CURL
+=============================================================================
+https://github.com/curl/curl/blob/master/lib/curl_fnmatch.c
+
+
+https://www.scaler.com/topics/socket-programming-in-c/
+https://codereview.stackexchange.com/questions/255366/secure-socket-programming-with-openssl-and-c
+https://github.com/pradyuman/socket-c/blob/master/httpclient.c
+https://medium.com/@nipunweerasiri/a-simple-web-server-written-in-c-cf7445002e6
+https://www.binarytides.com/socket-programming-c-linux-tutorial/
+https://github.com/martelkr/cppsocket/blob/main/inc/cppsocket.hpp
+
+
+https://gist.github.com/nolim1t/126991/ae3a7d36470d2a81190339fbc78821076a4059f7
+
+https://opensource.com/article/19/6/cryptography-basics-openssl-part-1
+
+
+https://superuser.com/questions/992167/where-are-digital-certificates-physically-stored-on-a-mac-os-x-machine
+
+HTTP 301
+=============================================================================
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections
+https://livepage.ua/ru/blog/301-redirect.html
+https://serpstat.com/blog/how-to-set-a-301-redirect-from-http-to-https-website-version/
+
+
+https://www.cnblogs.com/kozmers/p/6202595.html
+https://stackoverflow.com/questions/5758770/glib-network-connection-example
+
+
+Win32 TLS example
+=============================================================================
+https://gist.github.com/mmozeiko/c0dfcc8fec527a90a02145d2cc0bfb6d
+
+Curl TLS
+=============================================================================
+https://fossies.org/linux/curl/lib/vtls/schannel.c
+
+QT TLS
+=============================================================================
+https://code.qt.io/cgit/qt/qtbase.git/tree/src/plugins/tls/schannel/qtls_schannel.cpp#n1445
+
+GNU TLS Utils
+=============================================================================
+https://android.googlesource.com/platform/external/libcups/+/refs/heads/pie-dr1-dev/cups/tls-gnutls.c
+
+OpenSSL example
+=============================================================================
+https://aticleworld.com/ssl-server-client-using-openssl-in-c/
+https://fm4dd.com/openssl/sslconnect.shtm
+
+https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/src/connect/mbedtls/ssl_cli.c
+
+WolfSSL
+=============================================================================
+https://www.wolfssl.com/docs/quickstart/
+
+
+
+Oryx-Embedded/CycloneSSL
+=============================================================================
+https://github.com/Oryx-Embedded/CycloneSSL
+https://github.com/Oryx-Embedded/CycloneSSL/blob/master/tls.h
+
+https://www.oryx-embedded.com/doc/tls_8h_source.html
+https://www.oryx-embedded.com/doc/tls__handshake_8c_source.html
+
+Oryx-Embedded/Common
+=============================================================================
+FS Utils
+https://github.com/Oryx-Embedded/Common/blob/master/path.c
+
+Mbed-TLS
+=============================================================================
+https://github.com/Mbed-TLS/mbedtls
+
+MD 6
+=============================================================================
+https://github.com/gtkhash/gtkhash/blob/master/src/hash/md6/md6.h
+https://github.com/gtkhash/gtkhash
+
+https://unix.stackexchange.com/questions/623194/md6-hash-generation-linux-command-for-128-bit-256-bit-512-bit-md6-hashes
+
+https://github.com/drwetter/testssl.sh/blob/3.2/testssl.sh
+
+============================================================================
+https://tls12.xargs.org/#client-hello/annotated
+https://github.com/syncsynchalt/illustrated-tls12
+
+============================================================================
+https://security.stackexchange.com/questions/178897/number-of-bytes-in-a-tls-handshake
+https://www.commandlinefanatic.com/cgi-bin/showarticle.cgi?article=art059
+https://wiki.osdev.org/TLS_Handshake
+
