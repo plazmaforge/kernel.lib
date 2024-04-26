@@ -82,7 +82,7 @@ Locale* parseLocale(char* name) {
 }
 
 Locale* loadLocale(int cat) {
-  char* name = getLocale(LC_CTYPE); 
+  char* name = getLocale(cat /*LC_CTYPE*/); 
   if (name == nullptr) {
     return nullptr;
   }
