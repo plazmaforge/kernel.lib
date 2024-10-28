@@ -195,12 +195,6 @@ TcpServer
 https://github.com/an-tao/trantor/blob/master/trantor/net/TcpServer.cc
 
 
-C++ utf8 string upper/lower case
-=============================================================================
-
-https://github.com/Winderton/libfort/blob/develop/src/utf8.h
-
-
 C++ Format Lib
 =============================================================================
 https://github.com/fmtlib/fmt
@@ -647,3 +641,72 @@ https://security.stackexchange.com/questions/178897/number-of-bytes-in-a-tls-han
 https://www.commandlinefanatic.com/cgi-bin/showarticle.cgi?article=art059
 https://wiki.osdev.org/TLS_Handshake
 
+
+C Utils, Net File
+============================================================================
+https://github.com/attractivechaos/klib
+
+
+============================================================================
+Unicode, UTF (!)
+============================================================================
+
+C++ utf8: lower/upper case [ver1] (!)
+============================================================================
+https://github.com/Winderton/libfort/blob/develop/src/utf8.h
+
+C utf8: lower/upper case, compare [0x0430 - 0x044f] [ver2] (!)
+============================================================================
+https://github.com/sheredom/utf8.h/blob/master/utf8.h
+
+C utf8: seq_len, utf8_to_ucs2/ucs2_to_utf8 (codepoint), validate [ver3] (!)
+============================================================================
+https://github.com/benkasminbullock/unicode-c/blob/master/unicode.c
+
+C utf8 encode
+============================================================================
+https://gist.github.com/MightyPork/52eda3e5677b4b03524e40c9f0ab1da5
+
+C utf8: encode, check_first, check_full, check_string
+============================================================================
+https://github.com/akheron/jansson/blob/master/src/utf.c
+
+C utf8: u8_toucs/u8_toutf8
+============================================================================
+https://www.cprogramming.com/tutorial/utf8.h
+https://www.cprogramming.com/tutorial/utf8.c
+
+C utf8: lower/upper: byte-to-byte (switch/case) (!)
+============================================================================
+https://www.alphabet.se/download/UtfConv.c
+https://metacpan.org/release/CHANSEN/Unicode-UTF8-0.60/source/UTF8.xs#L8
+
+encode/decode/match
+============================================================================
+https://habr.com/ru/articles/751616/
+https://habr.com/ru/articles/485148/
+
+Character encoding mappings and related files (cp866 -> Unicode...) (!)
+============================================================================
+https://www.unicode.org/L2/L1999/99325-E.htm
+
+
+Unicode Project
+============================================================================
+https://github.com/unicode-org
+
+ICU Project
+============================================================================
+https://unicode-org.github.io/icu/
+https://unicode-org.github.io/icu/userguide/transforms/casemappings.html
+
+ICU Source Code
+============================================================================
+https://github.com/unicode-org/icu
+https://github.com/unicode-org/icu/tree/main/icu4c/source/common
+
+ICU Unicode data
+============================================================================
+https://github.com/unicode-org/icu/tree/main/icu4c/source/data/unidata
+
+https://raw.githubusercontent.com/unicode-org/icu/refs/heads/main/icu4c/source/data/unidata/UnicodeData.txt
