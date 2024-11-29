@@ -686,6 +686,11 @@ encode/decode/match
 https://habr.com/ru/articles/751616/
 https://habr.com/ru/articles/485148/
 
+Encoding converter
+============================================================================
+https://github.com/nijel/enca
+https://github.com/nijel/enca/blob/master/lib/unicodemap.c
+
 Character encoding mappings and related files (cp866 -> Unicode...) (!)
 ============================================================================
 https://www.unicode.org/L2/L1999/99325-E.htm
